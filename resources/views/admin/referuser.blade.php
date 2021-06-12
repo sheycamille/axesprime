@@ -6,6 +6,8 @@ if (Auth('admin')->User()->dashboard_style == "light") {
 }
 ?>
 @extends('layouts.app')
+@section("manage-users", 'active')
+@section("add-user", 'active')
 @section('content')
 @include('admin.topmenu')
 @include('admin.sidebar')
@@ -13,7 +15,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
     <div class="content bg-{{Auth('admin')->User()->dashboard_style}} ">
         <div class="page-inner">
             <div class="mt-2 mb-4">
-                <h1 class="title1 text-{{$text}}">Add New users to {{\App\Models\Setting::getValue('site_name')}} community</h1>
+                <h1 class="title1 text-{{$text}}">Add A New User to {{\App\Models\Setting::getValue('site_name')}} Community</h1>
             </div>
             @if(Session::has('message'))
             <div class="row">

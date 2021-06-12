@@ -3,7 +3,7 @@
 --
 -- https://tableplus.com/
 --
--- Database: axesprime
+-- Database: AXESPRIME
 -- Generation Time: 2021-06-09 15:59:19.9510
 -- -------------------------------------------------------------
 
@@ -66,7 +66,7 @@ CREATE TABLE `contents` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `cp_transactions` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -140,7 +140,7 @@ CREATE TABLE `images` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `migrations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -382,12 +382,12 @@ INSERT INTO `admins` (`id`, `firstName`, `lastName`, `email`, `email_verified_at
 
 INSERT INTO `contents` (`id`, `ref_key`, `title`, `description`, `created_at`, `updated_at`) VALUES
 (5, 'SMsJr1', 'TESTIMONIALS', 'Don\'t take our word for it, here\'s what some of our clients have to say about us', '2020-08-22 11:13:00', '2020-08-22 11:37:15'),
-(6, 'toe3Ew', 'Trade in the Moment', 'Put your investing ideas into action with a full range of investments.Enjoy real benefits and rewards on Axes Prime.', '2020-08-22 11:29:36', '2020-08-22 11:29:36'),
-(7, 'jJwh78', 'We process withdrawal request Promptly', 'Put your investing ideas into action with a full range of investments. Enjoy real benefits and rewards on Axes Prime.', '2020-08-22 11:30:22', '2021-06-06 21:54:49'),
-(8, 'SLxaB2', 'Invest in your future', 'Put your investing ideas into action with a full range of investments. Enjoy real benefits and rewards on Axes Prime.', '2020-08-22 11:30:55', '2021-06-06 21:54:35'),
+(6, 'toe3Ew', 'Trade in the Moment', 'Put your investing ideas into action with a full range of investments.Enjoy real benefits and rewards on AXESPRIME.', '2020-08-22 11:29:36', '2020-08-22 11:29:36'),
+(7, 'jJwh78', 'We process withdrawal request Promptly', 'Put your investing ideas into action with a full range of investments. Enjoy real benefits and rewards on AXESPRIME.', '2020-08-22 11:30:22', '2021-06-06 21:54:49'),
+(8, 'SLxaB2', 'Invest in your future', 'Put your investing ideas into action with a full range of investments. Enjoy real benefits and rewards on AXESPRIME.', '2020-08-22 11:30:55', '2021-06-06 21:54:35'),
 (9, 'BkP8pH', 'Trade on the Go', 'Trading on the go has be simplified and easy to go', '2020-08-22 11:31:38', '2020-08-22 11:31:38'),
-(10, 'W6gTBN', 'Buy, sell, trade, invest has been simplified', 'Put your investing ideas into action with a full range of investments. Enjoy real benefits and rewards on Axes Prime.', '2020-08-22 11:31:55', '2021-06-06 21:54:18'),
-(11, 'anvs8c', 'About', 'Axes Prime is your no1 trading platform with several currency pairs and cryptos.', '2020-08-22 11:32:29', '2021-06-09 06:04:12'),
+(10, 'W6gTBN', 'Buy, sell, trade, invest has been simplified', 'Put your investing ideas into action with a full range of investments. Enjoy real benefits and rewards on AXESPRIME.', '2020-08-22 11:31:55', '2021-06-06 21:54:18'),
+(11, 'anvs8c', 'About', 'AXESPRIME is your no1 trading platform with several currency pairs and cryptos.', '2020-08-22 11:32:29', '2021-06-09 06:04:12'),
 (12, 'epJ4LI', 'INNOVATION', 'We are committed to improve your experience while trading with on our platform.', '2020-08-22 11:33:32', '2021-06-09 06:03:21'),
 (13, '5hbB6X', 'CERTIFIED & REGULATED', 'We are a regulated brokerage firm abiding with both local and international laws.', '2020-08-22 11:33:55', '2021-06-09 05:57:56'),
 (14, 'Zrhm3I', 'Reputable', 'We are a reputable brokerage firm with several years of delivering quality.', '2020-08-22 11:34:11', '2021-06-09 05:54:35'),
@@ -409,11 +409,11 @@ INSERT INTO `contents` (`id`, `ref_key`, `title`, `description`, `created_at`, `
 (32, 'HLgyaQ', 'EMAIL', 'support@axes-prime.com', '2020-08-22 11:41:14', '2021-06-01 13:10:44'),
 (33, 'ETsdbc', 'Website Description in Footer', 'HIGH RISK TRADING WARNING\r\nForeign Exchange (Forex) and Derivatives trading is highly speculative and carries a high level of risk which may not be suitable for all investors. A possibility of losing capital investments may arise; the Company therefore advises to not invest funds you cannot afford to be depleted to a great extent. For more information regarding the risks involved,\r\nCOMPANY INFORMATION', '2020-08-22 11:42:05', '2021-06-06 21:55:44'),
 (35, 'LnsfcG', 'Why Choose Us', 'Our Added Advantage Section', '2021-06-01 13:10:15', '2021-06-01 13:10:15'),
-(36, 'p5pwyr', 'OPEN A TRADING ACCOUNT TODAY', 'With a simple account registration with AxesPrime, you get access to our FREE educational programs, amazing trading bonuses and superb trading conditions we make available to our clients.', '2021-06-09 08:00:55', '2021-06-09 08:00:55'),
+(36, 'p5pwyr', 'OPEN A TRADING ACCOUNT TODAY', 'With a simple account registration with AXESPRIME, you get access to our FREE educational programs, amazing trading bonuses and superb trading conditions we make available to our clients.', '2021-06-09 08:00:55', '2021-06-09 08:00:55'),
 (37, 'RyigFH', 'ABOUT AXESPRIME', 'About AXESPRIME', '2021-06-09 09:55:52', '2021-06-09 09:55:52'),
-(38, 'MDY58B', 'Our Mission', 'AxesPrime is committed to provide secured, as well as beneficial, trading environment for its traders and investors in the global forex industry. Our goal is to carry out advanced solutions to further improve the quality of online forex trading.\r\n\r\nWe are determined to connect with our clients, and make the industry even better by means of our cutting-edge technologies and sophisticated financial tools. AxesPrime help customers expertly handle and expand their portfolio in the forex industry.\r\n\r\nOur main priority and dedication is to our clients and partners. We aspire to build and keep a high level of customer support so as to present the services suitable for our customers.', '2021-06-09 09:58:27', '2021-06-09 09:59:00'),
-(39, '3y2b3j', 'Reliable Trading Solutions', 'AxesPrime takes pride in the level of the trading systems and solutions it is offering to its clients and partners around the world. Our every move is centered on setting up the most effective and low latency performance, keeping our clients one step ahead of the competition at the same time providing them unparalleled and excellent service.\r\n\r\nSince the establishment of our company, we have been dedicated to continuously upgrade our software and internal infrastructure so as to maintain the upper hand in providing service that would best please our clients.', '2021-06-09 09:59:26', '2021-06-09 09:59:26'),
-(40, 'ro9o3r', 'Superb Trading Conditions', 'AxesPrime keeps pace with the advancement of the forex industry, and our team’s range of effective ideas puts a great deal of value market inquiry, trading various assets with the lowest market-price differences possible.\r\n\r\nThe TEACH account that we offer is particularly modified to meet the requirements of a specific type of trader. \r\n\r\nWe would like to provide as much versatility as possible for our customers, as our accounts have the most helpful features and benefits accessible to us.\r\n\r\nFurthermore, we make an effort to secure our clients’ investment by primarily keeping all their funds unattached from the company’s assets. Hence, your funds are protected at all times even if the business comes across serious financial issues.', '2021-06-09 09:59:57', '2021-06-09 09:59:57');
+(38, 'MDY58B', 'Our Mission', 'AXESPRIME is committed to provide secured, as well as beneficial, trading environment for its traders and investors in the global forex industry. Our goal is to carry out advanced solutions to further improve the quality of online forex trading.\r\n\r\nWe are determined to connect with our clients, and make the industry even better by means of our cutting-edge technologies and sophisticated financial tools. AXESPRIME help customers expertly handle and expand their portfolio in the forex industry.\r\n\r\nOur main priority and dedication is to our clients and partners. We aspire to build and keep a high level of customer support so as to present the services suitable for our customers.', '2021-06-09 09:58:27', '2021-06-09 09:59:00'),
+(39, '3y2b3j', 'Reliable Trading Solutions', 'AXESPRIME takes pride in the level of the trading systems and solutions it is offering to its clients and partners around the world. Our every move is centered on setting up the most effective and low latency performance, keeping our clients one step ahead of the competition at the same time providing them unparalleled and excellent service.\r\n\r\nSince the establishment of our company, we have been dedicated to continuously upgrade our software and internal infrastructure so as to maintain the upper hand in providing service that would best please our clients.', '2021-06-09 09:59:26', '2021-06-09 09:59:26'),
+(40, 'ro9o3r', 'Superb Trading Conditions', 'AXESPRIME keeps pace with the advancement of the forex industry, and our team’s range of effective ideas puts a great deal of value market inquiry, trading various assets with the lowest market-price differences possible.\r\n\r\nThe TEACH account that we offer is particularly modified to meet the requirements of a specific type of trader. \r\n\r\nWe would like to provide as much versatility as possible for our customers, as our accounts have the most helpful features and benefits accessible to us.\r\n\r\nFurthermore, we make an effort to secure our clients’ investment by primarily keeping all their funds unattached from the company’s assets. Hence, your funds are protected at all times even if the business comes across serious financial issues.', '2021-06-09 09:59:57', '2021-06-09 09:59:57');
 
 INSERT INTO `cp_transactions` (`id`, `txn_id`, `item_name`, `Item_number`, `amount_paid`, `user_plan`, `user_id`, `user_tele_id`, `amount1`, `amount2`, `currency1`, `currency2`, `status`, `status_text`, `type`, `cp_p_key`, `cp_pv_key`, `cp_m_id`, `cp_ipn_secret`, `cp_debug_email`, `created_at`, `updated_at`) VALUES
 (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'jdjjjkdkd', 'kkdhdjjdjjkd', 'Victory ID', 'dhhdhd', 'support@onlintrade.com', '2021-03-11 13:46:45', '2021-03-15 13:54:07');
@@ -470,10 +470,10 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 INSERT INTO `settings` (`id`, `name`, `value`, `created_at`, `updated_at`) VALUES
 (1, 'logo', 'AtiRFRlogo.png1623075252', '2021-06-07 14:14:12', '2021-06-07 14:14:12'),
 (2, 'favicon', 'AtiRFRfavicon.png1623075252', '2021-06-07 14:14:12', '2021-06-07 14:14:12'),
-(3, 'site_name', 'AxesPrime', '2021-06-07 14:14:12', '2021-06-09 09:53:31'),
-(4, 'description', 'AxesPrime is committed to provide secured, as well as beneficial, trading environment for its traders and investors in the global forex industry. Our goal is to carry out advanced solutions to further improve the quality of online forex trading. \r\n\r\n<br><br><h4>HIGH RISK TRADING WARNING</h4>\r\nForeign Exchange (Forex) and Derivatives trading is highly speculative and carries a high level of risk which may not be suitable for all investors. A possibility of losing capital investments may arise; the Company therefore advises to not invest funds you cannot afford to be depleted to a great extent. For more information regarding the risks involved,', '2021-06-07 14:14:12', '2021-06-09 06:29:16'),
+(3, 'site_name', 'AXESPRIME', '2021-06-07 14:14:12', '2021-06-09 09:53:31'),
+(4, 'description', 'AXESPRIME is committed to provide secured, as well as beneficial, trading environment for its traders and investors in the global forex industry. Our goal is to carry out advanced solutions to further improve the quality of online forex trading. \r\n\r\n<br><br><h4>HIGH RISK TRADING WARNING</h4>\r\nForeign Exchange (Forex) and Derivatives trading is highly speculative and carries a high level of risk which may not be suitable for all investors. A possibility of losing capital investments may arise; the Company therefore advises to not invest funds you cannot afford to be depleted to a great extent. For more information regarding the risks involved,', '2021-06-07 14:14:12', '2021-06-09 06:29:16'),
 (5, 'keywords', 'forex, trading, crypto,', '2021-06-07 14:14:12', '2021-06-07 14:14:12'),
-(6, 'site_title', 'Welcome to AxesPrime', '2021-06-07 14:14:12', '2021-06-09 09:53:31'),
+(6, 'site_title', 'Welcome to AXESPRIME', '2021-06-07 14:14:12', '2021-06-09 09:53:31'),
 (8, 'site_address', 'https://axes-prime.com', '2021-06-07 14:14:12', '2021-06-07 14:14:12'),
 (11, 'monthlyfee', '20', '2021-06-07 15:06:42', '2021-06-07 15:06:42'),
 (12, 'contact_email', 'support@axes-prime.com', '2021-06-07 15:17:55', '2021-06-07 15:17:55'),

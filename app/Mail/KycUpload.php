@@ -12,7 +12,7 @@ class KycUpload extends Mailable
     use Queueable, SerializesModels;
 
     protected $data;
-    
+
     /**
      * Create a new message instance.
      *
@@ -30,8 +30,8 @@ class KycUpload extends Mailable
      */
     public function build()
     {
-        $doc1 = 'upload-' . $this->data['document']->getClientOriginalName() . time();
-        $doc2 = 'upload-' . $this->data['document1']->getClientOriginalName() . time();
+        $doc1 = 'upload-' . $this->data['document']->getClientOriginalName();
+        $doc2 = 'upload-' . $this->data['document1']->getClientOriginalName();
 
         return $this->markdown('emails.userkyc')
         ->subject('KYC Document Upload')

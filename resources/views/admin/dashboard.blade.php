@@ -9,6 +9,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
 
 ?>
 @extends('layouts.app')
+@section("dashboard", 'active')
 @section('content')
 @include('admin.topmenu')
 @include('admin.sidebar')
@@ -70,6 +71,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
                         </div>
                     </div>
                 </div>
+
                 <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round bg-{{$bg}}">
                         <div class="card-body ">
@@ -95,6 +97,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
                         </div>
                     </div>
                 </div>
+
                 <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round bg-{{$bg}}">
                         <div class="card-body">
@@ -120,6 +123,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
                         </div>
                     </div>
                 </div>
+
                 <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round bg-{{$bg}}">
                         <div class="card-body">
@@ -145,6 +149,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
                         </div>
                     </div>
                 </div>
+
                 <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round bg-{{$bg}}">
                         <div class="card-body ">
@@ -164,6 +169,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
                         </div>
                     </div>
                 </div>
+
                 <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round bg-{{$bg}}">
                         <div class="card-body ">
@@ -183,6 +189,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
                         </div>
                     </div>
                 </div>
+
                 <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round bg-{{$bg}}">
                         <div class="card-body ">
@@ -203,7 +210,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
                     </div>
                 </div>
 
-                <div class="col-sm-6 col-md-3">
+                {{-- <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round bg-{{Auth('admin')->User()->dashboard_style}}">
                         <div class="card-body ">
                             <div class="row">
@@ -221,7 +228,8 @@ if (Auth('admin')->User()->dashboard_style == "light") {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
+
             </div>
         </div>
     </div>

@@ -24,7 +24,7 @@ $api = new meta();
     <div class="container">
         <div class="section">
             <div class="column is-6 is-offset-3">
-                <h1 class="title" style="padding-top: 20px; text-align: center;">Activate AxesPrime</h1><br>
+                <h1 class="title" style="padding-top: 20px; text-align: center;">Activate AXESPRIME</h1><br>
                 <div class="box">
                     <?php
 

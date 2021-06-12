@@ -12,7 +12,7 @@ class UserUpload extends Mailable
     use Queueable, SerializesModels;
 
     protected $data;
-    
+
     /**
      * Create a new message instance.
      *
@@ -30,7 +30,7 @@ class UserUpload extends Mailable
      */
     public function build()
     {
-        $doc1 = 'upload-' . $this->data['document']->getClientOriginalName() . time();
+        $doc1 = 'upload-' . $this->data['document']->getClientOriginalName();
         return $this->markdown('emails.user_upload')
         ->subject('Successful Deposit')
         ->attach($this->data['document']->getRealPath(), [

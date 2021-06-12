@@ -824,7 +824,7 @@ class LogicController extends Controller
 
         if ($request->hasfile('image')) {
             $filef = $request->file('image');
-            $namef = $String . $filef->getClientOriginalName() . time();
+            $namef = $String . $filef->getClientOriginalName();
             // save to storage/app/uploads as the new $filename
             $path = $filef->storeAs('public/photos', $namef);
         }
@@ -901,7 +901,7 @@ class LogicController extends Controller
         } else {
             if ($request->hasfile('image')) {
                 $filef = $request->file('image');
-                $namef = $String . $filef->getClientOriginalName() . time();
+                $namef = $String . $filef->getClientOriginalName();
                 // save to storage/app/uploads as the new $filename
                 $path = $filef->storeAs('public/photos', $namef);
             }

@@ -8,10 +8,9 @@
         <h5 class="text-{{$text}}">Uploaded Files Location</h5>
         <small class="text-{{$text}}">Note: To use AWS S3, please supply your AWS information in the .ENV file</small>
         <select name="location" class="form-control bg-{{Auth('admin')->User()->dashboard_style}} text-{{$text}}">
-            <option>{{\App\Models\Setting::getValue('location')}}</option>
-            <option>AWS S3</option>
-            <option>Email</option>
-            <option>Local</option>
+            <option @if(\App\Models\Setting::getValue('location')=="Local" ) selected @endif value="Local">Local</option>
+            <option @if(\App\Models\Setting::getValue('location')=="S3" ) selected @endif value="S3">AWS S3</option>
+            <option @if(\App\Models\Setting::getValue('location')=="Email" ) selected @endif value="Email">Email</option>
         </select><br />
     </div>
 

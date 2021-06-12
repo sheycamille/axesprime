@@ -20,7 +20,7 @@
     <div class="content bg-{{$bg}}">
         <div class="page-inner">
             <div class="mt-2 mb-4">
-                <h1 class="text-{{$text}}">Add your withdrawal info</h1>
+                <h1 class="text-{{$text}}">Add Withdrawal Info</h1>
             </div>
             @if(Session::has('message'))
             <div class="row">

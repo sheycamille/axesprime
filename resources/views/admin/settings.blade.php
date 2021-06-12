@@ -6,6 +6,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
 }
 ?>
 @extends('layouts.app')
+@section("settings", 'active')
 @section('content')
 @include('admin.topmenu')
 @include('admin.sidebar')

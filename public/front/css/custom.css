@@ -1,4 +1,62 @@
 /* Custom Styles */
+:root {
+    --color-dark-blue-1: rgb(11 0 36 / 67%) !important;
+    --color-dark-blue-2: rgb(8 0 19 / 76%) !important;
+}
+
+#header.header-scrolled .nav-menu li a {
+    color: var(--color-white) !important;
+}
+
+.nav-menu li:hover > a {
+    color: var(--color-white);
+}
+
+.nav-menu .active > a,
+.nav-menu .active {
+    color: var(--color-primary);
+}
+
+/* .nav-menu a:hover,
+.nav-menu .active > a,
+.nav-menu li:hover > a {
+    color: var(--color-primary) !important;
+} */
+
+#header.header-scrolled .nav-menu .active:hover,
+#header.header-scrolled .nav-menu .active:focus,
+#header.header-scrolled .nav-menu a.active {
+    color: var(--color-primary) !important;
+}
+
+#header.header-scrolled .nav-menu .btn-log:hover,
+#header.header-scrolled .nav-menu .btn-log:focus {
+    color: var(--color-white) !important;
+}
+
+.about-us-page,
+.contact-us-page {
+    padding-top: 86px;
+}
+
+#faq {
+    padding: 100px 0px;
+    background: #fff;
+}
+
+#payments {
+    padding: 100px 0;
+}
+
+h1 {
+    font-size: 54px;
+    color: #111;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: 600;
+    position: relative;
+    padding: 25px 0;
+}
 
 /*--------------------------------------------------------------
   # Advantages Sections
@@ -6,11 +64,6 @@
 
 header#header {
     background: var(--color-dark-blue-1) !important;
-}
-
-.about-us-page,
-.contact-us-page {
-    padding-top: 3rem;
 }
 
 #advantages {

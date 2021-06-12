@@ -6,6 +6,8 @@ if (Auth('admin')->User()->dashboard_style == "light") {
 }
 ?>
 @extends('layouts.app')
+@section("manage-users", 'active')
+@section("kyc", 'active')
 @section('content')
 @include('admin.topmenu')
 @include('admin.sidebar')
@@ -13,7 +15,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
     <div class="content bg-{{Auth('admin')->User()->dashboard_style}}">
         <div class="page-inner">
             <div class="mt-2 mb-4">
-                <h1 class="title1 text-{{$text}}">{{\App\Models\Setting::getValue('site_name')}} account verification list</h1>
+                <h1 class="title1 text-{{$text}}">{{\App\Models\Setting::getValue('site_name')}} KYC Verifications</h1>
             </div>
             @if(Session::has('message'))
             <div class="row">
@@ -64,8 +66,8 @@ if (Auth('admin')->User()->dashboard_style == "light") {
                                     <td>{{$list->account_verify}}</td>
                                     <td>
                                         <a href="#" data-toggle="modal" data-target="#viewkycIModal{{$list->id}}" class="btn btn-{{$text}} btn-sm"><i class="fa fa-eye"></i> ID</a>
+                                        <a href="#" data-toggle="modal" data-target="#viewkycAModal{{$list->id}}" class="btn btn-{{$text}} btn-sm"><i class="fa fa-eye"></i> Address Document</a>
                                         <a href="#" data-toggle="modal" data-target="#viewkycPModal{{$list->id}}" class="btn btn-{{$text}} btn-sm"><i class="fa fa-eye"></i> Passport</a>
-
                                         <a href="{{ url('admin/dashboard/acceptkyc') }}/{{$list->id}}" class="btn btn-primary btn-sm">Accept</a>
                                         <a href="{{ url('admin/dashboard/rejectkyc') }}/{{$list->id}}" class="btn btn-danger btn-sm">Reject</a>
                                     </td>
@@ -87,7 +89,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
                                                     <span class="text-danger">{{$list->id_card}}</span></h3>
                                                 @elseif(\App\Models\Setting::getValue('location') == "Local")
                                                 <img src="{{ asset('storage/photos/'.$list->id_card)}}" alt="ID Card" title="" class="img-fluid" />
-                                                @else
+                                                @elseif(\App\Models\Setting::getValue('location') == "S3")
                                                 @php
                                                 $path = 'storage/'.$list->id_card;
                                                 if (Storage::disk('s3')->exists($path)) {
@@ -99,6 +101,8 @@ if (Auth('admin')->User()->dashboard_style == "light") {
                                                 }
                                                 @endphp
                                                 <img src="$src" alt="ID Card" title="" class="img-fluid" />
+                                                @else
+                                                <img src="{{ asset('storage/photos/'.$list->passport)}}" alt="Passport" title="" class="img-fluid" />
                                                 @endif
                                             </div>
                                         </div>
@@ -121,9 +125,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
                                                 @if (\App\Models\Setting::getValue('location') == "Email")
                                                 <h3 class="text-{{$text}}">Check your email with the KYC upload that has an attachment name of
                                                     <span class="text-danger">{{$list->passport}}</span></h3>
-                                                @elseif(\App\Models\Setting::getValue('location') == "Local")
-                                                <img src="{{ asset('storage/photos/'.$list->passport)}}" alt="Passport" title="" class="img-fluid" />
-                                                @else
+                                                @elseif(\App\Models\Setting::getValue('location') == "S3")
                                                 @php
                                                 $ppath = 'storage/'.$list->passport;
                                                 if (Storage::disk('s3')->exists($ppath)) {
@@ -135,17 +137,55 @@ if (Auth('admin')->User()->dashboard_style == "light") {
                                                 }
                                                 @endphp
                                                 <img src="$psrc" alt="Passport" title="" class="img-fluid" />
+                                                @else
+                                                <img src="{{ asset('storage/photos/'.$list->passport)}}" alt="Passport" title="" class="img-fluid" />
                                                 @endif
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                    </div>
-                    <!-- /view KYC Passport Modal -->
-                    @endforeach
+                                <!-- /view KYC Passport Modal -->
 
-                    </tbody>
-                    </table>
+
+                                <!-- View KYC Address Modal -->
+                                <div id="viewkycAModal{{$list->id}}" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-{{Auth('admin')->User()->dashboard_style}} ">
+                                                <h4 class="modal-title text-{{$text}}">KYC verification - Address Document view</h4>
+                                                <button type="button" class="close text-{{$text}}" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body bg-{{Auth('admin')->User()->dashboard_style}}">
+
+                                                @if (\App\Models\Setting::getValue('location') == "Email")
+                                                <h3 class="text-{{$text}}">Check your email with the KYC upload that has an attachment name of
+                                                    <span class="text-danger">{{$list->address_document}}</span></h3>
+                                                @elseif(\App\Models\Setting::getValue('location') == "S3")
+                                                @php
+                                                $ppath = 'storage/'.$list->address_document;
+                                                if (Storage::disk('s3')->exists($ppath)) {
+                                                $passurl = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
+                                                $passfile = Storage::disk('s3')->get($ppath);
+                                                $psrc = $passurl.$passfile;
+                                                }else {
+                                                $psrc = "";
+                                                }
+                                                @endphp
+                                                <img src="$psrc" alt="Address" title="" class="img-fluid" />
+                                                @else
+                                                <img src="{{ asset('storage/photos/'.$list->address_document)}}" alt="Address Document" title="" class="img-fluid" />
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /view KYC Address Modal -->
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

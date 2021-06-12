@@ -12,7 +12,7 @@
         <div class="container">
 
             <div class="section-header">
-                <h3>{{$content->getContent('9sNF7G','title')}}</h3>
+                <h1 class="pb-1 text-center">{{$content->getContent('9sNF7G','title')}}</h1>
                 <p>{{$content->getContent('9sNF7G','description')}}</p>
 
             </div>
@@ -90,24 +90,24 @@
         <div class="container">
             <div class="section-header">
                 <h3 class="section-title">{{$content->getContent('OLZt1I','title')}}</h3>
-                <p>{{$content->getContent('OLZt1I','description')}}</p>
-                <span class="section-divider"></span>
+    <p>{{$content->getContent('OLZt1I','description')}}</p>
+    <span class="section-divider"></span>
+    </div>
+
+    <ul id="faq-list" class="wow fadeInUp">
+        @foreach ($faqs as $item)
+        <li>
+            <a data-toggle="collapse" class="collapsed" href="#faq{{$item->id}}">{{$item->question}} <i class="ion-android-remove"></i></a>
+            <div id="faq{{$item->id}}" class="collapse" data-parent="#faq{{$item->id}}">
+                <p>
+                    {{$item->answer}}
+                </p>
             </div>
+        </li>
+        @endforeach
+    </ul>
 
-            <ul id="faq-list" class="wow fadeInUp">
-                @foreach ($faqs as $item)
-                <li>
-                    <a data-toggle="collapse" class="collapsed" href="#faq{{$item->id}}">{{$item->question}} <i class="ion-android-remove"></i></a>
-                    <div id="faq{{$item->id}}" class="collapse" data-parent="#faq{{$item->id}}">
-                        <p>
-                            {{$item->answer}}
-                        </p>
-                    </div>
-                </li>
-                @endforeach
-            </ul>
-
-        </div>
+    </div>
     </section> <!-- #faq  ends--> --}}
 
 </main>

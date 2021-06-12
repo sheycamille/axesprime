@@ -25,7 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'l_name', 'email', 'phone', 'country', 'password',
+        'name', 'l_name', 'email', 'phone', 'country', 'password', 'address',
     ];
 
     /**
@@ -76,7 +76,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo('App\Admin', 'assign_to');
     }
 
-    
+
     public function dplan()
     {
         return $this->belongsTo('App\Plans', 'plan');

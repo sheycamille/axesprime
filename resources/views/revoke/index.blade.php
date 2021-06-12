@@ -9,7 +9,7 @@ $api = new meta();
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>AxesPrime - Deactivator</title>
+    <title>AXESPRIME - Deactivator</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css" />
     <style type="text/css">
@@ -25,7 +25,7 @@ $api = new meta();
         <div class="section">
             <div class="column is-6 is-offset-3">
                 <center>
-                    <h1 class="title" style="padding-top: 20px">AxesPrime Deactivator</h1><br>
+                    <h1 class="title" style="padding-top: 20px">AXESPRIME Deactivator</h1><br>
                 </center>
                 <div class="box">
                     <article class="message is-success">

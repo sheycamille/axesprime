@@ -77,7 +77,6 @@ class SomeController extends Controller
     {
         return view('user.transactions')
             ->with(array(
-
                 't_history' => TpTransaction::where('user', Auth::user()->id)
                     ->where('type', '<>', 'ROI')
                     ->orderBy('id', 'desc')
@@ -171,10 +170,10 @@ class SomeController extends Controller
     //Save verification documents requests
     public function savevdocs(Request $request)
     {
-
         $this->validate($request, [
             'idcard' => 'mimes:jpg,jpeg,png|max:4000|image',
             'passport' => 'mimes:jpg,jpeg,png|max:4000|image',
+            'address_document' => 'mimes:jpg,jpeg,png|max:4000|image',
         ]);
 
         $location = Setting::getValue('location');
@@ -189,25 +188,22 @@ class SomeController extends Controller
             $whitelist = array('jpeg', 'jpg', 'png');
 
             if (in_array($ext, $whitelist)) {
-
                 if ($location  == "Email") {
-                    $cardname = $strtxt . $filename1 . time();
-                } elseif ($location  == "Local") {
-                    $cardname = $strtxt . $filename1 . time();
-                    // save to storage/app/uploads as the new $filename
-                    $path = $document1->storeAs('public/photos', $cardname);
-                } else {
-                    $cardname = $strtxt . $filename1 . time();
+                    $cardname = $strtxt . $filename1;
+                } elseif ($location == "S3") {
+                    $cardname = $strtxt . $filename1;
                     $filePath = 'storage/' . $cardname;
                     Storage::disk('s3')->put($filePath, file_get_contents($file));
+                } else {
+                    $cardname = $strtxt . $filename1;
+                    // save to storage/app/uploads as the new $filename
+                    $path = $document1->storeAs('public/photos', $cardname);
                 }
             } else {
                 return redirect()->back()
                     ->with('message', 'Unaccepted ID Card Image Uploaded, try renaming the image file');
             }
         }
-
-
 
 
         if ($request->hasfile('passport')) {
@@ -220,15 +216,15 @@ class SomeController extends Controller
             if (in_array($ext, $whitelist)) {
 
                 if ($location  == "Email") {
-                    $passname = $strtxt . $filename2 . time();
-                } elseif ($location  == "Local") {
-                    $passname = $strtxt . $filename2 . time();
-                    // save to storage/app/uploads as the new $filename
-                    $path = $document2->storeAs('public/photos', $passname);
-                } else {
-                    $passname = $strtxt . $filename2 . time();
+                    $passname = $strtxt . $filename2;
+                } elseif ($location == "S3") {
+                    $passname = $strtxt . $filename2;
                     $filePaths = 'storage/' . $passname;
                     Storage::disk('s3')->put($filePaths, file_get_contents($file));
+                } else {
+                    $passname = $strtxt . $filename2;
+                    // save to storage/app/uploads as the new $filename
+                    $path = $document2->storeAs('public/photos', $passname);
                 }
             } else {
                 return redirect()->back()
@@ -236,10 +232,36 @@ class SomeController extends Controller
             }
         }
 
+        if ($request->hasfile('address_document')) {
+            $document3 = $request->file('address_document');
+            $filename3 = $document3->getClientOriginalName();
+
+            $ext = array_pop(explode(".", $filename3));
+            $whitelist = array('jpeg', 'jpg', 'png');
+
+            if (in_array($ext, $whitelist)) {
+                if ($location  == "Email") {
+                    $addressname = $strtxt . $filename3;
+                } elseif ($location == "S3") {
+                    $addressname = $strtxt . $filename3;
+                    $filePaths = 'storage/' . $addressname;
+                    Storage::disk('s3')->put($filePaths, file_get_contents($filename3));
+                } else {
+                    $addressname = $strtxt . $filename3;
+                    // save to storage/app/uploads as the new $filename
+                    $path = $document3->storeAs('public/photos', $addressname);
+                }
+            } else {
+                return redirect()->back()
+                    ->with('message', 'Unaccepted Address Document Image Uploaded, try renaming the image file');
+            }
+        }
+
         if ($location  == "Email") {
             $data = [
                 'document' => $document1,
                 'document1' => $document2,
+                'document3' => $document3,
             ];
             Mail::to($contact_email)->send(new KycUpload($data));
         } else {
@@ -258,6 +280,7 @@ class SomeController extends Controller
             ->update([
                 'id_card' => $cardname,
                 'passport' => $passname,
+                'address_document' => $addressname,
                 'account_verify' => 'Under review',
             ]);
 
@@ -369,13 +392,13 @@ class SomeController extends Controller
             if (in_array($ext, $whitelist)) {
 
                 if ($location  == "Email") {
-                    $proofname = $strtxt . $name . time();
+                    $proofname = $strtxt . $name;
                     $data = [
                         'document' => $file
                     ];
                     Mail::to($contact_email)->send(new UserUpload($data));
                 } elseif ($location  == "Local") {
-                    $proofname = $strtxt . $name . time();
+                    $proofname = $strtxt . $name;
                     // save to storage/app/uploads as the new $filename
                     $path = $file->storeAs('public/photos', $proofname);
                 } else {

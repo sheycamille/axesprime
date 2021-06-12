@@ -28,6 +28,10 @@ Route::get('/cron', 'Controller@autotopup')->name('cron');
 //Front Pages Route
 Route::get('/', 'FrontController@index')->name('home');
 Route::get('about-us', 'FrontController@about')->name('about');
+Route::get('products', 'FrontController@products')->name('products');
+Route::get('trading-platforms', 'FrontController@tradingPlatforms')->name('trading-platforms');
+Route::get('market-news', 'FrontController@marketNews')->name('market-news');
+Route::get('economic-calender', 'FrontController@economicCalender')->name('economic-calender');
 Route::get('contact-us', 'FrontController@contact')->name('contact');
 Route::post('/send-contact-message', 'FrontController@sendContact')->name('sendcontactmessage');
 
@@ -172,6 +176,10 @@ Route::group(['prefix' => 'admin',  'middleware' => 'isadmin'], function () {
 //cron url
 // Route::get('dashboard/cron', 'Controller@autotopup')->name('cron');
 
+
+
+
+// Everything About Users Route started here
 Route::get('/verify-email', 'UsersController@verifyemail')->middleware('auth')->name('verification.notice');;
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
@@ -184,12 +192,11 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-
+Route::get('/forgot-password', 'UsersController@forgotpassword')->name('password.request');
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', 'Controller@dashboard')->name('dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('autoconfirm', 'CoinPaymentsAPI@autoconfirm')->name('autoconfirm');
-    Route::get('/forgot-password', 'UsersController@forgotpassword')->name('password.request');
     Route::get('/dashboard/manage-account-security', 'UsersController@twofa')->name('twofa');
 
     // Two Factor Authentication
@@ -210,14 +217,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     //dashboard
     Route::get('dashboard/paywithcard/{amount}', ['middleware' => 'auth', 'uses' => 'UsersController@paywithcard'])->name('paywithcard');
     Route::get('dashboard/cpay/{amount}/{coin}/{ui}/{msg}', ['uses' => 'Controller@cpay'])->name('cpay');
-    Route::get('dashboard/mplans', ['middleware' => 'auth', 'uses' => 'Controller@mplans'])->name('mplans');
-    Route::get('dashboard/myplans', ['middleware' => 'auth', 'uses' => 'Controller@myplans'])->name('myplans')->middleware('2fa');
+    // Route::get('dashboard/mplans', ['middleware' => 'auth', 'uses' => 'Controller@mplans'])->name('mplans');
+    // Route::get('dashboard/myplans', ['middleware' => 'auth', 'uses' => 'Controller@myplans'])->name('myplans')->middleware('2fa');
     // Route::get('dashboard/makeadmin/{id}/{action}', ['middleware' => ['auth', 'admin'], 'uses'=>'UsersController@makeadmin', 'as'=>'makeadmin']);
-    Route::get('dashboard/pplans', ['middleware' => 'auth', 'uses' => 'Controller@pplan'])->name('pplans');
+    // Route::get('dashboard/pplans', ['middleware' => 'auth', 'uses' => 'Controller@pplan'])->name('pplans');
 
     //Route::get('dashboard/joinplan/{id}', ['middleware' => 'auth', 'uses' => 'Controller@joinplan']);
     Route::get('ref/{id}', ['middleware' => 'auth', 'uses' => 'Controller@ref', 'as' => 'ref']);
-    Route::post('dashboard/joinplan', ['middleware' => 'auth', 'uses' => 'Controller@joinplan'])->name('joinplan');
+    // Route::post('dashboard/joinplan', ['middleware' => 'auth', 'uses' => 'Controller@joinplan'])->name('joinplan');
     Route::post('dashboard/paywithcard/charge', ['middleware' => 'auth', 'uses' => 'UsersController@charge']);
     Route::post('dashboard/withdrawal', 'SomeController@withdrawal')->name('withdrawal');
     Route::post('sendcontact', 'UsersController@sendcontact')->name('enquiry');
@@ -231,7 +238,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/pay', 'PaystackController@redirectToGateway')->name('pay.paystack');
     Route::get('/dashboard/paystackcallback', 'PaystackController@handleGatewayCallback');
 
-    // Tripe Pyament
+    // STripe Pyament
     Route::post('/dashboard/stripepay/{{amount}}', 'StripeController@redirectToGateway')->name('pay.stripe');
 
 
@@ -286,11 +293,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 Route::get('/dashboard/weekend', 'Controller@checkdate');
 
-//activate and deactivate Axes Prime
-Route::any('/activate', function () {
-    return view('activate.index');
-});
+//activate and deactivate AXESPRIME
+// Route::any('/activate', function () {
+//     return view('activate.index');
+// });
 
-Route::any('/revoke', function () {
-    return view('revoke.index');
-});
+// Route::any('/revoke', function () {
+//     return view('revoke.index');
+// });

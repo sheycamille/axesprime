@@ -20,9 +20,10 @@
                         <div class="carousel-background"><img src="{{ asset('storage/photos/'.$content->getImage('57VnOE','img_path'))}}" alt=""></div>
                         <div class="carousel-container">
                             <div class="carousel-content">
-                                <h2>{{$content->getContent('toe3Ew', 'title')}}</h2>
+                                <h1 class="text-white">{{$content->getContent('toe3Ew', 'title')}}</h1>
                                 <p>{{$content->getContent('toe3Ew', 'description')}}</p>
-                                <a href="login" class="btn-get-started scrollto">Get Started</a>
+                                <a href="register" class="btn-get-started scrollto">Get Started</a>
+                                <a href="/trading-platforms" class="btn-get-started scrollto">Download</a>
                             </div>
                         </div>
                     </div>
@@ -33,7 +34,8 @@
                             <div class="carousel-content">
                                 <h2>{{$content->getContent('jJwh78','title')}}</h2>
                                 <p>{{$content->getContent('jJwh78','description')}}</p>
-                                <a href="login" class="btn-get-started scrollto">Get Started</a>
+                                <a href="{{route('login')}}" class="btn-get-started scrollto">Start Trading</a>
+                                <a href="/trading-platforms" class="btn-get-started scrollto">Download</a>
                             </div>
                         </div>
                     </div>
@@ -44,7 +46,8 @@
                                 <div class="carousel-content">
                                     <h2>{{$content->getContent('SLxaB2','title')}}</h2>
                                     <p>{{$content->getContent('SLxaB2','description')}}</p>
-                                    <a href="login" class="btn-get-started scrollto">Get Started</a>
+                                    <a href="register" class="btn-get-started scrollto">Get Started</a>
+                                    <a href="/trading-platforms" class="btn-get-started scrollto">Download</a>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +59,8 @@
                             <div class="carousel-content">
                                 <h2>{{$content->getContent('BkP8pH','title')}}</h2>
                                 <p>{{$content->getContent('BkP8pH','description')}}</p>
-                                <a href="login" class="btn-get-started scrollto">Get Started</a>
+                                <a href="register" class="btn-get-started scrollto">Get Started</a>
+                                <a href="/trading-platforms" class="btn-get-started scrollto">Download</a>
                             </div>
                         </div>
                     </div>
@@ -67,7 +71,8 @@
                             <div class="carousel-content">
                                 <h2>{{$content->getContent('W6gTBN','title')}}</h2>
                                 <p>{{$content->getContent('W6gTBN','description')}}</p>
-                                <a href="login" class="btn-get-started scrollto">Get Started</a>
+                                <a href="{{route('login')}}" class="btn-get-started scrollto">Start Trading</a>
+                                <a href="/trading-platforms" class="btn-get-started scrollto">Download</a>
                             </div>
                         </div>
                     </div>
@@ -524,13 +529,48 @@
     <!--========================== Get Started ============================-->
     <section id="getstarted">
         <div class="container">
-            <div class="section-header">
-                <h3 class="text-left">{{$content->getContent('p5pwyr', 'title')}}</h3>
+            <div class="col-md-12">
+                <div class="section-header">
+                    <h3 class="text-center">How to Get Started</h3>
+                    <div class="text-center">
+                        <p>Access one of the largest and most liquid markets in the world! Enter the world of Forex and CFD online trading in just a few steps and start trading more than <em class="cbc_content">1000</em> instruments on our world-leading trading platforms.</p>
+                    </div>
+                </div>
+                <div class="howtosteps-block d-flex">
+                    <div class="col-md-3 col-sm-6 col-xs-12 item active">
+                        <span class="ch_img"><img data-src="{{ asset ('front/img/about/icon_register.png')}}" alt="Register" tilte="Register" src="{{ asset ('front/img/about/icon_register.png')}}"></span><br><br>
+                        <h5>Register</h5>
+                        <span>
+                            <p>Sign up and upload your documents to verify your account.</p>
+                        </span>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12 item active">
+                        <span class="ch_img"><img data-src="{{ asset ('front/img/about/ICONS_2-01.png')}}" alt="Fund" tilte="Fund" src="{{ asset ('front/img/about/ICONS_2-01.png')}}"></span><br><br>
+                        <h5>Fund</h5>
+                        <span>
+                            <p>Once you understand all the benefits and risks involved, you may fund your account.</p>
+                        </span>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12 item active">
+                        <span class="ch_img"><img data-src="{{ asset ('front/img/about/ICONS_3-01.png')}}" alt="Trade" tilte="Trade" src="{{ asset ('front/img/about/ICONS_3-01.png')}}"></span><br><br>
+                        <h5>Trade</h5>
+                        <span>
+                            <p>Start trading on our WebTrader, Desktop or Mobile Platforms.</p>
+                        </span>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12 item active">
+                        <span class="ch_img"><img data-src="{{ asset ('front/img/about/ICONS_4-01.png')}}" alt="Withdraw" tilte="Withdraw" src="{{ asset ('front/img/about/ICONS_4-01.png')}}"></span><br><br>
+                        <h5>Withdraw</h5>
+                        <span>
+                            <p>Withdraw any profits or your entire account balance at any time!</p>
+                        </span>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a class="btn-get-started" href="{{ route('register') }}">Open an Account</a><br>
+                </div>
             </div>
-            <div class="d-flex">
-                <p class="text-left col-md-9">{{$content->getContent('p5pwyr', 'description')}}</p>
-                <div class="col-md-3 text-right"><a href="/login" class="btn-get-started">Get Started</a></div>
-            </div>
+            <div class="hw_disclaimer"></div>
         </div>
     </section> <!-- #get started  ends-->
 

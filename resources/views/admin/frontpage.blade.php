@@ -6,6 +6,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
 }
 ?>
 @extends('layouts.app')
+@section("frontend-control", 'active')
 @section('content')
 @include('admin.topmenu')
 @include('admin.sidebar')
@@ -13,7 +14,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
     <div class="content bg-{{Auth('admin')->User()->dashboard_style}}">
         <div class="page-inner">
             <div class="mt-2 mb-4">
-                <h1 class="title1 text-{{$text}}">Edit Front page of your website</h1>
+                <h1 class="title1 text-{{$text}}">Edit Front page of this website</h1>
             </div>
             @if(Session::has('message'))
             <div class="row">

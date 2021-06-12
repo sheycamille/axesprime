@@ -119,7 +119,7 @@ if (Auth::user()->dashboard_style == "light") {
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-3">
+                {{-- <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round bg-{{$bg}}">
                         <div class="card-body">
                             <div class="row">
@@ -137,8 +137,8 @@ if (Auth::user()->dashboard_style == "light") {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-6 col-md-3">
+                </div> --}}
+                {{-- <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round bg-{{$bg}}">
                         <div class="card-body">
                             <div class="row">
@@ -156,7 +156,7 @@ if (Auth::user()->dashboard_style == "light") {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round bg-{{$bg}}">
                         <div class="card-body ">
@@ -177,7 +177,7 @@ if (Auth::user()->dashboard_style == "light") {
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-3">
+                {{-- <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round bg-{{$bg}}">
                         <div class="card-body">
                             <div class="row">
@@ -199,8 +199,8 @@ if (Auth::user()->dashboard_style == "light") {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-6 col-md-3">
+                </div> --}}
+                {{-- <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round bg-{{$bg}}">
                         <div class="card-body">
                             <div class="row">
@@ -223,7 +223,7 @@ if (Auth::user()->dashboard_style == "light") {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <!-- Beginning of chart -->
             <div class="row">

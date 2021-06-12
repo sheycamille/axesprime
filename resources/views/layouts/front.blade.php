@@ -32,9 +32,7 @@
 
     <!--Start of Tawk.to Script-->
     <script type="text/javascript">
-        {
-            !!\App\ Models\ Setting::getValue('tawk_to') !!
-        }
+        {!! \App\Models\Setting::getValue('tawk_to') !!}
 
     </script>
 
@@ -49,8 +47,12 @@
 
                     <nav class="nav-menu d-none d-lg-block">
                         <ul>
-                            <li class="@yield('home-menu-item')"><a href="/">Home</a></li>
-                            <li class="@yield('about-menu-item')"><a href="/about-us">About</a></li>
+                            <li><a class="@yield('home-menu-item')" href="/">Home</a></li>
+                            <li><a class="@yield('about-menu-item')" href="/about-us">About</a></li>
+                            <li><a class="@yield('products-menu-item')" href="/products">Products</a></li>
+                            <li><a class="@yield('platforms-menu-item')" href="/trading-platforms">Trading Platforms</a></li>
+                            <li><a class="@yield('news-menu-item')" href="/market-news">Market News</a></li>
+                            <li><a class="@yield('calender-menu-item')" href="/economic-calender">Economic Calender</a></li>
                             {{-- <li><a href="/#testimonials">Testimonials</a></li> --}}
                             </li>
                             <li class="@yield('contact-menu-item')"><a href="/contact-us">Contact us</a></li>
@@ -61,10 +63,10 @@
                             </li>
                             @endif
 
-                            @if(\App\Models\Setting::getValue('site_preference') =="Web dashboard only")
+                            @if(\App\Models\Setting::getValue('site_preference') == "Web dashboard only")
                             @guest
-                            <li><a href="login" class="">Sign In</a></li>
-                            <li><a href="register" class="btn-log ">Get started</a></li>
+                            <li><a href="{{route('login')}}" class="">Sign In</a></li>
+                            <li><a href="register" class="btn-log ">Open An Account</a></li>
                             @else
                             <li class="nav-item dropdown avatar">
                                 <a id="navbarDropdownMenuLink-55" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -84,7 +86,7 @@
                             @endguest
                             @else
 
-                            <li><a href="/login" class="btn-log ">Get started</a></li>
+                            <li><a href="{{route('register')}}" class="btn-log">Open An Account</a></li>
                             @endif
 
                         </ul>

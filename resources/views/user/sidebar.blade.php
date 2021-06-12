@@ -17,11 +17,22 @@
                     <div class="clearfix"></div>
                     <div class="collapse in" id="collapseExample">
                         <ul class="nav">
-                            <li>
+                            <li class="@yield('my-profile')">
                                 <a href="{{ url('dashboard/profile') }}">
-                                    <span class="link-collapse">Account Settings</span>
+                                    <span class="link-collapse">My Profile</span>
                                 </a>
                             </li>
+                            <li class="@yield('kyc')">
+                                <a href="{{ url('dashboard/verify-account') }}">
+                                    <span class="link-collapse">My KYC</span>
+                                </a>
+                            </li>
+                            <li class="@yield('withdrawal-info')">
+                                <a href="{{ url('dashboard/accountdetails') }}">
+                                    <span class="sub-item">Withdrawal Info</span>
+                                </a>
+                            </li>
+                            <li></li>
                         </ul>
                     </div>
                 </div>
@@ -36,14 +47,19 @@
                 <li class="nav-item @yield('accounts')">
                     <a data-toggle="collapse" href="#bases">
                         <i class="fas fa-user"></i>
-                        <p>Account</p>
+                        <p>Accounts</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="bases">
                         <ul class="nav nav-collapse">
-                            <li class="@yield('withdrawal-info')">
-                                <a href="{{ url('dashboard/accountdetails') }}">
-                                    <span class="sub-item">Withdrawal Info</span>
+                            <li class="@yield('demo-accounts')">
+                                <a href="#">
+                                    <span class="sub-item">Demo Accounts</span>
+                                </a>
+                            </li>
+                            <li class="@yield('live-accounts')">
+                                <a href="#">
+                                    <span class="sub-item">Live Accounts</span>
                                 </a>
                             </li>
                             <li class="@yield('notifications')">
@@ -81,7 +97,7 @@
                             </li>
                             <li class="@yield('withdrawals')">
                                 <a href="{{ url('dashboard/withdrawals') }}">
-                                    <span class="sub-item">Withdrawal</span>
+                                    <span class="sub-item">Withdrawals</span>
                                 </a>
                             </li>
                         </ul>

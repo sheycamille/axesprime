@@ -171,6 +171,7 @@ class UsersController extends Controller
                 'account_verify' => 'Rejected',
                 'id_card' => NULL,
                 'passport' => NULL,
+                'address_document' => NULL,
             ]);
 
         return redirect()->back()

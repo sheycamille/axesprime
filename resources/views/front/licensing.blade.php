@@ -17,7 +17,7 @@
                             <div class="carousel-content">
                                 <h2>{{$content->getContent('toe3Ew', 'title')}}</h2>
                                 <p>{{$content->getContent('toe3Ew', 'description')}}</p>
-                                <a href="login" class="btn-get-started scrollto">Get Started</a>
+                                <a href="{{route('register')}}" class="btn-get-started scrollto">Get Started</a>
                             </div>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                             <div class="carousel-content">
                                 <h2>{{$content->getContent('jJwh78','title')}}</h2>
                                 <p>{{$content->getContent('jJwh78','description')}}</p>
-                                <a href="login" class="btn-get-started scrollto">Get Started</a>
+                                <a href="{{route('register')}}" class="btn-get-started scrollto">Get Started</a>
                             </div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                                 <div class="carousel-content">
                                     <h2>{{$content->getContent('SLxaB2','title')}}</h2>
                                     <p>{{$content->getContent('SLxaB2','description')}}</p>
-                                    <a href="login" class="btn-get-started scrollto">Get Started</a>
+                                    <a href="{{route('register')}}" class="btn-get-started scrollto">Get Started</a>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                             <div class="carousel-content">
                                 <h2>{{$content->getContent('BkP8pH','title')}}</h2>
                                 <p>{{$content->getContent('BkP8pH','description')}}</p>
-                                <a href="login" class="btn-get-started scrollto">Get Started</a>
+                                <a href="{{route('register')}}" class="btn-get-started scrollto">Get Started</a>
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             <div class="carousel-content">
                                 <h2>{{$content->getContent('W6gTBN','title')}}</h2>
                                 <p>{{$content->getContent('W6gTBN','description')}}</p>
-                                <a href="login" class="btn-get-started scrollto">Get Started</a>
+                                <a href="{{route('register')}}" class="btn-get-started scrollto">Get Started</a>
                             </div>
                         </div>
                     </div>

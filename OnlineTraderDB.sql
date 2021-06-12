@@ -105,12 +105,12 @@ CREATE TABLE `contents` (
 
 INSERT INTO `contents` (`id`, `ref_key`, `title`, `description`, `created_at`, `updated_at`) VALUES
 (5, 'SMsJr1', 'TESTIMONIALS', 'Don\'t take our word for it, here\'s what some of our clients have to say about us', '2020-08-22 11:13:00', '2020-08-22 11:37:15'),
-(6, 'toe3Ew', 'Trade in the Moment', 'Put your investing ideas into action with a full range of investments.Enjoy real benefits and rewards on Axes Prime.', '2020-08-22 11:29:36', '2020-08-22 11:29:36'),
-(7, 'jJwh78', 'We process withdrawal request Promptly', 'Put your investing ideas into action with a full range of investments.Enjoy real benefits and rewards on Axes Prime.', '2020-08-22 11:30:22', '2020-08-22 11:30:22'),
-(8, 'SLxaB2', 'Invest in the future', 'Put your investing ideas into action with a full range of investments.Enjoy real benefits and rewards on Axes Prime.', '2020-08-22 11:30:55', '2020-08-22 11:30:55'),
+(6, 'toe3Ew', 'Trade in the Moment', 'Put your investing ideas into action with a full range of investments.Enjoy real benefits and rewards on AXESPRIME.', '2020-08-22 11:29:36', '2020-08-22 11:29:36'),
+(7, 'jJwh78', 'We process withdrawal request Promptly', 'Put your investing ideas into action with a full range of investments.Enjoy real benefits and rewards on AXESPRIME.', '2020-08-22 11:30:22', '2020-08-22 11:30:22'),
+(8, 'SLxaB2', 'Invest in the future', 'Put your investing ideas into action with a full range of investments.Enjoy real benefits and rewards on AXESPRIME.', '2020-08-22 11:30:55', '2020-08-22 11:30:55'),
 (9, 'BkP8pH', 'Trade on the Go', 'Trading on the go has be simplified and easy to go', '2020-08-22 11:31:38', '2020-08-22 11:31:38'),
-(10, 'W6gTBN', 'Buy,sell,trade,invest has been simplified', 'Put your investing ideas into action with a full range of investments.Enjoy real benefits and rewards on Axes Prime.', '2020-08-22 11:31:55', '2020-08-22 11:31:55'),
-(11, 'anvs8c', 'About', 'Axes Prime is your no1 cryptocurrency investment portfolio management system', '2020-08-22 11:32:29', '2020-08-22 11:32:29'),
+(10, 'W6gTBN', 'Buy,sell,trade,invest has been simplified', 'Put your investing ideas into action with a full range of investments.Enjoy real benefits and rewards on AXESPRIME.', '2020-08-22 11:31:55', '2020-08-22 11:31:55'),
+(11, 'anvs8c', 'About', 'AXESPRIME is your no1 cryptocurrency investment portfolio management system', '2020-08-22 11:32:29', '2020-08-22 11:32:29'),
 (12, 'epJ4LI', 'we Innovate', 'Nemo enim ipsam voluptatem quia voluptas sit aut odit aut fugit', '2020-08-22 11:33:32', '2020-08-22 11:33:32'),
 (13, '5hbB6X', 'LINCENSE CERTIFIED', 'Nemo enim ipsam voluptatem quia voluptas sit aut odit aut fugit,', '2020-08-22 11:33:55', '2020-08-22 11:33:55'),
 (14, 'Zrhm3I', 'WE ARE PROFESSIONAL', 'Nemo enim ipsam voluptatem quia voluptas sit aut odit aut fugit,', '2020-08-22 11:34:11', '2020-08-22 11:34:11'),
@@ -615,7 +615,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `site_name`, `description`, `currency`, `s_currency`, `bank_name`, `account_name`, `account_number`, `eth_address`, `btc_address`, `ltc_address`, `payment_mode`, `location`, `s_s_k`, `s_p_k`, `pp_cs`, `pp_ci`, `keywords`, `site_title`, `site_address`, `logo`, `favicon`, `trade_mode`, `google_translate`, `weekend_trade`, `contact_email`, `referral_commission`, `referral_commission1`, `referral_commission2`, `referral_commission3`, `referral_commission4`, `referral_commission5`, `signup_bonus`, `files_key`, `tawk_to`, `enable_2fa`, `enable_kyc`, `enable_with`, `enable_verification`, `withdrawal_option`, `dashboard_option`, `site_preference`, `enable_annoc`, `commission_type`, `commission_fee`, `monthlyfee`, `quarterlyfee`, `yearlyfee`, `newupdate`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 'AxesPrime', 'We are online', '$', 'USD', 'International BNK', 'Admin account c', '99388383', 'sdjkbhfff', 'ksjhhjhdjd', 'jjhhdhdhd', '123567', 'Local', 'sk_test_4eC39HqLyjWDarjtT1zdp7dc', 'pk_test_TYooMQauvdEDq54NiTphI7jx', 'jijdjkdkdk', 'iidjdjdj', 'Axes Prime, forex, cfd,', 'Welcome to Axes Prime', 'https://axes-prime.com/', 'upload-logo.png1617292120', 'upload-favicon.png1617293031', 'on', 'on', 'true', 'support@onlintrader.com', '40', '30', '20', '10', '5', '1', '0', 'OT_viXHf', 'tawk to code', 'no', 'yes', 'false', 'false', 'manual', 'dark', 'Web dashboard only', 'on', NULL, NULL, '30', '40', '80', 'Welcome to Axes Prime version 3 with a lot of Security Features', NULL, NULL, '2021-04-02 20:12:15');
+(1, 'AXESPRIME', 'We are online', '$', 'USD', 'International BNK', 'Admin account c', '99388383', 'sdjkbhfff', 'ksjhhjhdjd', 'jjhhdhdhd', '123567', 'Local', 'sk_test_4eC39HqLyjWDarjtT1zdp7dc', 'pk_test_TYooMQauvdEDq54NiTphI7jx', 'jijdjkdkdk', 'iidjdjdj', 'AXESPRIME, forex, cfd,', 'Welcome to AXESPRIME', 'https://axes-prime.com/', 'upload-logo.png1617292120', 'upload-favicon.png1617293031', 'on', 'on', 'true', 'support@onlintrader.com', '40', '30', '20', '10', '5', '1', '0', 'OT_viXHf', 'tawk to code', 'no', 'yes', 'false', 'false', 'manual', 'dark', 'Web dashboard only', 'on', NULL, NULL, '30', '40', '80', 'Welcome to AXESPRIME version 3 with a lot of Security Features', NULL, NULL, '2021-04-02 20:12:15');
 
 -- --------------------------------------------------------
 

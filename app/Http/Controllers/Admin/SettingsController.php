@@ -37,7 +37,7 @@ class SettingsController extends Controller
 
         if ($request->hasfile('logo')) {
             $file = $request->file('logo');
-            $logoname = $strtxt . $file->getClientOriginalName() . time();
+            $logoname = $strtxt . $file->getClientOriginalName();
             // save to storage/app/uploads as the new $filename
             $path = $file->storeAs('public/photos', $logoname);
 
@@ -50,7 +50,7 @@ class SettingsController extends Controller
 
         if ($request->hasfile('favicon')) {
             $favfile = $request->file('favicon');
-            $favname = $strtxt . $favfile->getClientOriginalName() . time();
+            $favname = $strtxt . $favfile->getClientOriginalName();
             // save to storage/app/uploads as the new $filename
             $pathfav = $favfile->storeAs('public/photos', $favname);
 

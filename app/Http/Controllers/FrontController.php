@@ -48,10 +48,8 @@ class FrontController extends Controller
     public function contact()
     {
         $content = Content::first();
-        $mplans = Plans::where('type', 'Main')->get();
-        $pplans = Plans::where('type', 'Promo')->get();
 
-        return view('front.contact', compact('content', 'mplans', 'pplans'));
+        return view('front.contact', compact('content'));
     }
 
 
@@ -71,5 +69,37 @@ class FrontController extends Controller
 
         return redirect()->back()
             ->with('message', ' Your message was sent successfully!');
+    }
+
+
+    public function products()
+    {
+        $content = Content::first();
+
+        return view('front.products', compact('content'));
+    }
+
+
+    public function tradingPlatforms()
+    {
+        $content = Content::first();
+
+        return view('front.trading-platforms', compact('content'));
+    }
+
+
+    public function marketNews()
+    {
+        $content = Content::first();
+
+        return view('front.market-news', compact('content'));
+    }
+
+
+    public function economicCalender()
+    {
+        $content = Content::first();
+
+        return view('front.economic-calender', compact('content'));
     }
 }

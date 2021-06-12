@@ -46,13 +46,17 @@ if (Auth::check() && Auth::user()->dashboard_style == "light") {
 </head>
 <body data-background-color="dark">
     <div id="app">
+        <!--Start of Tawk.to Script-->
+        <script type="text/javascript">
+        {!!\App\Models\Setting::getValue('tawk_to')!!}
+        </script>
+        <!--End of Tawk.to Script-->
+
         <!--PayPal-->
         <script>
             // Add your client ID and secret
-            var PAYPAL_CLIENT = '{{\App\Models\Setting::getValue('
-            pp_ci ')}}';
-            var PAYPAL_SECRET = '{{\App\Models\Setting::getValue('
-            pp_cs ')}}';
+            var PAYPAL_CLIENT = '{{\App\Models\Setting::getValue('pp_ci')}}';
+            var PAYPAL_SECRET = '{{\App\Models\Setting::getValue('pp_cs')}}';
 
             // Point your server to the PayPal API
             var PAYPAL_ORDER_API = 'https://api.paypal.com/v2/checkout/orders/';
@@ -64,11 +68,6 @@ if (Auth::check() && Auth::user()->dashboard_style == "light") {
 
         <!--/PayPal-->
 
-        <!--Start of Tawk.to Script-->
-        <script type="text/javascript">
-        {{!! \App\Models\Setting::getValue('tawk_to') !!}}
-        </script>
-        <!--End of Tawk.to Script-->
         <div class="wrapper">
             @yield('content')
             <footer class="footer bg-{{$bg}} text-{{$text}}">
