@@ -1,2 +1,27 @@
 vendor
 .*
+vendor
+composer.lock
+PHPMailer
+
+.DS_Store
+
+*.db
+
+.*
+test*
+*.csv
+*.json
+csvs
+*.log
+*.gz
+*.out
+tmp
+tmp.php
+*.ini
+*.txt #maybe, cleanup?
+NOMAIL
+NOBADGR
+
+phpdocker
+docker-compose.yml
