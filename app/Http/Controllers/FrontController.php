@@ -2,24 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Faq;
+use App\Models\Content;
+use App\Models\Setting;
+use App\Models\AccountType;
+
 use App\Mail\NewNotification;
 use App\Http\Controllers\Controller;
-
-use App\Models\Faq;
 use App\Models\User;
-use App\Models\Admin;
-use App\Models\Asset;
-use App\Models\Plans;
-use App\Models\Images;
-use App\Models\Deposit;
-use App\Models\Content;
-use App\Models\Wdmethod;
-use App\Models\Setting;
-use App\Models\Testimony;
-use App\Models\Withdrawal;
-use App\Models\Mt4dDtails;
-use App\Models\User_plans;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -39,9 +29,8 @@ class FrontController extends Controller
     public function about()
     {
         $content = Content::first();
-        $mplans = Plans::where('type', 'Main')->get();
 
-        return view('front.about', compact('content', 'mplans'));
+        return view('front.about', compact('content'));
     }
 
 
@@ -101,5 +90,28 @@ class FrontController extends Controller
         $content = Content::first();
 
         return view('front.economic-calender', compact('content'));
+    }
+
+    public function accountTypes()
+    {
+        $content = Content::first();
+        $account_types = AccountType::where('active', 1)->get();
+
+        return view('front.account-types', compact('content', 'account_types'));
+    }
+
+    public function forgotpassword()
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function ftds()
+    {
+        $users = User::all();
+
+        return view('front.ftds', [
+            'title' => "First Time Deposits",
+            'users' => $users,
+        ]);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 namespace App\Http\Traits;
 
-use App\Model\Setting;
+use App\Models\Setting;
 
 trait assetstrait
 {

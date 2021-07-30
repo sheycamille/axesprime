@@ -22,19 +22,35 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'phone' => ['required', 'string',],
+            'address' => ['required', 'string',],
+            //'account_type' => ['required', 'string',],
+            'address' => ['required', 'string',],
+            'town' => ['required', 'string',],
+            'state' => ['required', 'string',],
+            'zip_code' => ['required', 'string',],
+            'country' => ['required', 'string',],
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
             $user->updateProfilePhoto($input['photo']);
         }
 
-        if ($input['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
+        if (
+            $input['email'] !== $user->email &&
+            $user instanceof MustVerifyEmail
+        ) {
             $this->updateVerifiedUser($user, $input);
         } else {
             $user->forceFill([
                 'name' => $input['name'],
                 'email' => $input['email'],
+                'address' => $input['address'],
+                'phone' => $input['phone'],
+                'town' => $input['town'],
+                'state' => $input['state'],
+                'zip_code' => $input['zip_code'],
+                'country' => $input['country'],
             ])->save();
         }
     }

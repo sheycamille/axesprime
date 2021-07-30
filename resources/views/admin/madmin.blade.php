@@ -15,7 +15,7 @@ if (Auth('admin')->User()->dashboard_style == "light") {
     <div class="content bg-{{Auth('admin')->User()->dashboard_style}}">
         <div class="page-inner">
             <div class="mt-2 mb-4">
-                <h1 class="title1 text-{{$text}}">Managers</h1>
+                <h1 class="title1 text-{{$text}} text-center">Managers</h1>
             </div>
             @if(Session::has('message'))
             <div class="row">

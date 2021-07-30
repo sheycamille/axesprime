@@ -14,7 +14,8 @@ class UpdateUsersAddAddressDocument extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->text('address_document');
+            $table->string('id_card_back')->after('id_card')->nullable();
+            $table->text('address_document')->after('id_card_back')->nullable();
         });
     }
 
@@ -26,7 +27,7 @@ class UpdateUsersAddAddressDocument extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('address_document');
+            $table->dropColumn('id_card_back', 'address_document');
         });
     }
 }

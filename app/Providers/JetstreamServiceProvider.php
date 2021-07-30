@@ -3,13 +3,14 @@
 namespace App\Providers;
 
 use App\Actions\Jetstream\DeleteUser;
+use App\Models\AccountType;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Fortify;
-use App\Models\Settings;
+use App\Models\Setting;
 
 class JetstreamServiceProvider extends ServiceProvider
 {
@@ -34,7 +35,7 @@ class JetstreamServiceProvider extends ServiceProvider
         Jetstream::deleteUsersUsing(DeleteUser::class);
 
         Fortify::loginView(function () {
-            return view('auth.login',[
+            return view('auth.login', [
                 'title' => 'Sign In to Continue',
             ]);
         });
@@ -43,8 +44,10 @@ class JetstreamServiceProvider extends ServiceProvider
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)->first();
 
-            if ($user &&
-                Hash::check($request->password, $user->password)) {
+            if (
+                $user &&
+                Hash::check($request->password, $user->password)
+            ) {
                 $request->session()->put('getAnouc', 'true');
                 return $user;
             }
@@ -52,14 +55,17 @@ class JetstreamServiceProvider extends ServiceProvider
 
 
         Fortify::registerView(function () {
-            include 'get_user_ip_info.php';
+            // include 'get_user_ip_info.php';
+            include 'countries.php';
+            $account_types = AccountType::where('active', 1)->get();
+
             return view('auth.register', [
                 'title' => 'Register an Account',
-                'user_country'=>$user_country,
-                'countries'=>$countries,
+                // 'user_country' => $user_country,
+                'countries' => $countries,
+                'account_types' => $account_types,
             ]);
         });
-
     }
 
     /**

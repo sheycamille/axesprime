@@ -16,8 +16,8 @@ class CreateWdmethodsTable extends Migration
         Schema::create('wdmethods', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->nullable();
-            $table->string('minimum')->nullable();
-            $table->string('maximum')->nullable();
+            $table->bigInteger('minimum')->nullable();
+            $table->bigInteger('maximum')->nullable();
             $table->string('charges_fixed')->nullable();
             $table->string('charges_percentage')->nullable();
             $table->string('duration')->nullable();

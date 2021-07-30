@@ -2,32 +2,26 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
-use App\Models\Setting;
-use App\Models\Plans;
-// use App\Models\hisplans;
-use App\Models\Agent;
-//use App\Models\confirmations;
-use App\Models\User_plans;
-use App\Models\Mt4Details;
-//use App\Models\fees;
-use App\Models\Admin;
+use Exception;
 use App\Models\Faq;
-//use App\Models\Task;
-use App\Models\Images;
-use App\Models\Testimony;
-use App\Models\Content;
+use App\Models\User;
+use App\Models\Admin;
+use App\Models\Agent;
 use App\Models\Asset;
-//use App\Models\markets;
-use App\Models\Mt4dDtails;
+use App\Models\Images;
+use App\Models\Content;
 use App\Models\Deposit;
 use App\Models\Wdmethod;
+use App\Models\Testimony;
+use App\Models\Mt5Details;
 use App\Models\Withdrawal;
-use App\Models\CpTransaction;
-use App\Models\TpTransaction;
-use DB;
-use Illuminate\Http\Request;
+use App\Models\AccountType;
+
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Tarikhagustia\LaravelMt5\LaravelMt5;
 
 class HomeController extends Controller
 {
@@ -48,7 +42,6 @@ class HomeController extends Controller
         $userlist = User::count();
         $activeusers = User::where('status', 'active')->count();
         $blockeusers = User::where('status', 'blocked')->count();
-        $plans = Plans::count();
         $unverifiedusers = User::where('account_verify', '!=', 'yes')->count();
 
         return view('admin.dashboard', [
@@ -58,49 +51,23 @@ class HomeController extends Controller
             'total_withdrawn' => $total_withdrawn,
             'pending_withdrawn' => $pending_withdrawn,
             'user_count' => $userlist,
-            'plans' => $plans,
             'activeusers' => $activeusers,
             'blockeusers' => $blockeusers,
             'unverifiedusers' => $unverifiedusers,
         ]);
     }
-    //Plans route
-    public function plans()
-    {
-        return view('admin.plans')
-            ->with(array(
-                'title' => 'System Plans',
-                'plans' => Plans::where('type', 'Main')->orderby('created_at', 'ASC')->get(),
-                'pplans' => Plans::where('type', 'Promo')->get(),
-            ));
-    }
+
 
     //Return manage users route
     public function manageusers()
     {
-        $pl = Plans::all();
         return view('admin.users')
             ->with(array(
                 'title' => 'All users',
-                'pl' => $pl,
                 'users' => User::orderBy('id', 'desc')->get(),
             ));
     }
 
-
-    //Return search subscription route
-    public function searchsub(Request $request)
-    {
-        $searchItem = $request['searchItem'];
-        if ($request['type'] == 'subscription') {
-            $result = Mt4Details::whereRaw("MATCH(mt4_id,account_type,server) AGAINST('$searchItem')")->paginate(10);
-        }
-        return view('admin.msubtrade')
-            ->with(array(
-                'title' => 'Subscription search result',
-                'subscriptions' => $result,
-            ));
-    }
 
     //Return search route for Withdrawals
     public function searchWt(Request $request)
@@ -133,6 +100,7 @@ class HomeController extends Controller
             ));
     }
 
+
     //Return manage deposits route
     public function mdeposits()
     {
@@ -142,6 +110,7 @@ class HomeController extends Controller
                 'deposits' => Deposit::orderBy('id', 'desc')->get(),
             ));
     }
+
 
     //Return agents route
     public function agents()
@@ -155,6 +124,7 @@ class HomeController extends Controller
             ));
     }
 
+
     //Return view agent route
     public function viewagent($agent)
     {
@@ -166,46 +136,34 @@ class HomeController extends Controller
             ));
     }
 
+
     //return settings form
     public function settings(Request $request)
     {
         include 'currencies.php';
 
-        $cp_transactions = CpTransaction::where('id', '=', '1')->first();
-        $wdmethods = Wdmethod::where('type', 'withdrawal')->get();
+
+        $wmethods = Wdmethod::where('type', 'withdrawal')->get();
+        $dmethods = Wdmethod::where('type', 'deposit')->get();
         return view('admin.settings')->with(array(
-            'wmethods' => $wdmethods,
+            'wmethods' => $wmethods,
+            'dmethods' => $dmethods,
             'assets' => Asset::all(),
             //'markets' => markets::all(),
-            'cpd' => $cp_transactions,
             'currencies' => $currencies,
             'title' => 'System Settings'
         ));
         //return view('settings')->with(array('title' =>'System Settings'));
     }
 
-    public function msubtrade()
-    {
-        return view('admin.msubtrade')
-            ->with(array(
-                'subscriptions' => Mt4Details::orderBy('id', 'desc')->get(),
-                'title' => 'Manage Subscription',
-            ));
-    }
-
-    public function userplans($id)
-    {
-        return view('admin.user_plans')
-            ->with(array(
-                'plans' => User_plans::where('user', $id)->orderBy('id', 'desc')->get(),
-                'user' => User::where('id', $id)->first(),
-                'title' => 'User Investment Plan(s)',
-            ));
-    }
 
     public function userwallet($id)
     {
         $user = User::where('id', $id)->first();
+
+        // update user accounts
+        $this->updateaccounts($user);
+
         //sum total deposited
         $total_deposited = DB::table('deposits')->select(DB::raw("SUM(amount) as count"))->where('user', $id)->where('status', 'Processed')->get();
 
@@ -213,13 +171,14 @@ class HomeController extends Controller
             ->with(array(
                 'ref_bonus' => $user->ref_bonus,
                 'deposited' => $total_deposited,
-                'bonus' => $user->bonus,
+                'bonus' => $user->totalBonus(),
                 'roi' => $user->roi,
-                'account_bal' => $user->account_bal,
+                'account_bal' => $user->totalBalance(),
                 'user' => $user->name,
-                'title' => 'User Investment Plan(s)',
+                'title' => 'User Profile',
             ));
     }
+
 
     //return front end management page
     public function frontpage(Request $request)
@@ -241,12 +200,15 @@ class HomeController extends Controller
         ));
     }
 
+
     public function addmanager()
     {
         return view('admin.addadmin')->with(array(
             'title' => 'Add new manager',
         ));
     }
+
+
     public function madmin()
     {
         return view('admin.madmin')->with(array(
@@ -254,6 +216,7 @@ class HomeController extends Controller
             'title' => 'Add new manager',
         ));
     }
+
 
     //Return KYC route
     public function kyc()
@@ -266,71 +229,134 @@ class HomeController extends Controller
             ));
     }
 
-    // public function calendar()
-    // {
-    //   return view('admin.calender')
-    //     ->with(array(
-    //     'title'=>'Create To do List',
-    //     ));
-    // }
 
-    // public function showtaskpage()
-    // {
-    //   return view('admin.task')
-    //     ->with(array(
-    //     'admin' => Admin::orderby('id', 'desc')->get(),
-    //     'title'=>'Create a New Task',
-    //     ));
-    // }
-
-    // public function mtask()
-    // {
-    //   return view('admin.mtask')
-    //     ->with(array(
-    //     'admin' => Admin::orderby('id', 'desc')->get(),
-    //     'tasks' => Task::orderby('id', 'desc')->get(),
-    //     'title'=>'Manage Task',
-    //     ));
-    // }
-    // public function viewtask()
-    // {
-    //   return view('admin.vtask')
-    //     ->with(array(
-    //     'tasks' => Task::orderby('id', 'desc')->where('designation', Auth('admin')->User()->id)->get(),
-    //     'title'=>'View my Task',
-    //     ));
-    // }
-
-    // public function leads()
-    // {
-    //   return view('admin.leads')
-    //     ->with(array(
-    //     'admin' => Admin::orderBy('id', 'desc')->get(),
-    //     'users' => User::orderby('id', 'desc')->where('user_plan', NULL)->get(),
-    //     'title'=>'Manage New Registered Clients',
-    //     ));
-    // }
-    // public function leadsassign()
-    // {
-    //   return view('admin.lead_asgn')
-    //     ->with(array(
-    //     'usersAssigned' => User::orderby('id', 'desc')->where([
-    //       ['assign_to', Auth('admin')->User()->id],
-    //       ['cstatus', NULL]
-    //     ])->get(),
-
-    //     'title'=>'Manage New Registered Clients',
-    //     ));
-    // }
+    // Return account types
+    public function accounttypes(Request $request)
+    {
+        $accounttypes = AccountType::all();
+        return view('admin.accounttypes', [
+            'title' => "Account Types",
+            'accounttypes' => $accounttypes,
+        ]);
+    }
 
 
-    // public function customer()
-    // {
-    //   return view('admin.customer')
-    //     ->with(array(
-    //     'users' => User::orderby('id', 'desc')->where('cstatus', 'Customer')->get(),
-    //     'title'=>'Manage New Registered Clients',
-    //     ));
-    // }
+    // Return add account type page
+    public function ashowddaccounttype(Request $request)
+    {
+        return view('admin.addaccounttype', [
+            'title' => "Add Account Type",
+        ]);
+    }
 
+
+    public function addaccounttype(Request $request)
+    {
+        $input = $request->all();
+
+        Validator::make($input, [
+            'name' => ['required', 'string', 'max:255'],
+            'cost' => ['required', 'string',],
+            'min_deposit' => ['required', 'integer',],
+            'max_leverage' => ['required', 'integer',],
+            'min_trade_size' => ['required',],
+            'max_trade_size' => ['required',],
+            'swaps' => ['required', 'string',],
+            'fx_commission' => ['required', 'string',],
+            'num_fx_pairs' => ['required', 'integer'],
+            'num_commodities_pairs' => ['required', 'integer'],
+            'num_indices_pairs' => ['required', 'integer',],
+            'trading_platforms' => ['required', 'string',],
+            'typical_spread' => ['required',],
+            'execution_type' => ['required', 'string',],
+            'requotes' => ['required', 'string',],
+            'available_instruments' => ['required', 'string',],
+            'educational_material' => ['required', 'integer',],
+            'active' => ['required', 'integer',],
+        ])->validate();
+
+        unset($input['_token']);
+
+        $accType = new AccountType($input);
+        $accType->save();
+
+        return redirect('accounttypes')->with('message', 'New Account Type Created Sucessfully!');
+    }
+
+
+    public function updateaccounttype(Request $request, $id)
+    {
+        AccountType::where('id', $id)
+            ->update([
+                'name' => $request->name,
+                'cost' => $request->cost,
+                'min_deposit' => $request->min_deposit,
+                'max_leverage' => $request->max_leverage,
+                'min_trade_size' => $request->min_trade_size,
+                'max_trade_size' => $request->max_trade_size,
+                'swaps' => $request->swaps,
+                'fx_commission' => $request->fx_commission,
+                'num_fx_pairs' => $request->num_fx_pairs,
+                'num_commodities_pairs' => $request->num_commodities_pairs,
+                'num_indices_pairs' => $request->num_indices_pairs,
+                'trading_platforms' => $request->trading_platforms,
+                'typical_spread' => $request->typical_spread,
+                'execution_type' => $request->execution_type,
+                'requotes' => $request->requotes,
+                'available_instruments' => $request->available_instruments,
+                'educational_material' => $request->educational_material,
+                'active' => $request->active,
+            ]);
+        return redirect()->back()
+            ->with('message', 'The Account Type Updated Sucessfully!');
+    }
+
+
+    public function delaccounttype(Request $request, $id)
+    {
+        AccountType::where('id', $id)->delete();
+        return redirect()->back()
+            ->with('message', 'Account type has been deleted!');
+    }
+
+
+    public function dellaccounts(Request $request, $id)
+    {
+        $mt5 = Mt5Details::find($id);
+
+        if (!isset($mt5)) {
+            return redirect()->back()
+                ->with('message', 'Account not found!');
+        }
+
+        // initialize the mt5 api
+        $api = new LaravelMt5();
+
+        // check and update live account balances
+        $this->setServerConfig('live');
+
+        // delete the mt5 account
+        try {
+            $data = $api->deleteUser($mt5->login);
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->with('message', 'Sorry an error occured, please contact admin with this error message: ' . $e->getMessage());
+        }
+
+        $mt5->delete();
+
+        return redirect()->back()
+            ->with('message', 'Account successfully deleted!');
+    }
+
+
+    public function mftds(Request $request)
+    {
+        $users = User::all();
+
+        return view('admin.mftds', [
+            'title' => "First Time Deposits",
+            'users' => $users,
+        ]);
+    }
 }

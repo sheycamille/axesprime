@@ -8,7 +8,6 @@
 	}
 ?>
 @extends('layouts.app')
-@section("accounts", 'active')
 @section("notifications", 'active')
 @section('content')
 @include('user.topmenu')
@@ -17,14 +16,15 @@
     <div class="content bg-{{$bg}}">
         <div class="page-inner">
             <div class="mt-2 mb-4">
-                <h1 class="title1 text-{{$text}}">Notification</h1>
+                <h1 class="title1 text-{{$text}} text-center">Notifications</h1>
             </div>
             @if(Session::has('message'))
             <div class="row">
                 <div class="col-lg-12">
                     <div class="alert alert-info alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="fa fa-info-circle"></i> {{ Session::get('message') }}
+                        <i class="fa fa-info-circle"></i>
+                        <p class="alert-message">{!! Session::get('message') !!}</p>
                     </div>
                 </div>
             </div>

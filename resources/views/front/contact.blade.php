@@ -23,7 +23,7 @@
                     <div class="contact-address">
                         <i class="ion-ios-location-outline"></i>
                         <h3>{{$content->getContent('52GPRA','title')}}</h3>
-                        <p>{{$content->getContent('52GPRA','description')}}</p>
+                        <p>{!! $content->getContent('52GPRA','description') !!}</p>
                     </div>
                 </div>
 
@@ -50,7 +50,7 @@
                 @if(Session::has('message'))
                 <div class="col-lg-12">
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ Session::get('message') }}
+                        <p class="alert-message">{!! Session::get('message') !!}</p>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

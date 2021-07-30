@@ -2,45 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
+
+use App\Mail\NewNotification;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 
-use App\Models\User;
-use App\Models\Setting;
-use App\Models\Plans;
-use App\Models\Agent;
-use App\Models\User_plans;
-use App\Models\Admin;
-use App\Models\Faq;
-use App\Models\Images;
-use App\Models\Testimony;
-use App\Models\Content;
-use App\Models\Asset;
-use App\Models\Mt4dDtails;
-use App\Models\Deposit;
-use App\Models\Wdmethod;
-use App\Models\Withdrawal;
-use App\Models\CpTransaction;
-use Illuminate\Support\Facades\DB;
-
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-
-use App\Http\Traits\CPTrait;
-
-use App\Mail\NewNotification;
-use App\Mail\Twofa;
-use App\Mail\newroi;
-use App\Mail\endplan;
-use Illuminate\Support\Facades\Mail;
-
 class TwoFactorController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, CPTrait;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
 
     public function verifyTwoFactor(Request $request)
     {
@@ -57,7 +35,7 @@ class TwoFactorController extends BaseController
 
             //send email notification
             $objDemo = new \stdClass();
-            $objDemo->message = "This is a successful login notification on your account. If this was not you, kindly take action by changing your account and email passwords.";
+            $objDemo->message = "This is a successful login on your account. If this was not you, kindly take action by changing your account and email passwords.";
             $objDemo->sender = $site_name;
             $objDemo->date = \Carbon\Carbon::Now();
             $objDemo->subject = "Successful login";
@@ -69,6 +47,7 @@ class TwoFactorController extends BaseController
             return redirect()->back()->with('message', 'Incorrect code.');
         }
     }
+
 
     public function showTwoFactorForm()
     {

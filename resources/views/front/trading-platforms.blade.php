@@ -30,7 +30,7 @@
                         Enjoy more features with AXESPRIME’ MT5 trading platform. The AXESPRIME MT5 is the latest and most advanced MetaTrader platform that offers all the pioneering features of MT4, with the addition of more advanced trading tools and indicators that enable traders to maintain more control of their trades and make more informed decisions using cutting-edge analysis.
                     </p>
                     <div class="text-left">
-                        <a class="btn-get-started" target="_blank" href="{{ asset('downloads/axesprimeltd5setup.exe') }}">Download Now</a><br>
+                        <a class="btn-get-started" href="{{ asset('downloads/axesprimeltd5setup.exe') }}">Download Now</a><br>
                     </div>
                 </div>
                 <img class="col-md-6" src="{{ asset ('front/img/about/MT5-10.jpg')}}" alt="MT5" tilte="MT5" />
@@ -74,12 +74,12 @@
                     </p>
                     <div class="text-left">
                         <a class="" target="_blank" href="https://download.mql5.com/cdn/mobile/mt5/android?server=AxesPrimeLtd-Demo,AxesPrimeLtd-Live">
-                            <img class="" src="{{ asset ('front/img/about/google_play_badge.png')}}" alt="Andriod Download" tilte="Andriod Download" height="100" />
+                            <img class="" src="{{ asset ('front/img/about/google_play_badge.png')}}" alt="Andriod Download" tilte="Andriod Download" height="66" />
                             Download Now</a>
                     </div>
                     <div class="text-left">
                         <a class="" target="_blank" href="https://download.mql5.com/cdn/mobile/mt5/ios?server=AxesPrimeLtd-Demo,AxesPrimeLtd-Live">
-                            <img class="col-md-4" src="{{ asset ('front/img/about/app-store-en.png')}}" alt="iPhone Download" tilte="iPhone Download" height="68" />
+                            <img class="" src="{{ asset ('front/img/about/app-store-en.png')}}" alt="iPhone Download" tilte="iPhone Download" height="66" />
                             Download Now</a>
                     </div>
                 </div>

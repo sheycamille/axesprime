@@ -10,8 +10,9 @@
     <!--========================== About Section ============================-->
     <section id="about" class="section-bg wow fadeInUp">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header pt-5 pb-5">
                 <h1 class="text-center">{{$content->getContent('RyigFH', 'title')}}</h1>
+                <p class="text-center">{{$content->getContent('RyigFH', 'description')}}</p>
             </div>
 
         </div>

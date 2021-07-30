@@ -14,7 +14,8 @@ class UpdateUsersTableAddToken2fa extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->text('token_2fa')->nullable();
+            $table->text('token_2fa')->after('two_factor_recovery_codes')->nullable();
+            $table->text('token_2fa_expiry')->after('token_2fa')->nullable();
         });
     }
 
@@ -26,7 +27,7 @@ class UpdateUsersTableAddToken2fa extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('token_2fa');
+            $table->dropColumn('token_2fa', 'token_2fa_expiry');
         });
     }
 }

@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
-use App\Models\Settings;
+use App\Models\Setting;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,17 +24,20 @@ if (version_compare(PHP_VERSION, '7.1.0', '>=')) {
 }
 
 //cron url
-Route::get('/cron', 'Controller@autotopup')->name('cron');
+// Route::get('/cron', 'Controller@autotopup')->name('cron');
 
 //Front Pages Route
 Route::get('/', 'FrontController@index')->name('home');
 Route::get('about-us', 'FrontController@about')->name('about');
 Route::get('products', 'FrontController@products')->name('products');
+Route::get('account-types', 'FrontController@accountTypes')->name('account-types');
 Route::get('trading-platforms', 'FrontController@tradingPlatforms')->name('trading-platforms');
 Route::get('market-news', 'FrontController@marketNews')->name('market-news');
 Route::get('economic-calender', 'FrontController@economicCalender')->name('economic-calender');
 Route::get('contact-us', 'FrontController@contact')->name('contact');
 Route::post('/send-contact-message', 'FrontController@sendContact')->name('sendcontactmessage');
+Route::get('private/ftds', 'FrontController@ftds')->name('ftds');
+
 
 // Everything About Admin Route started here
 Route::prefix('adminlogin')->group(function () {
@@ -45,35 +49,13 @@ Route::prefix('adminlogin')->group(function () {
 
 Route::group(['prefix' => 'admin',  'middleware' => 'isadmin'], function () {
     Route::get('dashboard', 'Admin\HomeController@index')->name('admin.dashboard');
-    Route::get('dashboard/plans', ['uses' => 'Admin\HomeController@plans'])->name('plans');
     Route::get('dashboard/manageusers', ['uses' => 'Admin\HomeController@manageusers'])->name('manageusers');
-
-    // CRM ROUTES
-    Route::get('dashboard/calendar', ['uses' => 'Admin\HomeController@calendar'])->name('calendar');
-    Route::get('dashboard/task', ['uses' => 'Admin\HomeController@showtaskpage'])->name('task');
-    Route::get('dashboard/mtask', ['uses' => 'Admin\HomeController@mtask'])->name('mtask');
-    Route::get('dashboard/viewtask', ['uses' => 'Admin\HomeController@viewtask'])->name('viewtask');
-    Route::post('dashboard/addtask', 'Admin\CrmController@addtask')->name('addtask');
-    Route::post('dashboard/updatetask', 'Admin\CrmController@updatetask')->name('updatetask');
-    Route::get('dashboard/deltask/{id}', 'Admin\CrmController@deltask')->name('deltask');
-    Route::get('dashboard/markdone/{id}', 'Admin\CrmController@markdone')->name('markdone');
-    Route::get('dashboard/leads', ['uses' => 'Admin\HomeController@leads'])->name('leads');
-    Route::get('dashboard/leadsassign', ['uses' => 'Admin\HomeController@leadsassign'])->name('leadsassign');
-    Route::post('dashboard/updateuser', 'Admin\CrmController@updateuser')->name('updateuser');
-    Route::get('dashboard/convert/{id}', 'Admin\CrmController@convert')->name('convert');
-    Route::get('dashboard/customer', ['uses' => 'Admin\HomeController@customer'])->name('customer');
-    // This route is used to Assign Users
-    Route::post('dashboard/assign', 'Admin\CrmController@assign')->name('assignuser');
-
-
-    Route::get('dashboard/user-plans/{id}', 'Admin\HomeController@userplans')->name('user.plans');
 
     Route::get('dashboard/user-wallet/{id}', 'Admin\HomeController@userwallet')->name('user.wallet');
 
     Route::post('dashboard/search', 'Admin\HomeController@search');
     Route::post('dashboard/searchdp', 'Admin\HomeController@searchDp');
     Route::post('dashboard/searchWith', 'Admin\HomeController@searchWt');
-    Route::post('dashboard/searchsub', 'Admin\HomeController@searchsub');
 
     Route::get('dashboard/mwithdrawals', 'Admin\HomeController@mwithdrawals')->name('mwithdrawals');
     Route::get('dashboard/mdeposits', 'Admin\HomeController@mdeposits')->name('mdeposits');
@@ -84,8 +66,6 @@ Route::group(['prefix' => 'admin',  'middleware' => 'isadmin'], function () {
     Route::get('dashboard/settings', 'Admin\HomeController@settings')->name('settings');
     Route::get('dashboard/frontpage', 'Admin\HomeController@frontpage')->name('frontpage');
     Route::get('dashboard/adduser', 'Admin\HomeController@adduser')->name('adduser');
-    Route::post('dashboard/addplan', 'Admin\LogicController@addplan')->name('addplan');
-    Route::post('dashboard/updateplan', 'Admin\LogicController@updateplan')->name('updateplan');
     Route::post('dashboard/topup', 'Admin\LogicController@topup')->name('topup');
     Route::post('dashboard/sendmailsingle', 'Admin\LogicController@sendmailtooneuser')->name('sendmailtooneuser');
     Route::post('dashboard/sendmail', 'Admin\UsersController@sendmail')->name('sendmail');
@@ -108,7 +88,6 @@ Route::group(['prefix' => 'admin',  'middleware' => 'isadmin'], function () {
     Route::get('dashboard/delagent/{id}', 'Admin\LogicController@delagent')->name('delagent');
 
     // Settings Update Routes
-    Route::post('dashboard/updatecpd', 'Admin\SettingsController@updatecpd')->name('updatecpd');
     Route::post('dashboard/updatesettings', 'Admin\SettingsController@updatesettings')->name('updatesettings');
     Route::post('dashboard/updatepreference', 'Admin\SettingsController@updatepreference');
     Route::post('dashboard/updatewebinfo', 'Admin\SettingsController@updatewebinfo');
@@ -140,12 +119,10 @@ Route::group(['prefix' => 'admin',  'middleware' => 'isadmin'], function () {
     Route::get('dashboard/uublock/{id}', 'Admin\SystemController@ublock');
     Route::get('dashboard/uunblock/{id}', 'Admin\SystemController@unblock');
     Route::get('dashboard/delsystemuser/{id}', 'Admin\LogicController@delsystemuser');
-    Route::get('dashboard/usertrademode/{id}/{action}', 'Admin\SystemController@usertrademode');
 
     Route::post('dashboard/sendmailtoall', 'Admin\LogicController@sendmailtoall')->name('sendmailtoall');
 
     Route::post('dashboard/changestyle', 'Admin\UsersController@changestyle')->name('changestyle');
-    Route::get('dashboard/trashplan/{id}', 'Admin\LogicController@trashplan');
     Route::get('dashboard/deletewdmethod/{id}', 'Admin\SettingsController@deletewdmethod');
 
     // This Route is for frontpage editing
@@ -168,22 +145,33 @@ Route::group(['prefix' => 'admin',  'middleware' => 'isadmin'], function () {
 
     Route::post('dashboard/updatewebinfo', 'Admin\SettingsController@updatewebinfo')->name('updatewebinfo');
     Route::post('dashboard/updatepreference', 'Admin\SettingsController@updatepreference')->name('updatepreference');
+
+    // managing account types
+    Route::get('dashboard/accounttypes', 'Admin\HomeController@accounttypes')->name('accounttypes');
+    Route::get('dashboard/addaccounttype', 'Admin\HomeController@ashowddaccounttype')->name('showaddaccounttype');
+    Route::post('dashboard/addaccounttype', 'Admin\HomeController@addaccounttype')->name('addaccounttype');
+    Route::post('dashboard/updateaccounttype/{id}', 'Admin\HomeController@updateaccounttype')->name('updateaccounttype');
+    Route::get('dashboard/delaccounttype/{id}', 'Admin\HomeController@delaccounttype')->name('delaccounttype');
+
+
+    Route::get('dashboard/ftds', 'Admin\HomeController@mftds')->name('mftds');
+    Route::get('dashboard/delliveaccount/{id}', 'Admin\HomeController@dellaccounts')->name('dellaccounts');
+
+    //
 });
 // Everything About Admin Route ends here
 
 
 
-//cron url
-// Route::get('dashboard/cron', 'Controller@autotopup')->name('cron');
+// Everything About Users Route starts here
+Route::get('/verify-email', 'UserController@verifyemail')->middleware('auth')->name('verification.notice');
 
-
-
-
-// Everything About Users Route started here
-Route::get('/verify-email', 'UsersController@verifyemail')->middleware('auth')->name('verification.notice');;
+// saving the ref in session and redirecting to register
+Route::get('ref/{id}', 'Controller@ref')->name('ref');
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
+    $request->session()->put('message', 'Thanks for succesfully verifying your email.');
     return redirect('/dashboard');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
@@ -192,112 +180,66 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-Route::get('/forgot-password', 'UsersController@forgotpassword')->name('password.request');
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', 'Controller@dashboard')->name('dashboard');
+Route::get('/forgot-password', 'FrontController@forgotpassword')->name('password.request');
+Route::middleware(['auth:sanctum'])->get('/dashboard', 'UserController@dashboard')->name('dashboard');
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('autoconfirm', 'CoinPaymentsAPI@autoconfirm')->name('autoconfirm');
-    Route::get('/dashboard/manage-account-security', 'UsersController@twofa')->name('twofa');
+// Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/dashboard/manage-account-security', 'UserController@twofa')->name('twofa');
 
     // Two Factor Authentication
-    Route::post('dashboard/changetheme', 'SomeController@changetheme')->name('changetheme');
+    Route::post('dashboard/changetheme', 'UserController@changetheme')->name('changetheme');
+    Route::get('dashboard/refreshAccounts', 'UserController@refreshAccounts')->name('refreshaccounts');
     Route::get('2fa', 'TwoFactorController@showTwoFactorForm')->name('2fa');
     Route::post('2fa', 'TwoFactorController@verifyTwoFactor');
-    Route::post('dashboard/savedocs', 'SomeController@savevdocs')->name('kycsubmit');
-    Route::post('dashboard/paypalverify/{amount}', 'Controller@paypalverify')->name('paypalverify');
+    Route::post('dashboard/savedocs', 'UserController@savevdocs')->name('kycsubmit');
 
-    Route::get('licensing', 'UsersController@licensing')->name('licensing');
-    Route::get('dashboard/deposits', ['middleware' => 'auth', 'uses' => 'Controller@deposits'])->name('deposits');
-    Route::get('dashboard/skip_account', ['middleware' => 'auth', 'uses' => 'Controller@skip_account']);
-    Route::get('dashboard/payment', 'SomeController@payment')->name('payment');
-    Route::get('dashboard/tradinghistory', 'SomeController@tradinghistory')->name('tradinghistory');
-    Route::get('dashboard/accounthistory', 'SomeController@accounthistory')->name('accounthistory');
-    Route::get('dashboard/withdrawals', ['middleware' => 'auth', 'uses' => 'Controller@withdrawals'])->name('withdrawalsdeposits')->middleware('2fa');
+    Route::get('dashboard/skip_account', 'Controller@skip_account');
+    Route::get('dashboard/tradinghistory', 'UserController@tradinghistory')->name('tradinghistory');
+    Route::get('dashboard/accounthistory', 'UserController@accounthistory')->name('accounthistory');
 
-    //dashboard
-    Route::get('dashboard/paywithcard/{amount}', ['middleware' => 'auth', 'uses' => 'UsersController@paywithcard'])->name('paywithcard');
-    Route::get('dashboard/cpay/{amount}/{coin}/{ui}/{msg}', ['uses' => 'Controller@cpay'])->name('cpay');
-    // Route::get('dashboard/mplans', ['middleware' => 'auth', 'uses' => 'Controller@mplans'])->name('mplans');
-    // Route::get('dashboard/myplans', ['middleware' => 'auth', 'uses' => 'Controller@myplans'])->name('myplans')->middleware('2fa');
-    // Route::get('dashboard/makeadmin/{id}/{action}', ['middleware' => ['auth', 'admin'], 'uses'=>'UsersController@makeadmin', 'as'=>'makeadmin']);
-    // Route::get('dashboard/pplans', ['middleware' => 'auth', 'uses' => 'Controller@pplan'])->name('pplans');
+    // Upadating user profile info
+    Route::get('dashboard/profile', 'UserController@profile')->name('profile');
+    Route::post('dashboard/profileinfo', 'UserController@updateprofile')->name('userprofile');
+    Route::post('dashboard/updatepass', 'UserController@updatepass')->name('updatepass');
+    Route::get('dashboard/changepassword', 'UserController@changepassword')->name('changepassword');
+    Route::get('/dashboard/verify-account', 'UserController@verifyaccount')->name('account.verify');
+    Route::get('dashboard/withdrawaldetails', 'UserController@withdrawaldetails')->name('withdrawaldetails');
+    Route::post('dashboard/updatewithdrawaldetails', 'UserController@updatewithdrawaldetails')->name('updatewithdrawaldetails');
 
-    //Route::get('dashboard/joinplan/{id}', ['middleware' => 'auth', 'uses' => 'Controller@joinplan']);
-    Route::get('ref/{id}', ['middleware' => 'auth', 'uses' => 'Controller@ref', 'as' => 'ref']);
-    // Route::post('dashboard/joinplan', ['middleware' => 'auth', 'uses' => 'Controller@joinplan'])->name('joinplan');
-    Route::post('dashboard/paywithcard/charge', ['middleware' => 'auth', 'uses' => 'UsersController@charge']);
-    Route::post('dashboard/withdrawal', 'SomeController@withdrawal')->name('withdrawal');
-    Route::post('sendcontact', 'UsersController@sendcontact')->name('enquiry');
-    Route::post('dashboard/deposit', 'SomeController@deposit')->name('newdeposit');
-    Route::post('dashboard/chngemail', 'UsersController@chngemail');
-    Route::post('dashboard/savedeposit', 'SomeController@savedeposit')->name('savedeposit');
-    // 	Route::post('dashboard/addwdmethod', 'SomeController@addwdmethod');
+    // Withdrawals & Deposits
+    Route::get('dashboard/deposits', 'UserController@deposits')->name('deposits');
+    Route::post('dashboard/paypalverify/{amount}', 'UserController@paypalverify')->name('paypalverify');
+    Route::get('dashboard/withdrawals', 'UserController@withdrawals')->name('withdrawalsdeposits')->middleware('2fa');
+    Route::get('dashboard/makewithdrawal', 'UserController@mwithdrawal')->name('mwithdrawal')->middleware('2fa');
+    Route::post('dashboard/withdrawal', 'UserController@savewithdrawal')->name('withdrawal');
+
+    Route::get('ref/{id}', 'Controller@ref')->name('ref');
+    Route::post('sendcontact', 'UserController@sendcontact')->name('enquiry');
+    Route::post('dashboard/chngemail', 'UserController@chngemail');
+    Route::post('dashboard/savedeposit', 'UserController@savedeposit')->name('savedeposit');
 
 
-    // Paystack Route here
-    Route::post('/pay', 'PaystackController@redirectToGateway')->name('pay.paystack');
-    Route::get('/dashboard/paystackcallback', 'PaystackController@handleGatewayCallback');
+    Route::get('dashboard/support', 'UserController@support')->name('support');
+    Route::get('dashboard/downloads', 'UserController@downloads')->name('account.downloads');
+    Route::get('dashboard/referuser', 'UserController@referuser')->name('referuser');
+    Route::get('dashboard/notifications', 'UserController@notification')->name('notification');
 
-    // STripe Pyament
-    Route::post('/dashboard/stripepay/{{amount}}', 'StripeController@redirectToGateway')->name('pay.stripe');
+    Route::get('dashboard/delnotif/{id}', 'UserController@delnotif');
+    Route::get('dashboard/delmarket/{id}', 'UserController@delmarket');
+    Route::get('dashboard/delassets/{id}', 'UserController@delassets');
+
+    // mt5 account mg't
+    Route::get('/dashboard/demo-accounts', 'Mt5Controller@demoaccounts')->name('account.demoaccounts');
+    Route::get('/dashboard/live-accounts', 'Mt5Controller@liveaccounts')->name('account.liveaccounts');
+    Route::post('/dashboard/add-account', 'Mt5Controller@addmt5account')->name('account.addmt5account')->middleware(['throttle:1,30']);
+    Route::get('/dashboard/mt5-demo-deposit/{id}', 'Mt5Controller@demotopup')->name('account.demotopup');
+    Route::post('/dashboard/reset-account-password/{id}', 'Mt5Controller@resetmt5password')->name('account.resetmt5password');
 
 
-    Route::get('dashboard/accountdetails', ['middleware' => 'auth', 'uses' => 'UsersController@accountdetails', 'as' => 'acountdetails']);
-    Route::get('dashboard/changepassword', ['middleware' => 'auth', 'uses' => 'UsersController@changepassword', 'as' => 'changepassword']);
-    Route::get('dashboard/support', ['middleware' => 'auth', 'uses' => 'Controller@support', 'as' => 'support']);
-    Route::get('dashboard/withdrawal', ['middleware' => 'auth', 'uses' => 'SomeController@withdrawal', 'as' => 'withdrawal']);
-    Route::get('dashboard/phusers', ['middleware' => 'auth', 'uses' => 'SomeController@phusers', 'as' => 'phusers']);
-    Route::get('dashboard/matchinglist', ['middleware' => 'auth', 'uses' => 'SomeController@matchinglist', 'as' => 'matchinglist']);
-    Route::get('dashboard/ghuser', ['middleware' => 'auth', 'uses' => 'SomeController@ghuser', 'as' => 'ghuser']);
-    Route::get('dashboard/confirmation/{id}', ['middleware' => 'auth', 'uses' => 'UsersController@confirmation', 'as' => 'confirmation']);
-    Route::get('dashboard/tupload/{id}', ['middleware' => 'auth', 'uses' => 'UsersController@tupload', 'as' => 'tupload']);
-    Route::get('dashboard/dnpagent', ['middleware' => 'auth', 'uses' => 'UsersController@dnpagent', 'as' => 'dnpagent']);
-    Route::get('dashboard/referuser', ['middleware' => 'auth', 'uses' => 'UsersController@referuser', 'as' => 'referuser']);
-    //Route::get('dashboard/notification', 'UsersController@notification');
-    Route::get('dashboard/notification', ['middleware' => 'auth', 'uses' => 'SomeController@notification', 'as' => 'notification']);
-    Route::get('dashboard/subtrade', ['middleware' => 'auth', 'uses' => 'Controller@subtrade'])->name('subtrade');
-    Route::get('dashboard/subpricechange', 'Controller@subpricechange')->middleware("admin");
-    Route::post('dashboard/savemt4details', ['middleware' => 'auth', 'uses' => 'Controller@savemt4details', 'as' => 'savemt4details']);
-
-    Route::get('dashboard/profile', ['middleware' => 'auth', 'uses' => 'SomeController@profile', 'as' => 'profile']);
-    // Upadting user profile info
-    Route::post('dashboard/profileinfo', ['middleware' => 'auth', 'uses' => 'SomeController@updateprofile', 'as' => 'userprofile']);
-
-    //Route::get('dashboar
-    //Route::get('dashboard/plans', ['middleware' => 'auth', 'uses'=>'Controller@showplans', 'as'=>'plans']);
-    Route::get('dashboard/delnotif/{id}', 'SomeController@delnotif');
-    Route::get('dashboard/delmarket/{id}', 'SomeController@delmarket');
-    Route::get('dashboard/delassets/{id}', 'SomeController@delassets');
-    Route::post('dashboard/updatemark', 'SomeController@updatemark');
-    Route::post('dashboard/updateasst', 'SomeController@updateasst');
-    Route::post('dashboard/upload', 'UsersController@upload');
-    Route::post('dashboard/confirm', 'UsersController@confirm');
-    Route::get('dashboard/mconfirm/{id}/{ph_id}/{amount}', 'UsersController@mconfirm');
-    Route::get('dashboard/mdelete/{id}/{ph_id}/{amount}', 'UsersController@mdelete');
-    Route::post('dashboard/withdraw', 'SomeController@withdraw');
-
-    Route::post('dashboard/updateacct', 'UsersController@updateacct')->name('updateacount');
-    Route::post('dashboard/updatepass', 'UsersController@updatepass')->name('updatepass');
-    Route::post('dashboard/dnate', 'UsersController@dnate');
-    Route::get('dashboard/donation', ['uses' => 'UsersController@donation', 'as' => 'donation']);
-    Route::get('dashboard/donate/{plan}', ['uses' => 'UsersController@donate', 'as' => 'donate']);
-    Route::get('ref/{id}', ['uses' => 'UsersController@ref', 'as' => 'ref']);
-    Route::post('reguser', 'Auth\AuthController@reguser');
-    Route::post('dashboard/saveagent', 'UsersController@saveagent');
-    Route::get('dashboard/delsubtrade/{id}', 'Controller@delsubtrade');
-
-    Route::get('/dashboard/submit-stripe-payment', 'StripeController@submitpayment');
-
-    Route::get('/dashboard/verify-account', 'UsersController@verifyaccount')->name('account.verify');
+    // user deposit routes
+    Route::get('dashboard/select-payment-method', 'UserController@selectPaymentMethod')->name('selectpaymentmethod');
+    Route::get('dashboard/startpayment/{accountId}/{methodId}', 'UserController@startPayment')->name('startpayment');
 });
 
 Route::get('/dashboard/weekend', 'Controller@checkdate');
-
-//activate and deactivate AXESPRIME
-// Route::any('/activate', function () {
-//     return view('activate.index');
-// });
-
-// Route::any('/revoke', function () {
-//     return view('revoke.index');
-// });

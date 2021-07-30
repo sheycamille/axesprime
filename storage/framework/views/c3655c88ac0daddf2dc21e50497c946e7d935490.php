@@ -1,26 +1,64 @@
 <form method="post" action="<?php echo e(route('updatepreference')); ?>" enctype="multipart/form-data">
     <div class="form-group">
         <h5 class="text-<?php echo e($text); ?>">Contact Email</h5>
-        <input type="text" class="form-control bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?> text-<?php echo e($text); ?>" name="contact_email" value="<?php echo e(\App\Models\Setting::getValue('contact_email')); ?>" required>
+        <input type="text"
+            class="form-control bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?> text-<?php echo e($text); ?>"
+            name="contact_email" value="<?php echo e(\App\Models\Setting::getValue('contact_email')); ?>" required>
     </div>
+
+    <div class="sign-up1">
+        <h3 class="text-<?php echo e($text); ?>"> Deposit Email:</h3>
+    </div>
+    <div class="form-group">
+        <input type="text"
+            class="form-control bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?> text-<?php echo e($text); ?>"
+            name="deposit_email" value="<?php echo e(\App\Models\Setting::getValue('deposit_email')); ?>" required>
+    </div> <br>
+
+    <div class="sign-up1">
+        <h3 class="text-<?php echo e($text); ?>"> Withdrawal Email:</h3>
+    </div>
+    <div class="form-group">
+        <input type="text"
+            class="form-control bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?> text-<?php echo e($text); ?>"
+            name="withdrawal_email" value="<?php echo e(\App\Models\Setting::getValue('withdrawal_email')); ?>" required>
+    </div> <br>
+
+    <div class="sign-up1">
+        <h3 class="text-<?php echo e($text); ?>"> Verification email:</h3>
+    </div>
+    <div class="form-group">
+        <input type="text"
+            class="form-control bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?> text-<?php echo e($text); ?>"
+            name="verification_email" value="<?php echo e(\App\Models\Setting::getValue('verification_email')); ?>" required>
+    </div> <br>
+
 
     <div class="form-group">
         <h5 class="text-<?php echo e($text); ?>">Uploaded Files Location</h5>
-        <small class="text-<?php echo e($text); ?>">Note: To use AWS S3, please supply your AWS information in the .ENV file</small>
-        <select name="location" class="form-control bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?> text-<?php echo e($text); ?>">
-            <option <?php if(\App\Models\Setting::getValue('location')=="Local" ): ?> selected <?php endif; ?> value="Local">Local</option>
-            <option <?php if(\App\Models\Setting::getValue('location')=="S3" ): ?> selected <?php endif; ?> value="S3">AWS S3</option>
-            <option <?php if(\App\Models\Setting::getValue('location')=="Email" ): ?> selected <?php endif; ?> value="Email">Email</option>
+        <small class="text-<?php echo e($text); ?>">Note: To use AWS S3, please supply your AWS information in the .ENV
+            file</small>
+        <select name="location"
+            class="form-control bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?> text-<?php echo e($text); ?>">
+            <option <?php if(\App\Models\Setting::getValue('location') == 'Local'): ?> selected <?php endif; ?> value="Local">Local</option>
+            <option <?php if(\App\Models\Setting::getValue('location') == 'S3'): ?> selected <?php endif; ?> value="S3">AWS S3</option>
+            <option <?php if(\App\Models\Setting::getValue('location') == 'Email'): ?> selected <?php endif; ?> value="Email">Email</option>
         </select><br />
     </div>
 
     <input name="s_currency" value="<?php echo e(\App\Models\Setting::getValue('s_currency')); ?>" id="s_c" type="hidden">
     <div class="form-group">
         <h5 class="text-<?php echo e($text); ?>">Website Currency</h5>
-        <select name="currency" id="select_c" class="form-control bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?> text-<?php echo e($text); ?>" onchange="s_f()">
-            <option value="<?php echo htmlentities(\App\Models\Setting::getValue('currency')); ?>"><?php echo e(\App\Models\Setting::getValue('currency')); ?></option>
-            <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <option id="<?php echo e($key); ?>" value="<?php echo html_entity_decode($currency); ?>"><?php echo e($key .' ('.html_entity_decode($currency).')'); ?></option>
+        <select name="currency" id="select_c"
+            class="form-control bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?> text-<?php echo e($text); ?>"
+            onchange="s_f()">
+            <option
+                value="<?php echo htmlentities(\App\Models\Setting::getValue('currency')); ?>">
+                <?php echo e(\App\Models\Setting::getValue('currency')); ?></option>
+            <?php $__currentLoopData = $currencies; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <option id="<?php echo e($key); ?>"
+                    value="<?php echo html_entity_decode($currency); ?>">
+                    <?php echo e($key . ' (' . html_entity_decode($currency) . ')'); ?></option>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </select>
     </div>
@@ -31,7 +69,6 @@
             var selected = e.options[e.selectedIndex].id;
             document.getElementById("s_c").value = selected;
         }
-
     </script>
 
     <input type="hidden" value="<?php echo e(\App\Models\Setting::getValue('site_preference')); ?>" name="site_preference">
@@ -56,7 +93,8 @@
                 <h5 class="text-<?php echo e($text); ?>">Turn off/on Weekend Trade:</h5>
             </div>
             <div class="sign-up2">
-                <small class="text-<?php echo e($text); ?>">if turned off, Users will not receive ROI on weekends</small> <br>
+                <small class="text-<?php echo e($text); ?>">if turned off, Users will not receive ROI on weekends</small>
+                <br>
                 <label class="switch">
                     <input name="weekend_trade" id="weekend_trade" type="checkbox" value="on">
                     <span class="slider round"></span>
@@ -86,7 +124,8 @@
                 <h5 class="text-<?php echo e($text); ?>">Turn off/on Google Translate</h5>
             </div>
             <div class="sign-up2">
-                <small class="text-<?php echo e($text); ?>">if turned on, Users will have the option of changing their language through google translate.</small> <br>
+                <small class="text-<?php echo e($text); ?>">if turned on, Users will have the option of changing their
+                    language through google translate.</small> <br>
                 <label class="switch">
                     <input name="googlet" id="googlet" type="checkbox" value="on">
                     <span class="slider round"></span>
@@ -123,46 +162,40 @@
         </div>
     </div>
 
-    <?php if(\App\Models\Setting::getValue('enable_annoc')=='yes'): ?>
-    <script>
-        document.getElementById("enable_annoc").checked = true;
-
-    </script>
+    <?php if(\App\Models\Setting::getValue('enable_annoc') == 'yes'): ?>
+        <script>
+            document.getElementById("enable_annoc").checked = true;
+        </script>
     <?php endif; ?>
 
-    <?php if(\App\Models\Setting::getValue('googlet')=='yes'): ?>
-    <script>
-        document.getElementById("googlet").checked = true;
-
-    </script>
+    <?php if(\App\Models\Setting::getValue('googlet') == 'yes'): ?>
+        <script>
+            document.getElementById("googlet").checked = true;
+        </script>
     <?php endif; ?>
 
-    <?php if(\App\Models\Setting::getValue('trade_mode')=='yes'): ?>
-    <script>
-        document.getElementById("trade_mode").checked = true;
-
-    </script>
+    <?php if(\App\Models\Setting::getValue('trade_mode') == 'yes'): ?>
+        <script>
+            document.getElementById("trade_mode").checked = true;
+        </script>
     <?php endif; ?>
 
-    <?php if(\App\Models\Setting::getValue('enable_kyc')=='yes'): ?>
-    <script>
-        document.getElementById("enable_kyc").checked = true;
-
-    </script>
+    <?php if(\App\Models\Setting::getValue('enable_kyc') == 'yes'): ?>
+        <script>
+            document.getElementById("enable_kyc").checked = true;
+        </script>
     <?php endif; ?>
 
-    <?php if(\App\Models\Setting::getValue('weekend_trade')=='yes'): ?>
-    <script>
-        document.getElementById("weekend_trade").checked = true;
-
-    </script>
+    <?php if(\App\Models\Setting::getValue('weekend_trade') == 'yes'): ?>
+        <script>
+            document.getElementById("weekend_trade").checked = true;
+        </script>
     <?php endif; ?>
 
-    <?php if(\App\Models\Setting::getValue('enable_withdrawal')=='yes'): ?>
-    <script>
-        document.getElementById("enable_withdrawal").checked = true;
-
-    </script>
+    <?php if(\App\Models\Setting::getValue('enable_withdrawal') == 'yes'): ?>
+        <script>
+            document.getElementById("enable_withdrawal").checked = true;
+        </script>
     <?php endif; ?>
 
     <input type="submit" class="px-5 mb-2 btn btn-primary btn-lg" value="Save">

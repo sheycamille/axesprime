@@ -9,8 +9,8 @@ use App\Http\Controllers\Controller;
 
 class LoginController extends Controller
 {
-   // use AuthenticatesUsers;
-/*
+    // use AuthenticatesUsers;
+    /*
     |--------------------------------------------------------------------------
     | Login Controller
     |--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('auth.adminlogin',[
+        return view('auth.adminlogin', [
             'title' => 'Admin Login',
         ]);
     }
@@ -48,11 +48,11 @@ class LoginController extends Controller
      */
     public function adminlogin(Request $request)
     {
-         //$this->validator($request);
+        //$this->validator($request);
         $data =  $this->validate($request, [
             'email'    => 'required|email|exists:admins|min:5|max:191',
             'password' => 'required|string|min:4|max:255',
-            ]);
+        ]);
 
         $email = $request->email;
         $password = $request->password;
@@ -65,21 +65,22 @@ class LoginController extends Controller
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ]);
-
     }
 
 
-    public function validate_admin(){
-        if (Auth::guard('admin')->check()){
+    public function validate_admin()
+    {
+        if (Auth::guard('admin')->check()) {
             return redirect()
-            ->intended(route('admin.dashboard'))
-            ->with('message','You are Logged in as Admin!');
-        }else {
+                ->intended(route('admin.dashboard'))
+                ->with('message', 'You are Logged in as Admin!');
+        } else {
             return redirect()
-            ->route('adminloginform')
-            ->with('message','Not allowed');
+                ->route('adminloginform')
+                ->with('message', 'Not allowed');
         }
     }
+
 
     /**
      * Logout the admin.
@@ -93,8 +94,6 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
         return redirect()
             ->route('adminloginform')
-            ->with('status','Admin has been logged out!');
+            ->with('status', 'Admin has been logged out!');
     }
-
-
 }

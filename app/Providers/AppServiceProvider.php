@@ -1,11 +1,17 @@
 <?php
 
 namespace App\Providers;
-use Storage;
+
 use League\Flysystem\Filesystem;
 use League\Flysystem\Sftp\SftpAdapter;
+use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+
+use App\Models\AccountType;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Schema::defaultStringLength(191);
         Storage::extend('sftp', function ($app, $config) {
             return new Filesystem(new SftpAdapter($config));
         });

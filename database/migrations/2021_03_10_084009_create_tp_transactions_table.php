@@ -15,7 +15,7 @@ class CreateTpTransactionsTable extends Migration
     {
         Schema::create('tp_transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('plan')->nullable();
+            $table->string('purpose')->nullable();
             $table->integer('user')->nullable();
             $table->string('amount')->nullable();
             $table->string('type')->nullable();

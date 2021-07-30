@@ -1,15 +1,13 @@
 <?php
-if (Auth::user()->dashboard_style == "light") {
-    $bgmenu="blue";
-    $bg="light";
-    $text = "dark";
+if (Auth::user()->dashboard_style == 'light') {
+    $bgmenu = 'blue';
+    $bg = 'light';
+    $text = 'dark';
 } else {
-    $bgmenu="dark";
-    $bg="dark";
-    $text = "light";
-}
-
-?>
+    $bgmenu = 'dark';
+    $bg = 'dark';
+    $text = 'light';
+} ?>
 <div class="main-header">
     <!-- Logo Header -->
     <div class="logo-header" data-background-color="<?php echo e($bgmenu); ?>">
@@ -17,7 +15,8 @@ if (Auth::user()->dashboard_style == "light") {
             <?php echo e(\App\Models\Setting::getValue('site_name')); ?>
 
         </a>
-        <button class="ml-auto navbar-toggler sidenav-toggler" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="ml-auto navbar-toggler sidenav-toggler" type="button" data-toggle="collapse"
+            data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon">
                 <i class="icon-menu"></i>
             </span>
@@ -36,6 +35,12 @@ if (Auth::user()->dashboard_style == "light") {
 
         <div class="container-fluid">
             <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo e(route('refreshaccounts')); ?>" aria-expanded="false">
+                        <i class="fas fa-recycle"></i>
+                        <strong>Refresh</strong>
+                    </a>
+                </li>
                 <li class="nav-item hidden-caret">
                     <form action="javascript:void(0)" method="post" id="styleform" class="form-inline">
                         <div class="form-group">
@@ -44,23 +49,23 @@ if (Auth::user()->dashboard_style == "light") {
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <?php if(Auth::user()->dashboard_style =='dark'): ?>
-                        <script>
-                            document.getElementById("style").checked = true;
-
-                        </script>
+                        <?php if(Auth::user()->dashboard_style == 'dark'): ?>
+                            <script>
+                                document.getElementById("style").checked = true;
+                            </script>
                         <?php endif; ?>
                         <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
                     </form>
                 </li>
                 <?php if(\App\Models\Setting::getValue('googlet') == 'yes'): ?>
-                <li class="nav-item hidden-caret">
-                    <div id="google_translate_element"></div>
-                </li>
+                    <li class="nav-item hidden-caret">
+                        <div id="google_translate_element"></div>
+                    </li>
                 <?php endif; ?>
 
                 <li class="nav-item dropdown hidden-caret">
-                    <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-bell"></i>
 
                     </a>
@@ -68,37 +73,41 @@ if (Auth::user()->dashboard_style == "light") {
 
 
                         <li>
-                            <a class="see-all" href="<?php echo e(url('dashboard/notification')); ?>">See all notifications<i class="fa fa-angle-right"></i> </a>
+                            <a class="see-all" href="<?php echo e(url('dashboard/notification')); ?>">See all notifications<i
+                                    class="fa fa-angle-right"></i> </a>
                         </li>
                     </ul>
                 </li>
-                <?php if(\App\Models\Setting::getValue('enable_kyc') =="yes"): ?>
-                <li class="nav-item dropdown hidden-caret">
-                    <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i><strong style="font-size:8px;">KYC</strong>
-                    </a>
-                    <div class="dropdown-menu quick-actions quick-actions-info animated fadeIn">
-                        <div class="quick-actions-header">
-                            <span class="mb-1 title">KYC verification</span>
-                            <?php if(Auth::user()->account_verify=='yes'): ?>
-                            <span class="subtitle op-8">
-                                <a href="#" class="p-0 col-12"><i class="glyphicon glyphicon-ok"></i> KYC status: Account verified</a>
-                            </span>
-                            <?php else: ?>
-                            <span class="subtitle op-8"><a>KYC status: <?php echo e(Auth::user()->account_verify); ?></a></span>
-                            <?php endif; ?>
-                        </div>
-                        <div class="quick-actions-scroll scrollbar-outer">
-                            <div class="quick-actions-items">
-                                <div class="m-0 row">
-                                    <?php if(Auth::user()->account_verify !='yes'): ?>
-                                    <a href="<?php echo e(route('account.verify')); ?>" class="btn btn-success">Verify Account </a>
-                                    <?php endif; ?>
+                <?php if(\App\Models\Setting::getValue('enable_kyc') == 'yes'): ?>
+                    <li class="nav-item dropdown hidden-caret">
+                        <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <i class="fas fa-layer-group"></i><strong style="font-size:8px;">KYC</strong>
+                        </a>
+                        <div class="dropdown-menu quick-actions quick-actions-info animated fadeIn">
+                            <div class="quick-actions-header">
+                                <span class="mb-1 title">KYC verification</span>
+                                <?php if(Auth::user()->account_verify == 'yes'): ?>
+                                    <span class="subtitle op-8">
+                                        <a href="#" class="p-0 col-12"><i class="glyphicon glyphicon-ok"></i> KYC
+                                            status: Account verified</a>
+                                    </span>
+                                <?php else: ?>
+                                    <span class="subtitle op-8"><a>KYC status:
+                                            <?php echo e(Auth::user()->account_verify); ?></a></span>
+                                <?php endif; ?>
+                            </div>
+                            <div class="quick-actions-scroll scrollbar-outer">
+                                <div class="quick-actions-items">
+                                    <div class="m-0 row">
+                                        <?php if(Auth::user()->account_verify != 'yes'): ?>
+                                            <a href="<?php echo e(route('account.verify')); ?>" class="btn btn-success">Verify
+                                                Account </a>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
                 <?php endif; ?>
                 <li class="nav-item dropdown hidden-caret">
                     <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
@@ -107,14 +116,16 @@ if (Auth::user()->dashboard_style == "light") {
                     <ul class="dropdown-menu dropdown-user animated fadeIn">
                         <div class="dropdown-user-scroll scrollbar-outer">
                             <li>
-                                <a class="dropdown-item" href="<?php echo e(url('dashboard/changepassword')); ?>">Change Password</a>
+                                <a class="dropdown-item" href="<?php echo e(url('dashboard/changepassword')); ?>">Change
+                                    Password</a>
                                 <a class="dropdown-item" href="<?php echo e(url('dashboard/profile')); ?>">Account Settings</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="<?php echo e(route('logout')); ?>" onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();">
                                     Logout
                                 </a>
-                                <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" style="display: none;">
+                                <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST"
+                                    style="display: none;">
                                     <?php echo e(csrf_field()); ?>
 
                                 </form>
@@ -130,18 +141,19 @@ if (Auth::user()->dashboard_style == "light") {
 <script type="text/javascript">
     $("#styleform").on('change', function() {
         $.ajax({
-            url: "<?php echo e(url('/dashboard/changetheme')); ?>"
-            , type: 'POST'
-            , data: $("#styleform").serialize()
-            , success: function(data) {
+            url: "<?php echo e(url('/dashboard/changetheme')); ?>",
+            type: 'POST',
+            data: $("#styleform").serialize(),
+            success: function(data) {
                 location.reload(true);
-            }
-            , error: function(data) {
+            },
+            error: function(data) {
+                // location.reload(true);
+                console.log(data);
                 console.log('Something went wrong');
             },
 
         });
     });
-
 </script>
 <?php /**PATH /Users/wadingaleonardngonga/Documents/Projects/axesprime/resources/views/user/topmenu.blade.php ENDPATH**/ ?>

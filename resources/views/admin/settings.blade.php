@@ -14,14 +14,15 @@ if (Auth('admin')->User()->dashboard_style == "light") {
     <div class="content bg-{{Auth('admin')->User()->dashboard_style}}">
         <div class="page-inner">
             <div class="mt-2 mb-4">
-                <h1 class="title1 text-{{$text}}">System Settings</h1>
+                <h1 class="title1 text-{{$text}} text-center">System Settings</h1>
             </div>
             @if(Session::has('message'))
             <div class="row">
                 <div class="col-lg-12">
                     <div class="alert alert-info alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="fa fa-info-circle"></i> {{Session::get('message')}}
+                        <i class="fa fa-info-circle"></i>
+                        <p class="alert-message">{!! Session::get('message') !!}</p>
                     </div>
                 </div>
             </div>
@@ -76,22 +77,22 @@ if (Auth('admin')->User()->dashboard_style == "light") {
 
                         {{-- This is the Fouth Tab Content --}}
                         {{-- <div class="tab-pane fade p-3 bg-{{Auth('admin')->User()->dashboard_style}}" id="4" role="tabpanel" aria-labelledby="nav-about-tab">
-                            @include('admin.includes.bonus')
-                        </div> --}}
+                        @include('admin.includes.bonus')
+                    </div> --}}
 
-                        {{-- This is the Fifth Tab Content --}}
-                        <div class="tab-pane fade p-3 bg-{{Auth('admin')->User()->dashboard_style}}" id="5" role="tabpanel" aria-labelledby="nav-about-tab">
-                            @include('admin.includes.payments')
-                        </div>
-
-                        {{-- This is the Sixth Tab Content --}}
-                        {{-- <div class="tab-pane fade p-4 bg-{{Auth('admin')->User()->dashboard_style}}" id="6" role="tabpanel" aria-labelledby="nav-about-tab">
-                            @include('admin.includes.subscript')
-                        </div> --}}
+                    {{-- This is the Fifth Tab Content --}}
+                    <div class="tab-pane fade p-3 bg-{{Auth('admin')->User()->dashboard_style}}" id="5" role="tabpanel" aria-labelledby="nav-about-tab">
+                        @include('admin.includes.payments')
                     </div>
-                </div>
+
+                    {{-- This is the Sixth Tab Content --}}
+                    {{-- <div class="tab-pane fade p-4 bg-{{Auth('admin')->User()->dashboard_style}}" id="6" role="tabpanel" aria-labelledby="nav-about-tab">
+                    @include('admin.includes.subscript')
+                </div> --}}
             </div>
         </div>
     </div>
-    @include('admin.includes.modals')
-    @endsection
+</div>
+</div>
+@include('admin.includes.modals')
+@endsection

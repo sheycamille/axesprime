@@ -14,15 +14,15 @@ if (Auth('admin')->User()->dashboard_style == "light") {
     <div class="content bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?>">
         <div class="page-inner">
             <div class="mt-2 mb-4">
-                <h1 class="title1 text-<?php echo e($text); ?>">System Settings</h1>
+                <h1 class="title1 text-<?php echo e($text); ?> text-center">System Settings</h1>
             </div>
             <?php if(Session::has('message')): ?>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="alert alert-info alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="fa fa-info-circle"></i> <?php echo e(Session::get('message')); ?>
-
+                        <i class="fa fa-info-circle"></i>
+                        <p class="alert-message"><?php echo Session::get('message'); ?></p>
                     </div>
                 </div>
             </div>
@@ -79,19 +79,19 @@ if (Auth('admin')->User()->dashboard_style == "light") {
                         
                         
 
-                        
-                        <div class="tab-pane fade p-3 bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?>" id="5" role="tabpanel" aria-labelledby="nav-about-tab">
-                            <?php echo $__env->make('admin.includes.payments', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-                        </div>
-
-                        
-                        
+                    
+                    <div class="tab-pane fade p-3 bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?>" id="5" role="tabpanel" aria-labelledby="nav-about-tab">
+                        <?php echo $__env->make('admin.includes.payments', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                     </div>
-                </div>
+
+                    
+                    
             </div>
         </div>
     </div>
-    <?php echo $__env->make('admin.includes.modals', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-    <?php $__env->stopSection(); ?>
+</div>
+</div>
+<?php echo $__env->make('admin.includes.modals', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/wadingaleonardngonga/Documents/Projects/axesprime/resources/views/admin/settings.blade.php ENDPATH**/ ?>

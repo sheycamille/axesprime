@@ -4,42 +4,34 @@
 
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header bg-{{$bg}}">
-                <h4 class="modal-title text-{{$text}}">Make new deposit</h4>
-                <button type="button" class="close text-{{$text}}" data-dismiss="modal">&times;</button>
+            <div class="modal-header bg-{{ $bg }}">
+                <h4 class="modal-title text-{{ $text }}">Make new deposit</h4>
+                <button type="button" class="close text-{{ $text }}" data-dismiss="modal">&times;</button>
             </div>
-            <div class="modal-body bg-{{$bg}}">
-                <form style="padding:3px;" role="form" method="post" action="{{route('newdeposit')}}">
-                    <input style="padding:5px;" class="form-control text-{{$text}} bg-{{$bg}}" placeholder="Enter amount here" type="text" name="amount" required><br />
+            <div class="modal-body bg-{{ $bg }}">
+                <form style="padding:3px;" role="form" method="get" action="{{ route('selectpaymentmethod') }}">
+                    <input style="padding:5px;" class="form-control text-{{ $text }} bg-{{ $bg }}"
+                        placeholder="Enter amount here" type="number" name="amount"
+                        min="{{ \App\Models\Setting::getValue('min_dw') }}" required>
+                    <br />
+
+                    <select required class="form-control bg-{{ $bg }} text-{{ $text }}"
+                        name="account_id" id="account_id" required>
+                        <option value="" disabled selected>Choose Acount</option>
+                        @foreach (Auth::user()->accounts() as $account)
+                            <option value="{{ $account->id }}">{{ $account->login }} | {{ $account->server }}
+                            </option>
+                        @endforeach
+                    </select> <br>
 
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="submit" class="btn btn-{{$text}}" value="Continue">
+                    <input type="submit" class="btn btn-{{ $text }}" value="Continue">
                 </form>
             </div>
         </div>
     </div>
 </div>
 <!-- /deposit Modal -->
-
-
-<!-- Delete Subscription Modal -->
-<div id="delsubmodal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header bg-{{$bg}}">
-                <h4 class="modal-title text-{{$text}}">Delete MT4 Details</h4>
-                <button type="button" class="close text-{{$text}}" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body bg-{{$bg}} p-3">
-                <h5 class="text-{{$text}}">Your subscription has already started, send an Email to {{\App\Models\Setting::getValue('contact_email')}} to have your MT4 Details Deleted.</h5>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /deposit Modal -->
-
-
 
 
 <!-- Withdrawal Modal -->
@@ -48,16 +40,17 @@
 
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header bg-{{$bg}}">
-                <h4 class="modal-title text-{{$text}}">Payment will be sent to your recieving address.</h4>
+            <div class="modal-header bg-{{ $bg }}">
+                <h4 class="modal-title text-{{ $text }}">Payment will be sent to your recieving address.</h4>
                 <button type="button" class="text-white close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body bg-dark">
-                <form style="padding:3px;" role="form" method="post" action="{{route('withdrawal')}}">
-                    <input style="padding:5px;" class="form-control bg-{{$bg}} text-{{$text}}" placeholder="Enter amount here" type="text" name="amount" required><br />
+                <form style="padding:3px;" role="form" method="post" action="{{ route('withdrawal') }}">
+                    <input style="padding:5px;" class="form-control bg-{{ $bg }} text-{{ $text }}"
+                        placeholder="Enter amount here" type="text" name="amount" required><br />
 
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="submit" class="btn btn-{{$text}}" value="Submit">
+                    <input type="submit" class="btn btn-{{ $text }}" value="Submit">
                 </form>
             </div>
         </div>
@@ -66,116 +59,87 @@
 <!-- /Withdrawals Modal -->
 
 
-
-
-
-<!-- Subscription Payment modal -->
-<div class="modal fade" id="SubpayModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-{{$bg}}">
-
-                <h4 class="modal-title text-{{$text}}">Subscription Payment</h4>
-                <button type="button" class="close text-{{$text}}" data-dismiss="modal">&times;</button>
-            </div>
-
-            <form role="form" method="post" action="{{route('newdeposit')}}" id="priceform">
-                <div class="modal-body bg-{{$bg}}">
-
-                    <h5 class="text-{{$text}}">Duration</h5>
-                    <select class="form-control bg-{{$bg}} text-{{$text}}" onchange="calcAmount(this)" name="duration" class="duration" id="duratn">
-                        <option value="default">Select duration</option>
-                        <option>Monthly</option>
-                        <option>Quaterly</option>
-                        <option>Yearly</option>
-                    </select><br>
-                    <h5 class="text-{{$text}}">Amount to Pay</h5>
-                    <input class="form-control subamount bg-{{$bg}} text-{{$text}}" type="text" id="amount" disabled><br />
-                    <input id="amountpay" type="hidden" name="amount">
-                    <input type="hidden" value="Subscription Trading" name="pay_type">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                </div>
-                <div class="modal-footer bg-{{$bg}}">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Pay Now</button>
-                </div>
-        </div>
-        </form>
-
-        <script type="text/javascript">
-            function calcAmount(sub) {
-                if (sub.value == "Quaterly") {
-                    var amount = document.getElementById('amount');
-                    var amountpay = document.getElementById('amountpay');
-                    amount.value = '<?php echo \App\Models\Setting::getValue('
-                    currency ').\App\Models\Setting::getValue('
-                    quarterlyfee '); ?>';
-                    amountpay.value = '<?php echo \App\Models\Setting::getValue('
-                    quarterlyfee '); ?>';
-                }
-                if (sub.value == "Yearly") {
-                    var amount = document.getElementById('amount');
-                    var amountpay = document.getElementById('amountpay');
-                    amount.value = '<?php echo \App\Models\Setting::getValue('
-                    currency ').\App\Models\Setting::getValue('
-                    yearlyfee '); ?>';
-                    amountpay.value = '<?php echo \App\Models\Setting::getValue('
-                    yearlyfee '); ?>';
-                }
-                if (sub.value == "Monthly") {
-                    var amount = document.getElementById('amount');
-                    var amountpay = document.getElementById('amountpay');
-                    amount.value = '<?php echo \App\Models\Setting::getValue('
-                    currency ').\App\Models\Setting::getValue('
-                    monthlyfee '); ?>';
-                    amountpay.value = '<?php echo \App\Models\Setting::getValue('
-                    monthlyfee '); ?>';
-                }
-            }
-
-        </script>
-    </div>
-</div>
-<!-- Subscription Payment modal -->
-
-
-<!-- Submit MT4 MODAL modal -->
-<div id="submitmt4modal" class="modal fade" role="dialog">
+<!-- New Demo Account modal -->
+<div id="newDemoAccountModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header bg-{{$bg}}">
-                <h4 class="modal-title text-{{$text}}">Submit your MT4 Login Details</h4>
-                <button type="button" class="close text-{{$text}}" data-dismiss="modal">&times;</button>
+            <div class="modal-header bg-{{ $bg }}">
+                <h4 class="modal-title text-{{ $text }}">Create a Demo Account</h4>
+                <button type="button" class="close text-{{ $text }}" data-dismiss="modal">&times;</button>
             </div>
-            <div class="modal-body bg-{{$bg}}">
-                <form role="form" method="post" action="{{route('savemt4details')}}">
+            <div class="modal-body bg-{{ $bg }}">
+                <form role="form" method="post" action="{{ route('account.addmt5account') }}">
+                    @csrf
+                    <input class="form-control bg-{{ $bg }} text-{{ $text }}" value="demo"
+                        type="hidden" name="type">
 
-                    <h5 class="text-{{$text}} ">MT4 ID*:</h5>
-                    <input class="form-control bg-{{$bg}} text-{{$text}}" type="text" name="userid" required><br />
-                    <h5 class="text-{{$text}} ">MT4 Password*:</h5>
-                    <input style="padding:5px;" class="form-control bg-{{$bg}} text-{{$text}}" type="text" name="pswrd" required><br />
-                    <h5 class="text-{{$text}} ">Account Type:</h5>
-                    <input class="form-control bg-{{$bg}} text-{{$text}}" Placeholder="E.g. Standard" type="text" name="acntype" required><br />
-                    <h5 class="text-{{$text}} ">Currency*:</h5>
-                    <input class="form-control bg-{{$bg}} text-{{$text}}" Placeholder="E.g. USD" type="text" name="currency" required><br />
-                    <h5 class="text-{{$text}} ">Leverage*:</h5>
-                    <input class="form-control bg-{{$bg}} text-{{$text}}" Placeholder="E.g. 1:500" type="text" name="leverage" required><br />
-                    <h5 class="text-{{$text}} ">Server*:</h5>
-                    <input class="form-control bg-{{$bg}} text-{{$text}}" Placeholder="E.g. HantecGlobal-live" type="text" name="server" required><br />
-                    <h5 class="text-{{$text}} ">Subscription Duration:</h5>
-                    <select class="form-control bg-{{$bg}} text-{{$text}}" name="duration" class="duration">
-                        <option value="default">Select duration</option>
-                        <option>Monthly</option>
-                        <option>Quaterly</option>
-                        <option>Yearly</option>
+                    <h5 class="text-{{ $text }} ">Leverage*:</h5>
+                    <select class="form-control bg-{{ $bg }} text-{{ $text }}" name="leverage"
+                        class="leverage" required>
+                        <option disabled>Select leverage</option>
+                        <option value="500">1:500</option>
+                        <option value="400">1:400</option>
+                        <option value="300">1:300</option>
+                        <option value="200">1:200</option>
+                        <option value="100">1:100</option>
                     </select><br>
+                    {{-- <h5 class="text-{{$text}} ">MT5 Password*:</h5>
+                    <input style="padding:5px;" class="form-control bg-{{$bg}} text-{{$text}}" type="text" name="password" required><br />
+                    <h5 class="text-{{$text}} ">Investor Password*:</h5>
+                    <input style="padding:5px;" class="form-control bg-{{$bg}} text-{{$text}}" type="text" name="investor_password" required><br /> --}}
+                    {{-- <h5 class="text-{{$text}} ">Currency*:</h5>
+                    <input class="form-control bg-{{$bg}} text-{{$text}}" Placeholder="E.g. usd" type="text" name="currency" required><br /> --}}
+                    {{-- <h5 class="text-{{$text}} ">Initial Balance*:</h5>
+                    <input class="form-control bg-{{$bg}} text-{{$text}}" Placeholder="E.g. 100,000" type="text" name="balance" value="100000" required><br /> --}}
 
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="submit" class="btn btn-primary" value="Submit">
                 </form>
             </div>
         </div>
     </div>
 </div>
-<!-- /plans Modal -->
+<!-- Modal -->
+
+
+<!-- New Live Modal modal -->
+<div id="newLiveAccountModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-{{ $bg }}">
+                <h4 class="modal-title text-{{ $text }}">Create a Live Account</h4>
+                <button type="button" class="close text-{{ $text }}" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body bg-{{ $bg }}">
+                <form role="form" method="post" action="{{ route('account.addmt5account') }}">
+                    @csrf
+                    <input class="form-control bg-{{ $bg }} text-{{ $text }}" value="live"
+                        type="hidden" name="type">
+
+                    <h5 class="text-{{ $text }} ">Leverage*:</h5>
+                    <select class="form-control bg-{{ $bg }} text-{{ $text }}" name="leverage"
+                        class="leverage" required>
+                        <option disabled>Select leverage</option>
+                        <option value="500">1:500</option>
+                        <option value="400">1:400</option>
+                        <option value="300">1:300</option>
+                        <option value="200">1:200</option>
+                        <option value="100">1:100</option>
+                    </select><br>
+                    {{-- <h5 class="text-{{$text}} ">MT5 Password*:</h5>
+                    <input style="padding:5px;" class="form-control bg-{{$bg}} text-{{$text}}" type="text" name="password" required><br />
+                    <h5 class="text-{{$text}} ">Investor Password*:</h5>
+                    <input style="padding:5px;" class="form-control bg-{{$bg}} text-{{$text}}" type="text" name="investor_password" required><br /> --}}
+                    {{-- <h5 class="text-{{$text}} ">Currency*:</h5>
+                    <input class="form-control bg-{{$bg}} text-{{$text}}" Placeholder="E.g. usd" type="text" name="currency" required><br /> --}}
+                    {{-- <h5 class="text-{{$text}} ">Initial Balance*:</h5>
+                    <input class="form-control bg-{{$bg}} text-{{$text}}" Placeholder="E.g. 10,0000" type="text" name="balance" required><br /> --}}
+
+                    <input type="submit" class="btn btn-primary" value="Submit">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->

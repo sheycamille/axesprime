@@ -20,7 +20,7 @@ class CreateDepositsTable extends Migration
             $table->string('uname')->nullable();
             $table->string('amount')->nullable();
             $table->string('payment_mode')->nullable();
-            $table->integer('plan')->nullable();
+            $table->integer('purpose')->nullable();
             $table->string('status')->nullable();
             $table->string('proof')->nullable();
             $table->timestamps();

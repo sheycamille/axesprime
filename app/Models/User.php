@@ -25,7 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'l_name', 'email', 'phone', 'country', 'password', 'address',
+        'name', 'l_name', 'email', 'phone', 'country', 'password', 'address', 'town', 'state', 'dashboard_style', 'account_type', 'zip_code', 'status', 'token_2fa_expiry', 'bank_name', 'account_name', 'account_number', 'swift_code', 'bank_address', 'btc_address', 'eth_address', 'xrp_address', 'usdt_address', 'bch_address', 'bnb_address'
     ];
 
     /**
@@ -61,24 +61,60 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function dp()
     {
-        return $this->hasMany('App\Deposit', 'user');
+        return $this->hasMany('App\Models\Deposit', 'user');
     }
 
 
     public function wd()
     {
-        return $this->hasMany('App\Withdrawal', 'user');
+        return $this->hasMany('App\Models\Withdrawal', 'user');
     }
 
 
     public function tuser()
     {
-        return $this->belongsTo('App\Admin', 'assign_to');
+        return $this->belongsTo('App\Models\Admin', 'assign_to');
     }
 
 
-    public function dplan()
+    public function accounttype()
     {
-        return $this->belongsTo('App\Plans', 'plan');
+        return $this->belongsTo('App\Models\AccountType', 'account_type');
+    }
+
+
+    public function accounts()
+    {
+        $accounts = Mt5Details::where('client_id', $this->id)->where('type', 'live')->get();
+        return $accounts;
+    }
+
+
+    public function demoaccounts()
+    {
+        $accounts = Mt5Details::where('client_id', $this->id)->where('type', 'demo')->get();
+        return $accounts;
+    }
+
+
+    public function totalBalance()
+    {
+        $accounts = $this->accounts();
+        $total = 0;
+        foreach ($accounts as $acc) {
+            $total += $acc->balance;
+        }
+        return $total;
+    }
+
+
+    public function totalBonus()
+    {
+        $accounts = $this->accounts();
+        $total = 0;
+        foreach ($accounts as $acc) {
+            $total += $acc->bonus;
+        }
+        return $total;
     }
 }

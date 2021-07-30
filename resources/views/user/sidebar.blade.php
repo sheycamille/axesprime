@@ -1,8 +1,4 @@
-<!-- Stored in resources/views/child.blade.php -->
-
-<!-- Sidebar -->
-
-<div class="sidebar sidebar-style-2" data-background-color="{{$bg}}">
+<div class="sidebar sidebar-style-3" data-background-color="{{ $bg }}">
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
             <div class="user">
@@ -11,7 +7,7 @@
                         <span>
                             {{ Auth::user()->name }}
                             {{-- <span class="user-level">{{\App\Models\Setting::getValue('site_name') }} User</span> --}}
-                        <span class="caret"></span>
+                            <span class="caret"></span>
                         </span>
                     </a>
                     <div class="clearfix"></div>
@@ -27,9 +23,19 @@
                                     <span class="link-collapse">My KYC</span>
                                 </a>
                             </li>
-                            <li class="@yield('withdrawal-info')">
+                            <li class="@yield('security') pt-2 pb-2">
+                                <a href="{{ url('dashboard/manage-account-security') }}">
+                                    <span class="sub-item">Account Security</span>
+                                </a>
+                            </li>
+                            <li class="@yield('withdrawal-info') pt-2 pb-2">
                                 <a href="{{ url('dashboard/accountdetails') }}">
                                     <span class="sub-item">Withdrawal Info</span>
+                                </a>
+                            </li>
+                            <li class="@yield('notifications') pt-2 pb-2">
+                                <a href="{{ url('dashboard/notifications') }}">
+                                    <span class="sub-item">Notifications</span>
                                 </a>
                             </li>
                             <li></li>
@@ -52,19 +58,14 @@
                     </a>
                     <div class="collapse" id="bases">
                         <ul class="nav nav-collapse">
-                            <li class="@yield('demo-accounts')">
-                                <a href="#">
-                                    <span class="sub-item">Demo Accounts</span>
-                                </a>
-                            </li>
                             <li class="@yield('live-accounts')">
-                                <a href="#">
+                                <a href="/dashboard/live-accounts">
                                     <span class="sub-item">Live Accounts</span>
                                 </a>
                             </li>
-                            <li class="@yield('notifications')">
-                                <a href="{{ url('dashboard/notification') }}">
-                                    <span class="sub-item">Notifications</span>
+                            <li class="@yield('demo-accounts')">
+                                <a href="/dashboard/demo-accounts">
+                                    <span class="sub-item">Demo Accounts</span>
                                 </a>
                             </li>
                         </ul>
@@ -103,47 +104,20 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item @yield('downloads')">
+                    <a href="{{ url('dashboard/downloads') }}">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        <p>Downloads</p>
+                    </a>
+                </li>
                 <li class="nav-item @yield('support')">
                     <a href="{{ url('dashboard/support') }}">
                         <i class="fa fa-life-ring" aria-hidden="true"></i>
                         <p>Support</p>
                     </a>
                 </li>
-                {{-- <li class="nav-item">
-                    <a href="{{ url('dashboard/subtrade') }}">
-                <i class="fa fa-th" aria-hidden="true"></i>
-                <p>Subscription Trade</p>
-                </a>
-                </li> --}}
-                {{-- <li class="nav-item">
-                    <a data-toggle="collapse" href="#mpack">
-                        <i class="fas fa-cubes"></i>
-                        <p>Packages</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="mpack">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ url('dashboard/mplans') }}">
-                <span class="sub-item">Investment Plans</span>
-                </a>
-                </li>
-                <li>
-                    <a href="{{ url('dashboard/myplans') }}">
-                        <span class="sub-item">My Packages</span>
-                    </a>
-                </li>
             </ul>
         </div>
-        </li> --}}
-        {{-- <li class="nav-item @yield('referrals')">
-            <a href="{{ url('dashboard/referuser') }}">
-        <i class="fa fa-recycle " aria-hidden="true"></i>
-        <p>Refer Users</p>
-        </a>
-        </li> --}}
-        </ul>
     </div>
-</div>
 </div>
 <!-- End Sidebar -->

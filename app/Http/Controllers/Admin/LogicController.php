@@ -2,81 +2,72 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
+
+use App\Models\Faq;
+use App\Models\User;
+use App\Models\Agent;
+use App\Models\Images;
+use App\Models\Content;
+use App\Models\Deposit;
+use App\Models\Setting;
+use App\Models\Testimony;
+use App\Models\Withdrawal;
+use App\Models\Mt5Details;
+use App\Models\AccountType;
+use App\Models\Notification;
+use App\Mail\NewNotification;
+use App\Models\TpTransaction;
+
+use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Tarikhagustia\LaravelMt5\Entities\Trade;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
+use Tarikhagustia\LaravelMt5\LaravelMt5;
 
-use App\Models\User;
-use App\Models\Setting;
-use App\Models\Plans;
-// use App\Models\hisplans;
-use App\Models\Agent;
-//use App\Models\confirmations;
-use App\Models\User_plans;
-//use App\Models\fees;
-use App\Models\Admin;
-use App\Models\Faq;
-//use App\Models\Task;
-use App\Models\Images;
-use App\Models\Testimony;
-use App\Models\Content;
-use App\Models\Asset;
-//use App\Models\markets;
-use App\Models\Mt4Details;
-use App\Models\Deposit;
-use App\Models\Wdmethod;
-use App\Models\Withdrawal;
-use App\Models\CpTransaction;
-use App\Models\TpTransaction;
-use App\Models\Notification;
-use DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-
-use App\Http\Traits\CPTrait;
-
-use App\Mail\NewNotification;
-use Illuminate\Support\Facades\Mail;
 
 class LogicController extends Controller
 {
 
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, CPTrait;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
-    //Add plan requests
-    public function addplan(Request $request)
+    // Add account type
+    public function addaccounttype(Request $request)
     {
-        $plan = new Plans();
+        $accounttype = new AccountType();
 
-        $plan->name = $request['name'];
-        $plan->price = $request['price'];
-        $plan->min_price = $request['min_price'];
-        $plan->max_price = $request['max_price'];
-        $plan->minr = $request['minr'];
-        $plan->maxr = $request['maxr'];
-        $plan->gift = $request['gift'];
-        $plan->expected_return = $request['return'];
-        $plan->increment_type = $request['t_type'];
-        $plan->increment_interval = $request['t_interval'];
-        $plan->increment_amount = $request['t_amount'];
-        $plan->expiration = $request['expiration'];
-        $plan->type = 'Main';
-        $plan->save();
+        $accounttype->name = $request['name'];
+        $accounttype->cost = $request['cost'];
+        $accounttype->min_price = $request['min_price'];
+        $accounttype->max_price = $request['max_price'];
+        $accounttype->minr = $request['minr'];
+        $accounttype->maxr = $request['maxr'];
+        $accounttype->gift = $request['gift'];
+        $accounttype->expected_return = $request['return'];
+        $accounttype->increment_type = $request['t_type'];
+        $accounttype->increment_interval = $request['t_interval'];
+        $accounttype->increment_amount = $request['t_amount'];
+        $accounttype->expiration = $request['expiration'];
+        $accounttype->type = 'Main';
+        $accounttype->save();
         return redirect()->back()
-            ->with('message', 'Plan created Sucessfully!');
+            ->with('message', 'Account Type created Sucessfully!');
     }
 
 
-    //Update plans
-    public function updateplan(Request $request)
+    // Update account type
+    public function updateaccounttype(Request $request)
     {
-        Plans::where('id', $request['id'])
+        AccountType::where('id', $request['id'])
             ->update([
                 'name' => $request['name'],
                 'price' => $request['price'],
@@ -93,93 +84,24 @@ class LogicController extends Controller
                 'expiration' => $request['expiration'],
             ]);
         return redirect()->back()
-            ->with('message', 'Plan Update Sucessful!');
+            ->with('message', 'Account Type Update Sucessful!');
     }
 
-    //top up route
-    public function topup(Request $request)
+
+    // Trash Account Type route
+    public function delaccounttype($id)
     {
-        $user = User::where('id', $request->user_id)->first();
-        $userdpo = Deposit::where('user', $request['user_id'])->first();
-
-        $user_bal = $user->account_bal;
-        $user_bonus = $user->bonus;
-        $user_roi = $user->roi;
-        $user_Ref = $user->ref_bonus;
-        $user_deposit = $userdpo->amount;
-
-        if ($request['t_type'] == "Credit") {
-            if ($request['type'] == "Bonus") {
-                User::where('id', $request['user_id'])
-                    ->update([
-                        'bonus' => $user_bonus + $request['amount'],
-                        'account_bal' => $user_bal + $request->amount,
-                    ]);
-            } elseif ($request['type'] == "Profit") {
-                User::where('id', $request->user_id)
-                    ->update([
-                        'roi' => $user_roi + $request->amount,
-                        'account_bal' => $user_bal + $request->amount,
-                    ]);
-            } elseif ($request['type'] == "Ref_Bonus") {
-                User::where('id', $request->user_id)
-                    ->update([
-                        'ref_bonus' => $user_Ref + $request->amount,
-                        'account_bal' => $user_bal + $request->amount,
-                    ]);
-            } elseif ($request['type'] == "Deposit") {
-                $dp = new Deposit();
-                $dp->amount = $request['amount'];
-                $dp->payment_mode = 'Express Deposit';
-                $dp->status = 'Processed';
-                $dp->plan = $request['user_pln'];
-                $dp->user = $request['user_id'];
-                $dp->save();
-
-                User::where('id', $request['user_id'])
-                    ->update([
-                        'account_bal' => $user_bal + $request->amount,
-                    ]);
-            }
-
-            //add history
-            TpTransaction::create([
-                'user' => $request->user_id,
-                'plan' => "Credit",
-                'amount' => $request->amount,
-                'type' => $request->type,
-            ]);
-        } elseif ($request['t_type'] == "Debit") {
-            if ($request['type'] == "Bonus") {
-                User::where('id', $request['user_id'])
-                    ->update([
-                        'bonus' => $user_bonus - $request['amount'],
-                        'account_bal' => $user_bal - $request->amount,
-                    ]);
-            } elseif ($request['type'] == "Profit") {
-                User::where('id', $request->user_id)
-                    ->update([
-                        'roi' => $user_roi - $request->amount,
-                        'account_bal' => $user_bal - $request->amount,
-                    ]);
-            } elseif ($request['type'] == "Ref_Bonus") {
-                User::where('id', $request->user_id)
-                    ->update([
-                        'Ref_Bonus' => $user_Ref - $request->amount,
-                        'account_bal' => $user_bal - $request->amount,
-                    ]);
-            }
-
-            //add history
-            TpTransaction::create([
-                'user' => $request->user_id,
-                'plan' => "Credit reversal",
-                'amount' => $request->amount,
-                'type' => $request->type,
-            ]);
+        //remove users from the account type before deleting
+        $users = User::where('account_type', $id)->get();
+        foreach ($users as $user) {
+            User::where('id', $user->id)
+                ->update([
+                    'account_type' => 0,
+                ]);
         }
-        return redirect()->route('manageusers')
-            ->with('message', 'Action Successful!');
+        AccountType::where('id', $id)->delete();
+        return redirect()->back()
+            ->with('message', 'Account Type has been deleted successfully!');
     }
 
 
@@ -190,67 +112,76 @@ class LogicController extends Controller
 
         //send email notification
         $objDemo = new \stdClass();
-        $objDemo->message = $request['message'];
+        $objDemo->message =  "\r Hello, \r \n"
+            . "\r $request->message \r\n";
         $objDemo->sender = $site_name;
         $objDemo->date = \Carbon\Carbon::Now();
         $objDemo->subject = "$site_name Notification";
 
-        Mail::bcc(User::all())->send(new NewNotification($objDemo));
+        Mail::mailer('smtp')->bcc(User::all())->send(new NewNotification($objDemo));
 
         return redirect()->back()->with('message', 'Your message was sent successful!');
     }
 
-    //Send mail to one user
+
+    // Send mail to one user
     public function sendmailtooneuser(Request $request)
     {
         $site_name = Setting::getValue('site_name');
-        $notif = Notification::create([
-            'user_id' => $request->user_id,
-            'message' => $request->message,
-        ]);
+        // $notif = Notification::create([
+        //     'user_id' => $request->user_id,
+        //     'message' => "\r $request->message \r\n",
+        // ]);
+
+        $mailer = 'smtp';
+        if ($request->type == "deposit")
+            $mailer = 'deposits';
+
         //send email notification
         $mailduser = User::where('id', $request->user_id)->first();
         $objDemo = new \stdClass();
-        $objDemo->message = $request['message'];
+        $objDemo->message = "\r Hello $mailduser->name, \r \n"
+            . "\r $request->message \r\n";
         $objDemo->sender = $site_name;
         $objDemo->date = \Carbon\Carbon::Now();
         $objDemo->subject = "$site_name Notification";
 
-        Mail::bcc($mailduser->email)->send(new NewNotification($objDemo));
+        Mail::mailer($mailer)->bcc($mailduser->email)->send(new NewNotification($objDemo));
         return redirect()->back()->with('message', 'Your message was sent successful!');
     }
 
 
-    //Manually Add Trading History to Users Route
+    // Manually Add Trading History to Users Route
     public function addHistory(Request $request)
     {
         $history = TpTransaction::create([
             'user' => $request->user_id,
-            'plan' => $request->plan,
+            'purpse' => $request->purpose,
             'amount' => $request->amount,
             'type' => $request->type,
         ]);
         $user = User::where('id', $request->user_id)->first();
-        $user_bal = $user->account_bal;
-        if (isset($request['amount']) > 0) {
-            User::where('id', $request->user_id)
-                ->update([
-                    'account_bal' => $user_bal + $request->amount,
-                ]);
-        }
-        $user_roi = $user->roi;
-        if (isset($request['type']) == "ROI") {
-            User::where('id', $request->user_id)
-                ->update([
-                    'roi' => $user_roi + $request->amount,
-                ]);
-        }
+        // $user_bal = $user->account_bal;
+        // if (isset($request['amount']) > 0) {
+        //     User::where('id', $request->user_id)
+        //         ->update([
+        //             'account_bal' => $user_bal + $request->amount,
+        //         ]);
+        // }
+        // $user_roi = $user->roi;
+        // if (isset($request['type']) == "ROI") {
+        //     User::where('id', $request->user_id)
+        //         ->update([
+        //             'roi' => $user_roi + $request->amount,
+        //         ]);
+        // }
 
         return redirect()->back()
             ->with('message', 'Action Sucessful!');
     }
 
-    //update users info
+
+    // update users info
     public function edituser(Request $request)
     {
 
@@ -265,7 +196,8 @@ class LogicController extends Controller
             ->with('message', 'User updated Successful!');
     }
 
-    //Reset Password
+
+    // Reset Password
     public function resetpswd(Request $request, $id)
     {
         User::where('id', $id)
@@ -275,7 +207,9 @@ class LogicController extends Controller
         return redirect()->route('manageusers')
             ->with('message', 'Password has been reset to default');
     }
-    //Access users account
+
+
+    // Access users account
     public function switchuser(Request $request, $id)
     {
         $user = User::where('id', $id)->first();
@@ -288,7 +222,7 @@ class LogicController extends Controller
     }
 
 
-    //Clear user Account
+    // Clear user Account
     public function clearacct(Request $request, $id)
     {
 
@@ -309,15 +243,14 @@ class LogicController extends Controller
         User::where('id', $id)
             ->update([
                 'account_bal' => '0',
-                'roi' => '0',
-                'bonus' => '0',
                 'ref_bonus' => '0',
             ]);
         return redirect()->route('manageusers')
             ->with('message', 'Account cleared to $0.00');
     }
 
-    //Delete deposit
+
+    // Delete deposit
     public function deldeposit(Request $request, $id)
     {
         Deposit::where('id', $id)->delete();
@@ -325,149 +258,193 @@ class LogicController extends Controller
             ->with('message', 'Deposit history has been deleted!');
     }
 
-    //process deposits
-    public function pdeposit($id)
+
+    // top up route
+    public function topup(Request $request)
     {
-        //confirm the users plan
-        $deposit = Deposit::where('id', $id)->first();
-        $user = User::where('id', $deposit->user)->first();
-        if ($deposit->user == $user->id) {
-            //add funds to user's account
-            User::where('id', $user->id)
-                ->update([
-                    'account_bal' => $user->account_bal + $deposit->amount,
-                ]);
+        // switch the mt5 api to use live server
+        $this->setServerConfig('live');
 
-            //get settings
-            $referral_commission = Setting::getValue('referral_commission');
-            $site_name = Setting::getValue('site_name');
-            $currency = Setting::getValue('currency');
-            $earnings = $referral_commission * $deposit->amount / 100;
+        $msg = 'Action Successful';
 
-            if (!empty($user->ref_by)) {
-                //increment the user's referee total clients activated by 1
-                Agent::where('agent', $user->ref_by)->increment('total_activated', 1);
-                Agent::where('agent', $user->ref_by)->increment('earnings', $earnings);
+        if ($request->t_type == "Credit") {
+            // get mt5 account in question
+            $mt5 = Mt5Details::find($request->account_id);
+            if (!$mt5)
+                return redirect()->back()->with('message', 'MT5 account not found');
 
-                //add earnings to agent balance
-                //get agent
-                $agent = User::where('id', $user->ref_by)->first();
-                User::where('id', $user->ref_by)
-                    ->update([
-                        'account_bal' => $agent->account_bal + $earnings,
-                        'ref_bonus' => $agent->ref_bonus + $earnings,
-                    ]);
-
-                //create history
-                TpTransaction::create([
-                    'user' => $user->ref_by,
-                    'plan' => "Credit",
-                    'amount' => $earnings,
-                    'type' => "Ref_bonus",
-                ]);
-
-                //credit commission to ancestors
-                $deposit_amount = $deposit->amount;
-                $array = User::all();
-                $parent = $user->id;
-                $this->getAncestors($array, $deposit_amount, $parent);
+            if ($request->type == "Bonus") {
+                $data = $this->performTransaction($mt5->login, $request->amount, Trade::DEAL_CREDIT);
+                $mt5->balance += $request->amount;
+            } elseif ($request->type == "Balance") {
+                $data = $this->performTransaction($mt5->login, $request->amount, Trade::DEAL_BALANCE);
+                $mt5->balance += $request->amount;
             }
 
-            //send email notification
-            $objDemo = new \stdClass();
-            $objDemo->message = "$user->name, This is to inform you that your deposit of $currency$deposit->amount has been received and confirmed.";
-            $objDemo->sender = "$site_name";
-            $objDemo->date = \Carbon\Carbon::Now();
-            $objDemo->subject = "Deposit processed!";
+            if ($data['status']) {
+                // Create deposit record
+                $this->saveRecord($request->user_id, $request->account_id, 'Express Credit', $request->amount, null, 'Deposit', 'Processed');
 
-            //Mail::bcc($user->email)->send(new NewNotification($objDemo));
+                // save transaction
+                $this->saveTransaction($request->user_id, $request->amount, 'Express Credit', $request->type);
+
+                $msg = 'The user\'s account has been successfully credited!';
+                $mt5->save();
+            } else {
+                return redirect()->route('manageusers')
+                    ->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
+            }
+        } elseif ($request->t_type == "Debit") {
+            // get mt5 account in question
+            $mt5 = Mt5Details::find($request->account_id);
+            if (!$mt5)
+                return redirect()->back()->with('message', 'MT5 account not found');
+
+            $data = ['status' => false];
+
+            if ($request->type == "Bonus") {
+                $data = $this->performTransaction($mt5->login, -$request->amount, Trade::DEAL_CREDIT);
+                $mt5->balance -= $request->amount;
+            } elseif ($request->type == "Balance") {
+                $data = $this->performTransaction($mt5->login, -$request->amount, Trade::DEAL_BALANCE);
+                $mt5->balance -= $request->amount;
+            }
+
+            if ($data['status']) {
+                // create withdrawal record
+                $this->saveRecord($request->user_id, $request->account_id, 'Express Debit', $request->amount, null, 'Withdrawal', 'Processed');
+
+                // save transaction
+                $this->saveTransaction($request->user_id, $request->amount, 'Express Debit', $request->type);
+
+                $msg = 'The user\'s account has been successfully debited!';
+                $mt5->save();
+            } else {
+                return redirect()->route('manageusers')
+                    ->with('message', 'Sorry an error occured, report this to admin! ' . $data->msg);
+            }
         }
 
-        //update deposits
-        Deposit::where('id', $id)
-            ->update([
-                'status' => 'Processed',
-            ]);
-        return redirect()->back()
-            ->with('message', 'Action Sucessful!');
+        return redirect()->route('manageusers')
+            ->with('message', $msg);
     }
 
+
+    // process deposits
+    public function pdeposit(Request $request, $id)
+    {
+        $deposit = Deposit::where('id', $id)->first();
+        $user = User::where('id', $deposit->user)->first();
+
+        // switch the mt5 api to use live server
+        $this->setServerConfig('live');
+
+        // get mt5 account in question
+        $mt5 = Mt5Details::find($deposit->account_id);
+
+        // do the deposit on the mt5 account
+        $data = $this->performTransaction($mt5->login, $deposit->amount, Trade::DEAL_BALANCE);
+
+        if ($data['status'] == false)
+            return redirect()->back()->with('message', 'Sorry an error occurred, please contact admin and report this error: ' . $data['msg']);
+
+        $deposit->status = 'Processed';
+        $deposit->save();
+
+        // update the local mt5 account
+        $apiData = $data['data'];
+        $mt5->balance += $deposit->amount;
+        $mt5->save();
+
+        // save transaction
+        $this->saveTransaction($user->id, $deposit->amount, 'Processed Deposit', 'Credit');
+
+        // get settings
+        $site_name = Setting::getValue('site_name');
+        $currency = Setting::getValue('currency');
+
+        // send email notification
+        $objDemo = new \stdClass();
+        $objDemo->message = "\r Hello $user->name, \r \n
+
+        This is to inform you that your deposit of $currency$deposit->amount has been received and processed. You can now check your MT5 account. \r\r";
+        $objDemo->sender = "$site_name";
+        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->subject = "Deposit processed successfully!";
+
+        Mail::mailer('deposits')->bcc($user->email)->send(new NewNotification($objDemo));
+
+        return redirect()->route('mdeposits')
+            ->with('message', 'The user\'s account has been successfully topped up!');
+    }
+
+
     //process withdrawals
-    public function pwithdrawal($id)
+    public function pwithdrawal(Request $request, $id)
     {
         $withdrawal = Withdrawal::where('id', $id)->first();
         $user = User::where('id', $withdrawal->user)->first();
-        //if($withdrawal->user==$user->id){
-        //debit the processed amount
-        //User::where('id',$user->id)
-        //->update([
-        //'account_bal' => $user->account_bal-$withdrawal->to_deduct,
-        //]);
-        //}
-        Withdrawal::where('id', $id)
-            ->update([
-                'status' => 'Processed',
-            ]);
 
+        // do the withdrawal from on the mt5 account
+        $mt5 = $withdrawal->mt5();
+        $data = $this->performTransaction($mt5->login, -$withdrawal->amount, Trade::DEAL_BALANCE);
+
+        if ($data['status'] == false)
+            return redirect()->back()->with('message', 'Sorry an error occurred, please contact admin and report this error: ' . $data['msg']);
+
+        // update withdrawal
+        $withdrawal->status = 'Processed';
+        $withdrawal->save();
+
+        // update the local mt5 account
+        $mt5->balance -= $withdrawal->amount;
+        $mt5->save();
+
+        // save transaction
+        $this->saveTransaction($user->id, $withdrawal->amount, 'Processed Withdrawal', 'Debit');
+
+        // get settings
         $currency = Setting::getValue('currency');
         $site_name = Setting::getValue('site_name');
-        //send email notification
+
+        // send email notification
         $objDemo = new \stdClass();
-        $objDemo->message = "This is to inform you that your withdrawal request of $currency$withdrawal->amount have approved and funds have been sent to your selected account";
+        $objDemo->message = "\r Hello $user->name, \r\n
+
+        This is to inform you that your withdrawal request of $currency$withdrawal->amount have approved and the funds have been sent to your selected account. \r\n";
         $objDemo->sender = $site_name;
         $objDemo->subject = "Successful withdrawal";
         $objDemo->date = \Carbon\Carbon::Now();
 
-        Mail::bcc($user->email)->send(new NewNotification($objDemo));
+        Mail::mailer('withdrawals')->bcc($user->email)->send(new NewNotification($objDemo));
+
         return redirect()->back()
-            ->with('message', 'Action Sucessful!');
+            ->with('message', 'Widthdrawal Processed Sucessfully!');
     }
 
-    //process withdrawals
+
+    // process withdrawals
     public function rejectwithdrawal(Request $request)
     {
         $withdrawal = Withdrawal::where('id', $request->id)->first();
         $user = User::where('id', $withdrawal->user)->first();
-        if ($withdrawal->user == $user->id) {
-            //debit the processed amount
-            User::where('id', $user->id)
-                ->update([
-                    'account_bal' => $user->account_bal + $withdrawal->to_deduct,
-                ]);
-        }
+
+        $withdrawal->status = "Rejected: " . $request->reason;
 
         $site_name = Setting::getValue('site_name');
-        //send email notification
+        // send email notification
         $objDemo = new \stdClass();
-        $objDemo->message = "$request->reason";
+        $objDemo->message = "Hello $user->name, \ $request->reason";
         $objDemo->sender = $site_name;
         $objDemo->subject = "Rejected Withdrawal Request";
         $objDemo->date = \Carbon\Carbon::Now();
 
-        Mail::bcc($user->email)->send(new NewNotification($objDemo));
+        Mail::mailer('withdrawals')->bcc($user->email)->send(new NewNotification($objDemo));
 
         Withdrawal::where('id', $request->id)->delete();
 
         return redirect()->back()
             ->with('message', 'Withdrawal Request Canceled!');
-    }
-
-
-    //Trash Plans route
-    public function trashplan($id)
-    {
-        //remove users from the plan before deleting
-        $users = User::where('confirmed_plan', $id)->get();
-        foreach ($users as $user) {
-            User::where('id', $user->id)
-                ->update([
-                    'plan' => 0,
-                    'confirmed_plan' => 0,
-                ]);
-        }
-        Plans::where('id', $id)->delete();
-        return redirect()->back()
-            ->with('message', 'Investment Plan deleted Successfully!');
     }
 
 
@@ -484,7 +461,7 @@ class LogicController extends Controller
     }
 
 
-    //Add agent
+    // Add agent
     public function addagent(Request $request)
     {
         //get agent if exists
@@ -512,13 +489,7 @@ class LogicController extends Controller
     }
 
 
-    //Notification
-    //   public function notification(Request $request){
-
-    //     return view('notification')->with(array('title'=>'Notification',));
-    // }
-
-    //Delete user
+    // Delete user
     public function delsystemuser(Request $request, $id)
     {
         //delete the user's withdrawals and deposits
@@ -528,74 +499,25 @@ class LogicController extends Controller
                 Deposit::where('id', $deposit->id)->delete();
             }
         }
+
         $withdrawals = Withdrawal::where('user', $id)->get();
         if (!empty($withdrawals)) {
             foreach ($withdrawals as $withdrawals) {
                 Withdrawal::where('id', $withdrawals->id)->delete();
             }
         }
-        //delete the user plans
-        $userp = User_plans::where('user', $id)->get();
-        if (!empty($userp)) {
-            foreach ($userp as $p) {
-                //delete plans that their owner does not exist
-                User_plans::where('id', $p->id)->delete();
-            }
-        }
+
         //delete the user from agent model if exists
         $agent = Agent::where('agent', $id)->first();
         if (!empty($agent)) {
             Agent::where('id', $agent->id)->delete();
         }
+
         User::where('id', $id)->delete();
         return redirect()->route('manageusers')
             ->with('message', 'User has been deleted!');
     }
 
-
-
-    public function confirmsub($id)
-    {
-        //get the sub details
-        $sub = Mt4Details::where('id', $id)->first();
-
-        //get user
-        $user = User::where('id', $sub->client_id)->first();
-
-        if ($sub->duration == 'Monthly') {
-            $end_at = \Carbon\Carbon::now()->addMonths(1)->toDateTimeString();
-        } elseif ($sub->duration == 'Quaterly') {
-            $end_at = \Carbon\Carbon::now()->addMonths(4)->toDateTimeString();
-        } elseif ($sub->duration == 'Yearly') {
-            $end_at = \Carbon\Carbon::now()->addYears(1)->toDateTimeString();
-        }
-
-        Mt4Details::where('id', $id)->update([
-            'start_date' => \Carbon\Carbon::now(),
-            'end_date' => $end_at,
-            'status' => "Active",
-        ]);
-
-        $site_name = Setting::getValue('site_name');
-        //notify the client via email
-        $objDemo = new \stdClass();
-        $objDemo->message = "$user->name, This is to inform you that your trading account management request has been reviewed and processed. Thank you for trusting $site_name";
-        $objDemo->sender = "$site_name";
-        $objDemo->date = \Carbon\Carbon::Now();
-        $objDemo->subject = "Managed Account Started!";
-
-        //Mail::bcc($user->email)->send(new NewNotification($objDemo));
-
-        return redirect()->back()
-            ->with('message', 'Subscription Sucessfully started!');
-    }
-
-    public function delsub($id)
-    {
-        Mt4Details::where('id', $id)->delete();
-        return redirect()->back()
-            ->with('message', 'Subscription Sucessfully Deleted');
-    }
 
     public function saveuser(Request $request)
     {
@@ -632,6 +554,7 @@ class LogicController extends Controller
             ->with('message', 'User Registered Sucessful!');
     }
 
+
     public function saveadmin(Request $request)
     {
 
@@ -663,132 +586,10 @@ class LogicController extends Controller
     }
 
 
-    //Get uplines
-    function getAncestors($array, $deposit_amount, $parent = 0, $level = 0)
-    {
-        $referedMembers = '';
-        $parent = User::where('id', $parent)->first();
-        foreach ($array as $entry) {
-
-            if ($entry->id == $parent->ref_by) {
-                //get settings
-                $referral_commission1 = Setting::getValue('referral_commission1');
-                $referral_commission2 = Setting::getValue('referral_commission2');
-                $referral_commission3 = Setting::getValue('referral_commission3');
-                $referral_commission4 = Setting::getValue('referral_commission4');
-                $referral_commission5 = Setting::getValue('referral_commission5');
-
-                if ($level == 1) {
-                    $earnings = $referral_commission1 * $deposit_amount / 100;
-                    //add earnings to ancestor balance
-                    User::where('id', $entry->id)
-                        ->update([
-                            'account_bal' => $entry->account_bal + $earnings,
-                            'ref_bonus' => $entry->ref_bonus + $earnings,
-                        ]);
-
-                    //create history
-                    TpTransaction::create([
-                        'user' => $entry->id,
-                        'plan' => "Credit",
-                        'amount' => $earnings,
-                        'type' => "Ref_bonus",
-                    ]);
-                } elseif ($level == 2) {
-                    $earnings = $referral_commission2 * $deposit_amount / 100;
-                    //add earnings to ancestor balance
-                    User::where('id', $entry->id)
-                        ->update([
-                            'account_bal' => $entry->account_bal + $earnings,
-                            'ref_bonus' => $entry->ref_bonus + $earnings,
-                        ]);
-
-                    //create history
-                    TpTransaction::create([
-                        'user' => $entry->id,
-                        'plan' => "Credit",
-                        'amount' => $earnings,
-                        'type' => "Ref_bonus",
-                    ]);
-                } elseif ($level == 3) {
-                    $earnings = $referral_commission3 * $deposit_amount / 100;
-                    //add earnings to ancestor balance
-                    User::where('id', $entry->id)
-                        ->update([
-                            'account_bal' => $entry->account_bal + $earnings,
-                            'ref_bonus' => $entry->ref_bonus + $earnings,
-                        ]);
-
-                    //create history
-                    TpTransaction::create([
-                        'user' => $entry->id,
-                        'plan' => "Credit",
-                        'amount' => $earnings,
-                        'type' => "Ref_bonus",
-                    ]);
-                } elseif ($level == 4) {
-                    $earnings = $referral_commission4 * $deposit_amount / 100;
-                    //add earnings to ancestor balance
-                    User::where('id', $entry->id)
-                        ->update([
-                            'account_bal' => $entry->account_bal + $earnings,
-                            'ref_bonus' => $entry->ref_bonus + $earnings,
-                        ]);
-
-                    //create history
-                    TpTransaction::create([
-                        'user' => $entry->id,
-                        'plan' => "Credit",
-                        'amount' => $earnings,
-                        'type' => "Ref_bonus",
-                    ]);
-                } elseif ($level == 5) {
-                    $earnings = $referral_commission5 * $deposit_amount / 100;
-                    //add earnings to ancestor balance
-                    User::where('id', $entry->id)
-                        ->update([
-                            'account_bal' => $entry->account_bal + $earnings,
-                            'ref_bonus' => $entry->ref_bonus + $earnings,
-                        ]);
-
-                    //create history
-                    TpTransaction::create([
-                        'user' => $entry->id,
-                        'plan' => "Credit",
-                        'amount' => $earnings,
-                        'type' => "Ref_bonus",
-                    ]);
-                }
-
-                if ($level == 6) {
-                    break;
-                }
-
-                //$referedMembers .= '- ' . $entry->name . '- Level: '. $level. '- Commission: '.$earnings.'<br/>';
-                $referedMembers .= $this->getAncestors($array, $deposit_amount, $entry->id, $level + 1);
-            }
-        }
-        return $referedMembers;
-    }
-
-    // for front end content management
-    function RandomStringGenerator($n)
-    {
-        $generated_string = "";
-        $domain = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        $len = strlen($domain);
-        for ($i = 0; $i < $n; $i++) {
-            $index = rand(0, $len - 1);
-            $generated_string = $generated_string . $domain[$index];
-        }
-        // Return the random generated string
-        return $generated_string;
-    }
-
     public function savefaq(Request $request)
     {
 
-        $String = $this->RandomStringGenerator(6);
+        $String = $this->generate_string(6);
 
         $faq = new Faq();
         $faq->ref_key = $String;
@@ -799,9 +600,10 @@ class LogicController extends Controller
             ->with('message', 'Faq Added Sucessfully!');
     }
 
+
     public function savetestimony(Request $request)
     {
-        $String = $this->RandomStringGenerator(6);
+        $String = $this->generate_string(6);
         $tes = new Testimony();
         $tes->name = $request['testifier'];
         $tes->ref_key = $String;
@@ -816,7 +618,7 @@ class LogicController extends Controller
 
     public function saveimg(Request $request)
     {
-        $String = $this->RandomStringGenerator(6);
+        $String = $this->generate_string(6);
 
         $this->validate($request, [
             'image' => 'required|mimes:jpg,jpeg,png|image',
@@ -842,7 +644,7 @@ class LogicController extends Controller
 
     public function savecontents(Request $request)
     {
-        $String = $this->RandomStringGenerator(6);
+        $String = $this->generate_string(6);
         $cont = new Content();
         $cont->title = $request['title'];
         $cont->ref_key = $String;
@@ -851,6 +653,7 @@ class LogicController extends Controller
         return redirect()->back()
             ->with('message', 'Contents Added Sucessfully!');
     }
+
 
     public function updatefaq(Request $request)
     {
@@ -862,6 +665,7 @@ class LogicController extends Controller
         return redirect()->back()
             ->with('message', 'Faq Update Sucessful!');
     }
+
 
     public function updatetestimony(Request $request)
     {
@@ -876,6 +680,7 @@ class LogicController extends Controller
             ->with('message', 'Testimony Update Sucessful!');
     }
 
+
     public function updatecontents(Request $request)
     {
         Content::where('id', $request['id'])
@@ -887,6 +692,7 @@ class LogicController extends Controller
             ->with('message', 'Content Update Sucessful!');
     }
 
+
     public function updateimg(Request $request)
     {
         $this->validate($request, [
@@ -894,7 +700,7 @@ class LogicController extends Controller
         ]);
 
         $imgs = Images::where('id', '=', $request->id)->first();
-        $String = $this->RandomStringGenerator(6);
+        $String = $this->generate_string(6);
 
         if (empty($request->file('image'))) {
             $filePathf = $imgs->img_path;
@@ -917,12 +723,14 @@ class LogicController extends Controller
             ->with('message', 'Image Updated Sucessfully!');
     }
 
+
     public function delfaq($id)
     {
         Faq::where('id', $id)->delete();
         return redirect()->back()
             ->with('message', 'Faq Sucessfully Deleted');
     }
+
 
     public function deltest($id)
     {

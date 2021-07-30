@@ -32,8 +32,8 @@ class Kernel extends HttpKernel
         '2fa' => [
 
             \App\Http\Middleware\TwoFactorVerify::class,
-            
-            ],
+
+        ],
         'web' => [
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
@@ -67,6 +67,6 @@ class Kernel extends HttpKernel
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        //'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 }

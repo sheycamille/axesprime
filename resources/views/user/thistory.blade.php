@@ -17,14 +17,15 @@
     <div class="content bg-{{$bg}}">
         <div class="page-inner">
             <div class="mt-2 mb-4">
-                <h1 class="title1 text-{{$text}}">Your ROI history</h1>
+                <h1 class="title1 text-{{$text}} text-center">Your ROI history</h1>
             </div>
             @if(Session::has('message'))
             <div class="row">
                 <div class="col-lg-12">
                     <div class="alert alert-info alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="fa fa-info-circle"></i> {{ Session::get('message') }}
+                        <i class="fa fa-info-circle"></i>
+                        <p class="alert-message">{!! Session::get('message') !!}</p>
                     </div>
                 </div>
             </div>
@@ -49,7 +50,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Plan</th>
+                                    <th>Purpose</th>
                                     <th>Amount</th>
                                     <th>Type</th>
                                     <th>Date created</th>
@@ -59,7 +60,7 @@
                                 @foreach($t_history as $history)
                                 <tr>
                                     <th scope="row">{{$history->id}}</th>
-                                    <td>{{$history->plan}}</td>
+                                    <td>{{$history->purpose}}</td>
                                     <td>{{\App\Models\Setting::getValue('currency')}}{{$history->amount}}</td>
                                     <td>{{$history->type}}</td>
                                     <td>{{\Carbon\Carbon::parse($history->created_at)->toDayDateTimeString()}}</td>

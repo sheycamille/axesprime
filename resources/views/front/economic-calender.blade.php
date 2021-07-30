@@ -17,73 +17,40 @@
     </section>
 
 
-    <!--========================== MT5 Section ============================-->
+    <!--========================== Calender Section ============================-->
     <section id="getstarted" class="section-bg wow fadeInUp">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <div class="section-header">
-                        <h3 class="text-left">Metatrader 5</h3>
-                        <h4>The World’s Most Advanced Platform</h4>
-                    </div>
-                    <p class="text-left">
-                        Enjoy more features with AXESPRIME’ MT5 trading platform. The AXESPRIME MT5 is the latest and most advanced MetaTrader platform that offers all the pioneering features of MT4, with the addition of more advanced trading tools and indicators that enable traders to maintain more control of their trades and make more informed decisions using cutting-edge analysis.
-                    </p>
-                    <div class="text-left">
-                        <a class="btn-get-started" target="_blank" href="{{ asset('downloads/axesprimeltd5setup.exe') }}">Download Now</a><br>
-                    </div>
+                <!-- TradingView Widget BEGIN -->
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    {{-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/currencies/economic-calendar/" rel="noopener" target="_blank"><span class="blue-text">Economic Calendar</span></a> by TradingView</div> --}}
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
+                        {
+                            "width": "100%"
+                            , "height": "1000"
+                            , "colorTheme": "light"
+                            , "isTransparent": false
+                            , "locale": "en"
+                            , "importanceFilter": "-1,0,1"
+                        }
+
+                    </script>
                 </div>
-                <img class="col-md-6" src="{{ asset ('front/img/about/MT5-10.jpg')}}" alt="MT5" tilte="MT5" />
+                <!-- TradingView Widget END -->
             </div>
         </div>
     </section>
 
-
-    <!--========================== Advantages Section ============================-->
+    <!--========================== Market News Section ============================-->
     <section id="getstarted" class="section-bg wow fadeInUp">
         <div class="container">
-            <div class="row">
-                <img class="col-md-6" src="{{ asset ('front/img/about/MT5-AXESPRIME-Mobile.jpg')}}" alt="MT5 Benefits" tilte="MT5 Benefits" />
-                <div class="col-md-6">
-                    <div class="section-header">
-                        <h3 class="text-right">Advantages & Benefits</h3>
-                    </div>
-                    <p class="text-right">
-                        The latest MetaTrader platform provides a number of additional analytical tools and functions designed to give you a more comprehensive trading arsenal and an improved experience, thus making it one of the best platforms available in the market.
-                    </p>
-                    <div class="text-right">
-                        <a class="btn-get-started mr-auto" href="{{ route('register') }}">Get Started</a><br>
-                    </div>
-                </div>
+            <div class="section-header">
+                <h1 class="text-center">Market News</h1>
             </div>
-        </div>
-    </section>
-
-
-    <!--========================== Our Mobile apps Section ============================-->
-    <section id="getstarted" class="section-bg wow fadeInUp">
-        <div class="container">
             <div class="row">
-                <div class="col-md-8">
-                    <div class="section-header">
-                        <h3 class="text-left">AXESPRIME Mobile Apps</h3>
-                        <h4>Freedom to trade anywhere, anytime</h4>
-                    </div>
-                    <p class="text-left">
-                        Our multi-awarded Mobile App features a user-friendly trading interface that allows you to place and manage your trades on the go, while using the same tools and features as those available on our desktop platform.
-                    </p>
-                    <div class="text-left">
-                        <a class="" target="_blank" href="https://download.mql5.com/cdn/mobile/mt5/android?server=AxesPrimeLtd-Demo,AxesPrimeLtd-Live">
-                            <img class="" src="{{ asset ('front/img/about/google_play_badge.png')}}" alt="Andriod Download" tilte="Andriod Download" height="100" />
-                            Download Now</a>
-                    </div>
-                    <div class="text-left">
-                        <a class="" target="_blank" href="https://download.mql5.com/cdn/mobile/mt5/ios?server=AxesPrimeLtd-Demo,AxesPrimeLtd-Live">
-                            <img class="col-md-4" src="{{ asset ('front/img/about/app-store-en.png')}}" alt="iPhone Download" tilte="iPhone Download" height="68" />
-                            Download Now</a>
-                    </div>
-                </div>
-                <img class="col-md-4" src="{{ asset ('front/img/about/CT-3533-MobileApp-Redesign-Page-03.png')}}" alt="Our Mobile Apps" tilte="Our Mobile Apps" />
+                <a class="fx-widget" data-widget="newsfeed" data-lang="en" data-post-date-color="#999" data-post-description-color="#333333" data-post-title-color="#333333" data-widget-bg-color="#FFF" data-show-image data-width="1000" data-height="855" data-show-date data-title-font-size="18" data-intro-font-size="16" data-show-upper-intro data-category="news" data-section="all" data-base-url="https://www.fxempire.com" data-url="//www.fxempire.com" href="https://www.fxempire.com" rel="nofollow" style="font-family:Helvetica;font-size:16px;line-height:1.5;text-decoration:none;"> <span style="color:#999999;display:inline-block;margin-top:10px;font-size:12px;">Powered By </span> <img style="width:87px; height:14px;" src="https://www.fxempire.com/logo-full.svg" alt="FX Empire logo" /> </a>
+                <script async charset="utf-8" src="https://widgets.fxempire.com/widget.js"></script>
             </div>
         </div>
     </section>

@@ -43,7 +43,7 @@
             <div class="mb-5 row p-md-3 ">
                 <div class="shadow col-12 p-md-2">
                     <div class="col-12 text-center bg-{{$bg}} p-3">
-                        <h1 class="title1 text-{{$text}}">{{\App\Models\Setting::getValue('site_name')}} Support</h1>
+                        <h1 class="title1 text-{{$text}} text-center">{{ \App\Models\Setting::getValue('site_name') }} Support</h1>
                         <div class="sign-up-row widget-shadow text-{{$text}}">
                             <h4 class="text-{{$text}}">For inquiries, suggestions or complains. Mail us at</h4>
                             <h5 class="text-{{$text}} mt-3">{{\App\Models\Setting::getValue('contact_email')}}

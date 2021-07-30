@@ -1,27 +1,28 @@
 @component('mail::layout')
-{{-- Header --}}
-@slot('header')
-@component('mail::header', ['url' => config('app.url')])
-<img src="{{asset('home/images/Logo.png')}}" alt="{{ config('app.name') }}" style="width: 90px">
-@endcomponent
-@endslot
+    {{-- Header --}}
+    @slot('header')
+        @component('mail::header', ['url' => config('app.url')])
+            <img src="{{ asset('front/img/ap-logo-email.png') }}" alt="{{ config('app.name') }}" style="width: 200px"
+                class="text-center">
+        @endcomponent
+    @endslot
 
-{{-- Body --}}
-{{ $slot }}
+    {{-- Body --}}
+    {{ $slot }}
 
-{{-- Subcopy --}}
-@isset($subcopy)
-@slot('subcopy')
-@component('mail::subcopy')
-{{ $subcopy }}
-@endcomponent
-@endslot
-@endisset
+    {{-- Subcopy --}}
+    @isset($subcopy)
+        @slot('subcopy')
+            @component('mail::subcopy')
+                {{ $subcopy }}
+            @endcomponent
+        @endslot
+    @endisset
 
-{{-- Footer --}}
-@slot('footer')
-@component('mail::footer')
-© {{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')
-@endcomponent
-@endslot
+    {{-- Footer --}}
+    @slot('footer')
+        @component('mail::footer')
+            © {{ date('Y') }} {{ config('app.name') }}. @lang('All rights reserved.')
+        @endcomponent
+    @endslot
 @endcomponent

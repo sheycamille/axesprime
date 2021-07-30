@@ -15,7 +15,7 @@
 @section('content')
 @include('user.topmenu')
 @include('user.sidebar')
-@inject('uc', 'App\Http\Controllers\UsersController')
+@inject('uc', 'App\Http\Controllers\UserController')
 <?php
         $array = \App\Models\User::all();
         $usr = Auth::user()->id;
@@ -24,7 +24,7 @@
     <div class="content bg-{{$bg}}">
         <div class="page-inner">
             <div class="mt-2 mb-4">
-                <h1 class="title1 text-{{$text}}">Refer users to {{\App\Models\Setting::getValue('site_name')}} community</h1>
+                <h1 class="title1 text-{{$text}} text-center">Refer users to {{\App\Models\Setting::getValue('site_name')}} community</h1>
             </div>
             @if(Session::has('message'))
             <div class="row">

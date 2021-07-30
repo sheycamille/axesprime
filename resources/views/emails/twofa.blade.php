@@ -1,11 +1,15 @@
 @component('mail::message')
-# Hello {{ $demo->receiver_name }},
+    # Hello {{ $demo->receiver_name }},
 
-This is a notification of a new return on investment (ROI) on your investment account.
-<br>
+    {!! $demo->message !!}
 
-<strong>2 Factor code: </strong> {{ $demo->receiver_plan }} <br>
+    @php echo("\r Find below your two factor code, please discard this email if you didn't request for it, thanks. \r \n") @endphp
 
-Thanks,<br>
-{{ $demo->sender }}.
+    @php echo("\r 2 Factor code: ")@endphp {{ $demo->token_2fa . " \r \n" }}
+
+    @php echo("\r Thanks! \r\n") @endphp
+
+    @php echo("\r Kind regards \r \n") @endphp,
+    {{ "\r " . $demo->sender }}, @php echo("your reputable financial broker. \r\n") @endphp.
+
 @endcomponent

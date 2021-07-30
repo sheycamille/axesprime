@@ -2,27 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
+
+use App\Models\Setting;
+use App\Models\Asset;
+use App\Models\Wdmethod;
+
+use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 
-use App\Models\Setting;
-use App\Models\Admin;
-use App\Models\Asset;
-use App\Models\Wdmethod;
-use App\Models\CpTransaction;
-
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-
-use App\Http\Traits\CPTrait;
-
-
 class SettingsController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, CPTrait;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
     public function updatewebinfo(Request $request)
@@ -33,7 +28,7 @@ class SettingsController extends Controller
             'favicon' => 'mimes:jpg,jpeg,png|max:500|image',
         ]);
 
-        $strtxt = $this->RandomStringGenerator(6);
+        $strtxt = $this->generate_string(6);
 
         if ($request->hasfile('logo')) {
             $file = $request->file('logo');
@@ -127,19 +122,6 @@ class SettingsController extends Controller
             ->with('message', 'Action Sucessful');
     }
 
-    // for front end content management
-    function RandomStringGenerator($n)
-    {
-        $generated_string = "";
-        $domain = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        $len = strlen($domain);
-        for ($i = 0; $i < $n; $i++) {
-            $index = rand(0, $len - 1);
-            $generated_string = $generated_string . $domain[$index];
-        }
-        // Return the random generated string
-        return $generated_string;
-    }
 
     public function updatepreference(Request $request)
     {
@@ -147,6 +129,30 @@ class SettingsController extends Controller
             $setting = Setting::where('name', 'contact_email')->first();
             if (!$setting) $setting = new Setting();
             $setting->name = 'contact_email';
+            $setting->value = $request->contact_email;
+            $setting->save();
+        }
+
+        if ($request->deposit_email) {
+            $setting = Setting::where('name', 'deposit_email')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'deposit_email';
+            $setting->value = $request->deposit_email;
+            $setting->save();
+        }
+
+        if ($request->withdrawal_email) {
+            $setting = Setting::where('name', 'withdrawal_email')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'withdrawal_email';
+            $setting->value = $request->withdrawal_email;
+            $setting->save();
+        }
+
+        if ($request->verification_email) {
+            $setting = Setting::where('name', 'verification_email')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'verification_email';
             $setting->value = $request->contact_email;
             $setting->save();
         }
@@ -245,6 +251,7 @@ class SettingsController extends Controller
         } else {
             $enable_annoc = "no";
         }
+
         $setting = Setting::where('name', 'enable_annoc')->first();
         if (!$setting) $setting = new Setting();
         $setting->name = 'enable_annoc';
@@ -374,6 +381,8 @@ class SettingsController extends Controller
     {
         $method = new Wdmethod();
         $method->name = $request['name'];
+        $method->setting_key = $request['setting_key'];
+        $method->exchange_symbol = $request['exchange_symbol'];
         $method->minimum = $request['minimum'];
         $method->maximum = $request['maximum'];
         $method->charges_fixed = $request['charges_fixed'];
@@ -392,6 +401,8 @@ class SettingsController extends Controller
         Wdmethod::where('id', $request['id'])
             ->update([
                 'name' => $request['name'],
+                'setting_key' => $request['setting_key'],
+                'exchange_symbol' => $request['exchange_symbol'],
                 'minimum' => $request['minimum'],
                 'maximum' => $request['maximum'],
                 'charges_fixed' => $request['charges_fixed'],
@@ -404,31 +415,16 @@ class SettingsController extends Controller
             ->with('message', 'Action Successful');
     }
 
-    //Delete withdrawal and deposit method
+
+    // delete withdrawal and deposit method
     public function deletewdmethod($id)
     {
         Wdmethod::where('id', $id)->delete();
         return redirect()->back()->with('message', 'Withdrawal method deleted successful!');
     }
 
-    //save CoinPayments credentials to DB
-    public function updatecpd(Request $request)
-    {
 
-        CpTransaction::where('id', '1')
-            ->update([
-                'cp_p_key' => $request['cp_p_key'],
-                'cp_pv_key' => $request['cp_pv_key'],
-                'cp_m_id' => $request['cp_m_id'],
-                'cp_ipn_secret' => $request['cp_ipn_secret'],
-                'cp_debug_email' => $request['cp_debug_email'],
-
-            ]);
-        return redirect()->back()
-            ->with('message', 'Action Sucessful');
-    }
-
-    //save Setttings to DB
+    // save Setttings to DB
     public function updatesettings(Request $request)
     {
 
@@ -449,11 +445,28 @@ class SettingsController extends Controller
             $setting->save();
         }
 
+        // bank 1
         if ($request->bank_name) {
             $setting = Setting::where('name', 'bank_name')->first();
             if (!$setting) $setting = new Setting();
             $setting->name = 'bank_name';
             $setting->value = $request->bank_name;
+            $setting->save();
+        }
+
+        if ($request->bank_address) {
+            $setting = Setting::where('name', 'bank_address')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'bank_address';
+            $setting->value = $request->bank_address;
+            $setting->save();
+        }
+
+        if ($request->swift_code) {
+            $setting = Setting::where('name', 'swift_code')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'swift_code';
+            $setting->value = $request->swift_code;
             $setting->save();
         }
 
@@ -473,11 +486,60 @@ class SettingsController extends Controller
             $setting->save();
         }
 
+        // bank 2
+        if ($request->bank2_name) {
+            $setting = Setting::where('name', 'bank2_name')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'bank2_name';
+            $setting->value = $request->bank2_name;
+            $setting->save();
+        }
+
+        if ($request->bank2_address) {
+            $setting = Setting::where('name', 'bank2_address')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'bank2_address';
+            $setting->value = $request->bank2_address;
+            $setting->save();
+        }
+
+        if ($request->swift2_code) {
+            $setting = Setting::where('name', 'swift2_code')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'swift2_code';
+            $setting->value = $request->swift2_code;
+            $setting->save();
+        }
+
+        if ($request->account2_name) {
+            $setting = Setting::where('name', 'account2_name')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'account2_name';
+            $setting->value = $request->account2_name;
+            $setting->save();
+        }
+
+        if ($request->account2_number) {
+            $setting = Setting::where('name', 'account2_number')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'account2_number';
+            $setting->value = $request->account2_number;
+            $setting->save();
+        }
+
         if ($request->btc_address) {
             $setting = Setting::where('name', 'btc_address')->first();
             if (!$setting) $setting = new Setting();
             $setting->name = 'btc_address';
             $setting->value = $request->btc_address;
+            $setting->save();
+        }
+
+        if ($request->bch_address) {
+            $setting = Setting::where('name', 'bch_address')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'bch_address';
+            $setting->value = $request->bch_address;
             $setting->save();
         }
 
@@ -494,6 +556,78 @@ class SettingsController extends Controller
             if (!$setting) $setting = new Setting();
             $setting->name = 'eth_address';
             $setting->value = $request->eth_address;
+            $setting->save();
+        }
+
+        if ($request->xrp_address) {
+            $setting = Setting::where('name', 'xrp_address')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'xrp_address';
+            $setting->value = $request->xrp_address;
+            $setting->save();
+        }
+
+        if ($request->usdt_address) {
+            $setting = Setting::where('name', 'usdt_address')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'usdt_address';
+            $setting->value = $request->usdt_address;
+            $setting->save();
+        }
+
+        if ($request->bnb_address) {
+            $setting = Setting::where('name', 'bnb_address')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'bnb_address';
+            $setting->value = $request->bnb_address;
+            $setting->save();
+        }
+
+        if ($request->interac_name) {
+            $setting = Setting::where('name', 'interac_name')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'interac_name';
+            $setting->value = $request->interac_name;
+            $setting->save();
+        }
+
+        if ($request->interac_email) {
+            $setting = Setting::where('name', 'interac_email')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'interac_email';
+            $setting->value = $request->interac_email;
+            $setting->save();
+        }
+
+        if ($request->interac_phone) {
+            $setting = Setting::where('name', 'interac_phone')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'interac_phone';
+            $setting->value = $request->interac_phone;
+            $setting->save();
+        }
+
+        if ($request->interac_message) {
+            $setting = Setting::where('name', 'interac_message')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'interac_message';
+            $setting->value = $request->interac_message;
+            $setting->save();
+        }
+
+        if ($request->interac_question) {
+            $setting = Setting::where('name', 'interac_question')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'interac_question';
+            $setting->value = $request->interac_question;
+            $setting->save();
+        }
+
+        if ($request->interac_answer) {
+            $setting = Setting::where('name', 'interac_answer')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'interac_answer';
+            $setting->value = $request->interac_answer;
             $setting->save();
         }
 
@@ -526,6 +660,14 @@ class SettingsController extends Controller
             if (!$setting) $setting = new Setting();
             $setting->name = 'pp_cs';
             $setting->value = $request->pp_cs;
+            $setting->save();
+        }
+
+        if ($request->min_dw) {
+            $setting = Setting::where('name', 'min_dw')->first();
+            if (!$setting) $setting = new Setting();
+            $setting->name = 'min_dw';
+            $setting->value = $request->min_dw;
             $setting->save();
         }
 

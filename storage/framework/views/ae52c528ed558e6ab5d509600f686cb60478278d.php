@@ -1,8 +1,4 @@
-<!-- Stored in resources/views/child.blade.php -->
-
-<!-- Sidebar -->
-
-<div class="sidebar sidebar-style-2" data-background-color="<?php echo e($bg); ?>">
+<div class="sidebar sidebar-style-3" data-background-color="<?php echo e($bg); ?>">
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
             <div class="user">
@@ -12,7 +8,7 @@
                             <?php echo e(Auth::user()->name); ?>
 
                             
-                        <span class="caret"></span>
+                            <span class="caret"></span>
                         </span>
                     </a>
                     <div class="clearfix"></div>
@@ -28,9 +24,19 @@
                                     <span class="link-collapse">My KYC</span>
                                 </a>
                             </li>
-                            <li class="<?php echo $__env->yieldContent('withdrawal-info'); ?>">
+                            <li class="<?php echo $__env->yieldContent('security'); ?> pt-2 pb-2">
+                                <a href="<?php echo e(url('dashboard/manage-account-security')); ?>">
+                                    <span class="sub-item">Account Security</span>
+                                </a>
+                            </li>
+                            <li class="<?php echo $__env->yieldContent('withdrawal-info'); ?> pt-2 pb-2">
                                 <a href="<?php echo e(url('dashboard/accountdetails')); ?>">
                                     <span class="sub-item">Withdrawal Info</span>
+                                </a>
+                            </li>
+                            <li class="<?php echo $__env->yieldContent('notifications'); ?> pt-2 pb-2">
+                                <a href="<?php echo e(url('dashboard/notifications')); ?>">
+                                    <span class="sub-item">Notifications</span>
                                 </a>
                             </li>
                             <li></li>
@@ -53,19 +59,14 @@
                     </a>
                     <div class="collapse" id="bases">
                         <ul class="nav nav-collapse">
-                            <li class="<?php echo $__env->yieldContent('demo-accounts'); ?>">
-                                <a href="#">
-                                    <span class="sub-item">Demo Accounts</span>
-                                </a>
-                            </li>
                             <li class="<?php echo $__env->yieldContent('live-accounts'); ?>">
-                                <a href="#">
+                                <a href="/dashboard/live-accounts">
                                     <span class="sub-item">Live Accounts</span>
                                 </a>
                             </li>
-                            <li class="<?php echo $__env->yieldContent('notifications'); ?>">
-                                <a href="<?php echo e(url('dashboard/notification')); ?>">
-                                    <span class="sub-item">Notifications</span>
+                            <li class="<?php echo $__env->yieldContent('demo-accounts'); ?>">
+                                <a href="/dashboard/demo-accounts">
+                                    <span class="sub-item">Demo Accounts</span>
                                 </a>
                             </li>
                         </ul>
@@ -99,18 +100,21 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item <?php echo $__env->yieldContent('downloads'); ?>">
+                    <a href="<?php echo e(url('dashboard/downloads')); ?>">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        <p>Downloads</p>
+                    </a>
+                </li>
                 <li class="nav-item <?php echo $__env->yieldContent('support'); ?>">
                     <a href="<?php echo e(url('dashboard/support')); ?>">
                         <i class="fa fa-life-ring" aria-hidden="true"></i>
                         <p>Support</p>
                     </a>
                 </li>
-                
-                
-        
-        </ul>
+            </ul>
+        </div>
     </div>
-</div>
 </div>
 <!-- End Sidebar -->
 <?php /**PATH /Users/wadingaleonardngonga/Documents/Projects/axesprime/resources/views/user/sidebar.blade.php ENDPATH**/ ?>
