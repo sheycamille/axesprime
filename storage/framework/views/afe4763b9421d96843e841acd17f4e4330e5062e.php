@@ -1,16 +1,16 @@
 <?php
 if (Auth::user()->dashboard_style == 'light') {
-    $bgmenu = 'blue';
-    $bg = 'light';
-    $text = 'dark';
+$bgmenu = 'blue';
+$bg = 'light';
+$text = 'dark';
 } else {
-    $bgmenu = 'dark';
-    $bg = 'dark';
-    $text = 'light';
+$bgmenu = 'dark';
+$bg = 'dark';
+$text = 'light';
 } ?>
 
 <?php $__env->startSection('accounts', 'active'); ?>
-<?php $__env->startSection('live-accounts', 'active'); ?>
+<?php $__env->startSection('demo-accounts', 'active'); ?>
 <?php $__env->startSection('content'); ?>
     <?php echo $__env->make('user.topmenu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <?php echo $__env->make('user.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
@@ -38,7 +38,8 @@ if (Auth::user()->dashboard_style == 'light') {
                             <div class="alert alert-danger alert-dismissable" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                                 <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <i class="fa fa-warning"></i> <span class="alert-message"><?php echo e($error); ?></span>
+                                    <i class="fa fa-warning"></i>
+                                    <span class="alert-message"><?php echo e($error); ?></span>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
                         </div>
@@ -47,8 +48,8 @@ if (Auth::user()->dashboard_style == 'light') {
 
                 <div class="row py-3 mb-4">
                     <div class="col">
-                        <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#newLiveAccountModal"><i
-                                class="fa fa-plus"></i> New Live Account</a>
+                        <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#newDemoAccountModal"><i
+                                class="fa fa-plus"></i> New Demo Account</a>
                     </div>
                 </div>
                 <div class="row mb-5">
@@ -83,48 +84,16 @@ if (Auth::user()->dashboard_style == 'light') {
 
                                             </td>
                                             <td>
-                                                <a class="btn btn-primary btn-xs" href="#" data-toggle="modal"
-                                                    data-target="#accountDepositModal<?php echo e($account->id); ?>">Deposit</a>
-                                                <div id="accountDepositModal<?php echo e($account->id); ?>" class="modal fade" role="dialog">
-                                                    <div class="modal-dialog">
-                                                        <!-- Modal content-->
-                                                        <div class="modal-content">
-                                                            <div class="modal-header bg-<?php echo e($bg); ?>">
-                                                                <h4 class="modal-title text-<?php echo e($text); ?>">Make new
-                                                                    deposit</h4>
-                                                                <button type="button"
-                                                                    class="close text-<?php echo e($text); ?>"
-                                                                    data-dismiss="modal">&times;</button>
-                                                            </div>
-                                                            <div class="modal-body bg-<?php echo e($bg); ?>">
-                                                                <form style="padding:3px;" role="form" method="get"
-                                                                    action="<?php echo e(route('selectpaymentmethod')); ?>">
-                                                                    <input style="padding:5px;"
-                                                                        class="form-control text-<?php echo e($text); ?> bg-<?php echo e($bg); ?>"
-                                                                        placeholder="Enter amount here" type="number"
-                                                                        name="amount"
-                                                                        min="<?php echo e(\App\Models\Setting::getValue('min_dw')); ?>"
-                                                                        required>
-                                                                    <br />
-                                                                    <input type="hidden" name="account_id"
-                                                                        value="<?php echo e($account->id); ?>">
-                                                                    <input type="hidden" name="_token"
-                                                                        value="<?php echo e(csrf_token()); ?>">
-                                                                    <input type="submit"
-                                                                        class="btn btn-<?php echo e($text); ?>"
-                                                                        value="Continue">
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
+                                                <a href="<?php echo e(route('account.demotopup', $account->id)); ?>"
+                                                    class="m-2 btn btn-primary btn-xs">Topup</a>
+                                                
                                             </td>
                                         </tr>
 
                                         <!-- Reset MT5 Account Password modal -->
                                         <div id="newResetMT5PasswordModal<?php echo e($account->id); ?>" class="modal fade" role="dialog">
                                             <div class="modal-dialog">
-                                                <!-- Modal content-->
+                                                <!-- Modal content -->
                                                 <div class="modal-content">
                                                     <div class="modal-header bg-<?php echo e($bg); ?>">
                                                         <h4 class="modal-title text-left text-white">MT5 Reset Password</h4>
@@ -171,4 +140,4 @@ if (Auth::user()->dashboard_style == 'light') {
         <?php echo $__env->make('user.modals', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/wadingaleonardngonga/Documents/Projects/axesprime/resources/views/user/liveaccounts.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/wadingaleonardngonga/Documents/Projects/axesprime/resources/views/user/demoaccounts.blade.php ENDPATH**/ ?>

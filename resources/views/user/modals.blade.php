@@ -19,7 +19,8 @@
                         name="account_id" id="account_id" required>
                         <option value="" disabled selected>Choose Acount</option>
                         @foreach (Auth::user()->accounts() as $account)
-                            <option value="{{ $account->id }}">{{ $account->login }} | {{ $account->server }}
+                            <option value="{{ $account->id }}">{{ $account->login }} | {{ $account->server }} |
+                                USD {{ $account->balance }}
                             </option>
                         @endforeach
                     </select> <br>
@@ -92,7 +93,6 @@
                     <input class="form-control bg-{{$bg}} text-{{$text}}" Placeholder="E.g. usd" type="text" name="currency" required><br /> --}}
                     {{-- <h5 class="text-{{$text}} ">Initial Balance*:</h5>
                     <input class="form-control bg-{{$bg}} text-{{$text}}" Placeholder="E.g. 100,000" type="text" name="balance" value="100000" required><br /> --}}
-
                     <input type="submit" class="btn btn-primary" value="Submit">
                 </form>
             </div>
@@ -135,7 +135,6 @@
                     <input class="form-control bg-{{$bg}} text-{{$text}}" Placeholder="E.g. usd" type="text" name="currency" required><br /> --}}
                     {{-- <h5 class="text-{{$text}} ">Initial Balance*:</h5>
                     <input class="form-control bg-{{$bg}} text-{{$text}}" Placeholder="E.g. 10,0000" type="text" name="balance" required><br /> --}}
-
                     <input type="submit" class="btn btn-primary" value="Submit">
                 </form>
             </div>

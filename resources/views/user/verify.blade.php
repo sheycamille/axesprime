@@ -39,13 +39,15 @@ if (Auth::user()->dashboard_style == 'light') {
                                         KYC
                                     </h1>
                                     <div class="quick-actions-header">
-                                        @if (Auth::user()->account_verify == 'yes')
+                                        @if (Auth::user()->account_verify == '')
                                             <h4 class="ml-3 text-{{ $text }}">
                                                 <a href="#" class="p-0 col-12"><i class="glyphicon glyphicon-ok"></i> KYC
-                                                    Status: Account Verified</a>
+                                                    Status: Not Verified</a>
                                             </h4>
                                         @else
-                                            <h4 class="ml-3 text-{{ $text }}"><a>KYC Status: Not Verified</a></h4>
+                                            <h4 class="ml-3 text-{{ $text }}">
+                                                <a> KYC Status: {{ Auth::user()->account_verify }}</a>
+                                            </h4>
                                         @endif
                                     </div>
                                 </div>
@@ -68,7 +70,7 @@ if (Auth::user()->dashboard_style == 'light') {
                     </div>
                 @endif
 
-                @if (Auth::user()->account_verify != 'yes')
+                @if (\App\Models\Setting::getValue('enable_kyc') == 'yes' && Auth::user()->account_verify != 'Verified')
                     <div class="mb-5 row">
 
                         <div class="col-lg-8 offset-lg-2 card p-4 shadow-lg bg-{{ $bg }}">
@@ -84,7 +86,7 @@ if (Auth::user()->dashboard_style == 'light') {
                                     international
                                     passport or any government approved document).</h5>
                                 <input type="file" class="form-control bg-{{ $bg }} text-{{ $text }}"
-                                    name="idcard" required>
+                                    name="idcard" @if (!Auth::user()->id_card) required @endif value="{{ asset('storage/photos/' . Auth::user()->id_card) }}">
                                 @if (Auth::user()->id_card)
                                     <img src="{{ asset('storage/photos/' . Auth::user()->id_card) }}" width="100">
                                 @endif
@@ -92,7 +94,8 @@ if (Auth::user()->dashboard_style == 'light') {
 
                                 <h5 class="text-{{ $text }}">Back of Identity Document.</h5>
                                 <input type="file" class="form-control bg-{{ $bg }} text-{{ $text }}"
-                                    name="idcard_back" required>
+                                    name="idcard_back" @if (!Auth::user()->id_card_back) required @endif
+                                    value="{{ asset('storage/photos/' . Auth::user()->id_card_back) }}">
                                 @if (Auth::user()->id_card_back)
                                     <img src="{{ asset('storage/photos/' . Auth::user()->id_card_back) }}" width="100">
                                 @endif
@@ -100,18 +103,20 @@ if (Auth::user()->dashboard_style == 'light') {
 
                                 <h5 class="text-{{ $text }}">Address Document</h5>
                                 <input type="file" class="form-control bg-{{ $bg }} text-{{ $text }}"
-                                    name="address_document" required>
-                                @if (Auth::user()->passport)
-                                    <img src="{{ asset('storage/photos/' . Auth::user()->passport) }}" width="100">
+                                    name="address_document" @if (!Auth::user()->address_document) required @endif
+                                    value="{{ asset('storage/photos/' . Auth::user()->address_document) }}">
+                                @if (Auth::user()->address_document)
+                                    <img src="{{ asset('storage/photos/' . Auth::user()->address_document) }}"
+                                        width="100">>
                                 @endif
                                 <br><br>
 
                                 <h5 class="text-{{ $text }}">Selfie with ID Card</h5>
                                 <input type="file" class="form-control bg-{{ $bg }} text-{{ $text }}"
-                                    name="passport" required>
-                                @if (Auth::user()->address_document)
-                                    <img src="{{ asset('storage/photos/' . Auth::user()->address_document) }}"
-                                        width="100">>
+                                    name="passport" @if (!Auth::user()->passport) required @endif
+                                    value="{{ asset('storage/photos/' . Auth::user()->passport) }}">
+                                @if (Auth::user()->passport)
+                                    <img src="{{ asset('storage/photos/' . Auth::user()->passport) }}" width="100">
                                 @endif
                                 <br><br>
 

@@ -1,8 +1,8 @@
 <?php
 if (Auth('admin')->User()->dashboard_style == 'light') {
-$text = 'dark';
+    $text = 'dark';
 } else {
-$text = 'light';
+    $text = 'light';
 } ?>
 @extends('layouts.app')
 @section('manage-dw', 'active')
@@ -43,18 +43,18 @@ $text = 'light';
                 {{-- <div class="mb-5 row">
 						<div class="col">
 							<form class="form-inline" role="form" method="post" action="{{action('Admin\HomeController@searchWt')}}">
-            <a class="btn btn-{{$text}} m-2" href="{{ url('admin/dashboard/mwithdrawals') }}">Show all</a>
-            <input placeholder="Search by user ID, Status, Payment mode, Amount" class="form-control shadow-sm bg-{{Auth('admin')->User()->dashboard_style}} text-{{$text}}" type="text" name="wtquery" required>
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <input type="submit" class="m-2 btn btn-{{$text}}" value="Search">
-            </form>
-        </div>
-    </div> --}}
+                        <a class="btn btn-{{$text}} m-2" href="{{ url('admin/dashboard/mwithdrawals') }}">Show all</a>
+                        <input placeholder="Search by user ID, Status, Payment mode, Amount" class="form-control shadow-sm bg-{{Auth('admin')->User()->dashboard_style}} text-{{$text}}" type="text" name="wtquery" required>
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="submit" class="m-2 btn btn-{{$text}}" value="Search">
+                        </form>
+                    </div>
+                </div> --}}
 
                 <div class="mb-5 row">
                     <div class="col card p-3 shadow bg-{{ Auth('admin')->User()->dashboard_style }}">
                         <div class="bs-example widget-shadow table-responsive" data-example-id="hoverable-table">
-                            <span style="margin:3px;">
+                            <div style="margin:3px;">
                                 <table id="ShipTable" class="table table-hover text-{{ $text }}">
                                     <thead>
                                         <tr>
@@ -71,37 +71,37 @@ $text = 'light';
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($withdrawals as $deposit)
+                                        @foreach ($withdrawals as $withdrawal)
                                             <tr>
-                                                <th scope="row">{{ $deposit->id }}</th>
-                                                <td>{{ $deposit->duser->name }}</td>
-                                                <td>{{ $deposit->amount }}</td>
-                                                <td>{{ $deposit->to_deduct }}</td>
-                                                <td>{{ $deposit->mt5->login }}</td>
-                                                <td>{{ $deposit->payment_mode }}</td>
-                                                <td>{{ $deposit->duser->email }}</td>
-                                                <td>{{ $deposit->status }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($deposit->created_at)->toDayDateTimeString() }}
+                                                <th scope="row">{{ $withdrawal->id }}</th>
+                                                <td>{{ $withdrawal->duser->name }}</td>
+                                                <td>{{ $withdrawal->amount }}</td>
+                                                <td>{{ $withdrawal->to_deduct }}</td>
+                                                <td>{{ $withdrawal->mt5->login }}</td>
+                                                <td>{{ $withdrawal->payment_mode }}</td>
+                                                <td>{{ $withdrawal->duser->email }}</td>
+                                                <td>{{ $withdrawal->status }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($withdrawal->created_at)->toDayDateTimeString() }}
                                                 </td>
                                                 <td>
 
                                                     <a href="#" class="m-1 btn btn-info btn-sm" data-toggle="modal"
-                                                        data-target="#viewModal{{ $deposit->id }}"><i
+                                                        data-target="#viewModal{{ $withdrawal->id }}"><i
                                                             class="fa fa-eye"></i> View</a>
-                                                    @if ($deposit->status == 'Processed')
+                                                    @if ($withdrawal->status == 'Processed')
                                                         <a class="btn btn-success btn-sm" href="#">Processed</a>
                                                     @else
                                                         <a class="m-1 btn btn-primary btn-sm"
-                                                            href="{{ url('admin/dashboard/pwithdrawal') }}/{{ $deposit->id }}">Process</a>
+                                                            href="{{ url('admin/dashboard/pwithdrawal') }}/{{ $withdrawal->id }}">Process</a>
                                                         <a class="m-1 btn btn-primary btn-sm" data-toggle="modal"
-                                                            data-target="#rejctModal{{ $deposit->id }}"
+                                                            data-target="#rejctModal{{ $withdrawal->id }}"
                                                             href="#">Reject</a>
                                                     @endif
 
                                                 </td>
                                             </tr>
                                             <!-- View info modal-->
-                                            <div id="rejctModal{{ $deposit->id }}" class="modal fade" role="dialog">
+                                            <div id="rejctModal{{ $withdrawal->id }}" class="modal fade" role="dialog">
                                                 <div class="modal-dialog">
                                                     <!-- Modal content-->
                                                     <div class="modal-content">
@@ -121,7 +121,7 @@ $text = 'light';
                                                                     row="3" placeholder="Type in here"
                                                                     name="reason"></textarea>
                                                                 <input type="hidden" name="id"
-                                                                    value="{{ $deposit->id }}">
+                                                                    value="{{ $withdrawal->id }}">
                                                                 <input type="submit" class="btn btn-warning" value="Done">
                                                             </form>
                                                         </div>
@@ -130,7 +130,7 @@ $text = 'light';
                                             </div>
                                             <!--End View info modal-->
                                             <!-- View info modal-->
-                                            <div id="viewModal{{ $deposit->id }}" class="modal fade" role="dialog">
+                                            <div id="viewModal{{ $withdrawal->id }}" class="modal fade" role="dialog">
                                                 <div class="modal-dialog">
 
                                                     <!-- Modal content-->
@@ -138,35 +138,56 @@ $text = 'light';
                                                         <div
                                                             class="modal-header bg-{{ Auth('admin')->User()->dashboard_style }} ">
                                                             <h4 class="modal-title text-{{ $text }}">
-                                                                {{ $deposit->duser->name }} withdrawal details.</strong>
+                                                                {{ $withdrawal->duser->name }} withdrawal
+                                                                details.</strong>
                                                             </h4>
                                                             <button type="button" class="close text-{{ $text }}"
                                                                 data-dismiss="modal">&times;</button>
                                                         </div>
                                                         <div
                                                             class="modal-body bg-{{ Auth('admin')->User()->dashboard_style }}">
-                                                            @if ($deposit->payment_mode == 'Bitcoin')
+                                                            @if ($withdrawal->payment_mode == 'Bitcoin')
                                                                 <h3 class="text-{{ $text }}">BTC Wallet:</h3>
                                                                 <h4 class="text-{{ $text }}">
-                                                                    {{ $deposit->duser->btc_address }}</h4><br>
-                                                            @elseif($deposit->payment_mode=='Ethereum')
+                                                                    {{ $withdrawal->duser->btc_address }}</h4><br>
+                                                            @elseif($withdrawal->payment_mode=='Ethereum')
                                                                 <h3 class="text-{{ $text }}">ETH Wallet:</h3>
                                                                 <h4 class="text-{{ $text }}">
-                                                                    {{ $deposit->duser->eth_address }}</h4><br>
-                                                            @elseif($deposit->payment_mode=='Litecoin')
+                                                                    {{ $withdrawal->duser->eth_address }}</h4><br>
+                                                            @elseif($withdrawal->payment_mode=='Litecoin')
                                                                 <h3 class="text-{{ $text }}">LTC Wallet:</h3>
                                                                 <h4 class="text-{{ $text }}">
-                                                                    {{ $deposit->duser->ltc_address }}</h4><br>
-                                                            @elseif($deposit->payment_mode=='Bank transfer')
+                                                                    {{ $withdrawal->duser->ltc_address }}</h4><br>
+                                                            @elseif($withdrawal->payment_mode=='USDT')
+                                                                <h3 class="text-{{ $text }}">USDT Wallet:</h3>
+                                                                <h4 class="text-{{ $text }}">
+                                                                    {{ $withdrawal->duser->usdt_address }}</h4><br>
+                                                            @elseif($withdrawal->payment_mode=='XRP')
+                                                                <h3 class="text-{{ $text }}">XRP Wallet:</h3>
+                                                                <h4 class="text-{{ $text }}">
+                                                                    {{ $withdrawal->duser->xrp_address }}</h4><br>
+                                                            @elseif($withdrawal->payment_mode=='BNB')
+                                                                <h3 class="text-{{ $text }}">BNB Wallet:</h3>
+                                                                <h4 class="text-{{ $text }}">
+                                                                    {{ $withdrawal->duser->bnb_address }}</h4><br>
+                                                            @elseif($withdrawal->payment_mode=='Bitcoin Cash')
+                                                                <h3 class="text-{{ $text }}">BCH Wallet:</h3>
+                                                                <h4 class="text-{{ $text }}">
+                                                                    {{ $withdrawal->duser->usdt_address }}</h4><br>
+                                                            @elseif($withdrawal->payment_mode=='Interac')
+                                                                <h3 class="text-{{ $text }}">Interac Email:</h3>
+                                                                <h4 class="text-{{ $text }}">
+                                                                    {{ $withdrawal->duser->interac }}</h4><br>
+                                                            @elseif($withdrawal->payment_mode=='Bank transfer')
                                                                 <h4 class="text-{{ $text }}">Bank name:
-                                                                    {{ $deposit->duser->bank_name }}</h4><br>
+                                                                    {{ $withdrawal->duser->bank_name }}</h4><br>
                                                                 <h4 class="text-{{ $text }}">Account name:
-                                                                    {{ $deposit->duser->account_name }}</h4><br>
+                                                                    {{ $withdrawal->duser->account_name }}</h4><br>
                                                                 <h4 class="text-{{ $text }}">Account number:
-                                                                    {{ $deposit->duser->account_no }}</h4>
+                                                                    {{ $withdrawal->duser->account_no }}</h4>
                                                             @else
                                                                 <h4 class="text-{{ $text }}">Get in touch with
-                                                                    client. <br><br>{{ $deposit->duser->email }}</h4>
+                                                                    client. <br><br>{{ $withdrawal->duser->email }}</h4>
                                                             @endif
                                                         </div>
                                                     </div>
@@ -176,6 +197,7 @@ $text = 'light';
                                         @endforeach
                                     </tbody>
                                 </table>
+                            </div>
                         </div>
                     </div>
                 </div>

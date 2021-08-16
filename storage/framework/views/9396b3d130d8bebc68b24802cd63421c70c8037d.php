@@ -1,10 +1,10 @@
 <?php
 if (Auth::check() && Auth::user()->dashboard_style == 'light') {
-$text = 'dark';
-$bg = 'light';
+    $text = 'dark';
+    $bg = 'light';
 } else {
-$text = 'light';
-$bg = 'dark';
+    $text = 'light';
+    $bg = 'dark';
 } ?>
 
 <!DOCTYPE html>
@@ -66,8 +66,7 @@ $bg = 'dark';
             var PAYPAL_ORDER_API = 'https://api.paypal.com/v2/checkout/orders/';
         </script>
 
-        <script
-                src="https://www.paypal.com/sdk/js?client-id=<?php echo e(\App\Models\Setting::getValue('pp_ci')); ?>&currency=USD&debug=true&locale=en_CM">
+        <script src="https://www.paypal.com/sdk/js?client-id=<?php echo e(\App\Models\Setting::getValue('pp_ci ')); ?>&currency=USD">
         </script>
         <!--/PayPal-->
 
@@ -77,7 +76,9 @@ $bg = 'dark';
             <footer class="footer bg-<?php echo e($bg); ?> text-<?php echo e($text); ?>">
                 <div class="container-fluid">
                     <div class="text-center row copyright text-align-center">
-                        <p>All Rights Reserved &copy; <?php echo e(\App\Models\Setting::getValue('site_name')); ?> <?php echo date('Y'); ?></p>
+                        <p>All Rights Reserved &copy; <?php echo e(\App\Models\Setting::getValue('site_name')); ?>
+
+                            <?php echo date('Y'); ?></p>
                     </div>
                 </div>
             </footer>
@@ -214,6 +215,7 @@ $bg = 'dark';
                 order: [
                     [0, 'desc']
                 ],
+                pageLength: 50,
                 dom: 'Bfrtip',
                 buttons: [
                     'copy', 'csv', 'print', 'excel', 'pdf'

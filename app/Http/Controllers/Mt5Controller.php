@@ -73,8 +73,7 @@ class Mt5Controller extends Controller
         $api = new LaravelMt5();
         $user = new User();
 
-        // $amt = $request->balance;
-        // $this->setServerConfig('demo');
+        $this->setServerConfig('demo');
         $amt = 100000;
         $type = 'demo';
         $server = 'AxesPrimeLtd-Demo';
@@ -138,7 +137,7 @@ class Mt5Controller extends Controller
         $this->notifyuser($mt5Acc);
 
         return redirect()->route($redirectRoute)
-            ->with('message', 'Your new mt5 account has been created successfully. Check your email for the full account detials. Happy trading!');
+            ->with('message', 'Your new mt5 account has been created successfully. Check your email for the full account details. Happy trading!');
     }
 
     public function resetmt5password(Request $request)
@@ -150,9 +149,9 @@ class Mt5Controller extends Controller
     {
         $mt5Acc = Mt5Details::where('id', $id)->first();
 
+        $this->setServerConfig('demo');
+
         // update the mt5 demo server
-        $api = new LaravelMt5();
-        $trade = new Trade();
         $this->dodeposit($mt5Acc->login, 100000);
 
         // update the local record

@@ -39,13 +39,15 @@ if (Auth::user()->dashboard_style == 'light') {
                                         KYC
                                     </h1>
                                     <div class="quick-actions-header">
-                                        <?php if(Auth::user()->account_verify == 'yes'): ?>
+                                        <?php if(Auth::user()->account_verify == ''): ?>
                                             <h4 class="ml-3 text-<?php echo e($text); ?>">
                                                 <a href="#" class="p-0 col-12"><i class="glyphicon glyphicon-ok"></i> KYC
-                                                    Status: Account Verified</a>
+                                                    Status: Not Verified</a>
                                             </h4>
                                         <?php else: ?>
-                                            <h4 class="ml-3 text-<?php echo e($text); ?>"><a>KYC Status: Not Verified</a></h4>
+                                            <h4 class="ml-3 text-<?php echo e($text); ?>">
+                                                <a> KYC Status: <?php echo e(Auth::user()->account_verify); ?></a>
+                                            </h4>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -69,7 +71,7 @@ if (Auth::user()->dashboard_style == 'light') {
                     </div>
                 <?php endif; ?>
 
-                <?php if(Auth::user()->account_verify != 'yes'): ?>
+                <?php if(\App\Models\Setting::getValue('enable_kyc') == 'yes' && Auth::user()->account_verify != 'Verified'): ?>
                     <div class="mb-5 row">
 
                         <div class="col-lg-8 offset-lg-2 card p-4 shadow-lg bg-<?php echo e($bg); ?>">
@@ -85,7 +87,7 @@ if (Auth::user()->dashboard_style == 'light') {
                                     international
                                     passport or any government approved document).</h5>
                                 <input type="file" class="form-control bg-<?php echo e($bg); ?> text-<?php echo e($text); ?>"
-                                    name="idcard" required>
+                                    name="idcard" <?php if(!Auth::user()->id_card): ?> required <?php endif; ?> value="<?php echo e(asset('storage/photos/' . Auth::user()->id_card)); ?>">
                                 <?php if(Auth::user()->id_card): ?>
                                     <img src="<?php echo e(asset('storage/photos/' . Auth::user()->id_card)); ?>" width="100">
                                 <?php endif; ?>
@@ -93,7 +95,8 @@ if (Auth::user()->dashboard_style == 'light') {
 
                                 <h5 class="text-<?php echo e($text); ?>">Back of Identity Document.</h5>
                                 <input type="file" class="form-control bg-<?php echo e($bg); ?> text-<?php echo e($text); ?>"
-                                    name="idcard_back" required>
+                                    name="idcard_back" <?php if(!Auth::user()->id_card_back): ?> required <?php endif; ?>
+                                    value="<?php echo e(asset('storage/photos/' . Auth::user()->id_card_back)); ?>">
                                 <?php if(Auth::user()->id_card_back): ?>
                                     <img src="<?php echo e(asset('storage/photos/' . Auth::user()->id_card_back)); ?>" width="100">
                                 <?php endif; ?>
@@ -101,18 +104,20 @@ if (Auth::user()->dashboard_style == 'light') {
 
                                 <h5 class="text-<?php echo e($text); ?>">Address Document</h5>
                                 <input type="file" class="form-control bg-<?php echo e($bg); ?> text-<?php echo e($text); ?>"
-                                    name="address_document" required>
-                                <?php if(Auth::user()->passport): ?>
-                                    <img src="<?php echo e(asset('storage/photos/' . Auth::user()->passport)); ?>" width="100">
+                                    name="address_document" <?php if(!Auth::user()->address_document): ?> required <?php endif; ?>
+                                    value="<?php echo e(asset('storage/photos/' . Auth::user()->address_document)); ?>">
+                                <?php if(Auth::user()->address_document): ?>
+                                    <img src="<?php echo e(asset('storage/photos/' . Auth::user()->address_document)); ?>"
+                                        width="100">>
                                 <?php endif; ?>
                                 <br><br>
 
                                 <h5 class="text-<?php echo e($text); ?>">Selfie with ID Card</h5>
                                 <input type="file" class="form-control bg-<?php echo e($bg); ?> text-<?php echo e($text); ?>"
-                                    name="passport" required>
-                                <?php if(Auth::user()->address_document): ?>
-                                    <img src="<?php echo e(asset('storage/photos/' . Auth::user()->address_document)); ?>"
-                                        width="100">>
+                                    name="passport" <?php if(!Auth::user()->passport): ?> required <?php endif; ?>
+                                    value="<?php echo e(asset('storage/photos/' . Auth::user()->passport)); ?>">
+                                <?php if(Auth::user()->passport): ?>
+                                    <img src="<?php echo e(asset('storage/photos/' . Auth::user()->passport)); ?>" width="100">
                                 <?php endif; ?>
                                 <br><br>
 

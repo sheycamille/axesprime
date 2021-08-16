@@ -30,7 +30,7 @@
                                 </a>
                             </li>
                             <li class="<?php echo $__env->yieldContent('withdrawal-info'); ?> pt-2 pb-2">
-                                <a href="<?php echo e(url('dashboard/accountdetails')); ?>">
+                                <a href="<?php echo e(url('dashboard/withdrawaldetails')); ?>">
                                     <span class="sub-item">Withdrawal Info</span>
                                 </a>
                             </li>

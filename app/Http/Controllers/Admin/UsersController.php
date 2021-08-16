@@ -151,12 +151,31 @@ class UsersController extends Controller
             ->update([
                 'account_verify' => 'Rejected',
                 'id_card' => NULL,
+                'id_card_back' => NULL,
                 'passport' => NULL,
                 'address_document' => NULL,
             ]);
 
         return redirect()->back()
-            ->with('message', 'Action Sucessful!');
+            ->with('message', 'Rejected KYC Sucessfully!');
+    }
+
+
+    // reset KYC route
+    public function resetkyc($id)
+    {
+        //update user
+        $user = User::where('id', $id)
+            ->update([
+                'account_verify' => '',
+                'id_card' => NULL,
+                'id_card_back' => NULL,
+                'passport' => NULL,
+                'address_document' => NULL,
+            ]);
+
+        return redirect()->back()
+            ->with('message', 'Reseted KYC Sucessfully!');
     }
 
 

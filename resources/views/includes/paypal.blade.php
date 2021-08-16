@@ -11,11 +11,12 @@
             });
         },
         onApprove: function(data, actions) {
-            // console.log(data, actions);
             return actions.order.capture().then(function(details) {
-                alert('Transaction completed by ' + details.payer.name.given_name);
+                alert(
+                    'We have successfully received your funds and are crediting your trading account. You are being redirected in the next 10seconds, if not, visit your live accounts and check the balance, if the account is not yet credited. Contact our live chat support. Thanks for your patience.'
+                );
                 // Call your server to save the transaction
-                return fetch("/dashboard/paypalverify/{{ $amount }}", {
+                return fetch('/dashboard/paypalverify/' + details.purchase_units[0].amount.value, {
                     method: 'post',
                     headers: {
                         'content-type': 'application/json',
@@ -24,7 +25,10 @@
                     body: JSON.stringify({
                         orderID: data.orderID
                     })
-                }).then(data => {});
+                }).then(data => {
+                    alert(data.message);
+                    window.location.replace('{{ route('account.liveaccounts') }}');
+                });
             });
         }
     }).render('#paypal-button-container');

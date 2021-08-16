@@ -1,12 +1,12 @@
 <?php
 if (Auth::user()->dashboard_style == 'light') {
-$bgmenu = 'blue';
-$bg = 'light';
-$text = 'dark';
+    $bgmenu = 'blue';
+    $bg = 'light';
+    $text = 'dark';
 } else {
-$bgmenu = 'dark';
-$bg = 'dark';
-$text = 'light';
+    $bgmenu = 'dark';
+    $bg = 'dark';
+    $text = 'light';
 } ?>
 @extends('layouts.app')
 @section('accounts', 'active')
@@ -85,14 +85,15 @@ $text = 'light';
                                             <td>
                                                 <a href="{{ route('account.demotopup', $account->id) }}"
                                                     class="m-2 btn btn-primary btn-xs">Topup</a>
-                                                {{-- <a href="#" data-toggle="modal" data-target="#newResetMT5PasswordModal" class="m-2 btn btn-danger btn-xs">Reset Password</a> --}}
+                                                {{-- <a href="#" data-toggle="modal" data-target="#newResetMT5PasswordModal{{ $account->id }}" class="m-2 btn btn-danger btn-xs">Reset Password</a> --}}
                                             </td>
                                         </tr>
 
                                         <!-- Reset MT5 Account Password modal -->
-                                        <div id="newResetMT5PasswordModal" class="modal fade" role="dialog">
+                                        <div id="newResetMT5PasswordModal{{ $account->id }}" class="modal fade"
+                                            role="dialog">
                                             <div class="modal-dialog">
-                                                <!-- Modal content-->
+                                                <!-- Modal content -->
                                                 <div class="modal-content">
                                                     <div class="modal-header bg-{{ $bg }}">
                                                         <h4 class="modal-title text-left text-white">MT5 Reset Password</h4>

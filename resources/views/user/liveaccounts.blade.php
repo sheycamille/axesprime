@@ -1,12 +1,12 @@
 <?php
 if (Auth::user()->dashboard_style == 'light') {
-$bgmenu = 'blue';
-$bg = 'light';
-$text = 'dark';
+    $bgmenu = 'blue';
+    $bg = 'light';
+    $text = 'dark';
 } else {
-$bgmenu = 'dark';
-$bg = 'dark';
-$text = 'light';
+    $bgmenu = 'dark';
+    $bg = 'dark';
+    $text = 'light';
 } ?>
 @extends('layouts.app')
 @section('accounts', 'active')
@@ -83,10 +83,9 @@ $text = 'light';
                                             </td>
                                             <td>
                                                 <a class="btn btn-primary btn-xs" href="#" data-toggle="modal"
-                                                    data-target="#accountDepositModal">Deposit</a>
-                                                <div id="accountDepositModal" class="modal fade" role="dialog">
+                                                    data-target="#accountDepositModal{{ $account->id }}">Deposit</a>
+                                                <div id="accountDepositModal{{ $account->id }}" class="modal fade" role="dialog">
                                                     <div class="modal-dialog">
-
                                                         <!-- Modal content-->
                                                         <div class="modal-content">
                                                             <div class="modal-header bg-{{ $bg }}">
@@ -117,12 +116,12 @@ $text = 'light';
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    {{-- <a href="#" data-toggle="modal" data-target="#newResetMT5PasswordModal" class="m-2 btn btn-danger btn-xs">Reset Password</a> --}}
+                                                    {{-- <a href="#" data-toggle="modal" data-target="#newResetMT5PasswordModal{{ $account->id }}" class="m-2 btn btn-danger btn-xs">Reset Password</a> --}}
                                             </td>
                                         </tr>
 
                                         <!-- Reset MT5 Account Password modal -->
-                                        <div id="newResetMT5PasswordModal" class="modal fade" role="dialog">
+                                        <div id="newResetMT5PasswordModal{{ $account->id }}" class="modal fade" role="dialog">
                                             <div class="modal-dialog">
                                                 <!-- Modal content-->
                                                 <div class="modal-content">

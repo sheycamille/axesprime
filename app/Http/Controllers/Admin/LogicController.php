@@ -275,7 +275,7 @@ class LogicController extends Controller
 
             if ($request->type == "Bonus") {
                 $data = $this->performTransaction($mt5->login, $request->amount, Trade::DEAL_CREDIT);
-                $mt5->balance += $request->amount;
+                $mt5->bonus += $request->amount;
             } elseif ($request->type == "Balance") {
                 $data = $this->performTransaction($mt5->login, $request->amount, Trade::DEAL_BALANCE);
                 $mt5->balance += $request->amount;
@@ -304,7 +304,7 @@ class LogicController extends Controller
 
             if ($request->type == "Bonus") {
                 $data = $this->performTransaction($mt5->login, -$request->amount, Trade::DEAL_CREDIT);
-                $mt5->balance -= $request->amount;
+                $mt5->bonus -= $request->amount;
             } elseif ($request->type == "Balance") {
                 $data = $this->performTransaction($mt5->login, -$request->amount, Trade::DEAL_BALANCE);
                 $mt5->balance -= $request->amount;
@@ -385,9 +385,12 @@ class LogicController extends Controller
         $withdrawal = Withdrawal::where('id', $id)->first();
         $user = User::where('id', $withdrawal->user)->first();
 
+        // switch the mt5 api to use live server
+        $this->setServerConfig('live');
+
         // do the withdrawal from on the mt5 account
-        $mt5 = $withdrawal->mt5();
-        $data = $this->performTransaction($mt5->login, -$withdrawal->amount, Trade::DEAL_BALANCE);
+        $mt5 = Mt5Details::find($withdrawal->account_id);
+        $data = $this->performTransaction($mt5->login, -round($withdrawal->amount), Trade::DEAL_BALANCE);
 
         if ($data['status'] == false)
             return redirect()->back()->with('message', 'Sorry an error occurred, please contact admin and report this error: ' . $data['msg']);
@@ -397,11 +400,11 @@ class LogicController extends Controller
         $withdrawal->save();
 
         // update the local mt5 account
-        $mt5->balance -= $withdrawal->amount;
+        $mt5->balance -= round($withdrawal->amount);
         $mt5->save();
 
         // save transaction
-        $this->saveTransaction($user->id, $withdrawal->amount, 'Processed Withdrawal', 'Debit');
+        $this->saveTransaction($user->id, round($withdrawal->amount), 'Processed Withdrawal', 'Debit');
 
         // get settings
         $currency = Setting::getValue('currency');

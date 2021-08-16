@@ -1,12 +1,12 @@
 <?php
 if (Auth::user()->dashboard_style == 'light') {
-$bgmenu = 'blue';
-$bg = 'light';
-$text = 'dark';
+    $bgmenu = 'blue';
+    $bg = 'light';
+    $text = 'dark';
 } else {
-$bgmenu = 'dark';
-$bg = 'dark';
-$text = 'light';
+    $bgmenu = 'dark';
+    $bg = 'dark';
+    $text = 'light';
 } ?>
 @extends('layouts.app')
 @section('content')
@@ -27,7 +27,8 @@ $text = 'light';
                         <div class="col-lg-12">
                             <div class="alert alert-info alert-dismissable">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                <i class="fa fa-info-circle"></i> {{ Session::get('message') }}
+                                <i class="fa fa-info-circle"></i>
+                                <p class="alert-message">{{ Session::get('message') }}</p>
                             </div>
                         </div>
                     </div>
@@ -87,7 +88,7 @@ $text = 'light';
                                     name="country" id="country" required>
                                     <option selected disabled>Choose Country</option>
                                     @foreach ($countries as $code => $name)
-                                        <option @if (Auth::user()->country == $code) selected @endif value="{{ $code }}">
+                                        <option @if (Auth::user()->country == $code || Auth::user()->country == $name) selected @endif value="{{ $code }}">
                                             {{ $name }}</option>
                                     @endforeach
                                 </select> <br>

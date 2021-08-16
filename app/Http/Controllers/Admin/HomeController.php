@@ -225,6 +225,7 @@ class HomeController extends Controller
             ->with(array(
                 'title' => 'KYC',
                 'users' => User::where('id_card', '!=', NULL)
+                    ->where('id_card_back', '!=', NULL)
                     ->where('passport', '!=', NULL)->where('address_document', '!=', NULL)->get(),
             ));
     }

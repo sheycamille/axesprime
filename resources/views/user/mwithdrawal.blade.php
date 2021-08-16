@@ -1,12 +1,12 @@
 <?php
 if (Auth::user()->dashboard_style == 'light') {
-$bgmenu = 'blue';
-$bg = 'light';
-$text = 'dark';
+    $bgmenu = 'blue';
+    $bg = 'light';
+    $text = 'dark';
 } else {
-$bgmenu = 'dark';
-$bg = 'dark';
-$text = 'light';
+    $bgmenu = 'dark';
+    $bg = 'dark';
+    $text = 'light';
 } ?>
 @extends('layouts.app')
 @section('deposits-and-withdrawals', 'active')
@@ -105,10 +105,11 @@ $text = 'light';
                                             <select required
                                                 class="form-control bg-{{ $bg }} text-{{ $text }}"
                                                 name="account_id" id="account_id" required>
-                                                <option value="" disabled selected>Choose Acount</option>
+                                                <option value="" disabled selected>Choose Account</option>
                                                 @foreach (Auth::user()->accounts() as $account)
                                                     <option value="{{ $account->id }}">{{ $account->login }} |
-                                                        {{ $account->server }}
+                                                        {{ $account->server }} |
+                                                        USD {{ $account->balance }}
                                                     </option>
                                                 @endforeach
                                             </select> <br>

@@ -113,8 +113,9 @@ Route::group(['prefix' => 'admin',  'middleware' => 'isadmin'], function () {
 
     // KYC Routes
     Route::get('dashboard/kyc', 'Admin\HomeController@kyc')->name('kyc');
-    Route::get('dashboard/acceptkyc/{id}', 'Admin\UsersController@acceptkyc');
-    Route::get('dashboard/rejectkyc/{id}', 'Admin\UsersController@rejectkyc');
+    Route::get('dashboard/acceptkyc/{id}', 'Admin\UsersController@acceptkyc')->name('acceptkyc');
+    Route::get('dashboard/rejectkyc/{id}', 'Admin\UsersController@rejectkyc')->name('rejectkyc');
+    Route::get('dashboard/resetkyc/{id}', 'Admin\UsersController@resetkyc')->name('resetkyc');
 
     Route::get('dashboard/uublock/{id}', 'Admin\SystemController@ublock');
     Route::get('dashboard/uunblock/{id}', 'Admin\SystemController@unblock');
@@ -215,7 +216,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('dashboard/withdrawal', 'UserController@savewithdrawal')->name('withdrawal');
 
     Route::get('ref/{id}', 'Controller@ref')->name('ref');
-    Route::post('sendcontact', 'UserController@sendcontact')->name('enquiry');
+    Route::post('sendcontact', 'FrontController@sendcontact')->name('enquiry');
     Route::post('dashboard/chngemail', 'UserController@chngemail');
     Route::post('dashboard/savedeposit', 'UserController@savedeposit')->name('savedeposit');
 
@@ -232,7 +233,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // mt5 account mg't
     Route::get('/dashboard/demo-accounts', 'Mt5Controller@demoaccounts')->name('account.demoaccounts');
     Route::get('/dashboard/live-accounts', 'Mt5Controller@liveaccounts')->name('account.liveaccounts');
-    Route::post('/dashboard/add-account', 'Mt5Controller@addmt5account')->name('account.addmt5account')->middleware(['throttle:1,30']);
+    Route::post('/dashboard/add-account', 'Mt5Controller@addmt5account')->name('account.addmt5account'); //->middleware(['throttle:1,30']);
     Route::get('/dashboard/mt5-demo-deposit/{id}', 'Mt5Controller@demotopup')->name('account.demotopup');
     Route::post('/dashboard/reset-account-password/{id}', 'Mt5Controller@resetmt5password')->name('account.resetmt5password');
 
@@ -240,6 +241,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // user deposit routes
     Route::get('dashboard/select-payment-method', 'UserController@selectPaymentMethod')->name('selectpaymentmethod');
     Route::get('dashboard/startpayment/{accountId}/{methodId}', 'UserController@startPayment')->name('startpayment');
+
+
+    // paypound payments
+    Route::post('dashboard/start_paypound_charge', 'UserController@startPaypoundCharge')->name('startpaypoundcharge');
+    Route::get('dashboard/verify_paypound_charge', 'UserController@verifyPaypoundCharge')->name('verifypaypoundcharge');
 });
 
 Route::get('/dashboard/weekend', 'Controller@checkdate');

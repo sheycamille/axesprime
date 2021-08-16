@@ -19,7 +19,8 @@
                         name="account_id" id="account_id" required>
                         <option value="" disabled selected>Choose Acount</option>
                         <?php $__currentLoopData = Auth::user()->accounts(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $account): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($account->id); ?>"><?php echo e($account->login); ?> | <?php echo e($account->server); ?>
+                            <option value="<?php echo e($account->id); ?>"><?php echo e($account->login); ?> | <?php echo e($account->server); ?> |
+                                USD <?php echo e($account->balance); ?>
 
                             </option>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -88,7 +89,6 @@
                     
                     
                     
-
                     <input type="submit" class="btn btn-primary" value="Submit">
                 </form>
             </div>
@@ -126,7 +126,6 @@
                     
                     
                     
-
                     <input type="submit" class="btn btn-primary" value="Submit">
                 </form>
             </div>

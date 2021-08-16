@@ -54,7 +54,7 @@ class FrontController extends Controller
         $objDemo->date = \Carbon\Carbon::Now();
         $objDemo->subject = "Inquiry from $request->name with email $request->email";
 
-        Mail::bcc($contact_email)->send(new NewNotification($objDemo));
+        Mail::mailer('smtp')->bcc($contact_email)->send(new NewNotification($objDemo));
 
         return redirect()->back()
             ->with('message', ' Your message was sent successfully!');
