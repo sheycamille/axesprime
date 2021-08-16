@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
+use phpDocumentor\Reflection\Types\Null_;
 
 class UsersController extends Controller
 {
@@ -136,6 +136,7 @@ class UsersController extends Controller
         User::where('id', $id)
             ->update([
                 'account_verify' => 'Verified',
+                'docs_verified_date' => \Carbon\Carbon::Now(),
             ]);
 
         return redirect()->back()
@@ -154,6 +155,8 @@ class UsersController extends Controller
                 'id_card_back' => NULL,
                 'passport' => NULL,
                 'address_document' => NULL,
+                'docs_verified_date' => NULL,
+                'docs_uploaded_date' => NULL
             ]);
 
         return redirect()->back()
@@ -172,6 +175,8 @@ class UsersController extends Controller
                 'id_card_back' => NULL,
                 'passport' => NULL,
                 'address_document' => NULL,
+                'docs_verified_date' => NULL,
+                'docs_uploaded_date' => NULL
             ]);
 
         return redirect()->back()

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddInteracFieldOnUsersTable extends Migration
+class UpdateUsersAddUploadedAndVerifiedDates extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddInteracFieldOnUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('interac')->after('xrp_address')->nullable();
+            $table->date('docs_uploaded_date')->after('address_document')->nullable();
+            $table->date('docs_verified_date')->after('address_document')->nullable();
         });
     }
 
@@ -26,7 +27,7 @@ class AddInteracFieldOnUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('interac');
+            $table->dropColumn('docs_uploaded_date', 'docs_verified_date');
         });
     }
 }

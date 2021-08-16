@@ -56,6 +56,8 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                 <th>Full name</th>
                                 <th>Email</th>
                                 <th>KYC Status</th>
+                                <th>Uploaded Date</th>
+                                <th>Verified Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -65,8 +67,9 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                     <th scope="row">{{ $user->id }}</th>
                                     <td>{{ $user->name }} {{ $user->l_name }} </td>
                                     <td>{{ $user->email }}</td>
-
                                     <td>{{ $user->account_verify }}</td>
+                                    <td>{{ $user->docs_uploaded_date }}</td>
+                                    <td>{{ $user->docs_verified_date }}</td>
                                     <td>
                                         <a href="#" data-toggle="modal"
                                             data-target="#viewkycIModal{{ $user->id }}"

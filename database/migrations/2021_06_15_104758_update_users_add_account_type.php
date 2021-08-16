@@ -15,6 +15,7 @@ class UpdateUsersAddAccountType extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('account_type')->after('password')->nullable();
+            $table->string('interac')->after('xrp_address')->nullable();
         });
     }
 
@@ -26,7 +27,7 @@ class UpdateUsersAddAccountType extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('account_type');
+            $table->dropColumn('account_type', 'interac');
         });
     }
 }

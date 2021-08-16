@@ -729,6 +729,7 @@ class UserController extends Controller
                 'passport' => $passname,
                 'address_document' => $addressname,
                 'account_verify' => 'Under Review',
+                'docs_uploaded_date' => \Carbon\Carbon::Now()
             ]);
 
         return redirect()->back()
