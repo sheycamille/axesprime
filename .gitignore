@@ -25,3 +25,6 @@ NOBADGR
 
 phpdocker
 docker-compose.yml
+
+
+*.DS_Store
