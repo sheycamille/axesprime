@@ -153,7 +153,7 @@ class SettingsController extends Controller
             $setting = Setting::where('name', 'verification_email')->first();
             if (!$setting) $setting = new Setting();
             $setting->name = 'verification_email';
-            $setting->value = $request->contact_email;
+            $setting->value = $request->verification_email;
             $setting->save();
         }
 
