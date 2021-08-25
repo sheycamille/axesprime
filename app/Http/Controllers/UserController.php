@@ -718,7 +718,7 @@ class UserController extends Controller
         $objDemo->sender = $site_name;
         $objDemo->date = \Carbon\Carbon::Now();
         $objDemo->subject = "Action Needed: Verification Documents Uploaded";
-        Mail::mailer('verification')->bcc($contact_email)->send(new NewNotification($objDemo));
+        Mail::mailer('smtp')->bcc($contact_email)->send(new NewNotification($objDemo));
 
 
         //update user
