@@ -106,7 +106,7 @@ if (Auth::user()->dashboard_style == 'light') {
                                             <select required
                                                 class="form-control bg-<?php echo e($bg); ?> text-<?php echo e($text); ?>"
                                                 name="account_id" id="account_id" required>
-                                                <option value="" disabled selected>Choose Acount</option>
+                                                <option value="" disabled selected>Choose Account</option>
                                                 <?php $__currentLoopData = Auth::user()->accounts(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $account): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <option value="<?php echo e($account->id); ?>"><?php echo e($account->login); ?> |
                                                         <?php echo e($account->server); ?> |

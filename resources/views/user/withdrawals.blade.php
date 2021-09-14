@@ -1,12 +1,12 @@
 <?php
 if (Auth::user()->dashboard_style == 'light') {
-$bgmenu = 'blue';
-$bg = 'light';
-$text = 'dark';
+    $bgmenu = 'blue';
+    $bg = 'light';
+    $text = 'dark';
 } else {
-$bgmenu = 'dark';
-$bg = 'dark';
-$text = 'light';
+    $bgmenu = 'dark';
+    $bg = 'dark';
+    $text = 'light';
 } ?>
 @extends('layouts.app')
 @section('deposits-and-withdrawals', 'active')

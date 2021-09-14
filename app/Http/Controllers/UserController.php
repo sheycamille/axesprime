@@ -134,7 +134,7 @@ class UserController extends Controller
         return view('user.deposits')
             ->with(array(
                 'title' => 'Deposits',
-                'deposits' => Deposit::where(['user' => Auth::user()->id])
+                'deposits' => Deposit::where('user', Auth::user()->id)
                     ->orderBy('id', 'desc')
                     ->get(),
             ));
@@ -147,6 +147,9 @@ class UserController extends Controller
         return view('user.withdrawals')
             ->with(array(
                 'title' => 'withdrawals',
+                'withdrawals' => Withdrawal::where('user', Auth::user()->id)
+                    ->orderBy('id', 'desc')
+                    ->get(),
             ));
     }
 
@@ -156,9 +159,6 @@ class UserController extends Controller
     {
         return view('user.mwithdrawal')->with(array(
             'title' => 'Make Withdrawal',
-            'withdrawals' => Withdrawal::where('user', Auth::user()->id)
-                ->orderBy('id', 'desc')
-                ->get(),
             'wmethods' => Wdmethod::where('type', 'withdrawal')
                 ->where('status', 'enabled')->get(),
         ));
@@ -192,6 +192,7 @@ class UserController extends Controller
                 'bch_address' => $request['bch_address'],
                 'bnb_address' => $request['bnb_address'],
                 'interac' => $request['interac'],
+                'paypal_email' => $request['paypal_email'],
             ]);
         return redirect()->back()
             ->with('message', 'Withdrawal Info updated Sucessfully');
@@ -301,7 +302,7 @@ class UserController extends Controller
 
             if (empty($payment_address)) {
                 return redirect()->route('withdrawaldetails')
-                    ->with('message', 'You must set up your coins wallet address before you can withdraw.');
+                    ->with('message', 'You must set up your withdrawal details for the method you are trying to withdraw with, before you can withdraw.');
             }
         }
 

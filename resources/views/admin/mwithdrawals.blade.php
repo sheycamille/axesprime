@@ -178,6 +178,10 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                                 <h3 class="text-{{ $text }}">Interac Email:</h3>
                                                                 <h4 class="text-{{ $text }}">
                                                                     {{ $withdrawal->duser->interac }}</h4><br>
+                                                            @elseif($withdrawal->payment_mode=='PayPal')
+                                                                <h3 class="text-{{ $text }}">PayPal Email:</h3>
+                                                                <h4 class="text-{{ $text }}">
+                                                                    {{ $withdrawal->duser->paypal_email }}</h4><br>
                                                             @elseif($withdrawal->payment_mode=='Bank transfer')
                                                                 <h4 class="text-{{ $text }}">Bank name:
                                                                     {{ $withdrawal->duser->bank_name }}</h4><br>

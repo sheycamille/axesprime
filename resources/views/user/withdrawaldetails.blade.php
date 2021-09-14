@@ -310,6 +310,33 @@ if (Auth::user()->dashboard_style == 'light') {
                                     </div>
                                 </div>
 
+
+                                <div class="card">
+                                    <div class="card-header bg-{{ $bgmenu }}" id="headingFour" data-toggle="collapse"
+                                        data-target="#collapse20" aria-expanded="true" aria-controls="collapse20">
+                                        <div class="span-icon">
+                                            <div class="fa fa-clone"></div>
+                                        </div>
+                                        <div class="span-title text-{{ $text }}">
+                                            PayPal
+                                        </div>
+                                        <div class="span-mode"></div>
+                                    </div>
+                                    <div id="collapseNine" class="collapse show" aria-labelledby="heading20"
+                                        data-parent="#accordion">
+                                        <div class="card-body bg-{{ $bg }} shadow">
+                                            <div class="form-group">
+                                                <h5 class="text-{{ $text }} bg-{{ $bg }}">PayPal Email
+                                                </h5>
+                                                <input type="text" name="paypal_email"
+                                                    value="{{ Auth::user()->paypal_email }}"
+                                                    class="form-control text-{{ $text }} bg-{{ $bg }}"
+                                                    placeholder="Enter PayPal Email Address">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!--......................... end of collaps four -->
                                 <input type="submit" class="btn btn-primary" value="Submit"> &nbsp; &nbsp;
                                 {{-- <a href="{{ url('dashboard/skip_account') }}" style="color:red;">Skip</a> --}}

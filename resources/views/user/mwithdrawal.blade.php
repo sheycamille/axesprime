@@ -124,11 +124,11 @@ if (Auth::user()->dashboard_style == 'light') {
                                 </div>
                             </div>
                         </div>
-                        <!-- /Withdrawals Modal -->
+                        <!-- /Withdrawal Modal -->
                     @endforeach
                 </div>
 
-                <!-- Withdrawal Modal -->
+                <!-- Withdrawal Disabled Modal -->
                 <div id="withdrawdisabled" class="modal fade" role="dialog">
                     <div class="modal-dialog">
                         <!-- Modal content-->
@@ -139,13 +139,13 @@ if (Auth::user()->dashboard_style == 'light') {
                                     data-dismiss="modal">&times;</button>
                             </div>
                             <div class="modal-body bg-{{ $bg }}">
-                                <h4 class="text-{{ $text }}">Withdrawal is Disabled at this time, Please contact
+                                <h4 class="text-{{ $text }}">Withdrawal is disabled at this time, Please contact
                                     support for assistance.</h4>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- /Withdrawals Modal -->
+                <!-- /Withdrawals Disabled Modal -->
             </div>
         </div>
     @endsection
