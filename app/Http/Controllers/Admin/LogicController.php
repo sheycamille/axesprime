@@ -251,11 +251,32 @@ class LogicController extends Controller
 
 
     // Delete deposit
-    public function deldeposit(Request $request, $id)
+    public function rejectdeposit(Request $request, $id)
     {
-        Deposit::where('id', $id)->delete();
+        // fetch models
+        $deposit = Deposit::where('id', $id)->first();
+        $user = User::where('id', $deposit->user)->first();
+
+        // change deposit status
+        $deposit->status = 'Rejected';
+        $deposit->save();
+
+        // get settings
+        $site_name = Setting::getValue('site_name');
+        $currency = Setting::getValue('currency');
+
+        // send email notification
+        $objDemo = new \stdClass();
+        $objDemo->message = "\r Hello $user->name, \r \n
+        This is to inform you that your deposit of $currency$deposit->amount has been received but unfortunately rejected. Please redo the transaction and upload the proof, we will gladly process it. \r\r";
+        $objDemo->sender = "$site_name";
+        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->subject = "Deposit Request Rejected!";
+
+        Mail::mailer('deposits')->bcc($user->email)->send(new NewNotification($objDemo));
+
         return redirect()->back()
-            ->with('message', 'Deposit history has been deleted!');
+            ->with('message', 'Deposit rejected successfully!');
     }
 
 
@@ -366,7 +387,6 @@ class LogicController extends Controller
         // send email notification
         $objDemo = new \stdClass();
         $objDemo->message = "\r Hello $user->name, \r \n
-
         This is to inform you that your deposit of $currency$deposit->amount has been received and processed. You can now check your MT5 account. \r\r";
         $objDemo->sender = "$site_name";
         $objDemo->date = \Carbon\Carbon::Now();

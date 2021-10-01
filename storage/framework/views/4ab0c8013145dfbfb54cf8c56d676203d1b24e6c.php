@@ -20,7 +20,8 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-info alert-dismissable">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
                                 <i class="fa fa-info-circle"></i>
                                 <p class="alert-message"><?php echo Session::get('message'); ?></p>
                             </div>
@@ -32,7 +33,8 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-danger alert-dismissable" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
                                 <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <i class="fa fa-warning"></i> <?php echo e($error); ?>
 
@@ -91,15 +93,14 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                     <i class="fa fa-envelope"></i>
                                                 </a>
 
-                                                <a href="<?php echo e(url('admin/dashboard/deldeposit')); ?>/<?php echo e($deposit->id); ?>"
-                                                    class="m-1 btn btn-danger btn-sm">Delete</a>
                                                 <?php if($deposit->status == 'Processed'): ?>
                                                     <a class="btn btn-success btn-sm" href="#">Processed</a>
                                                 <?php else: ?>
                                                     <a class="btn btn-primary btn-sm"
                                                         href="<?php echo e(url('admin/dashboard/pdeposit')); ?>/<?php echo e($deposit->id); ?>">Process</a>
+                                                    <a href="<?php echo e(url('admin/dashboard/rejectdeposit')); ?>/<?php echo e($deposit->id); ?>"
+                                                        class="m-1 btn btn-danger btn-sm">Reject</a>
                                                 <?php endif; ?>
-
                                             </td>
                                         </tr>
 
@@ -157,15 +158,17 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                         <!-- /POP Modal -->
 
                                         <!-- Send Message Modal -->
-                                        <div id="sendMessageModal<?php echo e($deposit->id); ?>" class="modal fade" role="dialog">
+                                        <div id="sendMessageModal<?php echo e($deposit->id); ?>" class="modal fade"
+                                            role="dialog">
                                             <div class="modal-dialog">
 
                                                 <!-- Modal content-->
                                                 <div class="modal-content">
                                                     <div
                                                         class="modal-header bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?>">
-                                                        <h4 class="modal-title text-<?php echo e($text); ?>">
-                                                            <?php echo e($deposit->duser->name); ?> proof of payment</h4>
+                                                        <h4 class="modal-title text-<?php echo e($text); ?>"> Send Deposit
+                                                            Email
+                                                            <?php echo e($deposit->duser->name); ?></h4>
                                                         <button type="button" class="close text-<?php echo e($text); ?>"
                                                             data-dismiss="modal">&times;</button>
                                                     </div>
@@ -182,11 +185,10 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                             <input type="hidden" name="user_id"
                                                                 value="<?php echo e($deposit->duser->id); ?>">
                                                             <textarea
-                                                                placeholder="This is to inform you that your deposit of $100 has been received and
-                                                                                    processed. You can now check your MT5 account. "
                                                                 class="form-control bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?> text-<?php echo e($text); ?>"
                                                                 name="message" row="3"
-                                                                required>This is to inform you that your deposit of <?php echo e(\App\Models\Setting::getValue('currency')); ?><?php echo e($deposit->amount); ?> has been received and processed. You can now check your MT5 account. </textarea><br />
+                                                                required>This is to inform you that your deposit of <?php echo e(\App\Models\Setting::getValue('currency')); ?><?php echo e($deposit->amount); ?> has been received and processed. You can now check your MT5 account.</textarea>
+                                                            <br />
                                                             <input type="hidden" name="_token"
                                                                 value="<?php echo e(csrf_token()); ?>">
                                                             <input type="hidden" name="type" value="deposit">

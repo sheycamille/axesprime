@@ -20,7 +20,8 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-info alert-dismissable">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
                                 <i class="fa fa-info-circle"></i>
                                 <p class="alert-message">{!! Session::get('message') !!}</p>
                             </div>
@@ -32,7 +33,8 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-danger alert-dismissable" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
                                 @foreach ($errors->all() as $error)
                                     <i class="fa fa-warning"></i> {{ $error }}
                                 @endforeach
@@ -88,15 +90,14 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                     <i class="fa fa-envelope"></i>
                                                 </a>
 
-                                                <a href="{{ url('admin/dashboard/deldeposit') }}/{{ $deposit->id }}"
-                                                    class="m-1 btn btn-danger btn-sm">Delete</a>
                                                 @if ($deposit->status == 'Processed')
                                                     <a class="btn btn-success btn-sm" href="#">Processed</a>
                                                 @else
                                                     <a class="btn btn-primary btn-sm"
                                                         href="{{ url('admin/dashboard/pdeposit') }}/{{ $deposit->id }}">Process</a>
+                                                    <a href="{{ url('admin/dashboard/rejectdeposit') }}/{{ $deposit->id }}"
+                                                        class="m-1 btn btn-danger btn-sm">Reject</a>
                                                 @endif
-
                                             </td>
                                         </tr>
 
@@ -154,7 +155,8 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                         <!-- /POP Modal -->
 
                                         <!-- Send Message Modal -->
-                                        <div id="sendMessageModal{{ $deposit->id }}" class="modal fade" role="dialog">
+                                        <div id="sendMessageModal{{ $deposit->id }}" class="modal fade"
+                                            role="dialog">
                                             <div class="modal-dialog">
 
                                                 <!-- Modal content-->
