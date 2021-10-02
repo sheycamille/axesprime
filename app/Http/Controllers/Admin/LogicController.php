@@ -250,7 +250,7 @@ class LogicController extends Controller
     }
 
 
-    // Delete deposit
+    // Reject deposit
     public function rejectdeposit(Request $request, $id)
     {
         // fetch models
@@ -267,8 +267,10 @@ class LogicController extends Controller
 
         // send email notification
         $objDemo = new \stdClass();
-        $objDemo->message = "\r Hello $user->name, \r \n
-        This is to inform you that your deposit of $currency$deposit->amount has been received but unfortunately rejected. Please redo the transaction and upload the proof, we will gladly process it. \r\r";
+        $objDemo->message = "\r Hello $user->name, \r \n " .
+        "This is to inform you that your deposit of $currency$deposit->amount has been received but unfortunately rejected because of the following reaon: \r \n ".
+        "$request->reason \r \n ".
+        "Please fix the problem, we will gladly process it or contact our support for further assistance. \r\n ";
         $objDemo->sender = "$site_name";
         $objDemo->date = \Carbon\Carbon::Now();
         $objDemo->subject = "Deposit Request Rejected!";
@@ -449,22 +451,29 @@ class LogicController extends Controller
     // process withdrawals
     public function rejectwithdrawal(Request $request)
     {
+        // load the models
         $withdrawal = Withdrawal::where('id', $request->id)->first();
         $user = User::where('id', $withdrawal->user)->first();
 
-        $withdrawal->status = "Rejected: " . $request->reason;
+        // update the model
+        $withdrawal->status = 'Rejected';
+        $withdrawal->save();
 
+        // get settings
         $site_name = Setting::getValue('site_name');
+        $currency = Setting::getValue('currency');
+
         // send email notification
         $objDemo = new \stdClass();
-        $objDemo->message = "Hello $user->name, \ $request->reason";
+        $objDemo->message = "Hello $user->name, \r \n " .
+        "This is to inform you that your withdrawal request of $currency$withdrawal->amount has been received but unfortunately rejected because of the following reason: \r \n " .
+        "$request->reason \r \n " .
+        "Please fix the problem, we will gladly process it or contact our support for further assistance \r \n ";
         $objDemo->sender = $site_name;
         $objDemo->subject = "Rejected Withdrawal Request";
         $objDemo->date = \Carbon\Carbon::Now();
 
         Mail::mailer('withdrawals')->bcc($user->email)->send(new NewNotification($objDemo));
-
-        Withdrawal::where('id', $request->id)->delete();
 
         return redirect()->back()
             ->with('message', 'Withdrawal Request Canceled!');

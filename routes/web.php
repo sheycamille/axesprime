@@ -76,7 +76,7 @@ Route::group(['prefix' => 'admin',  'middleware' => 'isadmin'], function () {
     Route::get('dashboard/resetadpwd/{id}', 'Admin\UsersController@resetadpwd')->name('resetadpwd');
     Route::get('dashboard/switchuser/{id}', 'Admin\LogicController@switchuser');
     Route::get('dashboard/clearacct/{id}', 'Admin\LogicController@clearacct')->name('clearacct');
-    Route::get('dashboard/rejectdeposit/{id}', 'Admin\LogicController@rejectdeposit')->name('rejectdeposit');
+    Route::post('dashboard/rejectdeposit/{id}', 'Admin\LogicController@rejectdeposit')->name('rejectdeposit');
     Route::get('dashboard/pdeposit/{id}', 'Admin\LogicController@pdeposit')->name('pdeposit');
 
     Route::get('dashboard/pwithdrawal/{id}', 'Admin\LogicController@pwithdrawal')->name('pwithdrawal');

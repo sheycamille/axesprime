@@ -90,16 +90,45 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                     <i class="fa fa-envelope"></i>
                                                 </a>
 
-                                                @if ($deposit->status == 'Processed')
-                                                    <a class="btn btn-success btn-sm" href="#">Processed</a>
+                                                @if ($deposit->status == 'Processed' || $deposit->status == 'Rejected')
+                                                    <a class="btn btn-success btn-sm" href="#">{{ $deposit->status }}</a>
                                                 @else
                                                     <a class="btn btn-primary btn-sm"
                                                         href="{{ url('admin/dashboard/pdeposit') }}/{{ $deposit->id }}">Process</a>
-                                                    <a href="{{ url('admin/dashboard/rejectdeposit') }}/{{ $deposit->id }}"
-                                                        class="m-1 btn btn-danger btn-sm">Reject</a>
+                                                    <a class="m-1 btn btn-primary btn-sm" data-toggle="modal"
+                                                        data-target="#rejctModal{{ $deposit->id }}" href="#">Reject</a>
                                                 @endif
                                             </td>
                                         </tr>
+
+                                        <!-- View info modal-->
+                                        <div id="rejctModal{{ $deposit->id }}" class="modal fade" role="dialog">
+                                            <div class="modal-dialog">
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div
+                                                        class="modal-header bg-{{ Auth('admin')->User()->dashboard_style }} ">
+                                                        <h4 class="modal-title text-{{ $text }}">Reason For
+                                                            Rejection.</strong></h4>
+                                                        <button type="button" class="close text-{{ $text }}"
+                                                            data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <div
+                                                        class="modal-body bg-{{ Auth('admin')->User()->dashboard_style }}">
+                                                        <form action="{{ route('rejectdeposit', $deposit->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <textarea
+                                                                class="bg-{{ Auth('admin')->User()->dashboard_style }} text-{{ $text }} mb-2 form-control"
+                                                                row="3" placeholder="Type in here" name="reason"></textarea>
+                                                            <input type="hidden" name="id" value="{{ $deposit->id }}">
+                                                            <input type="submit" class="btn btn-warning" value="Done">
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--End View info modal-->
 
                                         <!-- POP Modal -->
                                         <div id="popModal{{ $deposit->id }}" class="modal fade" role="dialog">

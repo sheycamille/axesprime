@@ -20,7 +20,8 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-info alert-dismissable">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
                                 <i class="fa fa-info-circle"></i>
                                 <p class="alert-message">{!! Session::get('message') !!}</p>
                             </div>
@@ -32,7 +33,8 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-danger alert-dismissable" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
                                 @foreach ($errors->all() as $error)
                                     <i class="fa fa-warning"></i> {{ $error }}
                                 @endforeach
@@ -88,8 +90,9 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                     <a href="#" class="m-1 btn btn-info btn-sm" data-toggle="modal"
                                                         data-target="#viewModal{{ $withdrawal->id }}"><i
                                                             class="fa fa-eye"></i> View</a>
-                                                    @if ($withdrawal->status == 'Processed')
-                                                        <a class="btn btn-success btn-sm" href="#">Processed</a>
+                                                    @if ($withdrawal->status == 'Processed' || $withdrawal->status == 'Rejected')
+                                                        <a class="btn btn-success btn-sm"
+                                                            href="#">{{ $withdrawal->status }}</a>
                                                     @else
                                                         <a class="m-1 btn btn-primary btn-sm"
                                                             href="{{ url('admin/dashboard/pwithdrawal') }}/{{ $withdrawal->id }}">Process</a>
@@ -101,7 +104,8 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                 </td>
                                             </tr>
                                             <!-- View info modal-->
-                                            <div id="rejctModal{{ $withdrawal->id }}" class="modal fade" role="dialog">
+                                            <div id="rejctModal{{ $withdrawal->id }}" class="modal fade"
+                                                role="dialog">
                                                 <div class="modal-dialog">
                                                     <!-- Modal content-->
                                                     <div class="modal-content">
@@ -130,7 +134,8 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                             </div>
                                             <!--End View info modal-->
                                             <!-- View info modal-->
-                                            <div id="viewModal{{ $withdrawal->id }}" class="modal fade" role="dialog">
+                                            <div id="viewModal{{ $withdrawal->id }}" class="modal fade"
+                                                role="dialog">
                                                 <div class="modal-dialog">
 
                                                     <!-- Modal content-->
