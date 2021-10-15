@@ -91,11 +91,12 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                 </a>
 
                                                 @if ($deposit->status == 'Processed' || $deposit->status == 'Rejected')
-                                                    <a class="btn btn-success btn-sm" href="#">{{ $deposit->status }}</a>
+                                                    <a class="@if ($deposit->status == 'Processed') btn-success @else btn-danger @endif btn-xs"
+                                                        href="#">{{ $deposit->status }}</a>
                                                 @else
-                                                    <a class="btn btn-primary btn-sm"
+                                                    <a class="btn btn-primary btn-xs"
                                                         href="{{ url('admin/dashboard/pdeposit') }}/{{ $deposit->id }}">Process</a>
-                                                    <a class="m-1 btn btn-primary btn-sm" data-toggle="modal"
+                                                    <a class="m-1 btn btn-primary btn-xs" data-toggle="modal"
                                                         data-target="#rejctModal{{ $deposit->id }}" href="#">Reject</a>
                                                 @endif
                                             </td>

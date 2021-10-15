@@ -93,16 +93,46 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                     <i class="fa fa-envelope"></i>
                                                 </a>
 
-                                                <?php if($deposit->status == 'Processed'): ?>
-                                                    <a class="btn btn-success btn-sm" href="#">Processed</a>
+                                                <?php if($deposit->status == 'Processed' || $deposit->status == 'Rejected'): ?>
+                                                    <a class="<?php if($deposit->status == 'Processed'): ?> btn-success <?php else: ?> btn-danger <?php endif; ?> btn-xs"
+                                                        href="#"><?php echo e($deposit->status); ?></a>
                                                 <?php else: ?>
-                                                    <a class="btn btn-primary btn-sm"
+                                                    <a class="btn btn-primary btn-xs"
                                                         href="<?php echo e(url('admin/dashboard/pdeposit')); ?>/<?php echo e($deposit->id); ?>">Process</a>
-                                                    <a href="<?php echo e(url('admin/dashboard/rejectdeposit')); ?>/<?php echo e($deposit->id); ?>"
-                                                        class="m-1 btn btn-danger btn-sm">Reject</a>
+                                                    <a class="m-1 btn btn-primary btn-xs" data-toggle="modal"
+                                                        data-target="#rejctModal<?php echo e($deposit->id); ?>" href="#">Reject</a>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>
+
+                                        <!-- View info modal-->
+                                        <div id="rejctModal<?php echo e($deposit->id); ?>" class="modal fade" role="dialog">
+                                            <div class="modal-dialog">
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div
+                                                        class="modal-header bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?> ">
+                                                        <h4 class="modal-title text-<?php echo e($text); ?>">Reason For
+                                                            Rejection.</strong></h4>
+                                                        <button type="button" class="close text-<?php echo e($text); ?>"
+                                                            data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <div
+                                                        class="modal-body bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?>">
+                                                        <form action="<?php echo e(route('rejectdeposit', $deposit->id)); ?>"
+                                                            method="POST">
+                                                            <?php echo csrf_field(); ?>
+                                                            <textarea
+                                                                class="bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?> text-<?php echo e($text); ?> mb-2 form-control"
+                                                                row="3" placeholder="Type in here" name="reason"></textarea>
+                                                            <input type="hidden" name="id" value="<?php echo e($deposit->id); ?>">
+                                                            <input type="submit" class="btn btn-warning" value="Done">
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--End View info modal-->
 
                                         <!-- POP Modal -->
                                         <div id="popModal<?php echo e($deposit->id); ?>" class="modal fade" role="dialog">

@@ -87,16 +87,16 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                 </td>
                                                 <td>
 
-                                                    <a href="#" class="m-1 btn btn-info btn-sm" data-toggle="modal"
+                                                    <a href="#" class="m-1 btn btn-info btn-xs" data-toggle="modal"
                                                         data-target="#viewModal{{ $withdrawal->id }}"><i
                                                             class="fa fa-eye"></i> View</a>
                                                     @if ($withdrawal->status == 'Processed' || $withdrawal->status == 'Rejected')
-                                                        <a class="btn btn-success btn-sm"
+                                                        <a class="@if ($withdrawal->status == 'Processed') btn-success @else btn-danger @endif btn-xs"
                                                             href="#">{{ $withdrawal->status }}</a>
                                                     @else
-                                                        <a class="m-1 btn btn-primary btn-sm"
+                                                        <a class="m-1 btn btn-primary btn-xs"
                                                             href="{{ url('admin/dashboard/pwithdrawal') }}/{{ $withdrawal->id }}">Process</a>
-                                                        <a class="m-1 btn btn-primary btn-sm" data-toggle="modal"
+                                                        <a class="m-1 btn btn-primary btn-xs" data-toggle="modal"
                                                             data-target="#rejctModal{{ $withdrawal->id }}"
                                                             href="#">Reject</a>
                                                     @endif

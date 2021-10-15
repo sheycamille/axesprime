@@ -35,9 +35,9 @@
 <body>
 
     <!--Start of Tawk.to Script-->
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         {!! \App\Models\Setting::getValue('tawk_to') !!}
-    </script>
+    </script> --}}
 
     <!--========================== Header ============================-->
     <!-- ======= Header ======= -->

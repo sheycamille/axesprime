@@ -50,10 +50,7 @@ if (Auth::check() && Auth::user()->dashboard_style == 'light') {
 <body data-background-color="dark">
     <div id="app">
         <!--Start of Tawk.to Script-->
-        <script type="text/javascript">
-            <?php echo \App\Models\Setting::getValue('tawk_to'); ?>
-
-        </script>
+        
         <!--End of Tawk.to Script-->
 
         <!--PayPal-->

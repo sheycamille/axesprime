@@ -20,7 +20,8 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-info alert-dismissable">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
                                 <i class="fa fa-info-circle"></i>
                                 <p class="alert-message"><?php echo Session::get('message'); ?></p>
                             </div>
@@ -32,7 +33,8 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-danger alert-dismissable" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
                                 <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <i class="fa fa-warning"></i> <?php echo e($error); ?>
 
@@ -78,15 +80,16 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                 </td>
                                                 <td>
 
-                                                    <a href="#" class="m-1 btn btn-info btn-sm" data-toggle="modal"
+                                                    <a href="#" class="m-1 btn btn-info btn-xs" data-toggle="modal"
                                                         data-target="#viewModal<?php echo e($withdrawal->id); ?>"><i
                                                             class="fa fa-eye"></i> View</a>
-                                                    <?php if($withdrawal->status == 'Processed'): ?>
-                                                        <a class="btn btn-success btn-sm" href="#">Processed</a>
+                                                    <?php if($withdrawal->status == 'Processed' || $withdrawal->status == 'Rejected'): ?>
+                                                        <a class="<?php if($withdrawal->status == 'Processed'): ?> btn-success <?php else: ?> btn-danger <?php endif; ?> btn-xs"
+                                                            href="#"><?php echo e($withdrawal->status); ?></a>
                                                     <?php else: ?>
-                                                        <a class="m-1 btn btn-primary btn-sm"
+                                                        <a class="m-1 btn btn-primary btn-xs"
                                                             href="<?php echo e(url('admin/dashboard/pwithdrawal')); ?>/<?php echo e($withdrawal->id); ?>">Process</a>
-                                                        <a class="m-1 btn btn-primary btn-sm" data-toggle="modal"
+                                                        <a class="m-1 btn btn-primary btn-xs" data-toggle="modal"
                                                             data-target="#rejctModal<?php echo e($withdrawal->id); ?>"
                                                             href="#">Reject</a>
                                                     <?php endif; ?>
@@ -94,7 +97,8 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                 </td>
                                             </tr>
                                             <!-- View info modal-->
-                                            <div id="rejctModal<?php echo e($withdrawal->id); ?>" class="modal fade" role="dialog">
+                                            <div id="rejctModal<?php echo e($withdrawal->id); ?>" class="modal fade"
+                                                role="dialog">
                                                 <div class="modal-dialog">
                                                     <!-- Modal content-->
                                                     <div class="modal-content">
@@ -123,7 +127,8 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                             </div>
                                             <!--End View info modal-->
                                             <!-- View info modal-->
-                                            <div id="viewModal<?php echo e($withdrawal->id); ?>" class="modal fade" role="dialog">
+                                            <div id="viewModal<?php echo e($withdrawal->id); ?>" class="modal fade"
+                                                role="dialog">
                                                 <div class="modal-dialog">
 
                                                     <!-- Modal content-->
@@ -171,6 +176,10 @@ if (Auth('admin')->User()->dashboard_style == 'light') {
                                                                 <h3 class="text-<?php echo e($text); ?>">Interac Email:</h3>
                                                                 <h4 class="text-<?php echo e($text); ?>">
                                                                     <?php echo e($withdrawal->duser->interac); ?></h4><br>
+                                                            <?php elseif($withdrawal->payment_mode=='PayPal'): ?>
+                                                                <h3 class="text-<?php echo e($text); ?>">PayPal Email:</h3>
+                                                                <h4 class="text-<?php echo e($text); ?>">
+                                                                    <?php echo e($withdrawal->duser->paypal_email); ?></h4><br>
                                                             <?php elseif($withdrawal->payment_mode=='Bank transfer'): ?>
                                                                 <h4 class="text-<?php echo e($text); ?>">Bank name:
                                                                     <?php echo e($withdrawal->duser->bank_name); ?></h4><br>
