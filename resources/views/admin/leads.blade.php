@@ -1,91 +1,92 @@
-<?php
-if (Auth('admin')->User()->dashboard_style == 'light') {
-$text = 'dark';
-} else {
-$text = 'light';
-} ?>
 @extends('layouts.app')
+
+@section('title', 'Manage Leads')
+
 @section('content')
-    @include('admin.topmenu')
-    @include('admin.sidebar')
-    <div class="main-panel bg-{{ Auth('admin')->User()->dashboard_style }}">
-        <div class="content bg-{{ Auth('admin')->User()->dashboard_style }}">
-            <div class="page-inner">
-                <div class="mt-2 mb-5">
+
+@include('admin.topmenu')
+@include('admin.sidebar')
+
+<div class="container-fluid">
+    <div class="fade-in">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header fw-bolder">
                     @if (Auth('admin')->User()->type == 'Super Admin' || Auth('admin')->User()->type == 'Admin')
-                        <h1 class="title1 text-{{ $text }} text-center">Manage New Registered Members </h1> <br>
-                        <br>
+                    <h1 class="title1  text-center">Manage New Registered Members </h1> <br>
+                    <br>
                     @endif
                 </div>
-                @if (Session::has('message'))
+                <div class="card-body">
+
+                    @if (Session::has('message'))
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-info alert-dismissable">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
                                 <i class="fa fa-info-circle"></i>
                                 <p class="alert-message">{!! Session::get('message') !!}</p>
                             </div>
                         </div>
                     </div>
-                @endif
+                    @endif
 
-                @if (count($errors) > 0)
+                    @if (count($errors) > 0)
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-danger alert-dismissable" role="alert">
                                 <button type="button" clsass="close" data-dismiss="alert"
                                     aria-hidden="true">&times;</button>
                                 @foreach ($errors->all() as $error)
-                                    <i class="fa fa-warning"></i> {{ $error }}
+                                <i class="fa fa-warning"></i> {{ $error }}
                                 @endforeach
                             </div>
                         </div>
                     </div>
-                @endif
+                    @endif
 
-                @if (Auth('admin')->User()->type == 'Super Admin' || Auth('admin')->User()->type == 'Admin')
+                    @if (Auth('admin')->User()->type == 'Super Admin' || Auth('admin')->User()->type == 'Admin')
 
                     <div class="row mb-3">
                         <div class="col">
-                            <a href="#" data-toggle="modal" data-target="#assignModal" class="btn btn-primary">Assign</a>
+                            <a href="#" data-toggle="modal" data-target="#assignModal"
+                                class="btn btn-primary">Assign</a>
                             &nbsp; &nbsp;
                             <!-- Assign Modal -->
                             <div id="assignModal" class="modal fade" role="dialog">
                                 <div class="modal-dialog">
                                     <!-- Modal content-->
                                     <div class="modal-content">
-                                        <div class="modal-header bg-{{ Auth('admin')->User()->dashboard_style }}">
-                                            <h4 class="modal-title text-{{ $text }}">Assign Users</h4>
-                                            <button type="button" class="close text-{{ $text }}"
-                                                data-dismiss="modal">&times;</button>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title ">Assign Users</h4>
+                                            <button type="button" class="close " data-dismiss="modal">&times;</button>
                                         </div>
-                                        <div class="modal-body bg-{{ Auth('admin')->User()->dashboard_style }}">
+                                        <div class="modal-body">
                                             <form style="padding:3px;" role="form" method="post"
                                                 action="{{ route('assignuser') }}">
                                                 <div class="form-group">
-                                                    <h5 class="text-{{ $text }}">Select User to Assign</h5>
-                                                    <select name="user_name" id=""
-                                                        class="form-control bg-{{ Auth('admin')->User()->dashboard_style }} text-{{ $text }}">
+                                                    <h5 class="">Select User to Assign</h5>
+                                                    <select name="user_name" id="" class="form-control ">
                                                         @foreach ($users as $user)
-                                                            <option value="{{ $user->id }} ">{{ $user->name }}
-                                                                {{ $user->l_name }}</option>
+                                                        <option value="{{ $user->id }} ">{{ $user->name }}
+                                                            {{ $user->l_name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <h5 class="text-{{ $text }}">Select Admin to assign this user
+                                                    <h5 class="">Select Admin to assign this user
                                                         to.</h5>
-                                                    <select name="admin" id=""
-                                                        class="form-control bg-{{ Auth('admin')->User()->dashboard_style }} text-{{ $text }}">
+                                                    <select name="admin" id="" class="form-control ">
                                                         <option value="">Select</option>
                                                         @foreach ($admin as $user)
-                                                            <option value="{{ $user->id }}">{{ $user->firstName }}
-                                                                {{ $user->lastName }}</option>
+                                                        <option value="{{ $user->id }}">{{ $user->firstName }}
+                                                            {{ $user->lastName }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <input type="submit" class="btn btn-{{ $text }}" value="Assign">
+                                                <input type="submit" class="btn btn-primary" value="Assign">
                                             </form>
                                         </div>
                                     </div>
@@ -96,10 +97,8 @@ $text = 'light';
                                 <form action="{{ route('fileImport') }}" class="form-inline" method="POST"
                                     enctype="multipart/form-data">
                                     <div class="form-group">
-                                        <h5 class="text-{{ $text }}">Import Leads from Excel</h5> &nbsp; &nbsp;
-                                        <input name="file"
-                                            class="form-control bg-{{ Auth('admin')->User()->dashboard_style }} text-{{ $text }}"
-                                            type="file" required>
+                                        <h5 class="">Import Leads from Excel</h5> &nbsp; &nbsp;
+                                        <input name="file" class="form-control " type="file" required>
                                     </div>
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <button class="btn btn-primary" type="submit">Save</button>
@@ -108,9 +107,9 @@ $text = 'light';
                         </div>
                     </div>
                     <div class="row mb-5">
-                        <div class="col-lg-12 card p-4 bg-{{ Auth('admin')->User()->dashboard_style }} shadow">
+                        <div class="col-lg-12 card p-4 shadow">
                             <div class="table-responsive" data-example-id="hoverable-table">
-                                <table id="ShipTable" class="table table-hover text-{{ $text }}">
+                                <table id="ShipTable" class="table table-hover ">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -126,69 +125,73 @@ $text = 'light';
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($users as $list)
-                                            <tr>
-                                                <th scope="row">{{ $list->id }}</th>
-                                                <td>${{ $list->account_bal }}</td>
-                                                <td>{{ $list->name }}</td>
-                                                <td>{{ $list->l_name }}</td>
-                                                <td>{{ $list->email }}</td>
-                                                <td>{{ $list->phone_number }}</td>
-                                                <td>{{ $list->status }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($list->created_at)->toDayDateTimeString() }}
-                                                </td>
-                                                <td>{{ $list->tuser->firstName }} {{ $list->tuser->lastName }}</td>
-                                                <td>
-                                                    @if ($list->cstatus == 'Customer')
-                                                        <a class="btn btn-success btn-sm m-1">Converted</a>
-                                                    @else
-                                                        <a href="{{ url('admin/dashboard/convert') }}/{{ $list->id }}"
-                                                            class="btn btn-primary btn-sm m-1">Convert</a>
-                                                    @endif
+                                        @forelse ($users as $list)
+                                        <tr>
+                                            <th scope="row">{{ $list->id }}</th>
+                                            <td>${{ $list->account_bal }}</td>
+                                            <td>{{ $list->name }}</td>
+                                            <td>{{ $list->l_name }}</td>
+                                            <td>{{ $list->email }}</td>
+                                            <td>{{ $list->phone_number }}</td>
+                                            <td>{{ $list->status }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($list->created_at)->toDayDateTimeString() }}
+                                            </td>
+                                            <td>{{ $list->tuser->firstName }} {{ $list->tuser->lastName }}</td>
+                                            <td>
+                                                @if ($list->cstatus == 'Customer')
+                                                <a class="btn btn-success btn-sm m-1">Converted</a>
+                                                @else
+                                                <a href="{{ url('admin/dashboard/convert') }}/{{ $list->id }}"
+                                                    class="btn btn-primary btn-sm m-1">Convert</a>
+                                                @endif
 
-                                                    <a class="btn btn-info btn-sm m-1" data-toggle="modal"
-                                                        data-target="#editModal{{ $list->id }}">Edit Status</a>
-                                                </td>
-                                            </tr>
+                                                <a class="btn btn-info btn-sm m-1" data-toggle="modal"
+                                                    data-target="#editModal{{ $list->id }}">Edit Status</a>
+                                            </td>
+                                        </tr>
 
-                                            <div id="editModal{{ $list->id }}" class="modal fade" role="dialog">
-                                                <div class="modal-dialog">
-                                                    <!-- Modal content-->
-                                                    <div class="modal-content">
-                                                        <div
-                                                            class="modal-header bg-{{ Auth('admin')->User()->dashboard_style }}">
-                                                            <h4 class="modal-title">Edit this User status</h4>
-                                                            <button type="button" class="close text-{{ $text }}"
-                                                                data-dismiss="modal">&times;</button>
-                                                        </div>
-                                                        <div
-                                                            class="modal-body bg-{{ Auth('admin')->User()->dashboard_style }}">
-                                                            <form method="post" action="{{ route('updateuser') }}">
-                                                                <div class="form-group">
-                                                                    <h5 class=" text-{{ $text }}">User Status</h5>
-                                                                    <textarea name="userupdate" id="" rows="5"
-                                                                        class="form-control bg-{{ Auth('admin')->User()->dashboard_style }} text-{{ $text }}"
-                                                                        placeholder="Enter here"
-                                                                        required>{{ $list->userupdate }}</textarea>
-                                                                </div>
-                                                                <input type="hidden" name="id" value="{{ $list->id }}">
-                                                                <input type="hidden" name="_token"
-                                                                    value="{{ csrf_token() }}">
-                                                                <input type="submit" class="btn btn-primary" value="Save">
+                                        <div id="editModal{{ $list->id }}" class="modal fade" role="dialog">
+                                            <div class="modal-dialog">
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Edit this User status</h4>
+                                                        <button type="button" class="close "
+                                                            data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form method="post" action="{{ route('updateuser') }}">
+                                                            <div class="form-group">
+                                                                <h5 class=" ">User Status</h5>
+                                                                <textarea name="userupdate" id="" rows="5"
+                                                                    class="form-control " placeholder="Enter here"
+                                                                    required>{{ $list->userupdate }}</textarea>
+                                                            </div>
+                                                            <input type="hidden" name="id" value="{{ $list->id }}">
+                                                            <input type="hidden" name="_token"
+                                                                value="{{ csrf_token() }}">
+                                                            <input type="submit" class="btn btn-primary" value="Save">
 
-                                                            </form>
-                                                        </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- /send all users email Modal -->
-                                        @endforeach
+                                        </div>
+                                        <!-- /send all users email Modal -->
+                                        @empty
+                                        <tr>
+                                            <td colspan="10">No data available</td>
+                                        </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                @endif
+                    @endif
+                </div>
             </div>
         </div>
-    @endsection
+    </div>
+</div>
+@endsection

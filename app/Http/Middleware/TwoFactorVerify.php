@@ -11,6 +11,9 @@ use App\Mail\NewNotification;
 use App\Mail\Twofa;
 use Illuminate\Support\Facades\Mail;
 
+use Carbon\Carbon;
+
+
 class TwoFactorVerify
 {
     /**
@@ -26,7 +29,7 @@ class TwoFactorVerify
         $enable_2fa = Setting::getValue('enable_2fa');
         if ($enable_2fa == "no" || !isset($enable_2fa)) {
             return $next($request);
-        } elseif ($user->token_2fa_expiry > \Carbon\Carbon::now()) {
+        } elseif ($user->token_2fa_expiry > Carbon::now()) {
             return $next($request);
         }
 
@@ -42,7 +45,7 @@ class TwoFactorVerify
         $objDemo->message = $user->token_2fa;
         $objDemo->sender = $site_name;
         $objDemo->subject = "Two Factor Code";
-        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->date = Carbon::Now();
 
         Mail::bcc($user->email)->send(new Twofa($objDemo));
 

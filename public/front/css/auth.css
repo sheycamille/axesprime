@@ -1,0 +1,12 @@
+.form-row {
+    max-width: 350px;
+    margin: auto;
+}
+
+.form-group {
+    margin: auto;
+    display: flex;
+    max-width: 350px;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}

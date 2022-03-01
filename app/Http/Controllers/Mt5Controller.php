@@ -13,8 +13,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 use Tarikhagustia\LaravelMt5\LaravelMt5;
-use Tarikhagustia\LaravelMt5\Entities\User;
-use Tarikhagustia\LaravelMt5\Entities\Trade;
+use Tarikh\PhpMeta\Entities\User;
+use Tarikh\PhpMeta\Entities\Trade;
+
+use Carbon\Carbon;
+
+
 
 class Mt5Controller extends Controller
 {
@@ -67,10 +71,9 @@ class Mt5Controller extends Controller
 
         // get logged in user
         // some info will come from their registration
-        $oUser = Auth::user();
+        $oUser = auth()->user();
 
         // set the details for the mt5 account creation
-        $api = new LaravelMt5();
         $user = new User();
 
         $this->setServerConfig('demo');
@@ -78,15 +81,13 @@ class Mt5Controller extends Controller
         $type = 'demo';
         $server = 'AxesPrimeLtd-Demo';
         $user->setGroup(env('MT5_SERVER_GROUP', 'demo\axes'));
-        $redirectRoute = 'account.demoaccounts';
 
-        if ($request->type != 'demo') {
+        if ($request->type !== 'demo') {
             $this->setServerConfig('live');
             $type = 'live';
             $amt = 0;
             $user->setGroup(env('MT5_LIVE_SERVER_GROUP', 'real\axes\1'));
             $server = 'AxesPrimeLtd-Live';
-            $redirectRoute = 'account.liveaccounts';
         }
 
         $password = $this->randomPassword();
@@ -106,10 +107,13 @@ class Mt5Controller extends Controller
         $user->setInvestorPassword($investor_password);
         $user->setPhonePassword($phone_password);
 
+        // mt5 account creation
+        $api = new LaravelMt5();
         try {
             $result = $api->createUser($user);
         } catch (Exception $e) {
-            return redirect()->back()->with('message', $e->getMessage() . '.');
+            $request->session()->flash("message", $e->getMessage());
+            return ["message" => $e->getMessage()];
         }
 
         // save the detials in the mt5 detials table
@@ -136,11 +140,11 @@ class Mt5Controller extends Controller
         // send the user an email with the details of the new account
         $this->notifyuser($mt5Acc);
 
-        return redirect()->route($redirectRoute)
-            ->with('message', 'Your new mt5 account has been created successfully. Check your email for the full account details. Happy trading!');
+        $request->session()->flash("message", "Your new mt5 account has been created successfully. Check your email for the full account details. We are always at your service!");
+        return ["message" => "Your new mt5 account has been created successfully. Check your email for the full account details. We are always at your service!"];
     }
 
-    public function resetmt5password(Request $request)
+    public function resetmt5password()
     {
     }
 
@@ -165,6 +169,8 @@ class Mt5Controller extends Controller
 
     protected function dodeposit($login, $amt)
     {
+        $this->setServerConfig('demo');
+
         $api = new LaravelMt5();
         $trade = new Trade();
         $trade->setLogin($login);
@@ -189,8 +195,8 @@ class Mt5Controller extends Controller
             " \r Password: $mt5Acc->password \r \n " .
             "  \r  Server: $mt5Acc->server \r \n ";
         $objDemo->sender = "$site_name";
-        $objDemo->date = \Carbon\Carbon::Now();
-        $objDemo->subject = "Your new MT5 Account with AXESPRIME!";
+        $objDemo->date = Carbon::Now();
+        $objDemo->subject = "Your new MT5 Account with AxePro!";
 
         Mail::mailer('smtp')->bcc($user->email)->send(new NewNotification($objDemo));
     }

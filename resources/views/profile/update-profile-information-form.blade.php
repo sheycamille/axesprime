@@ -3,7 +3,7 @@
     </x-slot>
 
     <x-slot name="description">
-       
+
     </x-slot>
 
     <x-slot name="form">
@@ -51,20 +51,20 @@
             </div>
         @endif
         <h1>   {{ __('Profile Information') }}</h1>
-        <h3 class="text-lg font-medium text-{{$text}}">
+        <h3 class="text-lg font-medium">
             {{ __('Update your account\'s profile information') }}
         </h3>
         <!-- Name -->
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="name" value="{{ __('Name') }}" />
-            <x-jet-input id="name" type="text" class="form-control bg-{{$bg}} text-{{$text}}" wire:model.defer="state.name" autocomplete="name" />
+            <x-jet-input id="name" type="text" class="form-control " wire:model.defer="state.name" autocomplete="name" />
             <x-jet-input-error for="name" class="mt-2" />
         </div>
 
         <!-- Email -->
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="email" value="{{ __('Email') }}" />
-            <x-jet-input id="email" type="email" class="form-control bg-{{$bg}} text-{{$text}}" wire:model.defer="state.email" />
+            <x-jet-input id="email" type="email" class="form-control " wire:model.defer="state.email" />
             <x-jet-input-error for="email" class="mt-2" />
         </div>
     </x-slot>

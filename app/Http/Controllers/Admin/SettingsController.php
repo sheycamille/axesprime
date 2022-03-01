@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\Models\Setting;
 use App\Models\Asset;
+use App\Models\Country;
+use App\Models\Setting;
 use App\Models\Wdmethod;
 
 use App\Http\Controllers\Controller;
@@ -379,15 +380,18 @@ class SettingsController extends Controller
     //Add withdrawal and deposit method
     public function addwdmethod(Request $request)
     {
+        $countries = implode(',', $request->countries);
         $method = new Wdmethod();
         $method->name = $request['name'];
         $method->setting_key = $request['setting_key'];
         $method->exchange_symbol = $request['exchange_symbol'];
         $method->minimum = $request['minimum'];
         $method->maximum = $request['maximum'];
+        $method->details = $request['details'];
         $method->charges_fixed = $request['charges_fixed'];
         $method->charges_percentage = $request['charges_percentage'];
         $method->duration = $request['duration'];
+        $method->country_ids = $countries;
         $method->type = $request['type'];
         $method->status = $request['status'];
         $method->save();
@@ -397,7 +401,7 @@ class SettingsController extends Controller
     //Update withdrawal and deposit method
     public function updatewdmethod(Request $request)
     {
-
+        $countries = implode(',', $request->countries);
         Wdmethod::where('id', $request['id'])
             ->update([
                 'name' => $request['name'],
@@ -405,7 +409,9 @@ class SettingsController extends Controller
                 'exchange_symbol' => $request['exchange_symbol'],
                 'minimum' => $request['minimum'],
                 'maximum' => $request['maximum'],
+                'details' => $request['details'],
                 'charges_fixed' => $request['charges_fixed'],
+                'country_ids' => $countries,
                 'charges_percentage' => $request['charges_percentage'],
                 'duration' => $request['duration'],
                 'type' => $request['type'],

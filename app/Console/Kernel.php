@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use App\Console\Commands\AutoTopup;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Models\Setting;
@@ -15,7 +14,6 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\AutoTopup::class,
     ];
 
     /**
@@ -26,17 +24,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $weekend_trade = Setting::getValue('weekend_trade');
-
-        // if ($weekend_trade == "true") {
-        //     $schedule->command('auto:topup')
-        //     ->days([1,2,3,4,5])
-        //     ->everyMinute();
-        // } else {
-        $schedule->command('auto:topup')
-            ->everyMinute();
-        //}
-
     }
 
     /**

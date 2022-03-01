@@ -3,67 +3,69 @@
 @section('title', 'Forgot Password')
 
 @section('content')
-<body class="d-flex flex-column h-100 auth-page">
-    <!-- ======= Loginup Section ======= -->
-    <section class="auth">
-        <div class="container">
-            <div class="row justify-content-center user-auth">
-                <div class="col-12 col-md-6 col-lg-6 col-sm-10 col-xl-6 ">
-                    <div class="text-center">
-                        @if(Session::has('message'))
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <p class="alert-message">{!! Session::get('message') !!}</p>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    </div>
-                    @endif
-
-                    @if (session('status'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('status') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    @endif
-                </div>
-
-                <div class="card ">
-                    <h1 class="mt-3 text-center">Password Reset</h1>
-                    <form method="POST" action="{{ route('password.email') }}" class="mt-5 card__form">
-                        {{csrf_field()}}
-
-                        <div class="form-group ">
-                            @if ($errors->has('email'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('email') }}</strong>
-                            </span>
+<main id="main" class="crypto-page">
+    <div class="uk-section in-liquid-6 in-offset-top-10">
+        <div class="uk-container">
+            <div class="uk-grid uk-flex uk-flex-center">
+                <div class="uk-width-5-1@m uk-background-contain uk-background-center-center">
+                    <div class="uk-text-center">
+                        <div class="col-12">
+                            <div class="text-center">
+                                @if(Session::has('message'))
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <p class="alert-message">{!! Session::get('message') !!}</p>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
                             @endif
-                            <small>Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.</small> <br>
-                            <input type="email" class="form-control {{ $errors->has('email') ? ' has-error' : '' }}" name="email" value="{{ old('email') }}" id="email" placeholder="name@example.com" required>
                         </div>
 
-                        <div class="form-group">
-                            <button class="mt-4 btn btn-primary" type="submit">Email Password Reset Link</button>
-                        </div>
-                        <div class="mb-3 text-center">
-                            <small class="mb-2 text-center "> <a href="{{route('login')}}">Repeat Login.</a> </small>
+                        <div class="mb-4 text-center">
+
+                            @if (session('status'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: auto;">
+                                {{ session('status') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            @endif
                         </div>
 
-                        <div class="text-center">
-                            <hr>
-                            <small class="text-center ">&copy; Copyright {{date('Y')}} &nbsp; {{\App\Models\Setting::getValue('site_name')}} <br> All Rights Reserved.</small>
+                        <div class="card ">
+                            <h1 class="mt-3 text-center">@lang('message.forgot_pass.pasreset')</h1>
+                            <form method="POST" action="{{ route('password.email') }}" class="mt-5 card__form">
+                                {{csrf_field()}}
+
+                                <div class="form-row">
+                                    <div class="form-group" style="display:block">
+                                        @if ($errors->has('email'))
+                                        <div class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </div>
+                                        @endif
+                                        <br>
+                                        <div>@lang('message.forgot_pass.forgot').</div>
+                                        <input type="email" class="form-control {{ $errors->has('email') ? ' has-error' : '' }}" name="email" value="{{ old('email') }}" id="email" placeholder="@lang('message.register.example')" required>
+                                    </div>
+                                </div>
+                                <br>
+
+                                <div class="form-group" style="justify-content:center">
+                                    <button class="uk-button uk-button-primary uk-border-rounded" type="submit">@lang('message.forgot_pass.link')</button>
+                                </div>
+                                <div class="mb-3 text-center">
+                                    <small class="mb-2 text-center "> <a href="{{route('login')}}">@lang('message.forgot_pass.repeat').</a> </small>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
-
-    </section>
-</body>
-</html>
+    </div>
+</main>
 @endsection

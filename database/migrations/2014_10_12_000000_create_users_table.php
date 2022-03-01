@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->date('dob')->nullable();
             $table->text('address')->nullable();
-            $table->string('country')->nullable();
+            $table->string('country_id')->nullable();
             $table->string('phone')->nullable();
             $table->string('dashboard_style')->default('dark');
             $table->string('bank_name')->nullable();

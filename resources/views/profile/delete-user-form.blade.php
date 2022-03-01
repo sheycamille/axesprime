@@ -1,16 +1,16 @@
 <x-jet-action-section>
     <x-slot name="title">
-        
+
     </x-slot>
 
     <x-slot name="description">
-        
+
     </x-slot>
 
     <x-slot name="content">
         <h1>{{ __('Delete Account') }}</h1>
         <h5> {{ __('Permanently delete your account.') }}</h5>
-        <div class="max-w-xl text-sm text-{{$text}}">
+        <div class="max-w-xl text-sm">
             {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
         </div>
 

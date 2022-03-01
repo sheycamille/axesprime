@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Mail\NewNotification;
 
+use Carbon\Carbon;
+
+
 class CrmController extends Controller
 {
     //
@@ -48,7 +51,7 @@ class CrmController extends Controller
         $objDemo = new \stdClass();
         $objDemo->message = "This is to inform you that a new task has been assigned to you, Task Title: $request->tasktitle, Start Date: $request->start_date, End Date: $request->end_date, please login to your account to see more.";
         $objDemo->sender = $site_name;
-        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->date = Carbon::Now();
         $objDemo->subject = "New Task";
         //Mail::bcc($mailduser->email)->send(new NewNotification($objDemo));
 
@@ -125,7 +128,7 @@ class CrmController extends Controller
         $objDemo = new \stdClass();
         $objDemo->message = "This is to inform you that a user have been assigned to you, please login to your account for more info";
         $objDemo->sender = $site_name;
-        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->date = Carbon::Now();
         $objDemo->subject = "New User Assigned";
         //Mail::bcc($mailduser->email)->send(new NewNotification($objDemo));
         return redirect()->back()

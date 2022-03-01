@@ -10,6 +10,7 @@ use App\Models\Agent;
 use App\Models\Asset;
 use App\Models\Images;
 use App\Models\Content;
+use App\Models\Country;
 use App\Models\Deposit;
 use App\Models\Wdmethod;
 use App\Models\Testimony;
@@ -18,10 +19,12 @@ use App\Models\Withdrawal;
 use App\Models\AccountType;
 
 use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Tarikhagustia\LaravelMt5\LaravelMt5;
+
 
 class HomeController extends Controller
 {
@@ -34,10 +37,10 @@ class HomeController extends Controller
     public function index()
     {
         //sum total deposited
-        $total_deposited = DB::table('deposits')->select(DB::raw("SUM(amount) as count"))->where('status', 'Processed')->get();
-        $pending_deposited = DB::table('deposits')->select(DB::raw("SUM(amount) as count"))->where('status', 'Pending')->get();
-        $total_withdrawn = DB::table('withdrawals')->select(DB::raw("SUM(amount) as count"))->where('status', 'Processed')->get();
-        $pending_withdrawn = DB::table('withdrawals')->select(DB::raw("SUM(amount) as count"))->where('status', 'Pending')->get();
+        $total_deposited = DB::table('deposits')->select(DB::raw("SUM(amount) as total"))->where('status', 'Processed')->get();
+        $pending_deposited = DB::table('deposits')->select(DB::raw("SUM(amount) as total"))->where('status', 'Pending')->get();
+        $total_withdrawn = DB::table('withdrawals')->select(DB::raw("SUM(amount) as total"))->where('status', 'Processed')->get();
+        $pending_withdrawn = DB::table('withdrawals')->select(DB::raw("SUM(amount) as total"))->where('status', 'Pending')->get();
 
         $userlist = User::count();
         $activeusers = User::where('status', 'active')->count();
@@ -46,10 +49,10 @@ class HomeController extends Controller
 
         return view('admin.dashboard', [
             'title' => 'Admin Dashboard',
-            'total_deposited' => $total_deposited,
-            'pending_deposited' => $pending_deposited,
-            'total_withdrawn' => $total_withdrawn,
-            'pending_withdrawn' => $pending_withdrawn,
+            'total_deposited' => $total_deposited['total'],
+            'pending_deposited' => $pending_deposited['total'],
+            'total_withdrawn' => $total_withdrawn['total'],
+            'pending_withdrawn' => $pending_withdrawn['total'],
             'user_count' => $userlist,
             'activeusers' => $activeusers,
             'blockeusers' => $blockeusers,
@@ -140,20 +143,40 @@ class HomeController extends Controller
     //return settings form
     public function settings(Request $request)
     {
-        include 'currencies.php';
-
-
+        $countries = Country::whereStatus('active')->get();
         $wmethods = Wdmethod::where('type', 'withdrawal')->get();
         $dmethods = Wdmethod::where('type', 'deposit')->get();
         return view('admin.settings')->with(array(
+            'assets' => Asset::all(),
+            //'markets' => markets::all(),
+            'countries' => $countries,
+            'title' => 'System Info Settings'
+        ));
+        //return view('settings')->with(array('title' =>'System Settings'));
+    }
+
+
+    //return settings form
+    public function prefsettings(Request $request)
+    {
+        return view('admin.prefsettings');
+    }
+
+
+    //return settings form
+    public function paysettings(Request $request)
+    {
+        $countries = Country::whereStatus('active')->get();
+        $wmethods = Wdmethod::where('type', 'withdrawal')->get();
+        $dmethods = Wdmethod::where('type', 'deposit')->get();
+        return view('admin.paysettings')->with(array(
             'wmethods' => $wmethods,
             'dmethods' => $dmethods,
             'assets' => Asset::all(),
             //'markets' => markets::all(),
-            'currencies' => $currencies,
-            'title' => 'System Settings'
+            'countries' => $countries,
+            'title' => 'Payment Settings'
         ));
-        //return view('settings')->with(array('title' =>'System Settings'));
     }
 
 
@@ -165,14 +188,13 @@ class HomeController extends Controller
         $this->updateaccounts($user);
 
         //sum total deposited
-        $total_deposited = DB::table('deposits')->select(DB::raw("SUM(amount) as count"))->where('user', $id)->where('status', 'Processed')->get();
+        $total_deposited = DB::table('deposits')->select(DB::raw("SUM(amount) as total"))->where('user', $id)->where('status', 'Processed')->get();
 
         return view('admin.user_wallet')
             ->with(array(
                 'ref_bonus' => $user->ref_bonus,
-                'deposited' => $total_deposited,
+                'deposited' => $total_deposited['total'],
                 'bonus' => $user->totalBonus(),
-                'roi' => $user->roi,
                 'account_bal' => $user->totalBalance(),
                 'user' => $user->name,
                 'title' => 'User Profile',
@@ -330,11 +352,11 @@ class HomeController extends Controller
                 ->with('message', 'Account not found!');
         }
 
-        // initialize the mt5 api
-        $api = new LaravelMt5();
-
         // check and update live account balances
         $this->setServerConfig('live');
+
+        // initialize the mt5 api
+        $api = new LaravelMt5();
 
         // delete the mt5 account
         try {

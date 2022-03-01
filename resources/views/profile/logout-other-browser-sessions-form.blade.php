@@ -1,14 +1,14 @@
 <x-jet-action-section>
     <x-slot name="title">
-        
+
     </x-slot>
 
     <x-slot name="description">
-       
+
     </x-slot>
 
     <x-slot name="content">
-        <div class="max-w-xl text-sm text-{{$text}}">
+        <div class="max-w-xl text-sm">
             <h1 class="text{{$text}}">{{ __('Browser Sessions') }}</h1>
             <h5> {{ __('Manage and log out your active sessions on other browsers and devices.') }}</h5>
             {{ __('If necessary, you may log out of all of your other browser sessions across all of your devices. Some of your recent sessions are listed below; however, this list may not be exhaustive. If you feel your account has been compromised, you should also update your password.') }}
@@ -21,11 +21,11 @@
                     <div class="flex items-center">
                         <div>
                             @if ($session->agent->isDesktop())
-                                <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" style="width:30px;" class="text-{{$text}} d-flex">
+                                <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" style="width:30px;" class=" d-flex">
                                     <path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                                 </svg>
                             @else
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" style="width:30px;" class="text-{{$text}} d-flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" style="width:30px;" class=" d-flex">
                                     <path d="M0 0h24v24H0z" stroke="none"></path><rect x="7" y="4" width="10" height="16" rx="1"></rect><path d="M11 5h2M12 17v.01"></path>
                                 </svg>
                             @endif

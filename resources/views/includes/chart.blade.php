@@ -1,13 +1,4 @@
-<?php
-  if (Auth::user()->dashboard_style == "dark") {
-    $style="dark";
-  } else {
-    $style = "light";
-  }
-
-?>
-
-<div class="white-box" style="height: 850px; width:100%" style="margin:30px 0px 10px 0px;">
+{{-- <div class="white-box" style="height: 850px; width:100%" style="margin:30px 0px 10px 0px;">
     <h4 style="margin-bottom:5px;"> Trade Now</h4>
     <div id="webterminal" style="width:100%;height:800px;"></div>
     <script type="text/javascript" src="https://trade.mql5.com/trade/widget.js"></script>
@@ -17,19 +8,20 @@
             , servers: ["AxesPrimeLtd-Demo", "AxesPrimeLtd-Live"]
             , server: "AxesPrimeLtd-Demo"
             , demoAllServers: true
-            , utmSource: "www.axes-prime.com"
+            , utmSource: "www.axeprogroup.com"
             , startMode: "create_demo"
             , language: "en"
             , colorScheme: "black_on_white"
         });
 
     </script>
-</div>
+</div> --}}
 
 
-<div class="tradingview-widget-container" style="margin:30px 0px 10px 0px;">
+<div class="tradingview-widget-container">
     <div id="tradingview_f933e"></div>
-    <div class="tradingview-widget-copyright"><a href="#" rel="noopener" target="_blank"><span class="blue-text"></span> <span class="blue-text">Personal trading chart</span></a></div>
+    <div class="tradingview-widget-copyright"><a href="#" rel="noopener" target="_blank"><span class="blue-text"></span>
+            <span class="blue-text">Personal trading chart</span></a></div>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script type="text/javascript">
         new TradingView.widget({
@@ -55,15 +47,13 @@
     </script>
 </div>
 
-</div>
-
-
 
 <div class="white-box" style="height: 450px; width:100%">
     <h4 style="margin-bottom:5px;"> Forex Market Fundamental Data</h4>
     <!-- TradingView Widget BEGIN -->
 
-    <span id="tradingview-copyright"><a ref="nofollow noopener" target="_blank" href="http://www.tradingview.com" style="color: rgb(173, 174, 176); font-family: &quot;Trebuchet MS&quot;, Tahoma, Arial, sans-serif; font-size: 13px;"></a></span>
+    <span id="tradingview-copyright"><a ref="nofollow noopener" target="_blank" href="http://www.tradingview.com"
+            style="color: rgb(173, 174, 176); font-family: &quot;Trebuchet MS&quot;, Tahoma, Arial, sans-serif; font-size: 13px;"></a></span>
     <script src="https://s3.tradingview.com/external-embedding/embed-widget-forex-cross-rates.js">
         {
             "currencies": [
@@ -88,5 +78,4 @@
         }
 
     </script>
-
 </div>

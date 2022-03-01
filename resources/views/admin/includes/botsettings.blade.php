@@ -1,28 +1,28 @@
 <form method="post" action="{{route('updatebot')}}" enctype="multipart/form-data">
     <div class="form-group">
-        <h5 class="text-{{$text}}">Bot Link</h5>
-        <input type="text" name="bot_link" value="{{\App\Models\Setting::getValue('bot_link')}}" class="form-control bg-{{Auth('admin')->User()->dashboard_style}} text-{{$text}}">
+        <h5 class="">Bot Link</h5>
+        <input type="text" name="bot_link" value="{{\App\Models\Setting::getValue('bot_link')}}" class="form-control">
     </div>
     <div class="form-group">
-        <h5 class="text-{{$text}}">Telegram Token</h5>
-        <input type="text" name="telegram_token" value="{{\App\Models\Setting::getValue('telegram_token')}}" class="form-control  bg-{{Auth('admin')->User()->dashboard_style}} text-{{$text}}" >
+        <h5 class="">Telegram Token</h5>
+        <input type="text" name="telegram_token" value="{{\App\Models\Setting::getValue('telegram_token')}}" class="form-control " >
     </div>
     <div class="form-group">
-        <h5 class="text-{{$text}}">Bot group chat link</h5>
-        <input type="text" name="bot_group_chat" value="{{\App\Models\Setting::getValue('bot_group_chat')}}" class="form-control bg-{{Auth('admin')->User()->dashboard_style}} text-{{$text}}">
+        <h5 class="">Bot group chat link</h5>
+        <input type="text" name="bot_group_chat" value="{{\App\Models\Setting::getValue('bot_group_chat')}}" class="form-control">
     </div>
 
     <div class="form-group">
         <label for=""></label>
-        <h5 class="text-{{$text}}">Bot channel link</h5>
-        <input type="text" name="bot_channel" value="{{\App\Models\Setting::getValue('bot_channel')}}" class="form-control bg-{{Auth('admin')->User()->dashboard_style}} text-{{$text}}">
+        <h5 class="">Bot channel link</h5>
+        <input type="text" name="bot_channel" value="{{\App\Models\Setting::getValue('bot_channel')}}" class="form-control">
     </div>
 
     <div class="form-group">
         <div class="sign-u">
             <div class="sign-up1">
                 <h4></h4>
-                <h5 class="text-{{$text}}">Activate/Deactivate bot:</h5>
+                <h5 class="">Activate/Deactivate bot:</h5>
             </div>
             <div class="sign-up2">
             <label class="switch">

@@ -14,6 +14,9 @@ use Laravel\Jetstream\Jetstream;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use stdClass;
 
+use Carbon\Carbon;
+
+
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
@@ -37,7 +40,7 @@ class CreateNewUser implements CreatesNewUsers
             'state' => ['required', 'string',],
             'zip_code' => ['required', 'string',],
             'country' => ['required', 'string',],
-            'g-recaptcha-response' => 'required|captcha',
+            // 'g-recaptcha-response' => 'required|captcha',
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
         ])->validate();
 
@@ -47,10 +50,10 @@ class CreateNewUser implements CreatesNewUsers
             'phone' => $input['phone'],
             'account_type' => $input['account_type'],
             'address' => $input['address'],
-            'town' => $input['town'],
-            'state' => $input['state'],
+            'town_id' => $input['town'],
+            'state_id' => $input['state'],
             'zip_code' => $input['zip_code'],
-            'country' => $input['country'],
+            'country_id' => $input['country'],
             'status' => 'active',
             'password' => Hash::make($input['password']),
         ]);
@@ -70,17 +73,17 @@ class CreateNewUser implements CreatesNewUsers
             'id' =>  $user->id,
             'hash' => $hash,
         ]);
-        $objDemo->message = "\r Hello $user->name, \r\n
+        $objDemo->message = "\r Hi $user->name, \r\n
         \r\n This is to inform you that you have successfully registered on our $site_name \r\n "; //. ".<br> Please click on the button below to verify your email. <br><br> <a class='button button-primary' href='" . $link . "' style='margin:20px 0; text-align:center; margin:auto; display:block; width:30%;'>Verify Account</a>";
         $objDemo->sender = "$site_name";
         // $objDemo->link = $link;
-        $objDemo->date = \Carbon\Carbon::Now();
-        $objDemo->subject = "Welcome To AXESPRIME, Your Reputable Financial Broker.";
+        $objDemo->date = Carbon::Now();
+        $objDemo->subject = "Welcome To AxePro, The world’s #1 multi-asset broker.";
 
 
         $mail = new NewNotification($objDemo);
-        $mail->subject = "Welcome To AXESPRIME, Your Reputable Financial Broker.";
-        Mail::bcc($user->email)->send($mail);
+        $mail->subject = "Welcome To AxePro, The world’s #1 multi-asset broker.";
+        Mail::mailer('smtp')->bcc($user->email)->send($mail);
 
         // show message so client can go get verified
         // $message = "Thanks for registering your account, please check your email(including the spam folder) to verify your profile. You won't be able to request for withdrawals, if you can't find the email, visit the <form style='display: inline-block;' method='post' action='" . route('verification.send') . "'><input type='hidden' name='_token' value='" . csrf_token() . "'><input class='btn btn-sm btn-primary inline-block' value='email verification page' type='submit'> </form> <p class='alert-message'>to request a new verification email and complete the process.</p>";

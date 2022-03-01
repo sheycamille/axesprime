@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin\Auth;
 
-use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+
+use App\Models\Admin;
+
+use App\Notifications\TwoFactorCode;
 use App\Http\Controllers\Controller;
 
 class LoginController extends Controller
@@ -48,8 +51,7 @@ class LoginController extends Controller
      */
     public function adminlogin(Request $request)
     {
-        //$this->validator($request);
-        $data =  $this->validate($request, [
+        $this->validate($request, [
             'email'    => 'required|email|exists:admins|min:5|max:191',
             'password' => 'required|string|min:4|max:255',
         ]);
@@ -58,8 +60,14 @@ class LoginController extends Controller
         $password = $request->password;
 
         if (Auth::guard('admin')->attempt(['email' => $email, 'password' => $password, 'status' => 'active'])) {
+            $user = Admin::whereEmail($email)->first();
+            if ($user) {
+                $user->generateTwoFactorCode();
+                $user->notify(new TwoFactorCode());
+            }
             $request->session()->regenerate();
-            return redirect()->intended('admin/dashboard');
+            return redirect()->intended('adminlogin/verify');
+            // return redirect()->intended('admin/dashboard');
         }
 
         return back()->withErrors([
@@ -81,6 +89,19 @@ class LoginController extends Controller
         }
     }
 
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        $user->generateTwoFactorCode();
+        $user->notify(new TwoFactorCode());
+    }
 
     /**
      * Logout the admin.

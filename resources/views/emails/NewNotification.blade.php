@@ -12,10 +12,10 @@
     @endif
 
 
-    @php echo("\r We are here to serve you. Happy trading! \r\n") @endphp
+    @php echo("\r We are here to serve you. Have a great day! \r\n") @endphp
 
 
     @php echo("\r Kind regards") @endphp,
-    {{ "\r " . $demo->sender }}, @php echo("your reputable financial broker.\r\n") @endphp.
+    {{ "\r " . $demo->sender }}, @php echo("Your #1 Multi-Asset Broker.\r\n") @endphp.
 
 @endcomponent

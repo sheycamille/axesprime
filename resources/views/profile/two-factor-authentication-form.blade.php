@@ -1,15 +1,15 @@
 <x-jet-action-section>
     <x-slot name="title">
-        
+
     </x-slot>
 
     <x-slot name="description">
-        
+
     </x-slot>
 
     <x-slot name="content">
         <h1>{{ __('Two Factor Authentication') }}</h1>
-        <h3 class="text-lg font-medium text-{{$text}}">
+        <h3 class="text-lg font-medium">
             @if ($this->enabled)
                 {{ __('You have enabled two factor authentication.') }}
             @else
@@ -17,8 +17,8 @@
             @endif
         </h3>
 
-        <div class="max-w-xl mt-3 text-sm text-{{$text}}">
-           
+        <div class="max-w-xl mt-3 text-sm">
+
             <h5> {{ __('Add additional security to your account using two factor authentication.') }}</h5>
             <p>
                 {{ __('When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may retrieve this token from your phone\'s Google Authenticator application.') }}
@@ -27,7 +27,7 @@
 
         @if ($this->enabled)
             @if ($showingQrCode)
-                <div class="max-w-xl mt-4 text-sm text-{{$text}}">
+                <div class="max-w-xl mt-4 text-sm">
                     <p class="font-semibold">
                         {{ __('Two factor authentication is now enabled. Scan the following QR code using your phone\'s authenticator application.') }}
                     </p>
@@ -39,13 +39,13 @@
             @endif
 
             @if ($showingRecoveryCodes)
-                <div class="max-w-xl mt-4 text-sm text-{{$text}}">
-                    <p class="font-semibold text-{{$text}}">
+                <div class="max-w-xl mt-4 text-sm">
+                    <p class="font-semibold">
                         {{ __('Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.') }}
                     </p>
                 </div>
 
-                <div class="grid max-w-xl gap-1 px-4 py-4 mt-4 font-mono text-sm bg-{{$bg}} rounded-lg">
+                <div class="grid max-w-xl gap-1 px-4 py-4 mt-4 font-mono text-sm  rounded-lg">
                     @foreach (json_decode(decrypt($this->user->two_factor_recovery_codes), true) as $code)
                         <div>{{ $code }}</div>
                     @endforeach

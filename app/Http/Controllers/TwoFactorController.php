@@ -14,6 +14,8 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
+use Carbon\Carbon;
+
 
 class TwoFactorController extends BaseController
 {
@@ -28,7 +30,7 @@ class TwoFactorController extends BaseController
 
         if ($request->input('2fa') == Auth::user()->token_2fa) {
             $user = Auth::user();
-            $user->token_2fa_expiry = \Carbon\Carbon::now()->addMinutes(config('session.lifetime'));
+            $user->token_2fa_expiry = Carbon::now()->addMinutes(config('session.lifetime'));
             $user->save();
 
             $site_name = Setting::getValue('site_name');
@@ -37,7 +39,7 @@ class TwoFactorController extends BaseController
             $objDemo = new \stdClass();
             $objDemo->message = "This is a successful login on your account. If this was not you, kindly take action by changing your account and email passwords.";
             $objDemo->sender = $site_name;
-            $objDemo->date = \Carbon\Carbon::Now();
+            $objDemo->date = Carbon::now();
             $objDemo->subject = "Successful login";
 
             Mail::bcc($user->email)->send(new NewNotification($objDemo));

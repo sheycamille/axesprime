@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'AXESPRIME'),
+    'name' => env('APP_NAME', 'AxePro Group'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://axes-prime.com'),
+    'url' => env('APP_URL', 'http://axeprogroup.com'),
 
     'asset_url' => env('ASSET_URL', null),
 

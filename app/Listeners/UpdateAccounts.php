@@ -38,20 +38,20 @@ class UpdateAccounts
         if (strpos(strtolower(get_class($user)), 'admin') > -1)
             return;
 
-        // initialize the mt5 api
-        $api = new LaravelMt5();
-
         // check and update live account balances
         $this->setServerConfig('live');
 
         // Get user mt5 accounts
         $liveLogins = $user->accounts();
-        // $demoLogins = $user->demoaccounts();
+        $demoLogins = $user->demoaccounts();
 
         // var_dump(config('mt5.server'));
         // echo ('<br><br>');
         foreach ($liveLogins as $acc) {
             try {
+                // initialize the mt5 api
+                $api = new LaravelMt5();
+
                 // var_dump($acc->login);
                 // echo ('<br><br>');
                 $data = $api->getUser($acc->login);
@@ -76,6 +76,10 @@ class UpdateAccounts
         // echo ('<br><br>');
         // foreach ($demoLogins as $acc) {
         //     try {
+
+        //         // initialize the mt5 api
+        //         $api = new LaravelMt5();
+
         //         var_dump($acc->login);
         //         echo ('<br><br>');
         //         $data = $api->getUser($acc->login);
@@ -96,17 +100,18 @@ class UpdateAccounts
 
     protected function setServerConfig($type)
     {
-        if ($type == 'demo')
+        if ($type == 'demo') {
             config([
                 'mt5.server' => env('MT5_SERVER_IP', '192.96.201.1'),
                 'mt5.login' => env('MT5_SERVER_WEB_LOGIN', 1096),
                 'mt5.password' => env('MT5_SERVER_WEB_PASSWORD', 'wqzbj5eo'),
             ]);
-        else
+        } else {
             config([
                 'mt5.server' => env('MT5_LIVE_SERVER_IP', '207.244.81.1'),
                 'mt5.login' => env('MT5_LIVE_SERVER_WEB_LOGIN', 1187),
-                'mt5.password' => env('MT5_LIVE_SERVER_WEB_PASSWORD', 'hgg3vszw'),
+                'mt5.password' => env('MT5_LIVE_SERVER_WEB_PASSWORD', 'cmc8ttmv'),
             ]);
+        }
     }
 }

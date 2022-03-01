@@ -2,7 +2,7 @@
 
 @section('title', 'Our Products')
 
-@section('products-menu-item', 'active')
+@section('products-menu-item', 'uk-active')
 
 @section('content')
 <main id="main" class="about-us-page">

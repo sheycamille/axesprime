@@ -1,128 +1,145 @@
-<?php
-if (Auth('admin')->User()->dashboard_style == "light") {
-    $text = "dark";
-} else {
-    $text = "light";
-}
-?>
 @extends('layouts.app')
-@section("manage-users", 'active')
-@section("add-user", 'active')
+
+@section('title', 'Refer User')
+
+@section("manage-users", 'c-show')
+@section("add-user", 'c-active')
+
 @section('content')
+
 @include('admin.topmenu')
 @include('admin.sidebar')
-<div class="main-panel bg-{{Auth('admin')->User()->dashboard_style}}">
-    <div class="content bg-{{Auth('admin')->User()->dashboard_style}} ">
-        <div class="page-inner">
-            <div class="mt-2 mb-4">
-                <h1 class="title1 text-{{$text}} text-center">Add A New User to {{\App\Models\Setting::getValue('site_name')}} Community</h1>
-            </div>
-            @if(Session::has('message'))
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="alert alert-info alert-dismissable">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="fa fa-info-circle"></i> {{Session::get('message')}}
-                    </div>
+
+<div class="container-fluid">
+    <div class="fade-in">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header fw-bolder">
+                    Add A New User to {{\App\Models\Setting::getValue('site_name')}} Community
                 </div>
-            </div>
-            @endif
+                <div class="card-body">
 
-            @if(count($errors) > 0)
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="alert alert-danger alert-dismissable" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        @foreach ($errors->all() as $error)
-                        <i class="fa fa-warning"></i> {{ $error }}
-                        @endforeach
+                    @if(Session::has('message'))
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="alert alert-info alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
+                                <i class="fa fa-info-circle"></i> {{Session::get('message')}}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            @endif
-            <div class="mb-5 row">
-                <div class="col-lg-8 offset-lg-2 card p-3 bg-{{Auth('admin')->User()->dashboard_style}} shadow">
-                    <form method="POST" action="{{ url('admin/dashboard/saveuser') }}">
-                        {{ csrf_field() }}
+                    @endif
 
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <h4 class="text-{{$text}}">FullName</h4>
-                            <div>
-                                <input id="name" type="text" class="form-control bg-{{Auth('admin')->User()->dashboard_style}} text-{{$text}}" name="name" value="{{ old('name') }}" required>
-                                @if ($errors->has('name'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('name') }}</strong>
-                                </span>
-                                @endif
+                    @if(count($errors) > 0)
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="alert alert-danger alert-dismissable" role="alert">
+                                <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true">&times;</button>
+                                @foreach ($errors->all() as $error)
+                                <i class="fa fa-warning"></i> {{ $error }}
+                                @endforeach
                             </div>
                         </div>
+                    </div>
+                    @endif
+                    <div class="mb-5 row">
+                        <div class="col-lg-8 offset-lg-2 card p-3">
+                            <form method="POST" action="{{ url('admin/dashboard/saveuser') }}">
+                                {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                                    <h4 class="">FullName</h4>
+                                    <div>
+                                        <input id="name" type="text"
+                                            class="form-control"
+                                            name="name" value="{{ old('name') }}" required>
+                                        @if ($errors->has('name'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('name') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
 
-                            <h4 class="text-{{$text}}">E-Mail Address</h4>
-                            <div>
-                                <input id="email" type="email" class="form-control bg-{{Auth('admin')->User()->dashboard_style}} text-{{$text}}" name="email" value="{{ old('email') }}" required>
+                                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
 
-                                @if ($errors->has('email'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('email') }}</strong>
-                                </span>
-                                @endif
-                            </div>
+                                    <h4 class="">E-Mail Address</h4>
+                                    <div>
+                                        <input id="email" type="email"
+                                            class="form-control"
+                                            name="email" value="{{ old('email') }}" required>
+
+                                        @if ($errors->has('email'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+
+                                    <h4 class="">Phone number</h4>
+                                    <div>
+                                        <input id="phone" type="number"
+                                            class="form-control"
+                                            name="phone" value="{{ old('phone') }}" required>
+
+                                        @if ($errors->has('phone'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('phone') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+
+                                    <h4 class="">Password</h4>
+                                    <div>
+                                        <input id="password" type="password"
+                                            class="form-control"
+                                            name="password" required>
+
+                                        @if ($errors->has('password'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+                                    <h4 class="">Confirm Password</h4>
+
+                                    <div>
+                                        <input id="password-confirm" type="password"
+                                            class="form-control"
+                                            name="password_confirmation" required>
+
+                                        @if ($errors->has('password_confirmation'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('password_confirmation') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div>
+                                        <button type="submit" class="px-5 btn btn-primary btn-lg">
+                                            <i class="fa fa-btn fa-user"></i> Save User
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-
-                            <h4 class="text-{{$text}}">Phone number</h4>
-                            <div>
-                                <input id="phone" type="number" class="form-control bg-{{Auth('admin')->User()->dashboard_style}} text-{{$text}}" name="phone" value="{{ old('phone') }}" required>
-
-                                @if ($errors->has('phone'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('phone') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-
-                            <h4 class="text-{{$text}}">Password</h4>
-                            <div>
-                                <input id="password" type="password" class="form-control bg-{{Auth('admin')->User()->dashboard_style}} text-{{$text}}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('password') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <h4 class="text-{{$text}}">Confirm Password</h4>
-
-                            <div>
-                                <input id="password-confirm" type="password" class="form-control bg-{{Auth('admin')->User()->dashboard_style}} text-{{$text}}" name="password_confirmation" required>
-
-                                @if ($errors->has('password_confirmation'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div>
-                                <button type="submit" class="px-5 btn btn-primary btn-lg">
-                                    <i class="fa fa-btn fa-user"></i> Save User
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    @endsection
+</div>
+@endsection

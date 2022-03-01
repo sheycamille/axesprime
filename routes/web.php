@@ -23,20 +23,40 @@ if (version_compare(PHP_VERSION, '7.1.0', '>=')) {
     // error_reporting(E_ALL ^ E_WARNING); // Maybe this is enough
 }
 
-//cron url
-// Route::get('/cron', 'Controller@autotopup')->name('cron');
-
 //Front Pages Route
 Route::get('/', 'FrontController@index')->name('home');
 Route::get('about-us', 'FrontController@about')->name('about');
-Route::get('products', 'FrontController@products')->name('products');
-Route::get('account-types', 'FrontController@accountTypes')->name('account-types');
-Route::get('trading-platforms', 'FrontController@tradingPlatforms')->name('trading-platforms');
-Route::get('market-news', 'FrontController@marketNews')->name('market-news');
-Route::get('economic-calender', 'FrontController@economicCalender')->name('economic-calender');
+Route::get('security', 'FrontController@security')->name('security');
+Route::get('credit-score', 'FrontController@creditScore')->name('credit-score');
+Route::get('market-news', 'FrontController@marketNews')->name('news');
+Route::get('economic-calender', 'FrontController@economicCalender')->name('calender');
+Route::get('calculator', 'FrontController@calculator')->name('calculator');
+Route::get('webtrader', 'FrontController@webtrader')->name('webtrader');
+Route::get('metatrader', 'FrontController@metatrader')->name('metatrader');
 Route::get('contact-us', 'FrontController@contact')->name('contact');
-Route::post('/send-contact-message', 'FrontController@sendContact')->name('sendcontactmessage');
-Route::get('private/ftds', 'FrontController@ftds')->name('ftds');
+Route::get('forex', 'FrontController@forex')->name('forex');
+Route::get('futures', 'FrontController@futures')->name('futures');
+Route::get('indices', 'FrontController@indices')->name('indices');
+Route::get('shares', 'FrontController@shares')->name('shares');
+Route::get('metals', 'FrontController@metals')->name('metals');
+Route::get('energies', 'FrontController@energies')->name('energies');
+Route::get('crypto', 'FrontController@crypto')->name('crypto');
+Route::get('privacy', 'FrontController@privacy')->name('privacy');
+Route::get('terms-of-serv', 'FrontController@terms')->name('terms-of-serv');
+Route::get('order-execution', 'FrontController@Execution')->name('order-execution');
+Route::get('risk-disclosure', 'FrontController@disclosure')->name('risk-disclosure');
+// Route::get('products', 'FrontController@products')->name('products');
+// Route::get('account-types', 'FrontController@accountTypes')->name('account-types');
+// Route::get('trading-platforms', 'FrontController@tradingPlatforms')->name('trading-platforms');
+// Route::post('/send-contact-message', 'FrontController@sendContact')->name('sendcontactmessage');
+// Route::get('private/ftds', 'FrontController@ftds')->name('ftds');
+
+Route::get('dependent-dropdown','FrontController@fetchDependent');
+Route::get('get-state-list','FrontController@getStateList');
+Route::get('get-town-list','FrontController@getTownList');
+
+// switch lang
+Route::get('/switch/lang/{lang}', 'FrontController@switchLang')->name('switchlang');
 
 
 // Everything About Admin Route started here
@@ -45,9 +65,11 @@ Route::prefix('adminlogin')->group(function () {
     Route::post('login', 'Admin\Auth\LoginController@adminlogin')->name('adminlogin');
     Route::post('logout', 'Admin\Auth\LoginController@adminlogout')->name('adminlogout');
     Route::get('dashboard', 'Admin\Auth\LoginController@validate_admin')->name('validate_admin');
+    Route::get('verify/resend', 'Admin\Auth\TwoFactorController@resend')->name('admin.verify.resend');
+    Route::resource('verify', 'Admin\Auth\TwoFactorController')->only(['index', 'store'])->name('get', 'admin.verify');
 });
 
-Route::group(['prefix' => 'admin',  'middleware' => 'isadmin'], function () {
+Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], function () {
     Route::get('dashboard', 'Admin\HomeController@index')->name('admin.dashboard');
     Route::get('dashboard/manageusers', ['uses' => 'Admin\HomeController@manageusers'])->name('manageusers');
 
@@ -64,6 +86,8 @@ Route::group(['prefix' => 'admin',  'middleware' => 'isadmin'], function () {
     Route::get('dashboard/madmin', 'Admin\HomeController@madmin')->name('madmin');
     Route::get('dashboard/msubtrade', 'Admin\HomeController@msubtrade')->name('subtrade');
     Route::get('dashboard/settings', 'Admin\HomeController@settings')->name('settings');
+    Route::get('dashboard/preferences', 'Admin\HomeController@prefsettings')->name('preferencesettings');
+    Route::get('dashboard/payments', 'Admin\HomeController@paysettings')->name('paymentsettings');
     Route::get('dashboard/frontpage', 'Admin\HomeController@frontpage')->name('frontpage');
     Route::get('dashboard/adduser', 'Admin\HomeController@adduser')->name('adduser');
     Route::post('dashboard/topup', 'Admin\LogicController@topup')->name('topup');
@@ -246,6 +270,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // paypound payments
     Route::post('dashboard/start_paypound_charge', 'UserController@startPaypoundCharge')->name('startpaypoundcharge');
     Route::get('dashboard/verify_paypound_charge', 'UserController@verifyPaypoundCharge')->name('verifypaypoundcharge');
+
+    // paystudio payments
+    Route::post('dashboard/start_paystudio_charge', 'UserController@startPayStudioCharge')->name('startpaystudiocharge');
+    Route::get('dashboard/verify_paystudio_charge', 'UserController@verifyPayStudioCharge')->name('verifypaystudiocharge');
+
+    // chargemoney payments
+    Route::post('dashboard/start_chargemoney_charge', 'UserController@startChargeMoneyCharge')->name('startchargemoneycharge');
+    Route::get('dashboard/verify_chargemoney_charge', 'UserController@verifyChargeMoneyCharge')->name('verifychargemoneycharge');
 });
 
 Route::get('/dashboard/weekend', 'Controller@checkdate');

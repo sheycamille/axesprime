@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Country;
 use App\Models\Setting;
 use App\Models\Deposit;
 use App\Models\Wdmethod;
@@ -25,7 +26,10 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
-use Tarikhagustia\LaravelMt5\Entities\Trade;
+use Tarikh\PhpMeta\Entities\Trade;
+
+use Carbon\Carbon;
+
 
 class UserController extends Controller
 {
@@ -65,7 +69,7 @@ class UserController extends Controller
         }
 
         //sum total deposited
-        $total_deposited = DB::table('deposits')->select(DB::raw("SUM(amount) as count"))->where('user', $user->id)->where('status', 'Processed')->get();
+        $total_deposited = DB::table('deposits')->select(DB::raw("SUM(amount) as total"))->where('user', $user->id)->where('status', 'Processed')->get();
 
         //Get bonus from users table
         $user = User::where('id', $user->id)->first();
@@ -87,7 +91,7 @@ class UserController extends Controller
             ->with(array(
                 //'earnings'=>$earnings,
                 'title' => 'User Panel',
-                'deposited' => $total_deposited,
+                'deposited' => $total_deposited['total'],
                 'total_bonus' => $total_bonus,
                 'total_balance' => $total_balance,
             ));
@@ -97,7 +101,7 @@ class UserController extends Controller
     // profile route
     public function profile()
     {
-        include 'countries.php';
+        $countries = Country::whereStatus('active')->get();
         $userinfo = User::where('id', Auth::user()->id)->first();
 
         return view('user.profile')->with(array(
@@ -118,10 +122,10 @@ class UserController extends Controller
                 'phone' => $request->phone,
                 'address' => $request->address,
                 'phone' => $request->phone,
-                'town' => $request->town,
-                'state' => $request->state,
+                'town_id' => $request->town,
+                'state_id' => $request->state,
                 'zip_code' => $request->zip_code,
-                'country' => $request->country,
+                'country_id' => $request->country,
             ]);
         return redirect()->back()
             ->with('message', 'Profile Information Updated Sucessfully!');
@@ -245,7 +249,7 @@ class UserController extends Controller
             "\r This is to inform you of a successfull Deposit of $currency$request->amount, that just occured on your system. \r\n" .
             "\r Please login to review and take the neccesary action. \r\n";
         $objDemo->sender = $site_name;
-        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->date = Carbon::Now();
         $objDemo->subject = "Action Needed: Successful Deposit";
         Mail::mailer('smtp')->bcc($deposit_email)->send(new NewNotification($objDemo));
 
@@ -333,7 +337,7 @@ class UserController extends Controller
             "\r This is to inform you that you a user has made a withdrawal request of $currency$request->amount. \r\n" .
             "\r Please kindly login to your account and review and take the neccesary action. \r\n";
         $objDemo->sender = $site_name;
-        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->date = Carbon::Now();
         $objDemo->subject = "Action Needed: Withdrawal Request";
 
         Mail::mailer('smtp')->bcc($withdrawal_email)->send(new NewNotification($objDemo));
@@ -389,7 +393,7 @@ class UserController extends Controller
 
         \r This is to inform you that your deposit of $currency$amount has been received and confirmed.";
         $objDemo->sender = "$site_name";
-        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->date = Carbon::Now();
         $objDemo->subject = "Deposit Processed!";
 
         Mail::bcc($user->email)->send(new NewNotification($objDemo));
@@ -508,8 +512,7 @@ class UserController extends Controller
     // serves twofactore page
     public function twofa()
     {
-        //import the list of countries
-        include 'countries.php';
+        $countries = Country::whereStatus('active')->get();
 
         return view('profile.show', [
             'title' => 'Two Factor Authentication',
@@ -717,7 +720,7 @@ class UserController extends Controller
         $objDemo->message = "\r This is to inform you of a user submitting their KYC Documents. \r\n" .
             "\r Please login to review documents. \r \n";
         $objDemo->sender = $site_name;
-        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->date = Carbon::Now();
         $objDemo->subject = "Action Needed: Verification Documents Uploaded";
         Mail::mailer('smtp')->bcc($contact_email)->send(new NewNotification($objDemo));
 
@@ -730,7 +733,7 @@ class UserController extends Controller
                 'passport' => $passname,
                 'address_document' => $addressname,
                 'account_verify' => 'Under Review',
-                'docs_uploaded_date' => \Carbon\Carbon::Now()
+                'docs_uploaded_date' => Carbon::Now()
             ]);
 
         return redirect()->back()
@@ -754,9 +757,12 @@ class UserController extends Controller
         $request->session()->put('mt5_account_id', $account->id);
         $request->session()->put('amount', $amount);
 
+        $country_id = Auth::user()->country_id;
         $payment_methods = Wdmethod::where('type', 'deposit')
+            ->where('status', 'enabled')
             ->where('minimum', '<=', $amount)
             ->where('maximum', '>=', $amount)
+            ->where('country_ids', 'like', '%'.$country_id.'%')
             ->get();
 
         return view('user.paymentmethods', [
@@ -770,57 +776,66 @@ class UserController extends Controller
 
     public function startPayment(Request $request, $accountId, $methodId)
     {
-        $account = Mt5Details::find($accountId);
         $method = Wdmethod::find($methodId);
         $amount = $request->session()->get('amount');
-        $dMethods = Wdmethod::where('type', 'deposit')->get();
+        $countries = Country::whereStatus('active')->get();
 
         $data = [];
         if (strpos(strtolower($method->name), 'bank') > -1) {
             $view = 'banktransfer';
             $title = 'Make Bank Payment';
-            $exchange_symbol = $method->exchange_symbol;
             $data = [
-                'dmethods' => $dMethods,
-                'exchange_symbol' => $exchange_symbol,
+                'dmethod' => $method,
             ];
         } elseif (strpos(strtolower($method->name), 'paypal') > -1) {
             $view = 'paypal';
             $title = 'Make PayPal Payment';
-            $exchange_symbol = $method->exchange_symbol;
             $data = [
-                'exchange_symbol' => $exchange_symbol,
+                'dmethod' => $method,
             ];
         } elseif (strpos(strtolower($method->name), 'paypound') > -1) {
-            // import list of countries
-            include 'countries.php';
-
             $view = 'paypound';
             $title = 'Make PayPound Payment';
-            $exchange_symbol = $method->exchange_symbol;
             $data = [
-                'exchange_symbol' => $exchange_symbol,
                 'countries' => $countries,
+                'dmethod' => $method,
+            ];
+        } elseif (strpos(strtolower($method->name), 'paystudio') > -1) {
+            $view = 'paystudio';
+            $title = 'Make PayStudio Payment';
+            $data = [
+                'countries' => $countries,
+                'dmethod' => $method,
+            ];
+        } elseif (strpos(strtolower($method->name), 'chargemoney') > -1) {
+            $view = 'chargemoney';
+            $title = 'Make ChargeMoney Payment';
+            $data = [
+                'countries' => $countries,
+                'dmethod' => $method,
+            ];
+        } elseif (strpos(strtolower($method->name), 'praxis') > -1) {
+            $view = 'praxis';
+            $title = 'Make Praxis Payment';
+            $data = [
+                'countries' => $countries,
+                'dmethod' => $method,
             ];
         } elseif (strpos(strtolower($method->name), 'interac') > -1) {
             $view = 'interac';
             $title = 'Make Interac Payment';
-            $exchange_symbol = $method->exchange_symbol;
             $data = [
-                'dmethods' => $dMethods,
-                'exchange_symbol' => $exchange_symbol,
+                'dmethod' => $method,
             ];
         } else {
             $view = 'coins';
             $wallet_address = Setting::where('name', $method->setting_key)->first()->value;
             $title = "Make $method->name Payment";
             $coin_name = strtolower($method->name);
-            $exchange_symbol = $method->exchange_symbol;
             $data = [
                 'coin_name' => $coin_name,
-                'exchange_symbol' => $exchange_symbol,
                 'wallet_address' => $wallet_address,
-                'dmethods' => $dMethods,
+                'dmethod' => $method,
             ];
         }
 
@@ -880,7 +895,7 @@ class UserController extends Controller
             $objDemo->message = "\r Hello $user->name, \r\n
                 \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
             $objDemo->sender = "$site_name";
-            $objDemo->date = \Carbon\Carbon::Now();
+            $objDemo->date = Carbon::Now();
             $objDemo->subject = "Deposit Processed!";
 
             Mail::bcc($user->email)->send(new NewNotification($objDemo));
@@ -934,7 +949,229 @@ class UserController extends Controller
             $objDemo->message = "\r Hello $user->name, \r\n
                 \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
             $objDemo->sender = "$site_name";
-            $objDemo->date = \Carbon\Carbon::Now();
+            $objDemo->date = Carbon::Now();
+            $objDemo->subject = "Deposit Processed!";
+
+            Mail::bcc($user->email)->send(new NewNotification($objDemo));
+
+            return redirect(route('account.liveaccounts'))->with('message', 'Your deposit was successfully processed!');
+        } else {
+            return redirect()->back()->with('message', $data['message']);
+        }
+    }
+
+
+    public function startPayStudioCharge(Request $request)
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $mt5_id = $request->session()->get('mt5_account_id');
+        $amt = $request->session()->get('amount');
+
+        $mt5 = Mt5Details::find($mt5_id);
+
+        $data = $request->all();
+        $data['api_key'] = config('paystudio.api_key');
+        $data['ip_address'] = $request->ip();
+        $data['response_url'] = route('verifypaystudiocharge');
+        $data['customer_order_id'] = $user->id;
+
+        unset($data['_token']);
+
+        $response = Http::post('https://dashboard.paystudio.app/api/transaction', $data);
+
+        $resp = json_decode($response->body());
+
+        if ($resp->status == 'success') {
+            $amt = $resp->data->amount;
+            $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
+            if ($data['status']) {
+                $mt5->balance = $data['data']->Balance;
+                $mt5->save();
+            } else {
+                return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
+            }
+
+            // save transaction
+            $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
+
+            // save and confirm the deposit
+            $this->saveRecord($user->id, $mt5_id, 'PayStudio', $amt, 'PayStudio Order Id: ' . $resp->data->order_id, 'Deposit', 'Processed');
+
+            // send email notification
+            $currency = Setting::getValue('currency');
+            $site_name = Setting::getValue('site_name');
+
+            $objDemo = new \stdClass();
+            $objDemo->message = "\r Hello $user->name, \r\n
+                \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
+            $objDemo->sender = "$site_name";
+            $objDemo->date = Carbon::Now();
+            $objDemo->subject = "Deposit Processed!";
+
+            Mail::bcc($user->email)->send(new NewNotification($objDemo));
+
+            return redirect(route('account.liveaccounts'))->with('message', 'Your deposit was successfully processed!');
+        } elseif ($resp->status == 'fail') {
+            return redirect()->back()->with('message', $resp->message);
+        } elseif ($resp->status == '3d_redirect') {
+            // save and confirm the deposit
+            $this->saveRecord($user->id, $mt5_id, 'PayStudio', $amt, 'PayStudio Order Id: ' . $resp->data->order_id, 'Deposit', 'Pending');
+
+            return redirect($resp->redirect_3ds_url)->with('message', 'Redirecting you to complete 3DS security challenge.');
+        } else {
+            return redirect()->back()->with('message', $resp->message);
+        }
+    }
+
+
+    public function verifyPayStudioCharge(Request $request)
+    {
+        $data = $request->all();
+        $user = User::find($data['customer_order_id']);
+        $dp = $user->dp()->latest()->first();
+
+        $mt5_id = $request->session()->get('mt5_account_id');
+
+        $mt5 = Mt5Details::find($mt5_id);
+
+        if ($data['status'] == 'success') {
+            $amt = $dp->amount;
+            $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
+            if ($data['status']) {
+                $mt5->balance = $data['data']->Balance;
+                $mt5->save();
+            } else {
+                return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
+            }
+
+            // save transaction
+            $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
+
+            // update the deposit
+            $dp->status = "Processed";
+            $dp->save();
+
+            // send email notification
+            $currency = Setting::getValue('currency');
+            $site_name = Setting::getValue('site_name');
+
+            $objDemo = new \stdClass();
+            $objDemo->message = "\r Hello $user->name, \r\n
+                \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
+            $objDemo->sender = "$site_name";
+            $objDemo->date = Carbon::Now();
+            $objDemo->subject = "Deposit Processed!";
+
+            Mail::bcc($user->email)->send(new NewNotification($objDemo));
+
+            return redirect(route('account.liveaccounts'))->with('message', 'Your deposit was successfully processed!');
+        } else {
+            return redirect()->back()->with('message', $data['message']);
+        }
+    }
+
+
+    public function startChargeMoneyCharge(Request $request)
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $mt5_id = $request->session()->get('mt5_account_id');
+        $amt = $request->session()->get('amount');
+
+        $mt5 = Mt5Details::find($mt5_id);
+
+        $data = $request->all();
+        $data['api_key'] = config('chargemoney.api_key');
+        $data['ip_address'] = $request->ip();
+        $data['response_url'] = route('verifychargemoneycharge');
+        $data['customer_order_id'] = $user->id;
+
+        unset($data['_token']);
+
+        $response = Http::post('https://dashboard.charge.money/api/transaction', $data);
+
+        $resp = json_decode($response->body());
+
+        if ($resp->status == 'success') {
+            $amt = $resp->data->amount;
+            $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
+            if ($data['status']) {
+                $mt5->balance = $data['data']->Balance;
+                $mt5->save();
+            } else {
+                return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
+            }
+
+            // save transaction
+            $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
+
+            // save and confirm the deposit
+            $this->saveRecord($user->id, $mt5_id, 'ChargeMoney', $amt, 'ChargeMoney Order Id: ' . $resp->data->order_id, 'Deposit', 'Processed');
+
+            // send email notification
+            $currency = Setting::getValue('currency');
+            $site_name = Setting::getValue('site_name');
+
+            $objDemo = new \stdClass();
+            $objDemo->message = "\r Hello $user->name, \r\n
+                \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
+            $objDemo->sender = "$site_name";
+            $objDemo->date = Carbon::Now();
+            $objDemo->subject = "Deposit Processed!";
+
+            Mail::bcc($user->email)->send(new NewNotification($objDemo));
+
+            return redirect(route('account.liveaccounts'))->with('message', 'Your deposit was successfully processed!');
+        } elseif ($resp->status == 'fail') {
+            return redirect()->back()->with('message', $resp->message);
+        } elseif ($resp->status == '3d_redirect') {
+            // save and confirm the deposit
+            $this->saveRecord($user->id, $mt5_id, 'ChargeMoney', $amt, 'ChargeMoney Order Id: ' . $resp->data->order_id, 'Deposit', 'Pending');
+
+            return redirect($resp->redirect_3ds_url)->with('message', 'Redirecting you to complete 3DS security challenge.');
+        } else {
+            return redirect()->back()->with('message', $resp->message);
+        }
+    }
+
+
+    public function verifyChargeMoneyCharge(Request $request)
+    {
+        $data = $request->all();
+        $user = User::find($data['customer_order_id']);
+        $dp = $user->dp()->latest()->first();
+
+        $mt5_id = $request->session()->get('mt5_account_id');
+
+        $mt5 = Mt5Details::find($mt5_id);
+
+        if ($data['status'] == 'success') {
+            $amt = $dp->amount;
+            $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
+            if ($data['status']) {
+                $mt5->balance = $data['data']->Balance;
+                $mt5->save();
+            } else {
+                return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
+            }
+
+            // save transaction
+            $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
+
+            // update the deposit
+            $dp->status = "Processed";
+            $dp->save();
+
+            // send email notification
+            $currency = Setting::getValue('currency');
+            $site_name = Setting::getValue('site_name');
+
+            $objDemo = new \stdClass();
+            $objDemo->message = "\r Hello $user->name, \r\n
+                \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
+            $objDemo->sender = "$site_name";
+            $objDemo->date = Carbon::Now();
             $objDemo->subject = "Deposit Processed!";
 
             Mail::bcc($user->email)->send(new NewNotification($objDemo));

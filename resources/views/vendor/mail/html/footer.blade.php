@@ -7,7 +7,7 @@
                         <td style="padding:10px;text-align:center">
                             <h1
                                 style="font-family:Helvetica,Arial,sans-serif;font-size:35px;line-height:28px;font-weight:500;margin:auto;margin-top:60px;margin-bottom:60px;text-align:center;">
-                                Choose Your Platform</h1>
+                                Download Your Trading Platform</h1>
                         </td>
                     </tr>
                 </tbody>
@@ -16,7 +16,7 @@
 
                 <div style="width:100%;max-width:300px;display:inline-block;vertical-align:top;height:100px">
                     <h2 style="text-align:center;">Metatrader 5</h2>
-                    <a style="text-align:center;" href="{{ asset('downloads/axesprimeltd5setup.exe') }}">
+                    <a style="text-align:center;" href="{{ asset('downloads/axeprogroupmt5setup.exe') }}">
                         <img class="col-md-6" src="{{ asset('dash/images/windows.png') }}" alt="MT5" tilte="MT5"
                             height="80" />
                         <br>
@@ -28,7 +28,7 @@
                     <h2 style="text-align:center;">Android App</h2>
                     <a style="text-align:center;"
                         href="https://download.mql5.com/cdn/mobile/mt5/android?server=AxesPrimeLtd-Demo,AxesPrimeLtd-Live">
-                        <img class="" src="{{ asset('front/img/about/google_play_badge.png') }}"
+                        <img class="" src="{{ asset('dash/images/google_play_badge.png') }}"
                             alt="Andriod Download" tilte="Andriod Download" height="66" />
                         <br><br>
                         <span>Download Now</span>
@@ -40,7 +40,7 @@
                     <a style="text-align:center;"
                         href="https://download.mql5.com/cdn/mobile/mt5/ios?server=AxesPrimeLtd-Demo,AxesPrimeLtd-Live"
                         target="_blank">
-                        <img src="{{ asset('front/img/about/app-store-en.png') }}" alt="iPhone Download"
+                        <img src="{{ asset('dash/images/app-store-en.png') }}" alt="iPhone Download"
                             tilte="iPhone Download" height="66" />
                         <br><br>
                         <span>Download Now</span>

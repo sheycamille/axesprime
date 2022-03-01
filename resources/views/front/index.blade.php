@@ -1,406 +1,320 @@
-@extends('layouts.front')
+@extends('layouts.index')
 
-@section('title', \App\Models\Setting::getValue('site_title'))
+@section('title', trans(\App\Models\Setting::getValue('site_title')))
 
-@section('home-menu-item', 'active')
+@section('home-menu-item', 'uk-active')
 
 @section('content')
-    <main id="main">
+    <main>
 
-        <!--========================== Intro Section ============================-->
-        <section id="intro">
-            <div class="intro-container">
-                <div id="introCarousel" class="carousel slide carousel-fade" data-ride="carousel">
-
-                    <ol class="carousel-indicators"> </ol>
-
-                    <div class="carousel-inner" role="listbox">
-
-                        <div class="carousel-item active">
-                            <div class="carousel-background"><img
-                                    src="{{ asset('storage/photos/' . $content->getImage('57VnOE', 'img_path')) }}"
-                                    alt="">
+        <!-- top content begin -->
+        <div class="uk-section uk-padding-remove-vertical">
+            <div class="uk-light in-slideshow uk-background-cover uk-background-top-center" style="background-image: url({{ asset('front/img/in-liquid-slide-bg.png') }});">
+                <div class="uk-container">
+                    <div class="uk-grid-medium" data-uk-grid>
+                        <div class="uk-width-1-2@s">
+                            <div class="uk-overlay">
+                                <h1>@lang('message.home.title_pt1')<br>@lang('message.home.title_pt2').</h1>
+                                <p class="uk-text-lead uk-visible@m">@lang('message.home.subtitle')</p>
+                                    <a href="#" class="uk-button uk-button-default uk-border-rounded uk-visible@s">@lang('message.home.button_1')</a>
                             </div>
-                            <div class="carousel-container">
-                                <div class="carousel-content">
-                                    <h1 class="text-white">{{ $content->getContent('toe3Ew', 'title') }}</h1>
-                                    <p>{{ $content->getContent('toe3Ew', 'description') }}</p>
-                                    <a href="register" class="btn-get-started scrollto">Get Started</a>
-                                    <a href="/trading-platforms" class="btn-get-started scrollto">Download</a>
+                        </div>
+                        <div class="uk-width-1-2@s">
+                            <img class="in-slide-img" src="{{ asset('front/img/in-liquid-slide-1.svg') }}" data-src="{{ asset('front/img/in-liquid-slide-1.svg') }}" alt="image-slide" width="500" height="400" data-uk-img>
+                        </div>
+                    </div>
+                </div>
+                <br><br><br><br><br><br><br><br><br><br><br>
+                <div class="uk-section uk-padding-remove-vertical in-slideshow-features uk-visible@m">
+                    <div class="uk-container">
+                        <div class="uk-grid-large uk-child-width-1-3@m slide-icons-2" data-uk-grid>
+                            <div class="uk-flex uk-flex-left">
+                                <div class="uk-margin-right">
+                                    <img src="{{ asset('front/img/in-lazy.gif') }}" data-src="{{ asset('front/img/in-liquid-icon-19.svg') }}" alt="sample-icon" width="124" height="124" data-uk-img>
+                                </div>
+                                <div>
+                                    <h5 class="uk-margin-remove">@lang('message.home.icon')</h5>
+                                    <p class="uk-margin-small-top">@lang('message.home.icon_txt')</p>
+                                </div>
+                            </div>
+                            <div class="uk-flex uk-flex-left">
+                                <div class="uk-margin-right">
+                                    <img src="{{ asset('front/img/in-lazy.gif') }}" data-src="{{ asset('front/img/in-liquid-icon-20.svg') }}" alt="sample-icon" width="124" height="124" data-uk-img>
+                                </div>
+                                <div>
+                                    <h5 class="uk-margin-remove">@lang('message.home.icon_2')</h5>
+                                    <p class="uk-margin-small-top">@lang('message.home.icon_2txt')</p>
+                                </div>
+                            </div>
+                            <div class="uk-flex uk-flex-left">
+                                <div class="uk-margin-right">
+                                    <img src="{{ asset('front/img/in-lazy.gif') }}" data-src="{{ asset('front/img/in-liquid-icon-21.svg') }}" alt="sample-icon" width="124" height="124" data-uk-img>
+                                </div>
+                                <div>
+                                    <h5 class="uk-margin-remove">@lang('message.home.icon_3')</h5>
+                                    <p class="uk-margin-small-top">@lang('message.home.icon_3txt')</p>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- top content end -->
 
-                        <div class="carousel-item">
-                            <div class="carousel-background"><img
-                                    src="{{ asset('storage/photos/' . $content->getImage('dC6ZaA', 'img_path')) }}"
-                                    alt="">
+        <!-- section features begin -->
+        <div class="uk-section in-liquid-14">
+            <div class="uk-container">
+                <div class="uk-grid-large uk-flex uk-flex-middle" data-uk-grid>
+                    <div class="uk-width-expand@m">
+                        <h2>@lang('message.home.Trade_On_Mobile')</span>.</h2>
+                        <p>@lang('message.home.txt_1')</p>
+                        <div class="uk-grid uk-grid-collapse uk-child-width-1-3@m uk-child-width-1-2@s uk-text-center uk-margin-medium-top">
+                            <div class="uk-tile uk-tile-default">
+                                <p class="uk-text-lead uk-margin-remove-bottom">50+</p>
+                                <p class="uk-text-small uk-text-muted uk-margin-remove-top">@lang('message.home.Trade_world_markets')</p>
                             </div>
-                            <div class="carousel-container">
-                                <div class="carousel-content">
-                                    <h2>{{ $content->getContent('jJwh78', 'title') }}</h2>
-                                    <p>{{ $content->getContent('jJwh78', 'description') }}</p>
-                                    <a href="{{ route('login') }}" class="btn-get-started scrollto">Start Trading</a>
-                                    <a href="/trading-platforms" class="btn-get-started scrollto">Download</a>
-                                </div>
+                            <div class="uk-tile uk-tile-default">
+                                <p class="uk-text-lead uk-margin-remove-bottom">1k+</p>
+                                <p class="uk-text-small uk-text-muted uk-margin-remove-top">@lang('message.home.Manage_trading_accounts')</p>
+                            </div>
+                            <div class="uk-tile uk-tile-default">
+                                <p class="uk-text-lead uk-margin-remove-bottom">10+</p>
+                                <p class="uk-text-small uk-text-muted uk-margin-remove-top">@lang('message.home.payment_method')</p>
+                            </div>
+                            <div class="uk-tile uk-tile-default">
+                                <p class="uk-text-lead uk-margin-remove-bottom">10k+</p>
+                                <p class="uk-text-small uk-text-muted uk-margin-remove-top">@lang('message.home.latest_events')</p>
+                            </div>
+                            <div class="uk-tile uk-tile-default uk-visible@m">
+                                <p class="uk-text-lead uk-margin-remove-bottom">500k</p>
+                                <p class="uk-text-small uk-text-muted uk-margin-remove-top">@lang('message.home.client_acount')</p>
+                            </div>
+                            <div class="uk-tile uk-tile-default uk-visible@m">
+                                <p class="uk-text-lead uk-margin-remove-bottom">2.1M</p>
+                                <p class="uk-text-small uk-text-muted uk-margin-remove-top">@lang('message.home.daily_rev')</p>
                             </div>
                         </div>
+                        <!-- <a class="uk-button uk-button-text uk-border-rounded uk-margin-medium-top" href="#">Asset protection<i class="fas fa-angle-right uk-margin-small-left"></i></a>
+                        <p class="uk-text-small">For additional information view our Investors Relations - <a href="#">clicking here.</a></p> -->
+                    </div>
+                    <div class="uk-width-1-2@m">
+                        <img class="uk-width-1-1" src="{{ asset('front/img/in-lazy.gif') }}" data-src="{{ asset('front/img/phone_desktop.png') }}" alt="sample-image" data-width data-height data-uk-img>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- section content end -->
 
-                        <div class="carousel-item">
-                            <div class="carousel-background"><img
-                                    src="{{ asset('storage/photos/' . $content->getImage('9kHash', 'img_path')) }}"
-                                    alt="">
-                                <div class="carousel-container">
-                                    <div class="carousel-content">
-                                        <h2>{{ $content->getContent('SLxaB2', 'title') }}</h2>
-                                        <p>{{ $content->getContent('SLxaB2', 'description') }}</p>
-                                        <a href="register" class="btn-get-started scrollto">Get Started</a>
-                                        <a href="/trading-platforms" class="btn-get-started scrollto">Download</a>
+        <!-- section instruments begin -->
+        <div class="uk-section in-liquid-15 in-offset-top-20 uk-background-contain uk-background-bottom-center" data-src="{{ asset('front/img/in-liquid-15-bg.png') }}" data-uk-img>
+            <div class="uk-container">
+                <div class="uk-grid uk-flex uk-flex-center">
+                    <div class="uk-width-5-6@m">
+                        <div class="uk-text-center">
+                            <h2 class="uk-margin-remove">@lang('message.worlds_num1')</h2>
+                            <p class="uk-text-lead uk-text-muted uk-margin-small-top">@lang('message.years_of_exl')</p>
+                        </div>
+                        <div class="uk-grid-small uk-child-width-1-2@s uk-child-width-1-3@m uk-margin-medium-top" data-uk-grid>
+                            <div>
+                                <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded">
+                                    <div class="uk-flex uk-flex-middle">
+                                        <div class="uk-margin-small-right">
+                                            <i class="in-icon-wrap circle small green">FX</i>
+                                        </div>
+                                        <div>
+                                            <h6 class="uk-margin-remove">Forex</h6>
+                                        </div>
                                     </div>
+                                    <p>@lang('message.trade_70_major')</p>
+                                    <a href="#" class="uk-button uk-button-text uk-margin-small-top">@lang('message.read_more')<i class="fas fa-angle-right uk-margin-small-left"></i></a>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded">
+                                    <div class="uk-flex uk-flex-middle">
+                                        <div class="uk-margin-small-right">
+                                            <i class="in-icon-wrap circle small red">MX</i>
+                                        </div>
+                                        <div>
+                                            <h6 class="uk-margin-remove">@lang('message.metls')</h6>
+                                        </div>
+                                    </div>
+                                    <p>@lang('message.trade_metal_comodities').</p>
+                                    <a href="#" class="uk-button uk-button-text uk-margin-small-top">@lang('message.read_more')<i class="fas fa-angle-right uk-margin-small-left"></i></a>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded">
+                                    <div class="uk-flex uk-flex-middle">
+                                        <div class="uk-margin-small-right">
+                                            <i class="in-icon-wrap circle small blue">IX</i>
+                                        </div>
+                                        <div>
+                                            <h6 class="uk-margin-remove">Indices</h6>
+                                        </div>
+                                    </div>
+                                    <p>@lang('message.trade_major_and_minor')</p>
+                                    <a href="#" class="uk-button uk-button-text uk-margin-small-top">@lang('message.read_more')<i class="fas fa-angle-right uk-margin-small-left"></i></a>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded">
+                                    <div class="uk-flex uk-flex-middle">
+                                        <div class="uk-margin-small-right">
+                                            <i class="in-icoMutliple Instrumentsn-wrap circle small grey">SX</i>
+                                        </div>
+                                        <div>
+                                            <h6 class="uk-margin-remove">@lang('message.shres')</h6>
+                                        </div>
+                                    </div>
+                                    <p>@lang('message.hundreds_of_companies').</p>
+                                    <a href="#" class="uk-button uk-button-text uk-margin-small-top">@lang('message.read_more')<i class="fas fa-angle-right uk-margin-small-left"></i></a>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded">
+                                    <div class="uk-flex uk-flex-middle">
+                                        <div class="uk-margin-small-right">
+                                            <i class="in-icon-wrap circle small grey">CX</i>
+                                        </div>
+                                        <div>
+                                            <h6 class="uk-margin-remove">@lang('message.Cryptocurrencies')</h6>
+                                        </div>
+                                    </div>
+                                    <p>@lang('message.trde_bitcn')</p>
+                                    <a href="#" class="uk-button uk-button-text uk-margin-small-top">@lang('message.read_more')<i class="fas fa-angle-right uk-margin-small-left"></i></a>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="uk-card uk-card-secondary uk-card-body uk-border-rounded">
+                                    <div class="uk-flex uk-flex-middle">
+                                        <div class="uk-margin-small-right">
+                                            <i class="in-icon-wrap circle small grey">EX</i>
+                                        </div>
+                                        <div>
+                                            <h6 class="uk-margin-remove">Energies</h6>
+                                        </div>
+                                    </div>
+                                    <p>@lang('message.discover_opportunities').</p>
+                                    <a href="#" class="uk-button uk-button-text uk-margin-small-top">@lang('message.read_more')<i class="fas fa-angle-right uk-margin-small-left"></i></a>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- section content end -->
 
-                        <div class="carousel-item">
-                            <div class="carousel-background"><img
-                                    src="{{ asset('storage/photos/' . $content->getImage('CcW52g', 'img_path')) }}"
-                                    alt="">
-                            </div>
-                            <div class="carousel-container">
-                                <div class="carousel-content">
-                                    <h2>{{ $content->getContent('BkP8pH', 'title') }}</h2>
-                                    <p>{{ $content->getContent('BkP8pH', 'description') }}</p>
-                                    <a href="register" class="btn-get-started scrollto">Get Started</a>
-                                    <a href="/trading-platforms" class="btn-get-started scrollto">Download</a>
+        <!-- section stats begin -->
+        <div class="uk-section in-liquid-16">
+            <div class="uk-container">
+                <div class="uk-grid uk-flex uk-flex-center">
+                    <div class="uk-width-1-2@m uk-text-center">
+                        <h2>@lang('message.trade_with') <span class="in-highlight">@lang('message.world_leading')</span> @lang('message.broker').</h2>
+                    </div>
+                </div>
+                <div class="uk-grid uk-child-width-1-2@s uk-child-width-1-4@m uk-text-center" data-uk-grid>
+                    <div>
+                        <div class="in-liquid-16-counter">
+                            <img class="uk-margin-remove" src="{{ asset('front/img/in-lazy.gif') }}" data-src="{{ asset('front/img/in-liquid-icon-22.svg') }}" alt="sample-icon" width="92" height="92" data-uk-img>
+                            <h3 class="uk-text-muted uk-margin-top uk-margin-remove-bottom">
+                                <span class="count" data-counter-end="1000" data-counter-append=" clients">1k+ clients</span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="in-liquid-16-counter">
+                            <img class="uk-margin-remove" src="{{ asset('front/img/in-lazy.gif') }}" data-src="{{ asset('front/img/in-liquid-icon-24.svg') }}" alt="sample-icon" width="92" height="92" data-uk-img>
+                            <h3 class="uk-text-muted uk-margin-top uk-margin-remove-bottom">
+                                <span class="count" data-counter-end="90" data-counter-append=" awards">@lang('message.awards')</span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="in-liquid-16-counter">
+                            <img class="uk-margin-remove" src="{{ asset('front/img/in-lazy.gif') }}" data-src="{{ asset('front/img/in-liquid-icon-25.svg') }}" alt="sample-icon" width="92" height="92" data-uk-img>
+                            <h3 class="uk-text-muted uk-margin-top uk-margin-remove-bottom">
+                                <span class="count" data-counter-end="5" data-counter-append=" customer service">@lang('message.five_star')</span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="in-liquid-16-counter">
+                            <img class="uk-margin-remove" src="{{ asset('front/img/in-lazy.gif') }}" data-src="{{ asset('front/img/in-liquid-icon-23.svg') }}" alt="sample-icon" width="92" height="92" data-uk-img>
+                            <h3 class="uk-text-muted uk-margin-top uk-margin-remove-bottom">
+                                <span class="count" data-counter-end="4" data-counter-append=" industry regulations">@lang('message.industry_regulations')<span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- section content end -->
+
+        <!-- section cta begin -->
+        <div class="uk-section">
+            <div class="uk-container">
+                <div class="uk-grid">
+                    <div class="uk-width-1-1 in-card-16">
+                        <div class="uk-card uk-card-default uk-card-body uk-border-rounded">
+                            <div class="uk-grid uk-flex-middle" data-uk-grid>
+                                <div class="uk-width-1-1 uk-width-expand@m">
+                                    <h3>@lang('message.trade_like_a_pro')</h3>
+                                    <p>@lang('message.trade_cdfs')</p>
+                                </div>
+                                <div class="uk-width-auto">
+                                    <a class="uk-button uk-button-primary uk-border-rounded" href="{{ route('register') }}">@lang('message.open_acount')</a>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="carousel-item">
-                            <div class="carousel-background"><img
-                                    src="{{ asset('storage/photos/' . $content->getImage('96i7xH', 'img_path')) }}"
-                                    alt="">
-                            </div>
-                            <div class="carousel-container">
-                                <div class="carousel-content">
-                                    <h2>{{ $content->getContent('W6gTBN', 'title') }}</h2>
-                                    <p>{{ $content->getContent('W6gTBN', 'description') }}</p>
-                                    <a href="{{ route('login') }}" class="btn-get-started scrollto">Start Trading</a>
-                                    <a href="/trading-platforms" class="btn-get-started scrollto">Download</a>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-
-
                 </div>
             </div>
-        </section><!-- #intro end -->
+        </div>
+        <!-- section content end -->
 
-
-        <!--========================== About Us Section ============================-->
-        <section id="about">
-            <div class="container">
-
-                <header class="section-header">
-                    <h3>{{ $content->getContent('anvs8c', 'title') }} {{ \App\Models\Setting::getValue('site_name') }}
-                    </h3>
-                    <p>{{ $content->getContent('anvs8c', 'description') }}</p>
-                </header>
-
-                <div class="text-center row about-cols">
-
-                    <div class="col-lg-3 col-md-4 wow fadeInUp">
-                        <div class="about-col">
-                            <div class="img">
-                                <img src="{{ asset('front/img/about/innovate.png') }}" alt="" class="mt-4 w-25">
-
-                            </div>
-                            <h2 class="title"><a href="#">{{ $content->getContent('epJ4LI', 'title') }}</a></h2>
-                            <p>{{ $content->getContent('epJ4LI', 'description') }}</p>
+        <!-- section compliment begin -->
+        <div class="uk-section">
+            <div class="uk-container">
+                <div class="uk-grid">
+                    <div class="uk-width-1-1 uk-flex uk-flex-center">
+                        <div class="uk-width-3-4@m uk-text-center">
+                            <h2 class="uk-margin-small-bottom">@lang('message.compliment_trading')</h2>
+                            <p class="uk-text-lead uk-text-muted uk-margin-remove">@lang('message.axepro_clients')</p>
                         </div>
                     </div>
-
-                    <div class="col-lg-3 col-md-4 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="about-col">
-                            <div class="img">
-                                <img src="{{ asset('front/img/about/secure.png') }}" alt="" class="mt-4 w-25">
-
+                    <div class="uk-grid uk-grid-large uk-child-width-1-4@m uk-margin-medium-top" data-uk-grid>
+                        <div class="uk-flex">
+                            <div>
+                                <h3>@lang('message.calender')</h3>
+                                <p>@lang('message.econs_earnings')</p>
                             </div>
-                            <h2 class="title"><a href="#">{{ $content->getContent('5hbB6X', 'title') }}</a></h2>
-                            <p>{{ $content->getContent('5hbB6X', 'description') }}</p>
+                        </div>
+                        <div class="uk-flex">
+                            <div>
+                                <h3>@lang('message.analysis')</h3>
+                                <p>@lang('message.trading_central')</p>
+                            </div>
+                        </div>
+                        <div class="uk-flex">
+                            <div>
+                                <h3>@lang('message.reviews')</h3>
+                                <p>@lang('message.daily_market_reviews')</p>
+                            </div>
+                        </div>
+                        <div class="uk-flex">
+                            <div>
+                                <h3>@lang('message.knowledge')</h3>
+                                <p>@lang('message.education')</p>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-lg-3 col-md-4 wow fadeInUp" data-wow-delay="0.2s">
-                        <div class="about-col">
-                            <div class="img">
-                                <img src="{{ asset('front/img/about/prof.png') }}" alt="" class="mt-4 w-25">
-
-                            </div>
-                            <h2 class="title"><a href="#">{{ $content->getContent('Zrhm3I', 'title') }}</a></h2>
-                            <p>{{ $content->getContent('Zrhm3I', 'description') }}</p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-4 wow fadeInUp" data-wow-delay="0.2s">
-                        <div class="about-col">
-                            <div class="img">
-                                <img src="{{ asset('front/img/about/invest.png') }}" alt="" class="mt-4 w-25">
-
-                            </div>
-                            <h2 class="title"><a href="#">{{ $content->getContent('yTKhlt', 'title') }}</a></h2>
-                            <p>{{ $content->getContent('yTKhlt', 'description') }}</p>
-                        </div>
-                    </div>
-
                 </div>
-
             </div>
-        </section><!-- #about -->
-
-
-        <!--========================== Advantages Section ============================-->
-        <section id="advantages">
-            <div class="container">
-
-                <header class="section-header wow fadeInUp">
-                    <h3>{{ $content->getContent('u0Ervr', 'title') }}</h3>
-                    <p>{{ $content->getContent('u0Ervr', 'description') }}</p>
-                </header>
-
-                <div class="row">
-
-                    <div class="col-md-6 col-lg-4 wow bounceInUp" data-wow-duration="1.4s">
-                        <div class="box">
-                            <div class="icon">
-                                <svg class="svg">
-                                    <use xlink:href="{{ asset('front/img/sprite.svg#icon-stable') }}"></use>
-                                </svg>
-                            </div>
-                            <h3 class="title">{{ $content->getContent('Dwu6Bv', 'title') }}</h3>
-                            <p class="description">{{ $content->getContent('Dwu6Bv', 'description') }}</p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 wow bounceInUp" data-wow-duration="1.4s">
-                        <div class="box">
-                            <div class="icon">
-                                <svg class="svg">
-                                    <use xlink:href="{{ asset('front/img/sprite.svg#icon-payment') }}"></use>
-                                </svg>
-                            </div>
-                            <h3 class="title">{{ $content->getContent('eMo1d2', 'title') }}</h3>
-                            <p class="description">{{ $content->getContent('eMo1d2', 'description') }}</p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 wow bounceInUp" data-wow-delay="0.1s" data-wow-duration="1.4s">
-                        <div class="box">
-                            <div class="icon">
-                                <svg class="svg">
-                                    <use xlink:href="{{ asset('front/img/sprite.svg#icon-referral') }}"></use>
-                                </svg>
-                            </div>
-                            <h3 class="title">{{ $content->getContent('kEJPm3', 'title') }}</h3>
-                            <p class="description">{{ $content->getContent('kEJPm3', 'description') }}</p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 wow bounceInUp" data-wow-delay="0.1s" data-wow-duration="1.4s">
-                        <div class="box">
-                            <div class="icon">
-                                <svg class="svg">
-                                    <use xlink:href="{{ asset('front/img/sprite.svg#icon-dollar') }}"></use>
-                                </svg>
-                            </div>
-                            <h3 class="title">{{ $content->getContent('bBSnFV', 'title') }}</h3>
-                            <p class="description">{{ $content->getContent('bBSnFV', 'description') }}</p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 wow bounceInUp" data-wow-delay="0.2s" data-wow-duration="1.4s">
-                        <div class="box">
-                            <div class="icon">
-                                <svg class="svg">
-                                    <use xlink:href="{{ asset('front/img/sprite.svg#icon-support') }}"></use>
-                                </svg>
-                            </div>
-                            <h3 class="title">{{ $content->getContent('DUK9pc', 'title') }}</h3>
-                            <p class="description">{{ $content->getContent('DUK9pc', 'description') }}</p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 wow bounceInUp" data-wow-delay="0.2s" data-wow-duration="1.4s">
-                        <div class="box">
-                            <div class="icon">
-                                <svg class="svg">
-                                    <use xlink:href="{{ asset('front/img/sprite.svg#icon-shield') }}"></use>
-                                </svg>
-                            </div>
-                            <h3 class="title">{{ $content->getContent('VaeiMW', 'title') }}</h3>
-                            <p class="description">{{ $content->getContent('VaeiMW', 'description') }}</p>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-        </section><!-- #advantages -->
-
-
-        <!--========================== Payments Sections ============================-->
-        <section id="payments" class="wow fadeInUp">
-            <div class="container">
-
-                <header class="section-header">
-                    <h3>{{ $content->getContent('U7zpEj', 'title') }}</h3>
-                </header>
-
-                <div class="owl-carousel payments-carousel">
-                    {{-- <img src="{{ asset('front/img/payments/payment-1.png')}}" alt="">
-                <img src="{{ asset('front/img/payments/payment-2.png')}}" alt=""> --}}
-                    {{-- <img src="{{ asset('front/img/payments/payment-3.png')}}" alt=""> --}}
-                    <img src="{{ asset('front/img/payments/payment-mastercard.png') }}" alt="">
-                    <img src="{{ asset('front/img/payments/payment-visa.png') }}" alt="">
-                    <img src="{{ asset('front/img/payments/payment-interac.png') }}" alt="">
-                    <img src="{{ asset('front/img/payments/payment-btc.png') }}" alt="">
-                    <img src="{{ asset('front/img/payments/payment-ether.png') }}" alt="">
-                    <img src="{{ asset('front/img/payments/payment-bnb.png') }}" alt="">
-                    <img src="{{ asset('front/img/payments/payment-tether.png') }}" alt="">
-                    <img src="{{ asset('front/img/payments/payment-xrp.png') }}" alt="">
-                    {{-- <img src="{{ asset('front/img/payments/payment-8.png')}}" alt=""> --}}
-                </div>
-
-            </div>
-        </section><!-- #Payments ends -->
-
-
-        <!--========================== Frequently Ask questions ============================-->
-        <section id="faq">
-            <div class="container">
-                <div class="section-header">
-                    <h3 class="section-title">{{ $content->getContent('OLZt1I', 'title') }}</h3>
-                    <p>{{ $content->getContent('OLZt1I', 'description') }}</p>
-                    <span class="section-divider"></span>
-                </div>
-
-                <ul id="faq-list" class="wow fadeInUp">
-                    @foreach ($faqs as $item)
-                        <li>
-                            <a data-toggle="collapse" class="collapsed"
-                                href="#faq{{ $item->id }}">{{ $item->question }} <i
-                                    class="ion-android-remove"></i></a>
-                            <div id="faq{{ $item->id }}" class="collapse" data-parent="#faq{{ $item->id }}">
-                                <p>
-                                    {{ $item->answer }}
-                                </p>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-
-            </div>
-        </section> <!-- #faq  ends-->
-
-
-        <!--========================== Contact Section ============================-->
-        <section id="contact" class="section-bg wow fadeInUp">
-            <div class="container">
-
-                <div class="section-header">
-                    <h3>{{ $content->getContent('9sNF7G', 'title') }}</h3>
-                    <p>{!! $content->getContent('9sNF7G', 'description') !!}</p>
-
-                </div>
-
-                <div class="row contact-info">
-
-                    <div class="col-md-4">
-                        <div class="contact-address">
-                            <i class="ion-ios-location-outline"></i>
-                            <h3>{{ $content->getContent('52GPRA', 'title') }}</h3>
-                            <p>{!! $content->getContent('52GPRA', 'description') !!}</p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="contact-phone">
-                            <i class="ion-ios-telephone-outline"></i>
-                            <h3>{{ $content->getContent('0EXbji', 'title') }}</h3>
-                            <p><a href="tel: {{ $content->getContent('0EXbji', 'description') }}">
-                                    {!! $content->getContent('0EXbji', 'description') !!}</a></p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="contact-email">
-                            <i class="ion-ios-email-outline"></i>
-                            <h3>EMAIL</h3>
-                            <p>
-                                <a
-                                    href="{{ \App\Models\Setting::getValue('contact_email') }}">{{ \App\Models\Setting::getValue('contact_email') }}</a>
-                                or send us a message on the <a href="/contact-us">contact page</a>
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-        </section><!-- #contact -->
-
-
-        <!--========================== Get Started ============================-->
-        <section id="getstarted">
-            <div class="container">
-                <div class="col-md-12">
-                    <div class="section-header">
-                        <h3 class="text-center">How to Get Started</h3>
-                        <div class="text-center">
-                            <p>Access one of the largest and most liquid markets in the world! Enter the world of Forex and
-                                CFD online trading in just a few steps and start trading more than <em
-                                    class="cbc_content">1000</em> instruments on our world-leading trading platforms.</p>
-                        </div>
-                    </div>
-                    <div class="howtosteps-block d-flex">
-                        <div
-                            class="col-md-3 col-sm-6 col-xs-12 item d-flex flex-column justify-content-center align-items-center text-center p-3">
-                            <img data-src="{{ asset('front/img/about/icon_register.png') }}" alt="Register"
-                                tilte="Register" src="{{ asset('front/img/about/icon_register.png') }}">
-                            <h5>Register</h5>
-                            <p>Sign up and upload your documents to verify your account.</p>
-                        </div>
-                        <div
-                            class="col-md-3 col-sm-6 col-xs-12 item d-flex flex-column justify-content-center align-items-center text-center p-3">
-                            <img data-src="{{ asset('front/img/about/ICONS_2-01.png') }}" alt="Fund" tilte="Fund"
-                                src="{{ asset('front/img/about/ICONS_2-01.png') }}">
-                            <h5>Fund</h5>
-                            <p>Once you understand all the benefits and risks involved, you may fund your account.</p>
-                        </div>
-                        <div
-                            class="col-md-3 col-sm-6 col-xs-12 item d-flex flex-column justify-content-center align-items-center text-center p-3">
-                            <img data-src="{{ asset('front/img/about/ICONS_3-01.png') }}" alt="Trade" tilte="Trade"
-                                src="{{ asset('front/img/about/ICONS_3-01.png') }}">
-                            <h5>Trade</h5>
-                            <p>Start trading on our WebTrader, Desktop or Mobile Platforms.</p>
-                        </div>
-                        <div
-                            class="col-md-3 col-sm-6 col-xs-12 item d-flex flex-column justify-content-center align-items-center text-center p-3">
-                            <img data-src="{{ asset('front/img/about/ICONS_4-01.png') }}" alt="Withdraw" tilte="Withdraw"
-                                src="{{ asset('front/img/about/ICONS_4-01.png') }}">
-                            <h5>Withdraw</h5>
-                            <p>Withdraw any profits or your entire account balance at any time!</p>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <a class="btn-get-started" href="{{ route('register') }}">Open an Account</a><br>
-                    </div>
-                </div>
-                <div class="hw_disclaimer"></div>
-            </div>
-        </section> <!-- #get started  ends-->
+        </div>
+        <!-- section content end -->
 
     </main>
 @endsection

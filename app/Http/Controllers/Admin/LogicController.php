@@ -26,12 +26,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Tarikhagustia\LaravelMt5\Entities\Trade;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-use Tarikhagustia\LaravelMt5\LaravelMt5;
+use Tarikh\PhpMeta\Entities\Trade;
+// use Tarikhagustia\LaravelMt5\LaravelMt5;
+
+use Carbon\Carbon;
+
 
 
 class LogicController extends Controller
@@ -115,7 +118,7 @@ class LogicController extends Controller
         $objDemo->message =  "\r Hello, \r \n"
             . "\r $request->message \r\n";
         $objDemo->sender = $site_name;
-        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->date = Carbon::Now();
         $objDemo->subject = "$site_name Notification";
 
         Mail::mailer('smtp')->bcc(User::all())->send(new NewNotification($objDemo));
@@ -134,8 +137,8 @@ class LogicController extends Controller
         // ]);
 
         $mailer = 'smtp';
-        if ($request->type == "deposit")
-            $mailer = 'deposits';
+        // if ($request->type == "deposit")
+        //     $mailer = 'deposits';
 
         //send email notification
         $mailduser = User::where('id', $request->user_id)->first();
@@ -143,7 +146,7 @@ class LogicController extends Controller
         $objDemo->message = "\r Hello $mailduser->name, \r \n"
             . "\r $request->message \r\n";
         $objDemo->sender = $site_name;
-        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->date = Carbon::Now();
         $objDemo->subject = "$site_name Notification";
 
         Mail::mailer($mailer)->bcc($mailduser->email)->send(new NewNotification($objDemo));
@@ -214,7 +217,7 @@ class LogicController extends Controller
     {
         $user = User::where('id', $id)->first();
         //Byeppass 2FA
-        $user->token_2fa_expiry = \Carbon\Carbon::now()->addMinutes(15)->toDateTimeString();
+        $user->token_2fa_expiry = Carbon::now()->addMinutes(15)->toDateTimeString();
         $user->save();
         Auth::loginUsingId($user->id, true);
         return redirect()->route('dashboard')
@@ -272,10 +275,10 @@ class LogicController extends Controller
         "$request->reason \r \n ".
         "Please fix the problem, we will gladly process it or contact our support for further assistance. \r\n ";
         $objDemo->sender = "$site_name";
-        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->date = Carbon::Now();
         $objDemo->subject = "Deposit Request Rejected!";
 
-        Mail::mailer('deposits')->bcc($user->email)->send(new NewNotification($objDemo));
+        Mail::mailer('smtp')->bcc($user->email)->send(new NewNotification($objDemo));
 
         return redirect()->back()
             ->with('message', 'Deposit rejected successfully!');
@@ -391,10 +394,10 @@ class LogicController extends Controller
         $objDemo->message = "\r Hello $user->name, \r \n
         This is to inform you that your deposit of $currency$deposit->amount has been received and processed. You can now check your MT5 account. \r\r";
         $objDemo->sender = "$site_name";
-        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->date = Carbon::Now();
         $objDemo->subject = "Deposit processed successfully!";
 
-        Mail::mailer('deposits')->bcc($user->email)->send(new NewNotification($objDemo));
+        Mail::mailer('smtp')->bcc($user->email)->send(new NewNotification($objDemo));
 
         return redirect()->route('mdeposits')
             ->with('message', 'The user\'s account has been successfully topped up!');
@@ -439,9 +442,9 @@ class LogicController extends Controller
         This is to inform you that your withdrawal request of $currency$withdrawal->amount have approved and the funds have been sent to your selected account. \r\n";
         $objDemo->sender = $site_name;
         $objDemo->subject = "Successful withdrawal";
-        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->date = Carbon::Now();
 
-        Mail::mailer('withdrawals')->bcc($user->email)->send(new NewNotification($objDemo));
+        Mail::mailer('smtp')->bcc($user->email)->send(new NewNotification($objDemo));
 
         return redirect()->back()
             ->with('message', 'Widthdrawal Processed Sucessfully!');
@@ -471,9 +474,9 @@ class LogicController extends Controller
         "Please fix the problem, we will gladly process it or contact our support for further assistance \r \n ";
         $objDemo->sender = $site_name;
         $objDemo->subject = "Rejected Withdrawal Request";
-        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->date = Carbon::Now();
 
-        Mail::mailer('withdrawals')->bcc($user->email)->send(new NewNotification($objDemo));
+        Mail::mailer('smtp')->bcc($user->email)->send(new NewNotification($objDemo));
 
         return redirect()->back()
             ->with('message', 'Withdrawal Request Canceled!');
@@ -508,8 +511,8 @@ class LogicController extends Controller
             $agent_id = DB::table('agents')->insertGetId(
                 [
                     'agent' => $request['user'],
-                    'created_at' => \Carbon\Carbon::now(),
-                    'updated_at' => \Carbon\Carbon::now(),
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
                 ]
             );
             //increment refered clients by 1
@@ -569,8 +572,8 @@ class LogicController extends Controller
                 'phone' => $request['phone'],
                 'ref_by' => Auth::user()->id,
                 'password' => Hash::make($request->password),
-                'created_at' => \Carbon\Carbon::now(),
-                'updated_at' => \Carbon\Carbon::now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]
         );
 
@@ -609,8 +612,8 @@ class LogicController extends Controller
                 'status' => "active",
                 'dashboard_style' => "dark",
                 'password' => Hash::make($request['password']),
-                'created_at' => \Carbon\Carbon::now(),
-                'updated_at' => \Carbon\Carbon::now(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]
         );
         return redirect()->back()

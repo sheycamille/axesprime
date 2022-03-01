@@ -17,8 +17,11 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-use Tarikhagustia\LaravelMt5\Entities\Trade;
+use Tarikh\PhpMeta\Entities\Trade;
 use Tarikhagustia\LaravelMt5\LaravelMt5;
+
+use Carbon\Carbon;
+
 
 class Controller extends BaseController
 {
@@ -55,7 +58,7 @@ class Controller extends BaseController
 
     public function checkdate()
     {
-        $dt = \Carbon\Carbon::Now();
+        $dt = Carbon::Now();
 
         if ($dt->isWeekday()) {
             return "This is a week day";
@@ -84,18 +87,19 @@ class Controller extends BaseController
 
     protected function setServerConfig($type)
     {
-        if ($type == 'demo')
+        if ($type == "demo") {
             config([
                 'mt5.server' => env('MT5_SERVER_IP', '192.96.201.1'),
                 'mt5.login' => env('MT5_SERVER_WEB_LOGIN', 1096),
                 'mt5.password' => env('MT5_SERVER_WEB_PASSWORD', 'wqzbj5eo'),
             ]);
-        else
+        } else {
             config([
                 'mt5.server' => env('MT5_LIVE_SERVER_IP', '207.244.81.1'),
                 'mt5.login' => env('MT5_LIVE_SERVER_WEB_LOGIN', 1187),
-                'mt5.password' => env('MT5_LIVE_SERVER_WEB_PASSWORD', 'hgg3vszw'),
+                'mt5.password' => env('MT5_LIVE_SERVER_WEB_PASSWORD', 'cmc8ttmv'),
             ]);
+        }
     }
 
 
@@ -154,7 +158,6 @@ class Controller extends BaseController
 
     protected function updateaccounts($user)
     {
-
         // initialize the mt5 api
         $api = new LaravelMt5();
 

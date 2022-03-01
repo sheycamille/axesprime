@@ -3,19 +3,11 @@
 @section('title', 'Two Factor Challenge')
 
 @section('content')
-<body class="d-flex flex-column h-100 auth-page">
-    <!-- ======= Loginup Section ======= -->
-    <div x-data="{ recovery: false }">
-
-        <section class="auth">
-            <div class="container">
-                <div class="row justify-content-center user-auth">
-                    <div class="col-12 col-md-6 col-lg-6 col-sm-10 col-xl-6 ">
-                        <div class="mb-4 text-center">
-                            <a href="{{url('/')}}"><img class="auth__logo img-fluid" src="{{ \App\Models\Setting::getValue('site_address') }}/cloud/app/images/{{ \App\Models\Setting::getValue('logo') }}" alt="{{ \App\Models\Setting::getValue('site_name') }}">
-                            </a>
-                        </div>
-
+<main id="main" class="crypto-page">
+    <div class="uk-section in-liquid-6 in-offset-top-10">
+        <div class="uk-container">
+            <div class="uk-grid uk-flex uk-flex-center">
+                <div class="uk-width-5-1@m uk-background-contain uk-background-center-center">
                         <div class="card ">
                             <div class="mb-4 text-center">
                                 @if ($errors->any())
@@ -50,33 +42,29 @@
 
                                 <div class="flex items-center justify-end mt-4 text-center">
 
-                                    <button type="button" class="text-sm text-gray-600 underline cursor-pointer hover:text-gray-900" x-show="! recovery" x-on:click="
+                                    <button type="button" class="text-sm text-gray-600 underline cursor-pointer hover:text-gray-900 uk-button uk-button-primary uk-border-rounded" style="justify-content:center" x-show="! recovery" x-on:click="
                                                         recovery = true;
                                                         $nextTick(() => { $refs.recovery_code.focus() })
                                                     ">
                                         {{ __('Use a recovery code') }}
                                     </button>
 
-                                    <button type="button" class="mt-4 btn btn-primary" x-show="recovery" x-on:click="
+                                    <button type="button" class="mt-4 uk-button uk-button-primary uk-border-rounded" style="justify-content:center" x-show="recovery" x-on:click="
                                                         recovery = false;
                                                         $nextTick(() => { $refs.code.focus() })
                                                     ">
                                         {{ __('Use an authentication code') }}
                                     </button>
 
-                                    <x-jet-button class="mt-4 btn btn-primary">
+                                    <x-jet-button class="mt-4 uk-button uk-button-primary uk-border-rounded" style="justify-content:center">
                                         {{ __('Log in') }}
                                     </x-jet-button>
                                 </div>
                             </form>
                         </div>
-                    </div>
                 </div>
             </div>
-
-        </section>
-
+        </div>
     </div>
-</body>
-</html>
+</main>
 @endsection

@@ -14,9 +14,9 @@ class UpdateUsersAddAddressFields extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->text('town')->after('address')->nullable();
-            $table->text('state')->after('town')->nullable();
-            $table->text('zip_code')->after('state')->nullable();
+            $table->text('town_id')->after('address')->nullable();
+            $table->text('state_id')->after('town_id')->nullable();
+            $table->text('zip_code')->after('state_id')->nullable();
         });
     }
 

@@ -17,6 +17,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use phpDocumentor\Reflection\Types\Null_;
 
+use Carbon\Carbon;
+
+
 class UsersController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -92,7 +95,7 @@ class UsersController extends Controller
         $objDemo = new \stdClass();
         $objDemo->message = $request['message'];
         $objDemo->sender = $site_name;
-        $objDemo->date = \Carbon\Carbon::Now();
+        $objDemo->date = Carbon::Now();
         $objDemo->subject = "$site_name Notification";
         Mail::bcc($mailduser->email)->send(new NewNotification($objDemo));
         return redirect()->back()->with('message', 'Your message was sent successfully!');
@@ -136,7 +139,7 @@ class UsersController extends Controller
         User::where('id', $id)
             ->update([
                 'account_verify' => 'Verified',
-                'docs_verified_date' => \Carbon\Carbon::Now(),
+                'docs_verified_date' => Carbon::Now(),
             ]);
 
         return redirect()->back()
