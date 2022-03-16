@@ -3,7 +3,6 @@
 namespace App\Actions\Jetstream;
 
 use Laravel\Jetstream\Contracts\DeletesUsers;
-use App\Models\Agent;
 use App\Models\Deposit;
 use App\Models\Withdrawal;
 
@@ -29,12 +28,6 @@ class DeleteUser implements DeletesUsers
             foreach ($withdrawals as $withdrawals) {
                 Withdrawal::where('id', $withdrawals->id)->delete();
             }
-        }
-
-        //delete the user from agent model if exists
-        $agent = Agent::where('agent', $user->id)->first();
-        if (!empty($agent)) {
-            Agent::where('id', $agent->id)->delete();
         }
 
         $user->deleteProfilePhoto();

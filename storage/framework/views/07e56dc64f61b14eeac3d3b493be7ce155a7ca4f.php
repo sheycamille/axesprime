@@ -44,17 +44,18 @@
                         </div>
                     </div>
                     <?php endif; ?>
-
+                    <?php if(auth('admin')->user()->hasPermissionTo('musers-messageall', 'admin')): ?>
                     <div class="row">
                         <div class="col">
                             <a href="#" data-toggle="modal" data-target="#sendmailModal"
-                                class="btn btn-primary btn-lg mb-2">Message all</a>
+                                class="btn btn-primary btn-md mb-2">Message all</a>
 
                             <?php if(\App\Models\Setting::getValue('enable_kyc') == 'yes'): ?>
-                            <a href="<?php echo e(url('admin/dashboard/kyc')); ?>" class="btn btn-warning btn-lg">KYC</a>
+                            <a href="<?php echo e(url('admin/dashboard/kyc')); ?>" class="btn btn-warning btn-md">KYC</a>
                             <?php endif; ?>
                         </div>
                     </div>
+                    <?php endif; ?>
 
                     <div class="row">
                         <div class="bs-example widget-shadow table-responsive" data-example-id="hoverable-table">
@@ -87,7 +88,7 @@
 
                                         </td>
                                         <td>
-                                            <div class="dropdown">
+                                            <div class="d-flex justify-content-start">
                                                 <a class="btn btn-secondary btn-sm dropdown-toggle" href="#"
                                                     role="button" id="dropdownMenuLink" data-toggle="dropdown"
                                                     aria-haspopup="true" aria-expanded="false">
@@ -95,10 +96,12 @@
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink"
                                                     style="z-index: 999;">
+                                                    <?php if(auth('admin')->user()->hasPermissionTo('musers-access-wallet', 'admin')): ?>
                                                     <a class="m-1 btn btn-info btn-sm"
                                                         href="<?php echo e(url('admin/dashboard/user-wallet')); ?>/<?php echo e($user->id); ?>">See
                                                         Wallet</a>
-
+                                                    <?php endif; ?>
+                                                    <?php if(auth('admin')->user()->hasPermissionTo('musers-messageall', 'admin')): ?>
                                                     <?php if($user->status == null || $user->status == 'blocked'): ?>
                                                     <a class="m-1 btn btn-primary btn-sm"
                                                         href="<?php echo e(url('admin/dashboard/uunblock')); ?>/<?php echo e($user->id); ?>">Unblock</a>
@@ -106,21 +109,25 @@
                                                     <a class="m-1 btn btn-danger btn-sm"
                                                         href="<?php echo e(url('admin/dashboard/uublock')); ?>/<?php echo e($user->id); ?>">Block</a>
                                                     <?php endif; ?>
-
+                                                    <?php endif; ?>
+                                                    <?php if(auth('admin')->user()->hasPermissionTo('musers-credit-debit', 'admin')): ?>
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#topupModal<?php echo e($user->id); ?>"
                                                         class="m-1 btn btn-dark btn-xs">Credit/Debit</a>
+                                                    <?php endif; ?>
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#resetpswdModal<?php echo e($user->id); ?>"
                                                         class="m-1 btn btn-warning btn-xs">Reset Password</a>
-
+                                                    <?php if(auth('admin')->user()->hasPermissionTo('musers-delete', 'admin')): ?>
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#deleteModal<?php echo e($user->id); ?>"
                                                         class="m-1 btn btn-danger btn-xs">Delete</a>
-
+                                                    <?php endif; ?>    
+                                                    <?php if(auth('admin')->user()->hasPermissionTo('musers-edit', 'admin')): ?>
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#edituser<?php echo e($user->id); ?>"
                                                         class="m-1 btn btn-secondary btn-xs">Edit</a>
+                                                    <?php endif; ?>
 
                                                     <?php if($numAccs > 1): ?>
                                                     <a href="#" data-toggle="modal"

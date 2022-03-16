@@ -3,6 +3,10 @@
 <?php $__env->startSection('deposits-and-withdrawals', 'c-show'); ?>
 <?php $__env->startSection('deposits', 'c-active'); ?>
 
+<?php $__env->startSection('loadPaypal'); ?>
+<script src="https://www.paypal.com/sdk/js?client-id=<?php echo e(\App\Models\Setting::getValue('pp_ci ')); ?>&currency=USD"></script>
+<?php $__env->stopSection(); ?>
+
 <?php $__env->startSection('content'); ?>
 
 <?php echo $__env->make('user.topmenu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>

@@ -3,7 +3,7 @@
 @section('title', 'Add Admin')
 
 @section("manage-admins", 'c-show')
-@section("add-admin", 'c-active')
+@section("admins", 'c-active')
 
 @section('content')
 
@@ -49,6 +49,7 @@
                     <div class="row mb-5">
                         <div class="col-lg-8 offset-lg-2 card p-3">
                             <form method="POST" action="{{ url('admin/dashboard/saveadmin') }}">
+                            
                                 {{ csrf_field() }}
 
                                 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -107,9 +108,17 @@
                                 </div>
                                 <div class="form-group">
                                     <h4 class="">Type</h4>
-                                    <select class="form-control " name="type">
-                                        <option>Super Admin</option>
-                                        <option>Admin</option>
+                                    <select class="form-control" name="type">
+                                        <option value="Super Admin">Super Admin</option>
+                                        <option value="Admin">Admin</option>
+                                    </select><br>
+                                </div>
+                                <div class="form-group">
+                                    <h4 class="">Role</h4>
+                                    <select class="form-control" name="roles[]" multiple>
+                                        @foreach($roles as $role)
+                                             <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                        @endforeach  
                                     </select><br>
                                 </div>
 
@@ -150,6 +159,7 @@
                                     </div>
                                 </div>
                             </form>
+                            
                         </div>
                     </div>
                 </div>

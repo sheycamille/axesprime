@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\AccountType;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,11 +13,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //\App\Models\User::factory(10)->create();
-
         $this->call([
-            UserSeeder::class,
             AccountTypeSeeder::class,
+            PermissionTableSeeder::class,
+            UserSeeder::class,
+            UserPermsSeeder::class,
+            CountryStateCityTableSeeder::class,
         ]);
     }
 }

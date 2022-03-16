@@ -32,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        
         Schema::defaultStringLength(191);
         Storage::extend('sftp', function ($app, $config) {
             return new Filesystem(new SftpAdapter($config));

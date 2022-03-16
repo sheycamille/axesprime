@@ -24,7 +24,9 @@
                         </div>
                     </div>
                 </div>
-                <br><br><br><br><br><br><br><br><br><br><br>
+            </div>
+
+            <div class="uk-section in-liquid-14">
                 <div class="uk-section uk-padding-remove-vertical in-slideshow-features uk-visible@m">
                     <div class="uk-container">
                         <div class="uk-grid-large uk-child-width-1-3@m slide-icons-2" data-uk-grid>

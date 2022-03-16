@@ -15,9 +15,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use phpDocumentor\Reflection\Types\Null_;
 
 use Carbon\Carbon;
+
+use Spatie\Permission\Models\Role;
 
 
 class UsersController extends Controller
@@ -66,22 +67,6 @@ class UsersController extends Controller
         Admin::where('id', $id)->delete();
         return redirect()->back()
             ->with('message', 'Manager has been deleted!');
-    }
-
-
-    // update users info
-    public function editadmin(Request $request)
-    {
-        Admin::where('id', $request['user_id'])
-            ->update([
-                'firstName' => $request['fname'],
-                'lastName' => $request['l_name'],
-                'email' => $request['email'],
-                'phone' => $request['phone'],
-                'type' => $request['type'],
-            ]);
-        return redirect()->back()
-            ->with('message', 'Account updated Successfully!');
     }
 
 

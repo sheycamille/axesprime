@@ -25,7 +25,14 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        
         $this->registerPolicies();
+
+        // Implicitly grant "Super Admin" role all permissions
+        // This works in the app by using gate-related functions like auth()->user->can() and @can()
+       // Gate::before(function ($admin, $ability) {
+            //return $admin->hasRole('Admin') ? true : null;});
+        
 
         // VerifyEmail::toMailUsing(function ($notifiable, $url) {
         //     return (new MailMessage)

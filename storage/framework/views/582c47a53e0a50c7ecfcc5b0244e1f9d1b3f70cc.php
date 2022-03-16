@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-    
+    <?php echo $__env->yieldContent('loadPaypal'); ?>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

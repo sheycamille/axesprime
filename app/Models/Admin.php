@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
 {
     use HasFactory;
     use Notifiable;
+    use HasRoles;
     use TwoFactorAuthenticatable;
 
 
@@ -59,4 +61,5 @@ class Admin extends Authenticatable
         $this->two_factor_expires_at = null;
         $this->save();
     }
+
 }

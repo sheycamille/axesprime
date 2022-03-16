@@ -16,34 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `agents`
---
-
-DROP TABLE IF EXISTS `agents`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `agents` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `agent` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `total_refered` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `total_activated` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `earnings` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `agents`
---
-
-LOCK TABLES `agents` WRITE;
-/*!40000 ALTER TABLE `agents` DISABLE KEYS */;
-/*!40000 ALTER TABLE `agents` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `assets`
 --
 

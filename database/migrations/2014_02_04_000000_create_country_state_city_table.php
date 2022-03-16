@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+
 
 class CreateCountryStateCityTable extends Migration
 {
@@ -31,9 +31,6 @@ class CreateCountryStateCityTable extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->softDeletes();
-
-            $table->foreign('country_id')->references('id')->on('countries')
-                ->onUpdate('cascade')->onDelete('cascade');
         });
 
         Schema::create('cities', function (Blueprint $table) {
@@ -44,9 +41,6 @@ class CreateCountryStateCityTable extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->softDeletes();
-
-            $table->foreign('state_id')->references('id')->on('states')
-                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

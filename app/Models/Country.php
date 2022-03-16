@@ -12,7 +12,7 @@ class Country extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'id', 'name', 'status'
+        'id', 'name', 'full_name', 'capital', 'code', 'code_alpha3', 'code_numeric', 'emoji', 'currency_code', 'currency_name', 'callingcode', 'tld', 'status', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     public function states(): HasMany

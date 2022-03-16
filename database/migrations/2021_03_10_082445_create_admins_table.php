@@ -26,6 +26,7 @@ class CreateAdminsTable extends Migration
             $table->string('acnt_type_active')->nullable();
             $table->string('status')->nullable();
             $table->string('type')->nullable();
+            $table->string('role')->nullable();
             $table->timestamps();
         });
     }

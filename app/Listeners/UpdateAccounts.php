@@ -62,7 +62,7 @@ class UpdateAccounts
                     ]);
                 // var_dump($data->Balance);
                 // var_dump($data->Bonus);
-                echo ('<br><br>');
+                // echo ('<br><br>');
             } catch (Exception $e) {
                 // var_dump($e->getMessage());
                 // echo ('<br><br>');

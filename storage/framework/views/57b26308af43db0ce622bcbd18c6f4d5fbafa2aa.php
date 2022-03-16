@@ -16,16 +16,22 @@
             </a>
         </li>
 
-        <li class="c-sidebar-nav-dropdown">
-            <a class="c-sidebar-nav-dropdown-toggle <?php echo $__env->yieldContent('manage-users'); ?>" href="<?php echo e(route('manageusers')); ?>">
+
+        <li class="c-sidebar-nav-dropdown <?php echo $__env->yieldContent('manage-users'); ?>">
+            <a class="c-sidebar-nav-dropdown-toggle" href="<?php echo e(route('manageusers')); ?>">
                 <i class="cil-user c-sidebar-nav-icon"></i>
                 Manage Users
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
+                <?php if(auth('admin')->user()->hasPermissionTo('musers-list', 'admin')): ?>
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('users'); ?>" href="<?php echo e(route('manageusers')); ?>">
                         All Users</a>
                 </li>
+                <?php endif; ?>
+
+
+                <?php if(auth('admin')->user()->hasPermissionTo('mkyc-list', 'admin')): ?>
                 <?php if(\App\Models\Setting::getValue('enable_kyc') == 'yes'): ?>
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('kyc'); ?>" href="<?php echo e(route('kyc')); ?>">
@@ -33,35 +39,35 @@
                     </a>
                 </li>
                 <?php endif; ?>
-                <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('add-user'); ?>" href="<?php echo e(url('/admin/dashboard/adduser')); ?>">
-                        Add User
-                    </a>
-                </li>
+                <?php endif; ?>
             </ul>
         </li>
 
-        <li class="c-sidebar-nav-dropdown">
-            <a class="c-sidebar-nav-dropdown-toggle <?php echo $__env->yieldContent('manage-dw'); ?>" data-toggle="collapse" href="#mdw">
+        <li class="c-sidebar-nav-dropdown <?php echo $__env->yieldContent('manage-dw'); ?>">
+            <a class="c-sidebar-nav-dropdown-toggle" data-toggle="collapse" href="#mdw">
                 <i class="cil-money c-sidebar-nav-icon"></i>
                 Manage D/W
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
+                <?php if(auth('admin')->user()->hasPermissionTo('mdeposits-list', 'admin')): ?>
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('deposits'); ?>" href="<?php echo e(url('/admin/dashboard/mdeposits')); ?>">
                         Manage Deposits
                     </a>
                 </li>
+                <?php endif; ?>
+                <?php if(auth('admin')->user()->hasPermissionTo('mwithdrawals-list', 'admin')): ?>
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('withdrawals'); ?>" href="<?php echo e(url('/admin/dashboard/mwithdrawals')); ?>">
                         Manage Withdrawals
                     </a>
                 </li>
+                <?php endif; ?>
             </ul>
         </li>
 
-        <li class="c-sidebar-nav-dropdown">
-            <a class="c-sidebar-nav-dropdown-toggle <?php echo $__env->yieldContent('maccounts'); ?>" data-toggle="collapse" href="#macc">
+        <li class="c-sidebar-nav-dropdown <?php echo $__env->yieldContent('maccounts'); ?>">
+            <a class="c-sidebar-nav-dropdown-toggle" data-toggle="collapse" href="#macc">
                 <i class="cil-monitor c-sidebar-nav-icon"></i>
                 MT5 Accounts
             </a>
@@ -86,28 +92,39 @@
             </ul>
         </li>
 
-        <?php if(Auth('admin')->User()->type == 'Super Admin'): ?>
-        <li class="c-sidebar-nav-dropdown">
-            <a class="c-sidebar-nav-dropdown-toggle <?php echo $__env->yieldContent('manage-admins'); ?>" data-toggle="collapse" href="#adm">
+        <li class="c-sidebar-nav-dropdown <?php echo $__env->yieldContent('manage-admins'); ?>">
+            <a class="c-sidebar-nav-dropdown-toggle" data-toggle="collapse" href="#adm">
                 <i class="cil-user-unfollow c-sidebar-nav-icon"></i>
                 Administrator(s)
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
+                <?php if(auth('admin')->user()->hasPermissionTo('madmin-list', 'admin')): ?>
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('admins'); ?>" href="<?php echo e(url('/admin/dashboard/madmin')); ?>">
+                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('admins'); ?>" href="<?php echo e(route('madmins')); ?>">
                         Manage Administrator(s)
                     </a>
                 </li>
+                <?php endif; ?>
+                <?php if(auth('admin')->user()->hasPermissionTo('mrole-list', 'admin')): ?>
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('add-admin'); ?>" href="<?php echo e(url('/admin/dashboard/addmanager')); ?>">
-                        Add Admin
+                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('roles'); ?>" href="<?php echo e(url('/admin/dashboard/manageroles')); ?>">
+                        Manage Role(s)
+                    </a>
+                 <?php endif; ?>
+                </li>
+                <?php if(auth('admin')->user()->hasPermissionTo('mperms-list', 'admin')): ?>
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('perms'); ?>" href="<?php echo e(url('/admin/dashboard/manageperms')); ?>">
+                        Manage Permission(s)
                     </a>
                 </li>
+                <?php endif; ?>
             </ul>
         </li>
 
         
 
+        <?php if(auth('admin')->user()->hasPermissionTo('msettings-list', 'admin')): ?>
         <li class="c-sidebar-nav-dropdown">
             <a class="c-sidebar-nav-dropdown-toggle <?php echo $__env->yieldContent('settings'); ?>" data-toggle="collapse">
                 <i class="cil-settings c-sidebar-nav-icon"></i>
@@ -132,6 +149,7 @@
             </ul>
         </li>
         <?php endif; ?>
+
     </ul>
     <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent"
         data-class="c-sidebar-minimized"></button>

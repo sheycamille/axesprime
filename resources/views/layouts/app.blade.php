@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-    {{-- <script src="https://www.paypal.com/sdk/js?client-id={{ \App\Models\Setting::getValue('pp_ci ') }}&currency=USD"></script> --}}
+    @yield('loadPaypal')
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

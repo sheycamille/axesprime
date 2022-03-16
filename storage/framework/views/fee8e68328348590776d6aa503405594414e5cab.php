@@ -65,7 +65,11 @@
                                         <i class="fas fa-phone fa-sm in-icon-wrap circle small primary-color"></i>
                                     </div>
                                     <div>
-                                        <p class="uk-margin-remove"><a href="tel:+18028519171"> (+1) 802-851-9171</a></p>
+                                        <p class="uk-margin-remove">
+                                            <a href="tel:+18028519171">(+1) 781 499 2351 (US & Canada)</a>
+                                            <br>
+                                            <a href="tel:+61894672610">(+61) 894 672 610 (Australia)</a>
+                                        </p>
                                     </div>
                                 </div>
                                 <hr class="uk-margin-medium">

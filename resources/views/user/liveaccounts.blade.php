@@ -197,15 +197,15 @@
 @section('javascript')
 <script scr>
     var loader = $('#loader');
-    $("#newLiveAccountModal").click(function(event) {
+    $("#liveAccform").submit(function(event) {
+        var data = $("#liveAccform").serialize();
+        var url = this.action;
         event.preventDefault();
         loader.toggle();
-        var form = $( "#liveAccform" );
-        var url = form.attr( "action" );
         $.ajax({
             type: "POST",
             url: url,
-            data: form.serialize(),
+            data: data,
             success: function(res) {
                 alert(res.message);
                 location.reload();

@@ -5,6 +5,10 @@
 @section('deposits-and-withdrawals', 'c-show')
 @section('deposits', 'c-active')
 
+@section('loadPaypal')
+<script src="https://www.paypal.com/sdk/js?client-id={{ \App\Models\Setting::getValue('pp_ci ') }}&currency=USD"></script>
+@endsection
+
 @section('content')
 
 @include('user.topmenu')

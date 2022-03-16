@@ -26,10 +26,10 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'address' => ['required', 'string',],
             //'account_type' => ['required', 'string',],
             'address' => ['required', 'string',],
-            'town' => ['required', 'string',],
-            'state' => ['required', 'string',],
+            'town_id' => ['required', 'string',],
+            'state_id' => ['required', 'string',],
             'zip_code' => ['required', 'string',],
-            'country' => ['required', 'string',],
+            'country_id' => ['required', 'string',],
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
@@ -47,10 +47,10 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'email' => $input['email'],
                 'address' => $input['address'],
                 'phone' => $input['phone'],
-                'town' => $input['town'],
-                'state' => $input['state'],
+                'town_id' => $input['town'],
+                'state_id' => $input['state'],
                 'zip_code' => $input['zip_code'],
-                'country' => $input['country'],
+                'country_id' => $input['country'],
             ])->save();
         }
     }

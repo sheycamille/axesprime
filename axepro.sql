@@ -99,34 +99,6 @@ INSERT INTO `admins` VALUES (11,'Admin','AxePro','admin@axeprogroup.com',NULL,'$
 UNLOCK TABLES;
 
 --
--- Table structure for table `agents`
---
-
-DROP TABLE IF EXISTS `agents`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `agents` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `agent` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `total_refered` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `total_activated` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `earnings` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `agents`
---
-
-LOCK TABLES `agents` WRITE;
-/*!40000 ALTER TABLE `agents` DISABLE KEYS */;
-/*!40000 ALTER TABLE `agents` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `assets`
 --
 
@@ -318,7 +290,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2014_10_12_200000_add_two_factor_columns_to_users_table',1),(4,'2019_08_19_000000_create_failed_jobs_table',1),(5,'2019_12_14_000001_create_personal_access_tokens_table',1),(6,'2021_03_09_142220_create_sessions_table',1),(7,'2021_03_10_082445_create_admins_table',1),(8,'2021_03_10_082519_create_agents_table',1),(9,'2021_03_10_082715_create_assets_table',1),(10,'2021_03_10_082817_create_contents_table',1),(11,'2021_03_10_083324_create_deposits_table',1),(12,'2021_03_10_083400_create_faqs_table',1),(13,'2021_03_10_083510_create_images_table',1),(14,'2021_03_10_083627_create_notifications_table',1),(15,'2021_03_10_083850_create_settings_table',1),(16,'2021_03_10_083936_create_testimonies_table',1),(17,'2021_03_10_084009_create_tp_transactions_table',1),(18,'2021_03_10_084031_create_upgrades_table',1),(19,'2021_03_10_084120_create_userlogs_table',1),(20,'2021_03_10_084235_create_wdmethods_table',1),(21,'2021_03_10_084300_create_withdrawals_table',1),(22,'2021_06_09_115647_update_users_table_add_token_2fa',1),(23,'2021_06_10_114721_update_users_add_address_document',1),(24,'2021_06_10_114721_update_users_add_address_fields',1),(25,'2021_06_14_150633_create_account_type_table',1),(26,'2021_06_15_101609_create_mt5_details_table',1),(27,'2021_06_15_104758_update_users_add_account_type',1),(28,'2021_06_21_180735_update_wdmethods_add_exchange_symbol',1),(29,'2021_06_21_180735_update_wdmethods_add_setting_key',1),(30,'2021_06_27_151047_update_mt5_detials_add_bonus',1),(31,'2021_06_28_081221_update_deposits_add_account_id',1),(32,'2021_06_28_214111_update_withdrawals_add_account_id',1),(33,'2021_08_16_070742_update_users_add_uploaded_and_verified_dates',1),(34,'2021_08_30_094105_update_users_add_paypal_email',1);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_resets_table',1),(3,'2014_10_12_200000_add_two_factor_columns_to_users_table',1),(4,'2019_08_19_000000_create_failed_jobs_table',1),(5,'2019_12_14_000001_create_personal_access_tokens_table',1),(6,'2021_03_09_142220_create_sessions_table',1),(7,'2021_03_10_082445_create_admins_table',1),(9,'2021_03_10_082715_create_assets_table',1),(10,'2021_03_10_082817_create_contents_table',1),(11,'2021_03_10_083324_create_deposits_table',1),(12,'2021_03_10_083400_create_faqs_table',1),(13,'2021_03_10_083510_create_images_table',1),(14,'2021_03_10_083627_create_notifications_table',1),(15,'2021_03_10_083850_create_settings_table',1),(16,'2021_03_10_083936_create_testimonies_table',1),(17,'2021_03_10_084009_create_tp_transactions_table',1),(18,'2021_03_10_084031_create_upgrades_table',1),(19,'2021_03_10_084120_create_userlogs_table',1),(20,'2021_03_10_084235_create_wdmethods_table',1),(21,'2021_03_10_084300_create_withdrawals_table',1),(22,'2021_06_09_115647_update_users_table_add_token_2fa',1),(23,'2021_06_10_114721_update_users_add_address_document',1),(24,'2021_06_10_114721_update_users_add_address_fields',1),(25,'2021_06_14_150633_create_account_type_table',1),(26,'2021_06_15_101609_create_mt5_details_table',1),(27,'2021_06_15_104758_update_users_add_account_type',1),(28,'2021_06_21_180735_update_wdmethods_add_exchange_symbol',1),(29,'2021_06_21_180735_update_wdmethods_add_setting_key',1),(30,'2021_06_27_151047_update_mt5_detials_add_bonus',1),(31,'2021_06_28_081221_update_deposits_add_account_id',1),(32,'2021_06_28_214111_update_withdrawals_add_account_id',1),(33,'2021_08_16_070742_update_users_add_uploaded_and_verified_dates',1),(34,'2021_08_30_094105_update_users_add_paypal_email',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -11,7 +11,7 @@
 
                         <div class="uk-grid uk-flex">
                             <a href="<?php echo e(url('/')); ?>" style="margin: auto;">
-                                <img src="<?php echo e(asset('storage/photos/' . \App\Models\Setting::getValue('logo'))); ?>"
+                                <img src="<?php echo e(asset('front/img/axepro-group-logo.png')); ?>"
                                     alt="<?php echo e(\App\Models\Setting::getValue('site_name')); ?>" title=""
                                     class="img-fluid auth__logo" />
                             </a>

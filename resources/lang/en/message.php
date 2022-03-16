@@ -351,7 +351,7 @@ return [
     'nws_pg' => 'Forex News',
     'company' => 'Company',
     'abt' => "About Us",
-    'cdt' => 'credit Score',
+    'cdt' => 'Credit Score',
     'sec' => 'Security',
     'ctc' => 'Contact Us',
     'crt_acnt' => 'Create Account',

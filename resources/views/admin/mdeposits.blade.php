@@ -97,8 +97,10 @@
                                                 <a class="@if ($deposit->status == 'Processed') btn-success @else btn-danger @endif btn-xs"
                                                     href="#">{{ $deposit->status }}</a>
                                                 @else
+                                                @if(auth('admin')->user()->hasPermissionTo('mdeposits-process', 'admin'))
                                                 <a class="btn btn-primary btn-xs"
                                                     href="{{ url('admin/dashboard/pdeposit') }}/{{ $deposit->id }}">Process</a>
+                                                @endif
                                                 <a class="m-1 btn btn-primary btn-xs" data-toggle="modal"
                                                     data-target="#rejctModal{{ $deposit->id }}" href="#">Reject</a>
                                                 @endif
@@ -146,9 +148,7 @@
                                                             data-dismiss="modal">&times;</button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        @if ($deposit->payment_mode == 'Credit Card' ||
-                                                        $deposit->payment_mode
-                                                        == 'Paystack' || $deposit->payment_mode == 'Express Deposit' ||
+                                                        @if ($deposit->payment_mode == 'Credit Card' || $deposit->payment_mode == 'Express Deposit' ||
                                                         $deposit->payment_mode == 'CoinPayments')
                                                         <h4 class=">This Payment was either
                                                     made with credit/debit card, admin topup or automatic crypto

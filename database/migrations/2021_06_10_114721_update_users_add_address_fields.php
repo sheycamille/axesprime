@@ -28,8 +28,8 @@ class UpdateUsersAddAddressFields extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('town');
-            $table->dropColumn('state');
+            $table->dropColumn('town_id');
+            $table->dropColumn('state_id');
             $table->dropColumn('zip_code');
         });
     }

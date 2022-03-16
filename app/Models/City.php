@@ -11,7 +11,7 @@ class City extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'id', 'state_id', 'name', 'status'
+        'id', 'state_id', 'name', 'full_name', 'code', 'status', 'iana_timezone', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     public function state(): BelongsTo

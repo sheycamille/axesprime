@@ -235,6 +235,7 @@
         if (stateID) {
             $.get( "<?php echo e(url('/get-town-list')); ?>?state_id=" + stateID, function( data ) {
                 $("#town").empty();
+                $("#town").append('<option>Select</option>');
                 $.each(data, function (key, town) {
                     $("#town").append('<option value="' + town.id + '">' + town.name + '</option>');
                 });

@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Exception;
-
 use App\Models\Faq;
 use App\Models\User;
-use App\Models\Agent;
 use App\Models\Images;
 use App\Models\Content;
 use App\Models\Deposit;
@@ -483,47 +480,6 @@ class LogicController extends Controller
     }
 
 
-    public function delagent(Request $request, $id)
-    {
-        //delete the user from agent model if exists
-        $agent = Agent::where('id', $id)->first();
-
-        if (!empty($agent)) {
-            Agent::where('id', $agent->id)->delete();
-        }
-        return redirect()->back()
-            ->with('message', "Action successful!.");
-    }
-
-
-    // Add agent
-    public function addagent(Request $request)
-    {
-        //get agent if exists
-        $ag = Agent::where('agent', $request['user'])->first();
-        //check if the agent already exists
-        if (count($ag) > 0) {
-            //update the agent info
-            Agent::where('id', $ag->id)->increment('total_refered', $request['referred_users']);
-        } else {
-            //add the referee to the agents model
-
-            $agent_id = DB::table('agents')->insertGetId(
-                [
-                    'agent' => $request['user'],
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                ]
-            );
-            //increment refered clients by 1
-            Agent::where('id', $agent_id)->increment('total_refered', $request['referred_users']);
-        }
-
-        return redirect()->route('agents')
-            ->with('message', 'action successful!');
-    }
-
-
     // Delete user
     public function delsystemuser(Request $request, $id)
     {
@@ -540,12 +496,6 @@ class LogicController extends Controller
             foreach ($withdrawals as $withdrawals) {
                 Withdrawal::where('id', $withdrawals->id)->delete();
             }
-        }
-
-        //delete the user from agent model if exists
-        $agent = Agent::where('agent', $id)->first();
-        if (!empty($agent)) {
-            Agent::where('id', $agent->id)->delete();
         }
 
         User::where('id', $id)->delete();
@@ -587,37 +537,6 @@ class LogicController extends Controller
             ]);
         return redirect()->back()
             ->with('message', 'User Registered Sucessful!');
-    }
-
-
-    public function saveadmin(Request $request)
-    {
-
-        $this->validate($request, [
-            'fname' => 'required|max:255',
-            'l_name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:admins',
-            'password' => 'required|min:8|confirmed',
-        ]);
-
-
-        $thisid = DB::table('admins')->insertGetId(
-            [
-                'firstName' => $request['fname'],
-                'lastName' => $request['l_name'],
-                'email' => $request['email'],
-                'phone' => $request['phone'],
-                'type' => $request['type'],
-                'acnt_type_active' => "active",
-                'status' => "active",
-                'dashboard_style' => "dark",
-                'password' => Hash::make($request['password']),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]
-        );
-        return redirect()->back()
-            ->with('message', 'Manager added Sucessfull!y');
     }
 
 
@@ -764,13 +683,5 @@ class LogicController extends Controller
         Faq::where('id', $id)->delete();
         return redirect()->back()
             ->with('message', 'Faq Sucessfully Deleted');
-    }
-
-
-    public function deltest($id)
-    {
-        Testimony::where('id', $id)->delete();
-        return redirect()->back()
-            ->with('message', 'Testimonial Sucessfully Deleted');
     }
 }

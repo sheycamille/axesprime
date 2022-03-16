@@ -16,16 +16,22 @@
             </a>
         </li>
 
-        <li class="c-sidebar-nav-dropdown">
-            <a class="c-sidebar-nav-dropdown-toggle @yield('manage-users')" href="{{ route('manageusers') }}">
+
+        <li class="c-sidebar-nav-dropdown @yield('manage-users')">
+            <a class="c-sidebar-nav-dropdown-toggle" href="{{ route('manageusers') }}">
                 <i class="cil-user c-sidebar-nav-icon"></i>
                 Manage Users
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
+                @if(auth('admin')->user()->hasPermissionTo('musers-list', 'admin'))
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link @yield('users')" href="{{ route('manageusers') }}">
                         All Users</a>
                 </li>
+                @endif
+
+
+                @if(auth('admin')->user()->hasPermissionTo('mkyc-list', 'admin'))
                 @if (\App\Models\Setting::getValue('enable_kyc') == 'yes')
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link @yield('kyc')" href="{{ route('kyc') }}">
@@ -33,35 +39,35 @@
                     </a>
                 </li>
                 @endif
-                <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('add-user')" href="{{ url('/admin/dashboard/adduser') }}">
-                        Add User
-                    </a>
-                </li>
+                @endif
             </ul>
         </li>
 
-        <li class="c-sidebar-nav-dropdown">
-            <a class="c-sidebar-nav-dropdown-toggle @yield('manage-dw')" data-toggle="collapse" href="#mdw">
+        <li class="c-sidebar-nav-dropdown @yield('manage-dw')">
+            <a class="c-sidebar-nav-dropdown-toggle" data-toggle="collapse" href="#mdw">
                 <i class="cil-money c-sidebar-nav-icon"></i>
                 Manage D/W
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
+                @if(auth('admin')->user()->hasPermissionTo('mdeposits-list', 'admin'))
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link @yield('deposits')" href="{{ url('/admin/dashboard/mdeposits') }}">
                         Manage Deposits
                     </a>
                 </li>
+                @endif
+                @if(auth('admin')->user()->hasPermissionTo('mwithdrawals-list', 'admin'))
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link @yield('withdrawals')" href="{{ url('/admin/dashboard/mwithdrawals') }}">
                         Manage Withdrawals
                     </a>
                 </li>
+                @endif
             </ul>
         </li>
 
-        <li class="c-sidebar-nav-dropdown">
-            <a class="c-sidebar-nav-dropdown-toggle @yield('maccounts')" data-toggle="collapse" href="#macc">
+        <li class="c-sidebar-nav-dropdown @yield('maccounts')">
+            <a class="c-sidebar-nav-dropdown-toggle" data-toggle="collapse" href="#macc">
                 <i class="cil-monitor c-sidebar-nav-icon"></i>
                 MT5 Accounts
             </a>
@@ -86,23 +92,33 @@
             </ul>
         </li>
 
-        @if (Auth('admin')->User()->type == 'Super Admin')
-        <li class="c-sidebar-nav-dropdown">
-            <a class="c-sidebar-nav-dropdown-toggle @yield('manage-admins')" data-toggle="collapse" href="#adm">
+        <li class="c-sidebar-nav-dropdown @yield('manage-admins')">
+            <a class="c-sidebar-nav-dropdown-toggle" data-toggle="collapse" href="#adm">
                 <i class="cil-user-unfollow c-sidebar-nav-icon"></i>
                 Administrator(s)
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
+                @if(auth('admin')->user()->hasPermissionTo('madmin-list', 'admin'))
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('admins')" href="{{ url('/admin/dashboard/madmin') }}">
+                    <a class="c-sidebar-nav-link @yield('admins')" href="{{ route('madmins') }}">
                         Manage Administrator(s)
                     </a>
                 </li>
+                @endif
+                @if(auth('admin')->user()->hasPermissionTo('mrole-list', 'admin'))
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('add-admin')" href="{{ url('/admin/dashboard/addmanager') }}">
-                        Add Admin
+                    <a class="c-sidebar-nav-link @yield('roles')" href="{{ url('/admin/dashboard/manageroles') }}">
+                        Manage Role(s)
+                    </a>
+                 @endif
+                </li>
+                @if(auth('admin')->user()->hasPermissionTo('mperms-list', 'admin'))
+                <li class="c-sidebar-nav-item">
+                    <a class="c-sidebar-nav-link @yield('perms')" href="{{ url('/admin/dashboard/manageperms') }}">
+                        Manage Permission(s)
                     </a>
                 </li>
+                @endif
             </ul>
         </li>
 
@@ -113,6 +129,7 @@
             </a>
         </li> --}}
 
+        @if(auth('admin')->user()->hasPermissionTo('msettings-list', 'admin'))
         <li class="c-sidebar-nav-dropdown">
             <a class="c-sidebar-nav-dropdown-toggle @yield('settings')" data-toggle="collapse">
                 <i class="cil-settings c-sidebar-nav-icon"></i>
@@ -137,6 +154,7 @@
             </ul>
         </li>
         @endif
+
     </ul>
     <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent"
         data-class="c-sidebar-minimized"></button>

@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
+use Illuminate\Support\Facades\DB;
+
+
 class AccountTypeSeeder extends Seeder
 {
     /**
@@ -14,7 +17,7 @@ class AccountTypeSeeder extends Seeder
     public function run()
     {
         // beginner account type
-        \DB::table('account_types')->insert([
+        DB::table('account_types')->insert([
             'name' => 'Beginner',
             'cost' => '250',
             'min_deposit' => '250',
@@ -33,7 +36,7 @@ class AccountTypeSeeder extends Seeder
 
 
         // Intermediate account type
-        \DB::table('account_types')->insert([
+        DB::table('account_types')->insert([
             'name' => 'Intermediate',
             'cost' => '20k',
             'min_deposit' => '20000',
@@ -52,7 +55,7 @@ class AccountTypeSeeder extends Seeder
 
 
         // Advanced account type
-        \DB::table('account_types')->insert([
+        DB::table('account_types')->insert([
             'name' => 'Advanced',
             'cost' => '50k',
             'min_deposit' => '50000',
@@ -71,7 +74,7 @@ class AccountTypeSeeder extends Seeder
 
 
         // Islamic account type
-        \DB::table('account_types')->insert([
+        DB::table('account_types')->insert([
             'name' => 'Islamic',
             'cost' => '50k',
             'active' => false,
@@ -91,7 +94,7 @@ class AccountTypeSeeder extends Seeder
 
 
         // VIP account type
-        \DB::table('account_types')->insert([
+        DB::table('account_types')->insert([
             'name' => 'VIP',
             'cost' => '100k',
             'min_deposit' => '100000',

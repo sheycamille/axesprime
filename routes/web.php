@@ -79,15 +79,33 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
     Route::post('dashboard/searchdp', 'Admin\HomeController@searchDp');
     Route::post('dashboard/searchWith', 'Admin\HomeController@searchWt');
 
-    Route::get('dashboard/mwithdrawals', 'Admin\HomeController@mwithdrawals')->name('mwithdrawals');
-    Route::get('dashboard/mdeposits', 'Admin\HomeController@mdeposits')->name('mdeposits');
-    Route::get('dashboard/agents', 'Admin\HomeController@agents')->name('agents');
-    Route::get('dashboard/addmanager', 'Admin\HomeController@addmanager')->name('addmanager');
-    Route::get('dashboard/madmin', 'Admin\HomeController@madmin')->name('madmin');
-    Route::get('dashboard/msubtrade', 'Admin\HomeController@msubtrade')->name('subtrade');
+    // manage admins
+    Route::get('dashboard/madmins', 'Admin\HomeController@madmins')->name('madmins');
+    Route::get('dashboard/addadmin', 'Admin\HomeController@addadmin')->name('addadmin');
+    Route::post('dashboard/saveadmin', 'Admin\HomeController@saveadmin');
+    Route::post('dashboard/editadmin', 'Admin\HomeController@editadmin')->name('editadmin');
+    Route::get('dashboard/adminchangepassword', 'Admin\UsersController@adminchangepassword');
+    Route::post('dashboard/adminupdatepass', 'Admin\UsersController@adminupdatepass')->name('adminupdatepass');
+
+    // manage roles
+    Route::get('dashboard/manageroles', 'Admin\RoleController@index')->name('manageroles');
+    Route::get('dashboard/createrole', 'Admin\RoleController@create')->name('createrole');
+    Route::post('dashboard/storerole', 'Admin\RoleController@store')->name('storerole');
+    Route::get('dashboard/editrole/{id}', 'Admin\RoleController@edit')->name('editrole');
+    Route::post('dashboard/editrole/{id}', 'Admin\RoleController@update')->name('saverole');
+    Route::post('dashboard/deleterole/{id}', 'Admin\RoleController@delete')->name('deleterole');
+
+    // manage permissions
+    Route::get('dashboard/manageperms', 'Admin\PermController@index')->name('manageperms');
+    Route::get('dashboard/createperm', 'Admin\PermController@create')->name('createperm');
+    Route::post('dashboard/createperm', 'Admin\PermController@store')->name('storeperm');
+    Route::post('dashboard/deleteperm/{id}', 'Admin\PermController@delete')->name('deleteperm');
+
+    // manage settings
     Route::get('dashboard/settings', 'Admin\HomeController@settings')->name('settings');
     Route::get('dashboard/preferences', 'Admin\HomeController@prefsettings')->name('preferencesettings');
     Route::get('dashboard/payments', 'Admin\HomeController@paysettings')->name('paymentsettings');
+
     Route::get('dashboard/frontpage', 'Admin\HomeController@frontpage')->name('frontpage');
     Route::get('dashboard/adduser', 'Admin\HomeController@adduser')->name('adduser');
     Route::post('dashboard/topup', 'Admin\LogicController@topup')->name('topup');
@@ -100,40 +118,29 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
     Route::get('dashboard/resetadpwd/{id}', 'Admin\UsersController@resetadpwd')->name('resetadpwd');
     Route::get('dashboard/switchuser/{id}', 'Admin\LogicController@switchuser');
     Route::get('dashboard/clearacct/{id}', 'Admin\LogicController@clearacct')->name('clearacct');
+
+    // manage withdrawals and their processing
+    Route::get('dashboard/mwithdrawals', 'Admin\HomeController@mwithdrawals')->name('mwithdrawals');
     Route::post('dashboard/rejectdeposit/{id}', 'Admin\LogicController@rejectdeposit')->name('rejectdeposit');
     Route::get('dashboard/pdeposit/{id}', 'Admin\LogicController@pdeposit')->name('pdeposit');
 
+    // manage deposits and their processing
+    Route::get('dashboard/mdeposits', 'Admin\HomeController@mdeposits')->name('mdeposits');
     Route::get('dashboard/pwithdrawal/{id}', 'Admin\LogicController@pwithdrawal')->name('pwithdrawal');
-
     Route::post('dashboard/rejectwithdrawal', 'Admin\LogicController@rejectwithdrawal')->name('rejectwithdrawal');
-
-    Route::post('dashboard/addagent', 'Admin\LogicController@addagent')->name('addagent');
-    Route::get('dashboard/viewagent/{agent}', 'Admin\HomeController@viewagent')->name('viewagent');
-    Route::get('dashboard/delagent/{id}', 'Admin\LogicController@delagent')->name('delagent');
 
     // Settings Update Routes
     Route::post('dashboard/updatesettings', 'Admin\SettingsController@updatesettings')->name('updatesettings');
     Route::post('dashboard/updatepreference', 'Admin\SettingsController@updatepreference');
     Route::post('dashboard/updatewebinfo', 'Admin\SettingsController@updatewebinfo');
-    Route::post('dashboard/updatebot', 'Admin\SettingsController@updatebot')->name('updatebot');
-    Route::post('dashboard/updatebotswt', 'Admin\SettingsController@updatebotswt')->name('updatebotswt');
-    Route::post('dashboard/updateasset', 'Admin\SettingsController@updateasset');
-    Route::post('dashboard/updatemarket', 'Admin\SettingsController@updatemarket');
-    Route::post('dashboard/updatefee', 'Admin\SettingsController@updatefee');
-    Route::post('dashboard/updatesubfee', 'Admin\SettingsController@updatesubfee')->name('updatesubfee');
     Route::post('dashboard/updatewdmethod', 'Admin\SettingsController@updatewdmethod')->name('updatewdmethod');
     Route::post('dashboard/addwdmethod', 'Admin\SettingsController@addwdmethod')->name('addwdmethod');
 
-    Route::get('dashboard/delsub/{id}', 'Admin\LogicController@delsub');
-    Route::get('dashboard/confirmsub/{id}', 'Admin\LogicController@confirmsub');
+    // manage users
     Route::post('dashboard/saveuser', 'Admin\LogicController@saveuser');
-    Route::post('dashboard/saveadmin', 'Admin\LogicController@saveadmin');
-
     Route::get('dashboard/unblock/{id}', 'Admin\UsersController@unblock');
     Route::get('dashboard/ublock/{id}', 'Admin\UsersController@ublock');
     Route::get('dashboard/deluser/{id}', 'Admin\UsersController@deluser')->name('deluser');
-    Route::get('dashboard/adminchangepassword', 'Admin\UsersController@adminchangepassword');
-    Route::post('dashboard/adminupdatepass', 'Admin\UsersController@adminupdatepass')->name('adminupdatepass');
 
     // KYC Routes
     Route::get('dashboard/kyc', 'Admin\HomeController@kyc')->name('kyc');
@@ -165,8 +172,6 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
     // Delete fa and tes routes
     Route::get('dashboard/delfaq/{id}', 'Admin\LogicController@delfaq');
     Route::get('dashboard/deltestimony/{id}', 'Admin\LogicController@deltest');
-    // This route is to import data from excel
-    Route::post('dashboard/fileImport', 'Admin\ImportController@fileImport')->name('fileImport');
 
     Route::post('dashboard/updatewebinfo', 'Admin\SettingsController@updatewebinfo')->name('updatewebinfo');
     Route::post('dashboard/updatepreference', 'Admin\SettingsController@updatepreference')->name('updatepreference');
@@ -181,7 +186,6 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
 
     Route::get('dashboard/ftds', 'Admin\HomeController@mftds')->name('mftds');
     Route::get('dashboard/delliveaccount/{id}', 'Admin\HomeController@dellaccounts')->name('dellaccounts');
-
     //
 });
 // Everything About Admin Route ends here

@@ -35,16 +35,12 @@
     <div class="form-group">
         <h5 class="">Site Logo (Recommended size; max width, 200px and max height 100px.)</h5>
         <input name="logo" class="form-control" type="file">
-        <?php if(\App\Models\Setting::getValue('logo')): ?>
-        <img src="<?php echo e(asset('storage/photos/'.\App\Models\Setting::getValue('logo'))); ?>">
-        <?php endif; ?>
+        <img src="<?php echo e(asset('front/img/axepro-group-logo.png')); ?>">
     </div>
     <div class="form-group">
         <h5 class="">Site Favicon (Recommended type: png, size: max width, 32px and max height 32px.)</h5>
         <input name="favicon" class="form-control" type="file">
-        <?php if(\App\Models\Setting::getValue('favicon')): ?>
-        <img src="<?php echo e(asset('storage/photos/'.\App\Models\Setting::getValue('favicon'))); ?>">
-        <?php endif; ?>
+        <img src="<?php echo e(asset('front/favicon.png')); ?>">
     </div>
 
     <input type="submit" class="px-5 btn btn-primary btn-lg" value="Update">

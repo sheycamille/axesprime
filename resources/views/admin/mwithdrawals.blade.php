@@ -92,8 +92,10 @@
                                                     <a class="@if ($withdrawal->status == 'Processed') btn-success @else btn-danger @endif btn-xs"
                                                         href="#">{{ $withdrawal->status }}</a>
                                                     @else
+                                                    @if(auth('admin')->user()->hasPermissionTo('mwithdrawals-preo', 'admin'))
                                                     <a class="m-1 btn btn-primary btn-xs"
                                                         href="{{ url('admin/dashboard/pwithdrawal') }}/{{ $withdrawal->id }}">Process</a>
+                                                    @endif
                                                     <a class="m-1 btn btn-primary btn-xs" data-toggle="modal"
                                                         data-target="#rejctModal{{ $withdrawal->id }}"
                                                         href="#">Reject</a>

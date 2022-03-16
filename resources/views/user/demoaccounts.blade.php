@@ -168,15 +168,15 @@
 @section('javascript')
 <script scr>
     var loader = $('#loader');
-    $("#newDemoAccountModal").click(function(event) {
+    $("#demoAccForm").submit(function(event) {
+        var data = $("#demoAccForm").serialize();
+        var url = this.action;
         event.preventDefault();
         loader.toggle();
-        var form = $( "#demoAccForm" );
-        var url = form.attr( "action" );
         $.ajax({
             type: "POST",
             url: url,
-            data: form.serialize(),
+            data: data,
             success: function(res) {
                 alert(res.message);
                 location.reload();

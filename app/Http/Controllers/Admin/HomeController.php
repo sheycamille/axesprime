@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use Exception;
+
 use App\Models\Faq;
 use App\Models\User;
 use App\Models\Admin;
-use App\Models\Agent;
 use App\Models\Asset;
 use App\Models\Images;
 use App\Models\Content;
@@ -22,12 +23,27 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+
 use Tarikhagustia\LaravelMt5\LaravelMt5;
+
+use Spatie\Permission\Models\Role;
+
 
 
 class HomeController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
+
 
     /**
      * Show Admin Dashboard.
@@ -115,67 +131,17 @@ class HomeController extends Controller
     }
 
 
-    //Return agents route
-    public function agents()
-    {
-        return view('admin.agents')
-            ->with(array(
-                'title' => 'Manage agents',
-                'users' => User::orderBy('id', 'desc')
-                    ->get(),
-                'agents' => Agent::all(),
-            ));
-    }
-
-
-    //Return view agent route
-    public function viewagent($agent)
-    {
-        return view('admin.viewagent')
-            ->with(array(
-                'title' => 'Agent record',
-                'agent' => User::where('id', $agent)->first(),
-                'ag_r' => User::where('ref_by', $agent)->get(),
-            ));
-    }
-
-
     //return settings form
-    public function settings(Request $request)
+    public function settings()
     {
         $countries = Country::whereStatus('active')->get();
         $wmethods = Wdmethod::where('type', 'withdrawal')->get();
         $dmethods = Wdmethod::where('type', 'deposit')->get();
         return view('admin.settings')->with(array(
-            'assets' => Asset::all(),
-            //'markets' => markets::all(),
-            'countries' => $countries,
-            'title' => 'System Info Settings'
-        ));
-        //return view('settings')->with(array('title' =>'System Settings'));
-    }
-
-
-    //return settings form
-    public function prefsettings(Request $request)
-    {
-        return view('admin.prefsettings');
-    }
-
-
-    //return settings form
-    public function paysettings(Request $request)
-    {
-        $countries = Country::whereStatus('active')->get();
-        $wmethods = Wdmethod::where('type', 'withdrawal')->get();
-        $dmethods = Wdmethod::where('type', 'deposit')->get();
-        return view('admin.paysettings')->with(array(
             'wmethods' => $wmethods,
             'dmethods' => $dmethods,
-            'assets' => Asset::all(),
-            //'markets' => markets::all(),
             'countries' => $countries,
-            'title' => 'Payment Settings'
+            'title' => 'System Settings'
         ));
     }
 
@@ -215,28 +181,93 @@ class HomeController extends Controller
     }
 
 
-    public function adduser()
+    public function madmins()
     {
-        return view('admin.referuser')->with(array(
-            'title' => 'Add new Users',
+        $roles = Role::get();
+        $admins = Admin::orderby('id', 'desc')->get();
+        return view('admin.madmins')->with(array(
+            'title' => 'Add new manager',
+            'admins' => $admins,
+            'roles' => $roles
         ));
     }
 
 
-    public function addmanager()
+    public function addadmin()
     {
+        $roles = Role::get();
         return view('admin.addadmin')->with(array(
             'title' => 'Add new manager',
+            'roles' => $roles
         ));
     }
 
 
-    public function madmin()
+    public function saveadmin(Request $request)
     {
-        return view('admin.madmin')->with(array(
-            'admins' => Admin::orderby('id', 'desc')->get(),
-            'title' => 'Add new manager',
-        ));
+        $this->validate($request, [
+            'fname' => 'required|max:255',
+            'l_name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:admins',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $admin = Admin::create(
+            [
+                'firstName' => $request['fname'],
+                'lastName' => $request['l_name'],
+                'email' => $request['email'],
+                'phone' => $request['phone'],
+                'type' => $request['type'],
+                'acnt_type_active' => "active",
+                'status' => "active",
+                'dashboard_style' => "dark",
+                'password' => Hash::make($request['password']),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]
+        );
+
+        $admin->syncRoles($request->roles);
+
+        $perms = [];
+        foreach ($request->roles as $role) {
+            $role = Role::find($role);
+            $perms = array_merge($perms, $role->permissions);
+        }
+
+        $admin->syncPermissions($perms);
+
+        return redirect()->route('madmins')
+            ->with('message', 'Manager added Sucessfull!y');
+    }
+
+
+    // update users info
+    public function editadmin(Request $request)
+    {
+
+        $admin = Admin::find($request->user_id);
+        $admin->update([
+            'firstName' => $request->fname,
+            'lastName' => $request->l_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'type' => $request->type,
+            'roles' => 'required' . $request->roles
+        ]);
+
+        $admin->syncRoles($request->roles);
+
+        $perms = [];
+        foreach ($request->roles as $role) {
+            $role = Role::find($role);
+            array_push($perms, $role->permissions);
+        }
+
+        $admin->syncPermissions($perms);
+        return redirect()->back()
+            ->with('message', 'Account updated Successfully!');
     }
 
 

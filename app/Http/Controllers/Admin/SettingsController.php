@@ -270,113 +270,6 @@ class SettingsController extends Controller
     }
 
 
-    public function updatebotswt(Request $request)
-    {
-
-        if ($request->referral_commission) {
-            $setting = Setting::where('name', 'referral_commission')->first();
-            if (!$setting) $setting = new Setting();
-            $setting->name = 'referral_commission';
-            $setting->value = $request->referral_commission;
-            $setting->save();
-        }
-
-        if ($request->referral_commission1) {
-            $setting = Setting::where('name', 'referral_commission1')->first();
-            if (!$setting) $setting = new Setting();
-            $setting->name = 'referral_commission1';
-            $setting->value = $request->referral_commission1;
-            $setting->save();
-        }
-
-        if ($request->referral_commission2) {
-            $setting = Setting::where('name', 'referral_commission2')->first();
-            if (!$setting) $setting = new Setting();
-            $setting->name = 'referral_commission2';
-            $setting->value = $request->referral_commission2;
-            $setting->save();
-        }
-
-        if ($request->referral_commission3) {
-            $setting = Setting::where('name', 'referral_commission3')->first();
-            if (!$setting) $setting = new Setting();
-            $setting->name = 'referral_commission3';
-            $setting->value = $request->referral_commission3;
-            $setting->save();
-        }
-
-        if ($request->referral_commission4) {
-            $setting = Setting::where('name', 'referral_commission4')->first();
-            if (!$setting) $setting = new Setting();
-            $setting->name = 'referral_commission4';
-            $setting->value = $request->referral_commission4;
-            $setting->save();
-        }
-
-        if ($request->referral_commission5) {
-            $setting = Setting::where('name', 'referral_commission5')->first();
-            if (!$setting) $setting = new Setting();
-            $setting->name = 'referral_commission5';
-            $setting->value = $request->referral_commission5;
-            $setting->save();
-        }
-
-        if ($request->signup_bonus) {
-            $setting = Setting::where('name', 'signup_bonus')->first();
-            if (!$setting) $setting = new Setting();
-            $setting->name = 'signup_bonus';
-            $setting->value = $request->signup_bonus;
-            $setting->save();
-        }
-
-        // $setting = Setting::where('name', 'update_by')->first();
-        // if (!$setting) $setting = new Setting();
-        // $setting->name = 'update_by';
-        // $setting->value = \Auth::user()->tuser()->first_name .  ' ' . \Auth::user()->tuser()->last_name;
-        // $setting->save();
-
-        return redirect()->back()
-            ->with('message', 'Action Sucessful');
-    }
-
-    //Update Subscription Fees
-    public function updatesubfee(Request $request)
-    {
-
-        if ($request->monthlyfee) {
-            $setting = Setting::where('name', 'monthlyfee')->first();
-            if (!$setting) $setting = new Setting();
-            $setting->name = 'monthlyfee';
-            $setting->value = $request->monthlyfee;
-            $setting->save();
-        }
-
-        if ($request->quarterlyfee) {
-            $setting = Setting::where('name', 'quarterlyfee')->first();
-            if (!$setting) $setting = new Setting();
-            $setting->name = 'quarterlyfee';
-            $setting->value = $request->quarterlyfee;
-            $setting->save();
-        }
-
-        if ($request->yearlyfee) {
-            $setting = Setting::where('name', 'yearlyfee')->first();
-            if (!$setting) $setting = new Setting();
-            $setting->name = 'yearlyfee';
-            $setting->value = $request->yearlyfee;
-            $setting->save();
-        }
-
-        // $setting = Setting::where('name', 'update_by')->first();
-        // if (!$setting) $setting = new Setting();
-        // $setting->name = 'update_by';
-        // $setting->value = \Auth::user()->tuser()->first_name .  ' ' . \Auth::user()->tuser()->last_name;
-        // $setting->save();
-
-        return redirect()->back()
-            ->with('message', 'Action Sucessful');
-    }
-
     //Add withdrawal and deposit method
     public function addwdmethod(Request $request)
     {
@@ -387,7 +280,6 @@ class SettingsController extends Controller
         $method->exchange_symbol = $request['exchange_symbol'];
         $method->minimum = $request['minimum'];
         $method->maximum = $request['maximum'];
-        $method->details = $request['details'];
         $method->charges_fixed = $request['charges_fixed'];
         $method->charges_percentage = $request['charges_percentage'];
         $method->duration = $request['duration'];
@@ -409,7 +301,6 @@ class SettingsController extends Controller
                 'exchange_symbol' => $request['exchange_symbol'],
                 'minimum' => $request['minimum'],
                 'maximum' => $request['maximum'],
-                'details' => $request['details'],
                 'charges_fixed' => $request['charges_fixed'],
                 'country_ids' => $countries,
                 'charges_percentage' => $request['charges_percentage'],
@@ -685,69 +576,5 @@ class SettingsController extends Controller
 
         return redirect()->back()
             ->with('message', 'Action Sucessful');
-    }
-
-    public function updatefee(Request $request)
-    {
-        if ($request->commission_type) {
-            $setting = Setting::where('name', 'commission_type')->first();
-            if (!$setting) $setting = new Setting();
-            $setting->name = 'commission_type';
-            $setting->value = $request->commission_type;
-            $setting->save();
-        }
-
-        if ($request->commission_fee) {
-            $setting = Setting::where('name', 'commission_fee')->first();
-            if (!$setting) $setting = new Setting();
-            $setting->name = 'commission_fee';
-            $setting->value = $request->commission_fee;
-            $setting->save();
-        }
-
-        // $setting = Setting::where('name', 'update_by')->first();
-        // if (!$setting) $setting = new Setting();
-        // $setting->name = 'update_by';
-        // $setting->value = \Auth::user()->tuser()->first_name .  ' ' . \Auth::user()->tuser()->last_name;
-        // $setting->save();
-
-        return redirect()->back()
-            ->with('message', 'Action Sucessful');
-    }
-
-    public function updateasst(Request $request)
-    {
-        Asset::where('id', $request->id)
-            ->update([
-                'name' => $request->assname,
-                'symbol' => $request->assym,
-                'category' => $request->ascat,
-                // 'commission_type'=> $request->commission_type,
-                // 'commission_fee'=> $request->commission_fee,
-            ]);
-        return redirect()->back()
-            ->with('message', 'Asset Sucessfully Updated');
-    }
-
-    public function updateasset(Request $request)
-    {
-
-        $assets = new Asset();
-        $assets->category = $request['asset_catgy'];
-        $assets->name = $request['asset_name'];
-        $assets->symbol = $request['asset_symbol'];
-        //$assets->commission_type=$request['coom_type'];
-        //$assets->commission_fee=$request['com_fee'];
-        $assets->save();
-
-        return redirect()->back()
-            ->with('message', 'Action Sucessful');
-    }
-
-    public function delassets($id)
-    {
-        Asset::where('id', $id)->delete();
-        return redirect()->back()
-            ->with('message', 'Asset Sucessfully Deleted');
     }
 }

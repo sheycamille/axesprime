@@ -36,9 +36,9 @@
                     <input style="padding:5px;" class="form-control" placeholder="Enter method name" type="text"
                         name="name" required><br />
                     <input style="padding:5px;" class="form-control" placeholder="Enter method exchange symbol"
-                        type="text" name="exchange_symbol" value="<?php echo e($method->exchange_symbol); ?>"><br>
+                        type="text" name="exchange_symbol" value=""><br>
                     <input style="padding:5px;" class="form-control" placeholder="Enter method setting key" type="text"
-                        name="setting_key" value="<?php echo e($method->setting_key); ?>"><br>
+                        name="setting_key" value=""><br>
                     <input style="padding:5px;" class="form-control" placeholder="Minimum amount $" type="text"
                         name="minimum" required><br />
                     <input style="padding:5px;" class="form-control" placeholder="Maximum amount $" type="text"
@@ -89,9 +89,9 @@
                     <input style="padding:5px;" class="form-control" placeholder="Enter method name" type="text"
                         name="name" required><br />
                     <input style="padding:5px;" class="form-control" placeholder="Enter method exchange symbol"
-                        type="text" name="exchange_symbol" value="<?php echo e($method->exchange_symbol); ?>"><br>
+                        type="text" name="exchange_symbol" value=""><br>
                     <input style="padding:5px;" class="form-control" placeholder="Enter method setting key" type="text"
-                        name="setting_key" value="<?php echo e($method->setting_key); ?>"><br>
+                        name="setting_key" value=""><br>
                     <input style="padding:5px;" class="form-control" placeholder="Minimum amount $" type="text"
                         name="minimum" required><br />
                     <input style="padding:5px;" class="form-control" placeholder="Maximum amount $" type="text"
@@ -103,14 +103,14 @@
                     <input style="padding:5px;" class="form-control" placeholder="Payout duration" type="text"
                         name="duration" required><br />
                     <select style="padding:5px;" class="form-control" placeholder="Permitted Countries" type="text"
-                        name="countries" required style="max-width: 150px" multiple>
+                        name="countries[]" required style="max-width: 150px" multiple>
                         <option disabled><?php echo app('translator')->get('message.register.chs'); ?></option>
                         <?php $__currentLoopData = $countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $country): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <option <?php if($country->id == old('country')): ?> selected <?php endif; ?> value="<?php echo e($country->id); ?>">
                             <?php echo e($country->name); ?></option>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select><br>
-                    <textarea class="form-control" name="details" row="3" placeholder="Method details"
+                    <textarea class="form-control" name="details" rows="10" cols="30" placeholder="Method details"
                         required></textarea><br />
                     <select name="status" class="form-control">
                         <option value="">Select action</option>
