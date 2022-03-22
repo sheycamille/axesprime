@@ -1102,7 +1102,3 @@ INSERT INTO `wdmethods` (`id`, `name`, `setting_key`, `exchange_symbol`, `minimu
 (23, 'EU Bank Transfer', 'bank', 'bank', 100, 1000000, '1', '1', '1hr', 'deposit', 'Account Name: Axes Formation\r\n\r\nBIC: TRWIBEB1XXX\r\n\r\nIBAN: BE50 9672 5987 7918', 'enabled', '2022-02-21 15:20:45', '2022-02-21 15:28:44', '21,37,75,82,154,155,175,211'),
 (24, 'UK Bank Transfer', 'bank', 'bank', 100, 100000, '1', '1', '1hr', 'deposit', 'Account Name: Axes Formation\r\n\r\nSort code: 23-14-70\r\n\r\nAccount number: 24344963\r\n\r\nIBAN: GB92 TRWI 2314 7024 3449 63', 'enabled', '2022-02-21 15:21:58', '2022-02-21 15:28:15', '37,230'),
 (25, 'New Zealand Bank Transfer', 'bank', 'bank', 100, 1000000, '1', '1', '1hr', 'deposit', 'Account Name: Axes Formation\r\n\r\nAccount number: 04-2021-0099993-58', 'enabled', '2022-02-21 15:23:18', '2022-02-21 15:24:44', '37,157');
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -74,7 +74,7 @@
                                                                 <h5 class="">First Name*</h5>
                                                                 <input type="text" name="first_name"
                                                                     class="form-control"
-                                                                    value="{{ Auth::user()->email }}" required>
+                                                                    value="{{ Auth::user()->name }}" required>
                                                             </div>
                                                             <div class="col-md-5" style="display: inline-block;">
                                                                 <h5 class="">Last Name*</h5>

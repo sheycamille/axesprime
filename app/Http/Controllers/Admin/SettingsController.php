@@ -21,6 +21,43 @@ class SettingsController extends Controller
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
+    //return settings form
+    public function settings()
+    {
+        $countries = Country::whereStatus('active')->get();
+        $wmethods = Wdmethod::where('type', 'withdrawal')->get();
+        $dmethods = Wdmethod::where('type', 'deposit')->get();
+        return view('admin.settings')->with(array(
+            //'markets' => markets::all(),
+            'countries' => $countries,
+            'title' => 'System Info Settings'
+        ));
+        //return view('settings')->with(array('title' =>'System Settings'));
+    }
+
+
+    //return settings form
+    public function prefsettings(Request $request)
+    {
+        return view('admin.prefsettings');
+    }
+
+
+    //return settings form
+    public function paysettings(Request $request)
+    {
+        $countries = Country::whereStatus('active')->get();
+        $wmethods = Wdmethod::where('type', 'withdrawal')->get();
+        $dmethods = Wdmethod::where('type', 'deposit')->get();
+        return view('admin.paysettings')->with(array(
+            'wmethods' => $wmethods,
+            'dmethods' => $dmethods,
+            'countries' => $countries,
+            'title' => 'System Settings'
+        ));
+    }
+
+
     public function updatewebinfo(Request $request)
     {
 

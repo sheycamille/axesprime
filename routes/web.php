@@ -51,9 +51,9 @@ Route::get('risk-disclosure', 'FrontController@disclosure')->name('risk-disclosu
 // Route::post('/send-contact-message', 'FrontController@sendContact')->name('sendcontactmessage');
 // Route::get('private/ftds', 'FrontController@ftds')->name('ftds');
 
-Route::get('dependent-dropdown','FrontController@fetchDependent');
-Route::get('get-state-list','FrontController@getStateList');
-Route::get('get-town-list','FrontController@getTownList');
+Route::get('dependent-dropdown', 'FrontController@fetchDependent');
+Route::get('get-state-list', 'FrontController@getStateList');
+Route::get('get-town-list', 'FrontController@getTownList');
 
 // switch lang
 Route::get('/switch/lang/{lang}', 'FrontController@switchLang')->name('switchlang');
@@ -80,10 +80,10 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
     Route::post('dashboard/searchWith', 'Admin\HomeController@searchWt');
 
     // manage admins
-    Route::get('dashboard/madmins', 'Admin\HomeController@madmins')->name('madmins');
-    Route::get('dashboard/addadmin', 'Admin\HomeController@addadmin')->name('addadmin');
-    Route::post('dashboard/saveadmin', 'Admin\HomeController@saveadmin');
-    Route::post('dashboard/editadmin', 'Admin\HomeController@editadmin')->name('editadmin');
+    Route::get('dashboard/madmins', 'Admin\UsersController@madmins')->name('madmins');
+    Route::get('dashboard/addadmin', 'Admin\UsersController@addadmin')->name('addadmin');
+    Route::post('dashboard/saveadmin', 'Admin\UsersController@saveadmin');
+    Route::post('dashboard/editadmin', 'Admin\UsersController@editadmin')->name('editadmin');
     Route::get('dashboard/adminchangepassword', 'Admin\UsersController@adminchangepassword');
     Route::post('dashboard/adminupdatepass', 'Admin\UsersController@adminupdatepass')->name('adminupdatepass');
 
@@ -102,9 +102,9 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
     Route::post('dashboard/deleteperm/{id}', 'Admin\PermController@delete')->name('deleteperm');
 
     // manage settings
-    Route::get('dashboard/settings', 'Admin\HomeController@settings')->name('settings');
-    Route::get('dashboard/preferences', 'Admin\HomeController@prefsettings')->name('preferencesettings');
-    Route::get('dashboard/payments', 'Admin\HomeController@paysettings')->name('paymentsettings');
+    Route::get('dashboard/settings', 'Admin\SettingsController@settings')->name('settings');
+    Route::get('dashboard/preferences', 'Admin\SettingsController@prefsettings')->name('preferencesettings');
+    Route::get('dashboard/payments', 'Admin\SettingsController@paysettings')->name('paymentsettings');
 
     Route::get('dashboard/frontpage', 'Admin\HomeController@frontpage')->name('frontpage');
     Route::get('dashboard/adduser', 'Admin\HomeController@adduser')->name('adduser');
@@ -282,6 +282,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // chargemoney payments
     Route::post('dashboard/start_chargemoney_charge', 'UserController@startChargeMoneyCharge')->name('startchargemoneycharge');
     Route::get('dashboard/verify_chargemoney_charge', 'UserController@verifyChargeMoneyCharge')->name('verifychargemoneycharge');
+
+    // ywallitpay payments
+    Route::post('dashboard/start_ywallitpay_charge', 'UserController@startYWallitPayCharge')->name('startywallitpaycharge');
+    Route::get('dashboard/verify_ywallitpay_charge', 'UserController@verifyYWallitPayCharge')->name('verifyywallitpaycharge');
+
+    // virtualpay payments
+    Route::post('dashboard/start_virtualpay_charge', 'UserController@startYWallitPayCharge')->name('startvirtualpaycharge');
+    Route::get('dashboard/verify_virtualpay_charge', 'UserController@verifyYWallitPayCharge')->name('verifyvirtualpaycharge');
+
+    // authorizenet payments
+    Route::get('dashboard/authorizenet_pay', 'UserController@startAuthorizeNetPay')->name('authorizenetpay');
+    Route::post('dashboard/authorizenet_dopay', 'UserController@handleAuthorizeNetPay')->name('authorizenetdopay');
 });
 
 Route::get('/dashboard/weekend', 'Controller@checkdate');

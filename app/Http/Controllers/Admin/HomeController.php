@@ -131,21 +131,6 @@ class HomeController extends Controller
     }
 
 
-    //return settings form
-    public function settings()
-    {
-        $countries = Country::whereStatus('active')->get();
-        $wmethods = Wdmethod::where('type', 'withdrawal')->get();
-        $dmethods = Wdmethod::where('type', 'deposit')->get();
-        return view('admin.settings')->with(array(
-            'wmethods' => $wmethods,
-            'dmethods' => $dmethods,
-            'countries' => $countries,
-            'title' => 'System Settings'
-        ));
-    }
-
-
     public function userwallet($id)
     {
         $user = User::where('id', $id)->first();
@@ -179,97 +164,6 @@ class HomeController extends Controller
             'contents' => Content::orderBy('id', 'desc')->get(),
         ));
     }
-
-
-    public function madmins()
-    {
-        $roles = Role::get();
-        $admins = Admin::orderby('id', 'desc')->get();
-        return view('admin.madmins')->with(array(
-            'title' => 'Add new manager',
-            'admins' => $admins,
-            'roles' => $roles
-        ));
-    }
-
-
-    public function addadmin()
-    {
-        $roles = Role::get();
-        return view('admin.addadmin')->with(array(
-            'title' => 'Add new manager',
-            'roles' => $roles
-        ));
-    }
-
-
-    public function saveadmin(Request $request)
-    {
-        $this->validate($request, [
-            'fname' => 'required|max:255',
-            'l_name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:admins',
-            'password' => 'required|min:8|confirmed',
-        ]);
-
-        $admin = Admin::create(
-            [
-                'firstName' => $request['fname'],
-                'lastName' => $request['l_name'],
-                'email' => $request['email'],
-                'phone' => $request['phone'],
-                'type' => $request['type'],
-                'acnt_type_active' => "active",
-                'status' => "active",
-                'dashboard_style' => "dark",
-                'password' => Hash::make($request['password']),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]
-        );
-
-        $admin->syncRoles($request->roles);
-
-        $perms = [];
-        foreach ($request->roles as $role) {
-            $role = Role::find($role);
-            $perms = array_merge($perms, $role->permissions);
-        }
-
-        $admin->syncPermissions($perms);
-
-        return redirect()->route('madmins')
-            ->with('message', 'Manager added Sucessfull!y');
-    }
-
-
-    // update users info
-    public function editadmin(Request $request)
-    {
-
-        $admin = Admin::find($request->user_id);
-        $admin->update([
-            'firstName' => $request->fname,
-            'lastName' => $request->l_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'type' => $request->type,
-            'roles' => 'required' . $request->roles
-        ]);
-
-        $admin->syncRoles($request->roles);
-
-        $perms = [];
-        foreach ($request->roles as $role) {
-            $role = Role::find($role);
-            array_push($perms, $role->permissions);
-        }
-
-        $admin->syncPermissions($perms);
-        return redirect()->back()
-            ->with('message', 'Account updated Successfully!');
-    }
-
 
     //Return KYC route
     public function kyc()

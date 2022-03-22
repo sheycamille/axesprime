@@ -26,7 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'phone', 'country_id', 'password', 'address', 'town_id', 'state_id', 'dashboard_style', 'account_type', 'zip_code', 'status', 'token_2fa_expiry', 'bank_name', 'account_name', 'account_number', 'swift_code', 'bank_address', 'btc_address', 'eth_address', 'xrp_address', 'usdt_address', 'bch_address', 'bnb_address', 'interac', 'paypal_email'
+        'name', 'email', 'phone', 'country_id', 'password', 'address', 'town', 'state', 'dashboard_style', 'account_type', 'zip_code', 'status', 'token_2fa_expiry', 'bank_name', 'account_name', 'account_number', 'swift_code', 'bank_address', 'btc_address', 'eth_address', 'xrp_address', 'usdt_address', 'bch_address', 'bnb_address', 'interac', 'paypal_email'
     ];
 
     /**
@@ -88,15 +88,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo('App\Models\Country');
     }
 
-    public function state()
-    {
-        return $this->belongsTo('App\Models\State');
-    }
+    // public function state()
+    // {
+    //     return $this->belongsTo('App\Models\State');
+    // }
 
-    public function town()
-    {
-        return $this->belongsTo('App\Models\City', 'town_id');
-    }
+    // public function town()
+    // {
+    //     return $this->belongsTo('App\Models\City', 'town_id');
+    // }
 
 
     public function accounts()

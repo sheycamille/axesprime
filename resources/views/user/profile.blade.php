@@ -114,29 +114,14 @@
                                                     <div class="row">
                                                         <div class="form-group col-sm-6">
                                                             <label for="state">@lang('message.register.state')</label>
-                                                            <select name="state" id="state" class="form-control"
-                                                                style="min-width: 150px" required>
-                                                                <option disabled>@lang('message.register.enter_stt')
-                                                                </option>
-                                                                @if(Auth::user()->state_id != "")
-                                                                <option selected value="{{ Auth::user()->state->id }}">
-                                                                    {{ Auth::user()->state->name }}
-                                                                </option>
-                                                                @endif
-                                                            </select>
+                                                            <input type="text" class="form-control" name="state" value="{{ Auth::user()->state }}"
+                                                                id="state" placeholder="@lang('message.register.enter_stt')">
                                                         </div>
 
                                                         <div class="form-group col-sm-6">
                                                             <label for="city">@lang('message.body.city')</label>
-                                                            <select name="town" id="town" class="form-control"
-                                                                style="min-width: 150px" required>
-                                                                <option disabled>@lang('message.register.town')</option>
-                                                                @if(Auth::user()->town_id != "")
-                                                                <option selected value="{{ Auth::user()->town->id }}">
-                                                                    {{ Auth::user()->town->name }}
-                                                                </option>
-                                                                @endif
-                                                            </select>
+                                                            <input type="text" class="form-control" name="town" value="{{ Auth::user()->town }}"
+                                                                id="town" placeholder="@lang('message.register.town')">
                                                         </div>
                                                     </div>
 
@@ -161,7 +146,7 @@
 </div>
 @endsection
 
-@section('javascript')
+{{-- @section('javascript')
 <script type="text/javascript">
     $('#country').change(function () {
         var countryID = $(this).val();
@@ -194,4 +179,4 @@
         }
     });
 </script>
-@endsection
+@endsection --}}

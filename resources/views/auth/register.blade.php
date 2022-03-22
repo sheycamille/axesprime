@@ -145,9 +145,8 @@
                                 </span>
                                 @endif
                                 <label for="state">@lang('message.register.state'):</label>
-                                <select name="state" id="state" class="form-control" style="min-width: 150px" required>
-                                    <option disabled>@lang('message.register.enter_stt')</option>
-                                </select>
+                                <input type="text" class="form-control" name="state" value="{{ old('state') }}"
+                                    id="state" placeholder="@lang('message.register.enter_stt')">
                             </div>
 
                             <div class="form-group">
@@ -157,9 +156,8 @@
                                 </span>
                                 @endif
                                 <label for="town">@lang('message.register.town'):</label>
-                                <select name="town" id="town" class="form-control" style="min-width: 150px" required>
-                                    <option disabled>@lang('message.register.town')</option>
-                                </select>
+                                <input type="text" class="form-control" name="town" value="{{ old('town') }}"
+                                    id="town" placeholder="@lang('message.register.town')">
                             </div>
 
                             <div class="form-group">
@@ -222,39 +220,4 @@
         </div>
     </div>
 </main>
-@endsection
-
-@section('javascript')
-<script type="text/javascript">
-    $('#country').change(function () {
-        var countryID = $(this).val();
-        if (countryID) {
-            $.get( "{{url('/get-state-list')}}?country_id=" + countryID, function( data ) {
-                $("#state").empty();
-                $("#state").append('<option>Select</option>');
-                $.each(data, function (key, state) {
-                    $("#state").append('<option value="' + state.id + '">' + state.name + '</option>');
-                });
-            });
-        } else {
-            $("#state").empty();
-            $("#town").empty();
-        }
-    });
-
-    $('#state').on('change', function () {
-        var stateID = $(this).val();
-        if (stateID) {
-            $.get( "{{url('/get-town-list')}}?state_id=" + stateID, function( data ) {
-                $("#town").empty();
-                $("#town").append('<option>Select</option>');
-                $.each(data, function (key, town) {
-                    $("#town").append('<option value="' + town.id + '">' + town.name + '</option>');
-                });
-            });
-        } else {
-            $("#town").empty();
-        }
-    });
-</script>
 @endsection

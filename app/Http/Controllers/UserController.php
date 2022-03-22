@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
 use App\Models\User;
+use App\Models\State;
 use App\Models\Country;
 use App\Models\Setting;
 use App\Models\Deposit;
 use App\Models\Wdmethod;
 use App\Models\Withdrawal;
 use App\Models\Mt5Details;
+use App\Models\PaymentLogs;
 use App\Models\Notification;
 use App\Models\TpTransaction;
 use App\Events\CheckAccounts;
@@ -27,6 +30,9 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 use Tarikh\PhpMeta\Entities\Trade;
+
+use net\authorize\api\contract\v1 as AnetAPI;
+use net\authorize\api\controller as AnetController;
 
 use Carbon\Carbon;
 
@@ -122,8 +128,8 @@ class UserController extends Controller
                 'phone' => $request->phone,
                 'address' => $request->address,
                 'phone' => $request->phone,
-                'town_id' => $request->town,
-                'state_id' => $request->state,
+                'town' => $request->town,
+                'state' => $request->state,
                 'zip_code' => $request->zip_code,
                 'country_id' => $request->country,
             ]);
@@ -762,7 +768,7 @@ class UserController extends Controller
             ->where('status', 'enabled')
             ->where('minimum', '<=', $amount)
             ->where('maximum', '>=', $amount)
-            ->where('country_ids', 'like', '%'.$country_id.'%')
+            ->where('country_ids', 'like', '%' . $country_id . '%')
             ->get();
 
         return view('user.paymentmethods', [
@@ -787,36 +793,57 @@ class UserController extends Controller
             $data = [
                 'dmethod' => $method,
             ];
-        } elseif (strpos(strtolower($method->name), 'paypal') > -1) {
+        } elseif (strpos(strtolower($method->setting_key), 'paypal') > -1) {
             $view = 'paypal';
             $title = 'Make PayPal Payment';
             $data = [
                 'dmethod' => $method,
             ];
-        } elseif (strpos(strtolower($method->name), 'paypound') > -1) {
+        } elseif (strpos(strtolower($method->setting_key), 'paypound') > -1) {
             $view = 'paypound';
             $title = 'Make PayPound Payment';
             $data = [
                 'countries' => $countries,
                 'dmethod' => $method,
             ];
-        } elseif (strpos(strtolower($method->name), 'paystudio') > -1) {
+        } elseif (strpos(strtolower($method->setting_key), 'paystudio') > -1) {
             $view = 'paystudio';
             $title = 'Make PayStudio Payment';
             $data = [
                 'countries' => $countries,
                 'dmethod' => $method,
             ];
-        } elseif (strpos(strtolower($method->name), 'chargemoney') > -1) {
+        } elseif (strpos(strtolower($method->setting_key), 'chargemoney') > -1) {
             $view = 'chargemoney';
             $title = 'Make ChargeMoney Payment';
             $data = [
                 'countries' => $countries,
                 'dmethod' => $method,
             ];
-        } elseif (strpos(strtolower($method->name), 'praxis') > -1) {
+        } elseif (strpos(strtolower($method->setting_key), 'praxis') > -1) {
             $view = 'praxis';
             $title = 'Make Praxis Payment';
+            $data = [
+                'countries' => $countries,
+                'dmethod' => $method,
+            ];
+        } elseif (strpos(strtolower($method->setting_key), 'virtualpay') > -1) {
+            $view = 'virtualpay';
+            $title = 'Make VirtualPay Payment';
+            $data = [
+                'countries' => $countries,
+                'dmethod' => $method,
+            ];
+        } elseif (strpos(strtolower($method->setting_key), 'ywallitpay') > -1) {
+            $view = 'ywallitpay';
+            $title = 'Make YWallitPay Payment';
+            $data = [
+                'countries' => $countries,
+                'dmethod' => $method,
+            ];
+        } elseif (strpos(strtolower($method->setting_key), 'authorizenet') > -1) {
+            $view = 'authorizenet';
+            $title = 'Make Authorize.Net Payment';
             $data = [
                 'countries' => $countries,
                 'dmethod' => $method,
@@ -1180,5 +1207,391 @@ class UserController extends Controller
         } else {
             return redirect()->back()->with('message', $data['message']);
         }
+    }
+
+
+    public function startYWallitPayCharge(Request $request)
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $mt5_id = $request->session()->get('mt5_account_id');
+        $amt = $request->session()->get('amount');
+
+        $mt5 = Mt5Details::find($mt5_id);
+
+        $data = $request->all();
+        $data['country'] = Country::find($request->country)->code;
+        $data['state'] = $user->state->name;
+        $data['city'] = $user->town->name;
+        $data['postal'] = $user->zip_code;
+        $data['address'] = $user->address;
+        $data['mid'] = '84864';
+        $data['address'] = $user->address;
+        $data['api_key'] = config('ywallitpay.api_key');
+        $data['ip'] = $request->ip();
+        $data['orderNumber'] = 'apg-live-' . $user->id . '-' . strtotime('now');
+
+        unset($data['_token']);
+
+        $response = Http::withHeaders([
+            'X-First' => 'foo',
+            'X-Second' => 'bar'
+        ])->post('https://app.ywallitpay.com/api/v1/transactions', $data);
+
+        $resp = json_decode($response->body());
+
+        if ($resp->status == 'C') {
+            $amt = $resp->amount;
+            $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
+            if ($data['status']) {
+                $mt5->balance = $data['data']->Balance;
+                $mt5->save();
+            } else {
+                return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
+            }
+
+            // save transaction
+            $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
+
+            // save and confirm the deposit
+            $this->saveRecord($user->id, $mt5_id, 'YWallitPay', $amt, 'YWallitPay Order Id: ' . $resp->data->order_id, 'Deposit', 'Processed');
+
+            // send email notification
+            $currency = Setting::getValue('currency');
+            $site_name = Setting::getValue('site_name');
+
+            $objDemo = new \stdClass();
+            $objDemo->message = "\r Hello $user->name, \r\n
+                \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
+            $objDemo->sender = "$site_name";
+            $objDemo->date = Carbon::Now();
+            $objDemo->subject = "Deposit Processed!";
+
+            Mail::bcc($user->email)->send(new NewNotification($objDemo));
+
+            return redirect(route('account.liveaccounts'))->with('message', 'Your deposit was successfully processed!');
+        } elseif ($resp->status == 'fail') {
+            return redirect()->back()->with('message', $resp->message);
+        } elseif ($resp->status == '3d_redirect') {
+            // save and confirm the deposit
+            $this->saveRecord($user->id, $mt5_id, 'YWallitPay', $amt, 'YWallitPay Order Id: ' . $resp->data->order_id, 'Deposit', 'Pending');
+
+            return redirect($resp->redirect_3ds_url)->with('message', 'Redirecting you to complete 3DS security challenge.');
+        } else {
+            return redirect()->back()->with('message', $resp->message);
+        }
+    }
+
+
+    public function verifyYWallitPayCharge(Request $request)
+    {
+        $data = $request->all();
+        $user = User::find($data['customer_order_id']);
+        $dp = $user->dp()->latest()->first();
+
+        $mt5_id = $request->session()->get('mt5_account_id');
+
+        $mt5 = Mt5Details::find($mt5_id);
+
+        if ($data['status'] == 'success') {
+            $amt = $dp->amount;
+            $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
+            if ($data['status']) {
+                $mt5->balance = $data['data']->Balance;
+                $mt5->save();
+            } else {
+                return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
+            }
+
+            // save transaction
+            $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
+
+            // update the deposit
+            $dp->status = "Processed";
+            $dp->save();
+
+            // send email notification
+            $currency = Setting::getValue('currency');
+            $site_name = Setting::getValue('site_name');
+
+            $objDemo = new \stdClass();
+            $objDemo->message = "\r Hello $user->name, \r\n
+                \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
+            $objDemo->sender = "$site_name";
+            $objDemo->date = Carbon::Now();
+            $objDemo->subject = "Deposit Processed!";
+
+            Mail::bcc($user->email)->send(new NewNotification($objDemo));
+
+            return redirect(route('account.liveaccounts'))->with('message', 'Your deposit was successfully processed!');
+        } else {
+            return redirect()->back()->with('message', $data['message']);
+        }
+    }
+
+
+    public function startVirtualPayCharge(Request $request)
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $mt5_id = $request->session()->get('mt5_account_id');
+        $amt = $request->session()->get('amount');
+
+        $mt5 = Mt5Details::find($mt5_id);
+
+        $data = $request->all();
+        $data['country'] = Country::find($request->country)->code;
+        $data['state'] = $user->state->name;
+        $data['city'] = $user->town->name;
+        $data['postal'] = $user->zip_code;
+        $data['address'] = $user->address;
+        $data['mid'] = '84864';
+        $data['address'] = $user->address;  // MID
+        $data['MID'] = config('virtualpay.mid', 'Axes');
+        $data['API_KEY'] = config('virtualpay.api_key');
+        $data['API_SECRET'] = config('virtualpay.api_secret');
+        $data['PRIVATE_KEY'] = config('virtualpay.private_key');
+        $data['REDIRECT_URL'] = '';
+        $data['NOTIFICATION_URL'] = '';
+        $data[''] = '';
+        $data[''] = '';
+        $data[''] = '';
+        $data[''] = '';
+        $data[''] = '';
+        $data['ip'] = $request->ip();
+        $data['orderNumber'] = 'APGLIVE-' . $user->id . '-' . strtotime('now');
+
+        dd($data);
+
+        unset($data['_token']);
+
+        $response = Http::post('https://evirtualpay.com/pg/vpcheckout/index.php', $data);
+
+        $resp = json_decode($response->body());
+
+        if ($resp->responseCode == '0') {
+            $amt = $resp->amount;
+            $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
+            if ($data['responseCode'] == 0) {
+                $mt5->balance = $data['data']->Balance;
+                $mt5->save();
+            } else {
+                return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
+            }
+
+            // save transaction
+            $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
+
+            // save and confirm the deposit
+            $this->saveRecord($user->id, $mt5_id, 'VirtualPay', $amt, 'VirtualPay Order Id: ' . $resp->data->order_id, 'Deposit', 'Processed');
+
+            // send email notification
+            $currency = Setting::getValue('currency');
+            $site_name = Setting::getValue('site_name');
+
+            $objDemo = new \stdClass();
+            $objDemo->message = "\r Hello $user->name, \r\n
+                \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
+            $objDemo->sender = "$site_name";
+            $objDemo->date = Carbon::Now();
+            $objDemo->subject = "Deposit Processed!";
+
+            Mail::bcc($user->email)->send(new NewNotification($objDemo));
+
+            return redirect(route('account.liveaccounts'))->with('message', 'Your deposit was successfully processed!');
+        } elseif ($resp->status == 'fail') {
+            return redirect()->back()->with('message', $resp->message);
+        } elseif ($resp->status == '3d_redirect') {
+            // save and confirm the deposit
+            $this->saveRecord($user->id, $mt5_id, 'VirtualPay', $amt, 'VirtualPay Order Id: ' . $resp->data->order_id, 'Deposit', 'Pending');
+
+            return redirect($resp->redirect_3ds_url)->with('message', 'Redirecting you to complete 3DS security challenge.');
+        } else {
+            return redirect()->back()->with('message', $resp->message);
+        }
+    }
+
+
+    public function verifyVirtualPayCharge(Request $request)
+    {
+        $data = $request->all();
+        $user = User::find($data['customer_order_id']);
+        $dp = $user->dp()->latest()->first();
+
+        $mt5_id = $request->session()->get('mt5_account_id');
+
+        $mt5 = Mt5Details::find($mt5_id);
+
+        if ($data['responseCode'] == '0') {
+            $amt = $dp->amount;
+            $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
+            if ($data['responseCode'] == '0') {
+                $mt5->balance = $data['data']->Balance;
+                $mt5->save();
+            } else {
+                return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
+            }
+
+            // save transaction
+            $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
+
+            // update the deposit
+            $dp->status = "Processed";
+            $dp->save();
+
+            // send email notification
+            $currency = Setting::getValue('currency');
+            $site_name = Setting::getValue('site_name');
+
+            $objDemo = new \stdClass();
+            $objDemo->message = "\r Hello $user->name, \r\n
+                \r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
+            $objDemo->sender = "$site_name";
+            $objDemo->date = Carbon::Now();
+            $objDemo->subject = "Deposit Processed!";
+
+            Mail::bcc($user->email)->send(new NewNotification($objDemo));
+
+            return redirect(route('account.liveaccounts'))->with('message', 'Your deposit was successfully processed!');
+        } else {
+            return redirect()->back()->with('message', $data['message']);
+        }
+    }
+
+
+    public function startAuthorizeNetPay()
+    {
+        return view('authorizenet');
+    }
+
+
+    public function handleAuthorizeNetPay(Request $request)
+    {
+        $data = $request->all();
+        $user = User::find($data['customer_order_id']);
+        $dp = $user->dp()->latest()->first();
+
+        $mt5_id = $request->session()->get('mt5_account_id');
+
+        $mt5 = Mt5Details::find($mt5_id);
+
+        /* Create a merchantAuthenticationType object with authentication details
+          retrieved from the constants file */
+        $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+        $merchantAuthentication->setName(config('authorizenet.mid'));
+        $merchantAuthentication->setTransactionKey(env('authorizenet.transaction_key'));
+
+        // Set the transaction's refId
+        $refId = 'ref' . time();
+        $cardNumber = preg_replace('/\s+/', '', $request->cardNumber);
+
+        // Create the payment data for a credit card
+        $creditCard = new AnetAPI\CreditCardType();
+        $creditCard->setCardNumber($cardNumber);
+        $creditCard->setExpirationDate($request->expYear . "-" . $request->expMonth);
+        $creditCard->setCardCode($request->cvv);
+
+        // Add the payment data to a paymentType object
+        $paymentOne = new AnetAPI\PaymentType();
+        $paymentOne->setCreditCard($creditCard);
+
+        // Create a TransactionRequestType object and add the previous objects to it
+        $transactionRequestType = new AnetAPI\TransactionRequestType();
+        $transactionRequestType->setTransactionType("authCaptureTransaction");
+        $transactionRequestType->setAmount($request->amount);
+        $transactionRequestType->setPayment($paymentOne);
+
+        // Assemble the complete transaction request
+        $requests = new AnetAPI\CreateTransactionRequest();
+        $requests->setMerchantAuthentication($merchantAuthentication);
+        $requests->setRefId($refId);
+        $requests->setTransactionRequest($transactionRequestType);
+
+        // Create the controller and get the response
+        $controller = new AnetController\CreateTransactionController($requests);
+        $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
+
+        if ($response != null) {
+            // Check to see if the API request was successfully received and acted upon
+            if ($response->getMessages()->getResultCode() == "Ok") {
+                // Since the API request was successful, look for a transaction response
+                // and parse it to display the results of authorizing the card
+                $tresponse = $response->getTransactionResponse();
+
+                if ($tresponse != null && $tresponse->getMessages() != null) {
+                    // echo " Successfully created transaction with Transaction ID: " . $tresponse->getTransId() . "\n";
+                    // echo " Transaction Response Code: " . $tresponse->getResponseCode() . "\n";
+                    // echo " Message Code: " . $tresponse->getMessages()[0]->getCode() . "\n";
+                    // echo " Auth Code: " . $tresponse->getAuthCode() . "\n";
+                    // echo " Description: " . $tresponse->getMessages()[0]->getDescription() . "\n";
+                    $message_text = $tresponse->getMessages()[0]->getDescription() . ", Transaction ID: " . $tresponse->getTransId();
+                    $msg_type = "success_msg";
+
+                    PaymentLogs::create([
+                        'amount' => $data['amount'],
+                        'response_code' => $tresponse->getResponseCode(),
+                        'transaction_id' => $tresponse->getTransId(),
+                        'auth_id' => $tresponse->getAuthCode(),
+                        'message_code' => $tresponse->getMessages()[0]->getCode(),
+                        'name_on_card' => trim($data['owner']),
+                        'quantity' => 1
+                    ]);
+
+                    $amt = $dp->amount;
+                    $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
+                    if ($data['responseCode'] == '0') {
+                        $mt5->balance = $data['data']->Balance;
+                        $mt5->save();
+                    } else {
+                        return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
+                    }
+
+                    // save transaction
+                    $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
+
+                    // update the deposit
+                    $dp->status = "Processed";
+                    $dp->save();
+
+                    // send email notification
+                    $currency = Setting::getValue('currency');
+                    $site_name = Setting::getValue('site_name');
+
+                    $objDemo = new \stdClass();
+                    $objDemo->message = "\r Hello $user->name, \r\n\r This is to inform you that your deposit of $currency$amt has been received and confirmed.";
+                    $objDemo->sender = "$site_name";
+                    $objDemo->date = Carbon::Now();
+                    $objDemo->subject = "Deposit Processed!";
+
+                    Mail::bcc($user->email)->send(new NewNotification($objDemo));
+                } else {
+                    $message_text = 'There were some issue with the payment. Please try again later.';
+                    $msg_type = "error_msg";
+
+                    if ($tresponse->getErrors() != null) {
+                        $message_text = $tresponse->getErrors()[0]->getErrorText();
+                        $msg_type = "error_msg";
+                    }
+                }
+                // Or, print errors if the API request wasn't successful
+            } else {
+                $message_text = 'There were some issue with the payment. Please try again later.';
+                $msg_type = "error_msg";
+
+                $tresponse = $response->getTransactionResponse();
+
+                if ($tresponse != null && $tresponse->getErrors() != null) {
+                    $message_text = $tresponse->getErrors()[0]->getErrorText();
+                    $msg_type = "error_msg";
+                } else {
+                    $message_text = $response->getMessages()->getMessage()[0]->getText();
+                    $msg_type = "error_msg";
+                }
+            }
+        } else {
+            $message_text = "No response returned";
+            $msg_type = "error_msg";
+        }
+        return back()->with($msg_type, $message_text);
     }
 }

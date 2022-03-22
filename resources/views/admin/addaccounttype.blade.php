@@ -2,7 +2,7 @@
 
 @section('title', 'Add Account Type')
 
-@section('manage-admins', 'c-show')
+@section('maccounts', 'c-show')
 @section('addaccounttype', 'c-active')
 
 @section('content')

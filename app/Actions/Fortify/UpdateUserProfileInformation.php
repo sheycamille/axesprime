@@ -26,8 +26,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'address' => ['required', 'string',],
             //'account_type' => ['required', 'string',],
             'address' => ['required', 'string',],
-            'town_id' => ['required', 'string',],
-            'state_id' => ['required', 'string',],
+            'town' => ['required', 'string',],
+            'state' => ['required', 'string',],
             'zip_code' => ['required', 'string',],
             'country_id' => ['required', 'string',],
         ])->validateWithBag('updateProfileInformation');
@@ -47,8 +47,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'email' => $input['email'],
                 'address' => $input['address'],
                 'phone' => $input['phone'],
-                'town_id' => $input['town'],
-                'state_id' => $input['state'],
+                'town' => $input['town'],
+                'state' => $input['state'],
                 'zip_code' => $input['zip_code'],
                 'country_id' => $input['country'],
             ])->save();
