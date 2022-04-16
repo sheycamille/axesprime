@@ -16,7 +16,6 @@
             </a>
         </li>
 
-
         <li class="c-sidebar-nav-dropdown <?php echo $__env->yieldContent('manage-users'); ?>">
             <a class="c-sidebar-nav-dropdown-toggle" href="<?php echo e(route('manageusers')); ?>">
                 <i class="cil-user c-sidebar-nav-icon"></i>
@@ -51,14 +50,14 @@
             <ul class="c-sidebar-nav-dropdown-items">
                 <?php if(auth('admin')->user()->hasPermissionTo('mdeposits-list', 'admin')): ?>
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('deposits'); ?>" href="<?php echo e(url('/admin/dashboard/mdeposits')); ?>">
+                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('deposits'); ?>" href="<?php echo e(route('mdeposits')); ?>">
                         Manage Deposits
                     </a>
                 </li>
                 <?php endif; ?>
                 <?php if(auth('admin')->user()->hasPermissionTo('mwithdrawals-list', 'admin')): ?>
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('withdrawals'); ?>" href="<?php echo e(url('/admin/dashboard/mwithdrawals')); ?>">
+                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('withdrawals'); ?>" href="<?php echo e(route('mwithdrawals')); ?>">
                         Manage Withdrawals
                     </a>
                 </li>
@@ -72,23 +71,29 @@
                 MT5 Accounts
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
+                <?php if(auth('admin')->user()->hasPermissionTo('ftds-list', 'admin')): ?>
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('ftds'); ?>" href="<?php echo e(url('/admin/dashboard/ftds')); ?>">
+                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('ftds'); ?>" href="<?php echo e(route('mftds')); ?>">
                         FTDs
                     </a>
                 </li>
+                <?php endif; ?>
+                <?php if(auth('admin')->user()->hasPermissionTo('macctypes-list', 'admin')): ?>
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('accounttypes'); ?>"
-                        href="<?php echo e(url('/admin/dashboard/accounttypes')); ?>">
+                        href="<?php echo e(route('accounttypes')); ?>">
                         Account Types
                     </a>
                 </li>
+                <?php endif; ?>
+                <?php if(auth('admin')->user()->hasPermissionTo('macctypes-add', 'admin')): ?>
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('addaccounttype'); ?>"
-                        href="<?php echo e(url('/admin/dashboard/addaccounttype')); ?>">
+                        href="<?php echo e(route('addaccounttype')); ?>">
                         Add Account Type
                     </a>
                 </li>
+                <?php endif; ?>
             </ul>
         </li>
 
@@ -107,14 +112,14 @@
                 <?php endif; ?>
                 <?php if(auth('admin')->user()->hasPermissionTo('mrole-list', 'admin')): ?>
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('roles'); ?>" href="<?php echo e(url('/admin/dashboard/manageroles')); ?>">
+                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('roles'); ?>" href="<?php echo e(route('manageroles')); ?>">
                         Manage Role(s)
                     </a>
                  <?php endif; ?>
                 </li>
                 <?php if(auth('admin')->user()->hasPermissionTo('mperms-list', 'admin')): ?>
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('perms'); ?>" href="<?php echo e(url('/admin/dashboard/manageperms')); ?>">
+                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('perms'); ?>" href="<?php echo e(route('manageperms')); ?>">
                         Manage Permission(s)
                     </a>
                 </li>
@@ -132,17 +137,17 @@
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('siteinfo'); ?>" href="<?php echo e(url('/admin/dashboard/settings')); ?>">
+                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('siteinfo'); ?>" href="<?php echo e(route('settings')); ?>">
                         Site Information
                     </a>
                 </li>
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('sitepref'); ?>" href="<?php echo e(url('/admin/dashboard/preferences')); ?>">
+                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('sitepref'); ?>" href="<?php echo e(route('preferencesettings')); ?>">
                         Site Preferences
                     </a>
                 </li>
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('sitepay'); ?>" href="<?php echo e(url('/admin/dashboard/payments')); ?>">
+                    <a class="c-sidebar-nav-link <?php echo $__env->yieldContent('sitepay'); ?>" href="<?php echo e(route('paymentsettings')); ?>">
                         Payment Settings
                     </a>
                 </li>

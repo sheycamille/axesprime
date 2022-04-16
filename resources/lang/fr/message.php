@@ -1148,7 +1148,7 @@ return [
         'live_acnt' => 'Comptes en direct',
         'new_live' => 'Nouveau compte en direct',
         'server' => 'Serveur',
-        'balnce' => 'solde',
+        'balnce' => 'Solde',
         'leverage' => 'Effet de levier',
         'status' => 'État des lieux',
         'date_created' => 'Date de création',

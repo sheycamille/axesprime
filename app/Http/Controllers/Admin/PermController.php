@@ -12,46 +12,42 @@ use Spatie\Permission\Models\Permission;
 
 class PermController extends Controller
 {
+    // function __construct()
+    // {
+    //     $this->middleware('auth:admin');
+    // }
+
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    function __construct()
-    {
-        $this->middleware('auth:admin');
-        $this->middleware('permission:mperms-list|mperms-create|mperms-edit|mperms-delete', ['only' => ['index', 'store']]);
-        $this->middleware('permission:mperms-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:mperms-delete', ['only' => ['destroy']]);
-    }
-
-
     public function index()
     {
-        $permission = Permission::get();
+        $permissions = Permission::get();
         return view('admin.perms.index')->with(array(
             'title' => 'Manage Permission',
-            'permission' => $permission
+            'permissions' => $permissions
         ));
     }
 
 
     public function store(Request $request)
-
     {
         $request->validate([
             'name' => 'required|unique:permissions,name'
         ]);
 
-        Permission::create($request->only('name'));
+        Permission::create(['name' => $request->name, 'guard_name' => 'admin']);
 
-        return redirect()->route('manageperms')->with('success', 'Permission Create successfully');
+        return redirect()->route('manageperms')->with('message', 'Permission Create successfully');
     }
 
 
     public function delete($id)
     {
         DB::table("permissions")->where('id', $id)->delete();
-        return redirect()->route('manageperms')->with('success', 'Permission deleted successfully');
+        return redirect()->route('manageperms')->with('message', 'Permission deleted successfully');
     }
 }

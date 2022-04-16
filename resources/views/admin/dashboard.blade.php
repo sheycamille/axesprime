@@ -14,9 +14,9 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header fw-bolder">
-                    <h1 class="text-{{ $text }} pb-2">Welcome, {{ Auth('admin')->User()->firstName }}
+                    <h1 class="text-primary pb-2">Welcome, {{ Auth('admin')->User()->firstName }}
                         {{ Auth('admin')->User()->lastName }}!</h1>
-                    <h5 id="ann" class="text-{{ $text }} op-7 mb-4">{{ \App\Models\Setting::getValue('update') }}
+                    <h5 id="ann" class="text-primary op-7 mb-4">{{ \App\Models\Setting::getValue('update') }}
                     </h5>
                 </div>
 
@@ -48,6 +48,7 @@
                     </div>
                     @endif
 
+                    @if(auth('admin')->user()->hasPermissionTo('system-reports', 'admin'))
                     <!-- Beginning of  Dashboard Stats  -->
                     <div class="row">
 
@@ -58,8 +59,8 @@
                                         <i class="c-icon c-icon-2xl cil-money c-sidebar-nav-icon"></i>
                                     </div>
                                     <div class="text-value-lg">
-                                        @if (!empty($deposited))
-                                        {{ \App\Models\Setting::getValue('currency') }}{{ $deposited }}
+                                        @if (!empty($total_deposited))
+                                        {{ \App\Models\Setting::getValue('currency') }}{{ $total_deposited }}
                                         @else
                                         {{ \App\Models\Setting::getValue('currency') }}0.00
                                         @endif
@@ -80,8 +81,8 @@
                                         <i class="c-icon c-icon-2xl cil-money c-sidebar-nav-icon"></i>
                                     </div>
                                     <div class="text-value-lg">
-                                        @if (!empty($deposited))
-                                        {{ \App\Models\Setting::getValue('currency') }}{{ $deposited }}
+                                        @if (!empty($pending_deposited))
+                                        {{ \App\Models\Setting::getValue('currency') }}{{ $pending_deposited }}
                                         @else
                                         {{ \App\Models\Setting::getValue('currency') }}0.00
                                         @endif
@@ -104,8 +105,8 @@
                                         </svg>
                                     </div>
                                     <div class="text-value-lg">
-                                        @if (!empty($deposited))
-                                        {{ \App\Models\Setting::getValue('currency') }}{{ $deposited }}
+                                        @if (!empty($total_withdrawn))
+                                        {{ \App\Models\Setting::getValue('currency') }}{{ $total_withdrawn }}
                                         @else
                                         {{ \App\Models\Setting::getValue('currency') }}0.00
                                         @endif
@@ -128,8 +129,8 @@
                                         </svg>
                                     </div>
                                     <div class="text-value-lg">
-                                        @if (!empty($deposited))
-                                        {{ \App\Models\Setting::getValue('currency') }}{{ $deposited }}
+                                        @if (!empty($pending_withdrawn))
+                                        {{ \App\Models\Setting::getValue('currency') }}{{ $pending_withdrawn }}
                                         @else
                                         {{ \App\Models\Setting::getValue('currency') }}0.00
                                         @endif
@@ -204,6 +205,7 @@
                         </div>
 
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

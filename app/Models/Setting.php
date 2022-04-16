@@ -21,7 +21,7 @@ class Setting extends Model
     public static function getValue($name)
     {
         $setting = Setting::where('name', $name)->first();
-        return $setting->value;
+        return $setting->value ?? '';
     }
 
 

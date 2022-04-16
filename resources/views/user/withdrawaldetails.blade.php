@@ -17,7 +17,9 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="card">
-                            <div class="card-header"><strong>@lang('message.withdrawal_details.bank')</strong> <small>@lang('message.withdrawal_details.transfer')</small></div>
+                            <div class="card-header"><strong>@lang('message.withdrawal_details.bank')</strong>
+                                <small>@lang('message.withdrawal_details.transfer')</small>
+                            </div>
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="bank_name">@lang('message.withdrawal_details.name')</label>
@@ -50,23 +52,27 @@
                         </div>
 
                         <div class="card">
-                            <div class="card-header"><strong>@lang('message.withdrawal_details.cash')</strong> <small></small></div>
+                            <div class="card-header"><strong>@lang('message.withdrawal_details.cash')</strong>
+                                <small></small>
+                            </div>
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="bch">@lang('message.withdrawal_details.cash_addres')</label>
                                     <input name="bch_address" class="form-control" id="bch" type="text"
-                                         value="{{ Auth::user()->bch_address }}">
+                                        value="{{ Auth::user()->bch_address }}">
                                 </div>
                             </div>
                         </div>
 
                         <div class="card">
-                            <div class="card-header"><strong>@lang('message.withdrawal_details.interac')</strong> <small></small></div>
+                            <div class="card-header"><strong>@lang('message.withdrawal_details.interac')</strong>
+                                <small></small>
+                            </div>
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="interac">@lang('message.withdrawal_details.int_email') </label>
                                     <input name="interac" class="form-control" id="interac" type="text"
-                                         value="{{ Auth::user()->interac }}">
+                                        value="{{ Auth::user()->interac }}">
                                 </div>
                             </div>
                         </div>
@@ -76,8 +82,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="paypal">@lang('message.withdrawal_details.paypa')</label>
-                                    <input class="form-control" id="paypal" type="text"
-                                        
+                                    <input class="form-control" id="paypal" type="text" name="paypal_email"
                                         value="{{ Auth::user()->paypal_email }}">
                                 </div>
                             </div>
@@ -86,23 +91,27 @@
 
                     <div class="col-sm-6">
                         <div class="card">
-                            <div class="card-header"><strong>@lang('message.withdrawal_details.bitcoin')</strong> <small></small></div>
+                            <div class="card-header"><strong>@lang('message.withdrawal_details.bitcoin')</strong>
+                                <small></small>
+                            </div>
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="btc">@lang('message.withdrawal_details.btc_addres')</label>
                                     <input name="btc_address" class="form-control" id="btc" type="text"
-                                         value="{{ Auth::user()->btc_address }}">
+                                        value="{{ Auth::user()->btc_address }}">
                                 </div>
                             </div>
                         </div>
 
                         <div class="card">
-                            <div class="card-header"><strong>@lang('message.withdrawal_details.ethereum')</strong> <small></small></div>
+                            <div class="card-header"><strong>@lang('message.withdrawal_details.ethereum')</strong>
+                                <small></small>
+                            </div>
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="eth">@lang('message.withdrawal_details.ethe_addres') </label>
                                     <input name="eth_address" class="form-control" id="eth" type="text"
-                                         value="{{ Auth::user()->eth_address }}">
+                                        value="{{ Auth::user()->eth_address }}">
                                 </div>
                             </div>
                         </div>
@@ -113,7 +122,7 @@
                                 <div class="form-group">
                                     <label for="ltc">@lang('message.withdrawal_details.ltc_addres')</label>
                                     <input name="ltc_address" class="form-control" id="ltc" type="text"
-                                         value="{{ Auth::user()->ltc_address }}">
+                                        value="{{ Auth::user()->ltc_address }}">
                                 </div>
                             </div>
                         </div>
@@ -124,7 +133,7 @@
                                 <div class="form-group">
                                     <label for="usdt">@lang('message.withdrawal_details.us_addres') </label>
                                     <input name="usdt_address" class="form-control" id="usdt" type="text"
-                                         value="{{ Auth::user()->usdt_address }}">
+                                        value="{{ Auth::user()->usdt_address }}">
                                 </div>
                             </div>
                         </div>
@@ -135,7 +144,7 @@
                                 <div class="form-group">
                                     <label for="xrp">@lang('message.withdrawal_details.xr_addres')</label>
                                     <input name="xrp_address" class="form-control" id="xrp" type="text"
-                                         value="{{ Auth::user()->xrp_address }}">
+                                        value="{{ Auth::user()->xrp_address }}">
                                 </div>
                             </div>
                         </div>
@@ -148,7 +157,7 @@
                                 <div class="form-group">
                                     <label for="bnb">@lang('message.withdrawal_details.bn_addres') </label>
                                     <input name="bnb_address" class="form-control" id="bnb" type="text"
-                                         value="{{ Auth::user()->bnb_address }}">
+                                        value="{{ Auth::user()->bnb_address }}">
                                 </div>
                             </div>
                         </div>

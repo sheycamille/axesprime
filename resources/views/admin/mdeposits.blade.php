@@ -47,10 +47,6 @@
                     @endif
 
                     <div class="mb-5 row">
-                        <div class="col-12">
-                            <small class="">if you can't see the image, try switching your uploaded
-                                location to another option from your admin settings page.</small>
-                        </div>
                         <div class="col-12 p-4">
                             <div class="table-responsive" data-example-id="hoverable-table">
                                 <table id="ShipTable" class="table table-bordered table-striped table-responsive-sm">
@@ -81,27 +77,27 @@
                                             <td>{{ \Carbon\Carbon::parse($deposit->created_at)->toDayDateTimeString() }}
                                             </td>
                                             <td>
-                                                <a href="#" class="btn btn-{{ $text }} btn-sm m-1" data-toggle="modal"
+                                                <a href="#" class="btn btn-primary btn-sm m-1" data-toggle="modal"
                                                     data-target="#popModal{{ $deposit->id }}"
                                                     title="View payment proof">
-                                                    <i class="fa fa-eye"></i>
+                                                    Proof
                                                 </a>
 
-                                                <a href="#" class="btn btn-{{ $text }} btn-sm m-1" data-toggle="modal"
+                                                <a href="#" class="btn btn-primary btn-sm m-1" data-toggle="modal"
                                                     data-target="#sendMessageModal{{ $deposit->id }}"
                                                     title="Send Message">
-                                                    <i class="fa fa-envelope"></i>
+                                                    Message
                                                 </a>
 
                                                 @if ($deposit->status == 'Processed' || $deposit->status == 'Rejected')
-                                                <a class="@if ($deposit->status == 'Processed') btn-success @else btn-danger @endif btn-xs"
+                                                <a class="btn btn-sm @if ($deposit->status == 'Processed') btn-success @else btn-danger @endif btn-xs"
                                                     href="#">{{ $deposit->status }}</a>
                                                 @else
                                                 @if(auth('admin')->user()->hasPermissionTo('mdeposits-process', 'admin'))
-                                                <a class="btn btn-primary btn-xs"
-                                                    href="{{ url('admin/dashboard/pdeposit') }}/{{ $deposit->id }}">Process</a>
+                                                <a class="btn btn-primary btn-sm"
+                                                    href="{{ route('pdeposit', $deposit->id) }}">Process</a>
                                                 @endif
-                                                <a class="m-1 btn btn-primary btn-xs" data-toggle="modal"
+                                                <a class="m-1 btn btn-primary btn-sm" data-toggle="modal"
                                                     data-target="#rejctModal{{ $deposit->id }}" href="#">Reject</a>
                                                 @endif
                                             </td>
@@ -216,7 +212,7 @@
                                                             <input type="hidden" name="_token"
                                                                 value="{{ csrf_token() }}">
                                                             <input type="hidden" name="type" value="deposit">
-                                                            <input type="submit" class="btn btn-{{ $text }}"
+                                                            <input type="submit" class="btn btn-primary"
                                                                 value="Send">
                                                         </form>
                                                     </div>

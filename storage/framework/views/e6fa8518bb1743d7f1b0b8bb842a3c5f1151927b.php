@@ -12,10 +12,10 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header fw-bolder">
-                    <h1 class="text-<?php echo e($text); ?> pb-2">Welcome, <?php echo e(Auth('admin')->User()->firstName); ?>
+                    <h1 class="text-primary pb-2">Welcome, <?php echo e(Auth('admin')->User()->firstName); ?>
 
                         <?php echo e(Auth('admin')->User()->lastName); ?>!</h1>
-                    <h5 id="ann" class="text-<?php echo e($text); ?> op-7 mb-4"><?php echo e(\App\Models\Setting::getValue('update')); ?>
+                    <h5 id="ann" class="text-primary op-7 mb-4"><?php echo e(\App\Models\Setting::getValue('update')); ?>
 
                     </h5>
                 </div>
@@ -49,6 +49,7 @@
                     </div>
                     <?php endif; ?>
 
+                    <?php if(auth('admin')->user()->hasPermissionTo('system-reports', 'admin')): ?>
                     <!-- Beginning of  Dashboard Stats  -->
                     <div class="row">
 
@@ -59,8 +60,8 @@
                                         <i class="c-icon c-icon-2xl cil-money c-sidebar-nav-icon"></i>
                                     </div>
                                     <div class="text-value-lg">
-                                        <?php if(!empty($deposited)): ?>
-                                        <?php echo e(\App\Models\Setting::getValue('currency')); ?><?php echo e($deposited); ?>
+                                        <?php if(!empty($total_deposited)): ?>
+                                        <?php echo e(\App\Models\Setting::getValue('currency')); ?><?php echo e($total_deposited); ?>
 
                                         <?php else: ?>
                                         <?php echo e(\App\Models\Setting::getValue('currency')); ?>0.00
@@ -82,8 +83,8 @@
                                         <i class="c-icon c-icon-2xl cil-money c-sidebar-nav-icon"></i>
                                     </div>
                                     <div class="text-value-lg">
-                                        <?php if(!empty($deposited)): ?>
-                                        <?php echo e(\App\Models\Setting::getValue('currency')); ?><?php echo e($deposited); ?>
+                                        <?php if(!empty($pending_deposited)): ?>
+                                        <?php echo e(\App\Models\Setting::getValue('currency')); ?><?php echo e($pending_deposited); ?>
 
                                         <?php else: ?>
                                         <?php echo e(\App\Models\Setting::getValue('currency')); ?>0.00
@@ -107,8 +108,8 @@
                                         </svg>
                                     </div>
                                     <div class="text-value-lg">
-                                        <?php if(!empty($deposited)): ?>
-                                        <?php echo e(\App\Models\Setting::getValue('currency')); ?><?php echo e($deposited); ?>
+                                        <?php if(!empty($total_withdrawn)): ?>
+                                        <?php echo e(\App\Models\Setting::getValue('currency')); ?><?php echo e($total_withdrawn); ?>
 
                                         <?php else: ?>
                                         <?php echo e(\App\Models\Setting::getValue('currency')); ?>0.00
@@ -132,8 +133,8 @@
                                         </svg>
                                     </div>
                                     <div class="text-value-lg">
-                                        <?php if(!empty($deposited)): ?>
-                                        <?php echo e(\App\Models\Setting::getValue('currency')); ?><?php echo e($deposited); ?>
+                                        <?php if(!empty($pending_withdrawn)): ?>
+                                        <?php echo e(\App\Models\Setting::getValue('currency')); ?><?php echo e($pending_withdrawn); ?>
 
                                         <?php else: ?>
                                         <?php echo e(\App\Models\Setting::getValue('currency')); ?>0.00
@@ -209,6 +210,7 @@
                         </div>
 
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

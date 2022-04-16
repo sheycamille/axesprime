@@ -87,7 +87,7 @@
                                         <br>
                                         <input type="hidden" name="amount" value="{{ $amount }}">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-primary{{ $text }}" value="Submit Proof">
+                                        <input type="submit" class="btn btn-primary" value="Submit Proof">
                                     </form>
                                 </div>
                                 <br> <br>

@@ -18,7 +18,7 @@
                 </div>
             </a>
             <div class="dropdown-menu dropdown-menu-right pt-0">
-                <a class="dropdown-item" href="{{ url('admin/dashboard/adminchangepassword') }}">Change
+                <a class="dropdown-item" href="{{ route('adminchangepass') }}">Change
                     Password
                 </a>
                 <div class="dropdown-divider"></div>

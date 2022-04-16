@@ -48,8 +48,8 @@
                     @if(auth('admin')->user()->hasPermissionTo('madmin-create', 'admin'))
                     <div class="row">
                         <div class="col p-4">
-                            <a href="{{ url('/admin/dashboard/addadmin') }}" 
-                                class="btn btn-primary btn-md mb-2">Add Admin</a>
+                            <a href="{{ route('addadmin') }}" class="btn btn-primary btn-md mb-2">Add
+                                Admin</a>
                         </div>
                     </div>
                     @endif
@@ -83,48 +83,52 @@
                                             <td>{{$admin->acnt_type_active}}</td>
                                             <td>
                                                 @foreach($admin->roles as $role)
-                                                    {{$role->name}}, 
+                                                {{$role->name}},
                                                 @endforeach
                                             </td>
                                             <td>
 
                                                 <div class="d-flex justify-content-start">
                                                     <a class="btn btn-secondary btn-sm dropdown-toggle" href="#"
-                                                    role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    Actions
+                                                        role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        Actions
                                                     </a>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink"
-                                                            style="z-index: 999;">
-                                                            @if(auth('admin')->user()->hasPermissionTo('madmin-block', 'admin'))
-                                                            @if($admin->acnt_type_active==NULL ||
-                                                            $admin->acnt_type_active=='blocked')
-                                                            <a class="m-1 btn btn-primary btn-sm"
-                                                                href="{{ url('admin/dashboard/unblock') }}/{{$admin->id}}">Unblock</a>
+                                                        style="z-index: 999;">
+                                                        @if(auth('admin')->user()->hasPermissionTo('madmin-block',
+                                                        'admin'))
+                                                        @if($admin->acnt_type_active==NULL ||
+                                                        $admin->acnt_type_active=='blocked')
+                                                        <a class="m-1 btn btn-primary btn-sm"
+                                                            href="{{ route('adminunblock', $admin->id) }}">Unblock</a>
                                                         @else
                                                         <a class="m-1 btn btn-danger btn-sm text-nowrap"
-                                                            href="{{ url('admin/dashboard/ublock') }}/{{$admin->id}}">Block</a>
+                                                            href="{{ route('adminublock', $admin->id) }}">Block</a>
                                                         @endif
                                                         @endif
                                                         <a href="#" data-toggle="modal"
                                                             data-target="#resetpswdModal{{$admin->id}}"
-                                                            class="m-1 btn btn-warning btn-sm text-nowrap">Reset Password</a>
-                                                        @if(auth('admin')->user()->hasPermissionTo('madmin-delete', 'admin'))
+                                                            class="m-1 btn btn-warning btn-sm text-nowrap">Reset
+                                                            Password</a>
+                                                        @if(auth('admin')->user()->hasPermissionTo('madmin-delete',
+                                                        'admin') && auth('admin')->user()->id != $admin->id)
                                                         <a href="#" data-toggle="modal"
-                                                        data-target="#deleteModal{{$admin->id}}"
-                                                        class="m-1 btn btn-danger btn-sm">Delete</a>
+                                                            data-target="#deleteModal{{$admin->id}}"
+                                                            class="m-1 btn btn-danger btn-sm">Delete</a>
                                                         @endif
-                                                        @if(auth('admin')->user()->hasPermissionTo('madmin-edit', 'admin'))
+                                                        @if(auth('admin')->user()->hasPermissionTo('madmin-edit',
+                                                        'admin'))
                                                         <a href="#" data-toggle="modal"
                                                             data-target="#edituser{{$admin->id}}"
                                                             class="m-1 btn btn-secondary btn-sm">Edit</a>
-                                                         @endif   
+                                                        @endif
                                                         <a href="#" data-toggle="modal"
                                                             data-target="#sendmailModal{{$admin->id}}"
                                                             class="m-1 btn btn-info btn-sm text-nowrap">Send Email</a>
-                                                    </div>                                       
+                                                    </div>
                                                 </div>
-                     
+
                                             </td>
                                         </tr>
 
@@ -147,7 +151,7 @@
                                                                 class="text-primary font-weight-bolder">admin01236</span>
                                                         </p>
                                                         <a class="btn btn-danger"
-                                                            href="{{ url('admin/dashboard/resetadpwd') }}/{{$admin->id}}">Reset
+                                                            href="{{ route('adminresetadminpass', $admin->id) }}">Reset
                                                             Now</a>
                                                     </div>
                                                 </div>
@@ -171,7 +175,7 @@
                                                         <p class="">Are you sure you want to delete
                                                             {{$admin->firstName}}</p>
                                                         <a class="btn btn-danger"
-                                                            href="{{ url('admin/dashboard/deluser') }}/{{$admin->id}}">Yes
+                                                            href="{{ route('deladmin', $admin->id) }}">Yes
                                                             i'm sure</a>
                                                     </div>
                                                 </div>
@@ -192,7 +196,7 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <form style="padding:3px;" role="form" method="post"
-                                                            action="{{route('editadmin')}}">
+                                                            action="{{route('editadmin', $admin->id)}}">
                                                             <h5 class=" ">Firstname</h5>
                                                             <input style="padding:5px;" class="form-control "
                                                                 value="{{$admin->firstName}}" type="text" name="fname"
@@ -212,14 +216,17 @@
                                                             <br>
                                                             <h5 class=" ">Type</h5>
                                                             <select class="form-control " name="type">
-                                                                <option @if($admin->type == "Super Admin") selected @endif value="Super Admin">Super Admin</option>
-                                                                <option @if($admin->type == "Admin") selected @endif value="Admin">Admin</option>
+                                                                <option @if($admin->type == "Super Admin") selected
+                                                                    @endif value="Super Admin">Super Admin</option>
+                                                                <option @if($admin->type == "Admin") selected @endif
+                                                                    value="Admin">Admin</option>
                                                             </select><br>
                                                             <h5 class=" ">Roles</h5>
-                                                            <select class="form-control" name="roles[]" multiple>  
-                                                                    @foreach($roles as $role)
-                                                                    <option @if($admin->hasRole($role)) selected @endif value="{{ $role->id }}">{{ $role->name }}</option>
-                                                                    @endforeach         
+                                                            <select class="form-control" name="roles[]" multiple>
+                                                                @foreach($roles as $role)
+                                                                <option @if($admin->hasRole($role)) selected @endif
+                                                                    value="{{ $role->id }}">{{ $role->name }}</option>
+                                                                @endforeach
                                                             </select>
                                                             <br>
                                                             <input type="hidden" name="_token"
@@ -248,9 +255,9 @@
                                                     <div class="modal-body">
                                                         <p class="">This message will be sent to {{$admin->firstName}}
                                                             {{$admin->lastName}} </p>
-                                                        <form role="form" method="post" action="{{route('sendmail')}}">
+                                                        <form role="form" method="post" action="{{route('sendmail', $admin->id)}}">
 
-                                                            <input type="hidden" name="user_id" value="{{$admin->id}}">
+                                                            <input type="hidden" name="id" value="{{$admin->id}}">
                                                             <textarea class="form-control " name="message " row="3"
                                                                 placeholder="Type your message here"
                                                                 required></textarea><br />

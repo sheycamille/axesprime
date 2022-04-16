@@ -48,7 +48,7 @@
 
                     <div class="row mb-5">
                         <div class="col-lg-8 offset-lg-2 card p-3">
-                            <form method="POST" action="{{ url('admin/dashboard/storerole') }}">
+                            <form method="POST" action="{{ route('storerole') }}">
                                 {{ csrf_field() }}
 
                                 <div class="form-group">

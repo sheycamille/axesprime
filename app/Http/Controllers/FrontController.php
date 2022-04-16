@@ -98,15 +98,15 @@ class FrontController extends Controller
     }
 
 
-    public function ftds()
-    {
-        $users = User::all();
+    // public function ftds()
+    // {
+    //     $users = User::all();
 
-        return view('front.ftds', [
-            'title' => "First Time Deposits",
-            'users' => $users,
-        ]);
-    }
+    //     return view('front.ftds', [
+    //         'title' => "First Time Deposits",
+    //         'users' => $users,
+    //     ]);
+    // }
 
 
     public function creditScore()

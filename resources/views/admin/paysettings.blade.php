@@ -71,7 +71,7 @@
                                             data-target="#wmethodModal{{ $method->id }}"><i class="fa fa-pencil"></i>
                                             Edit</a> &nbsp;
                                         <a class="btn btn-danger btn-sm"
-                                            href="{{ url('admin/dashboard/deletewdmethod') }}/{{ $method->id }}">
+                                            href="{{ route('deletewdmethod', $method->id) }}">
                                             Delete
                                         </a>
                                     </div>
@@ -88,7 +88,8 @@
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         </div>
                                         <div class="modal-body">
-                                            <form role="form" method="post" action="{{ route('updatewdmethod') }}">
+                                            <form role="form" method="post" action="{{ route('updatewdmethod') }}"
+                                                enctype="multipart/form-data">
 
                                                 <h5 class="">Enter Method Name</h5>
                                                 <input class="form-control" placeholder="Enter method name" type="text"
@@ -127,8 +128,8 @@
                                                 <br>
                                                 <h5 class="">Details</h5>
                                                 <textarea class="form-control" name="details" row="3"
-                                                    placeholder="Method details" rows="10" cols="30"
-                                                    required>{!! $method->details !!}</textarea>
+                                                    placeholder="Method details" rows="10"
+                                                    cols="20">{!! $method->details !!}</textarea>
                                                 <br />
                                                 <h5 class="">Countries</h5>
                                                 <select style="padding:5px;" class="form-control"
@@ -152,6 +153,14 @@
                                                     <option value="enabled">Enable</option>
                                                     <option value="disabled">Disable</option>
                                                 </select><br />
+                                                <div class="form-group">
+                                                    <h5 class="">Logo </h5>
+                                                    <input name="logo" class="form-control" type="file">
+                                                    @if($method->logo)
+                                                    <img width="150px"
+                                                        src="{{ asset('storage/logos/' . $method->logo) }}">
+                                                    @endif
+                                                </div><br />
                                                 <input type="hidden" name="type" value="withdrawal">
                                                 <input type="hidden" name="id" value="{{ $method->id }}">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -192,7 +201,7 @@
                                             data-target="#dmethodModal{{ $method->id }}"><i class="fa fa-pencil"></i>
                                             Edit</a> &nbsp;
                                         <a class="btn btn-danger btn-sm"
-                                            href="{{ url('admin/dashboard/deletewdmethod') }}/{{ $method->id }}">
+                                            href="{{ route('deletewdmethod', $method->id) }}">
                                             Delete
                                         </a>
                                     </div>
@@ -209,7 +218,8 @@
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         </div>
                                         <div class="modal-body">
-                                            <form role="form" method="post" action="{{ route('updatewdmethod') }}">
+                                            <form role="form" method="post" action="{{ route('updatewdmethod') }}"
+                                                enctype="multipart/form-data">
 
                                                 <h5 class="">Enter Method Name</h5>
                                                 <input class="form-control" placeholder="Enter method name" type="text"
@@ -247,8 +257,8 @@
                                                 <br>
                                                 <h5 class="">Details</h5>
                                                 <textarea class="form-control" name="details" row="3"
-                                                    placeholder="Method details" rows="10" cols="30"
-                                                    required>{!! $method->details !!}</textarea>
+                                                    placeholder="Method details" rows="10"
+                                                    cols="20">{!! $method->details !!}</textarea>
                                                 <br />
                                                 <h5 class="">Countries</h5>
                                                 <select style="padding:5px;" class="form-control"
@@ -272,6 +282,14 @@
                                                     <option value="enabled">Enable</option>
                                                     <option value="disabled">Disable</option>
                                                 </select><br />
+                                                <div class="form-group">
+                                                    <h5 class="">Logo</h5>
+                                                    <input name="logo" class="form-control" type="file">
+                                                    @if($method->logo)
+                                                    <img width="150px"
+                                                        src="{{ asset('storage/logos/' . $method->logo) }}">
+                                                    @endif
+                                                </div><br />
                                                 <input type="hidden" name="type" value="deposit">
                                                 <input type="hidden" name="id" value="{{ $method->id }}">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">

@@ -62,9 +62,8 @@ class Controller extends BaseController
 
         if ($dt->isWeekday()) {
             return "This is a week day";
-        } elseif ($dt->isWeekend()) {
-            return "Today is Weekend";
         } else {
+            return "Today is Weekend";
         }
     }
 
@@ -109,14 +108,19 @@ class Controller extends BaseController
         $trade = new Trade();
         $trade->setLogin($login);
         $trade->setAmount($amt);
-        $trade->setComment("Deposit");
+        $trade->setComment("axeprogroup action");
         $trade->setType($operation);
+
+        $ret = [];
         try {
             $data = $api->trade($trade);
-            return ['status' => true, 'data' => $data];
+            $ret = ['status' => true, 'data' => $data];
         } catch (Exception $e) {
-            return ['status' => false, 'msg' => $e->getMessage()];
+            $ret = ['status' => false, 'msg' => $e->getMessage()];
+            if($ret['msg'] == 'unknown error') $ret = ['status' => true, 'data' => $data];
         }
+
+        return $ret;
     }
 
 
@@ -151,8 +155,6 @@ class Controller extends BaseController
             'amount' => $amt,
             'type' => $type,
         ]);
-
-        return;
     }
 
 

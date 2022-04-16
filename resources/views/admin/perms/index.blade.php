@@ -47,8 +47,8 @@
 
                     <div class="row">
                         <div class="col">
-                            <a href="{{ url('/admin/dashboard/createrole') }}" 
-                                class="btn btn-primary btn-md mb-2" href="#" data-toggle="modal" data-target="#createpermissionmodal">Create New Permission</a>
+                            <a class="btn btn-primary btn-md mb-2" href="#" data-toggle="modal"
+                                data-target="#createpermissionmodal">Create New Permission</a>
                         </div>
                     </div>
 
@@ -57,7 +57,7 @@
                             <div class="table-responsive" data-example-id="hoverable-table">
                                 <table id="ShipTable" class="table table-bordered table-striped table-responsive-sm">
                                     <thead>
-                  
+
                                         <tr>
                                             <th>ID</th>
                                             <th>PERMISSIONS</th>
@@ -65,22 +65,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($permission as $value)
+                                        @forelse ($permissions as $perm)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
-                                            <td>{{ $value->name }}</td>             
+                                            <td>{{ $perm->id }}</td>
+                                            <td>{{ $perm->name }}</td>
                                             <td>
                                                 <div class="d-flex justify-content-start">
-                                                    <!--<a href="{{ route('editrole', $value->id) }}" class="m-1 btn btn-secondary btn-sm">Edit</a>-->
+                                                    <!--<a href="{{ route('editrole', $perm->id) }}" class="m-1 btn btn-secondary btn-sm">Edit</a>-->
                                                     <a href="#" data-toggle="modal"
-                                                    data-target="#deleteModal{{$value->id}}"
-                                                    class="m-1 btn btn-danger btn-sm">Delete</a>
+                                                        data-target="#deleteModal{{$perm->id}}"
+                                                        class="m-1 btn btn-danger btn-sm">Delete</a>
                                                 </div>
                                             </td>
                                         </tr>
 
                                         <!-- Delete permission Modal -->
-                                        <div id="deleteModal{{$value->id}}" class="modal fade" role="dialog">
+                                        <div id="deleteModal{{$perm->id}}" class="modal fade" role="dialog">
                                             <div class="modal-dialog">
 
                                                 <!-- Modal content-->
@@ -92,10 +92,11 @@
                                                             data-dismiss="modal">&times;</button>
                                                     </div>
                                                     <div class="modal-body p-3">
-                                                        <form action="{{ route('deleteperm', $value->id) }}" method="POST">
+                                                        <form action="{{ route('deleteperm', $perm->id) }}"
+                                                            method="POST">
                                                             @csrf
                                                             <p class="">Are you sure you want to delete permission
-                                                                {{$admin->firstName}}</p>
+                                                                {{$perm->name}}?</p>
                                                             <button class="btn btn-danger btn-sm">Yes, I'm sure</button>
                                                         </form>
                                                     </div>
@@ -103,9 +104,14 @@
                                             </div>
                                         </div>
                                         <!-- /Delete permission Modal -->
+                                        @empty
+                                        <tr>
+                                            <td colspan="4">No data available</td>
+                                        </tr>
+                                        @endforelse
 
-                                         <!-- Create permission Modal -->
-                                         <div id="createpermissionmodal" class="modal fade" role="dialog">
+                                        <!-- Create permission Modal -->
+                                        <div id="createpermissionmodal" class="modal fade" role="dialog">
                                             <div class="modal-dialog">
 
                                                 <!-- Modal content-->
@@ -118,11 +124,12 @@
                                                     </div>
                                                     <div class="modal-body p-3">
                                                         <form style="" role="form" method="post"
-                                                            action="{{route('createperm')}}">
+                                                            action="{{route('storeperm')}}">
                                                             @csrf
                                                             <h5 class=" ">Permission Name</h5>
-                                                            <input style="" class="form-control "
-                                                                 type="text" name="name">
+                                                            <input style="" class="form-control " type="text"
+                                                                name="name">
+                                                            <br>
                                                             <button class="btn btn-primary btn-sm">Save</button>
                                                         </form>
                                                     </div>
@@ -130,18 +137,13 @@
                                             </div>
                                         </div>
                                         <!-- /Create permission Modal -->
-                                        @empty
-                                        <tr>
-                                            <td colspan="4">No data available</td>
-                                        </tr>
-                                        @endforelse
                                     </tbody>
                                 </table>
 
-                                
+
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>

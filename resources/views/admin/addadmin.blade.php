@@ -48,8 +48,8 @@
 
                     <div class="row mb-5">
                         <div class="col-lg-8 offset-lg-2 card p-3">
-                            <form method="POST" action="{{ url('admin/dashboard/saveadmin') }}">
-                            
+                            <form method="POST" action="{{ route('saveadmin') }}">
+
                                 {{ csrf_field() }}
 
                                 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -118,7 +118,7 @@
                                     <select class="form-control" name="roles[]" multiple>
                                         @foreach($roles as $role)
                                              <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                        @endforeach  
+                                        @endforeach
                                     </select><br>
                                 </div>
 
@@ -159,7 +159,7 @@
                                     </div>
                                 </div>
                             </form>
-                            
+
                         </div>
                     </div>
                 </div>

@@ -12,32 +12,31 @@ use App\Models\Testimony;
 use App\Models\Withdrawal;
 use App\Models\Mt5Details;
 use App\Models\AccountType;
-use App\Models\Notification;
 use App\Mail\NewNotification;
-use App\Models\TpTransaction;
 
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use Tarikh\PhpMeta\Entities\Trade;
-// use Tarikhagustia\LaravelMt5\LaravelMt5;
 
 use Carbon\Carbon;
-
 
 
 class LogicController extends Controller
 {
 
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+
+    // function __construct()
+    // {
+    //     $this->middleware('auth:admin');
+    // }
 
 
     // Add account type
@@ -105,151 +104,6 @@ class LogicController extends Controller
     }
 
 
-    // Send Mail to all users
-    public function sendmailtoall(Request $request)
-    {
-        $site_name = Setting::getValue('site_name');
-
-        //send email notification
-        $objDemo = new \stdClass();
-        $objDemo->message =  "\r Hello, \r \n"
-            . "\r $request->message \r\n";
-        $objDemo->sender = $site_name;
-        $objDemo->date = Carbon::Now();
-        $objDemo->subject = "$site_name Notification";
-
-        Mail::mailer('smtp')->bcc(User::all())->send(new NewNotification($objDemo));
-
-        return redirect()->back()->with('message', 'Your message was sent successful!');
-    }
-
-
-    // Send mail to one user
-    public function sendmailtooneuser(Request $request)
-    {
-        $site_name = Setting::getValue('site_name');
-        // $notif = Notification::create([
-        //     'user_id' => $request->user_id,
-        //     'message' => "\r $request->message \r\n",
-        // ]);
-
-        $mailer = 'smtp';
-        // if ($request->type == "deposit")
-        //     $mailer = 'deposits';
-
-        //send email notification
-        $mailduser = User::where('id', $request->user_id)->first();
-        $objDemo = new \stdClass();
-        $objDemo->message = "\r Hello $mailduser->name, \r \n"
-            . "\r $request->message \r\n";
-        $objDemo->sender = $site_name;
-        $objDemo->date = Carbon::Now();
-        $objDemo->subject = "$site_name Notification";
-
-        Mail::mailer($mailer)->bcc($mailduser->email)->send(new NewNotification($objDemo));
-        return redirect()->back()->with('message', 'Your message was sent successful!');
-    }
-
-
-    // Manually Add Trading History to Users Route
-    public function addHistory(Request $request)
-    {
-        $history = TpTransaction::create([
-            'user' => $request->user_id,
-            'purpse' => $request->purpose,
-            'amount' => $request->amount,
-            'type' => $request->type,
-        ]);
-        $user = User::where('id', $request->user_id)->first();
-        // $user_bal = $user->account_bal;
-        // if (isset($request['amount']) > 0) {
-        //     User::where('id', $request->user_id)
-        //         ->update([
-        //             'account_bal' => $user_bal + $request->amount,
-        //         ]);
-        // }
-        // $user_roi = $user->roi;
-        // if (isset($request['type']) == "ROI") {
-        //     User::where('id', $request->user_id)
-        //         ->update([
-        //             'roi' => $user_roi + $request->amount,
-        //         ]);
-        // }
-
-        return redirect()->back()
-            ->with('message', 'Action Sucessful!');
-    }
-
-
-    // update users info
-    public function edituser(Request $request)
-    {
-
-        User::where('id', $request['user_id'])
-            ->update([
-                'name' => $request['name'],
-                'email' => $request['email'],
-                'phone' => $request['phone'],
-                'ref_link' => $request['ref_link'],
-            ]);
-        return redirect()->back()
-            ->with('message', 'User updated Successful!');
-    }
-
-
-    // Reset Password
-    public function resetpswd(Request $request, $id)
-    {
-        User::where('id', $id)
-            ->update([
-                'password' => Hash::make('user01236'),
-            ]);
-        return redirect()->route('manageusers')
-            ->with('message', 'Password has been reset to default');
-    }
-
-
-    // Access users account
-    public function switchuser(Request $request, $id)
-    {
-        $user = User::where('id', $id)->first();
-        //Byeppass 2FA
-        $user->token_2fa_expiry = Carbon::now()->addMinutes(15)->toDateTimeString();
-        $user->save();
-        Auth::loginUsingId($user->id, true);
-        return redirect()->route('dashboard')
-            ->with('message', "You are logged in as $user->name !");
-    }
-
-
-    // Clear user Account
-    public function clearacct(Request $request, $id)
-    {
-
-        $deposits = Deposit::where('user', $id)->get();
-        if (!empty($deposits)) {
-            foreach ($deposits as $deposit) {
-                Deposit::where('id', $deposit->id)->delete();
-            }
-        }
-
-        $withdrawals = Withdrawal::where('user', $id)->get();
-        if (!empty($withdrawals)) {
-            foreach ($withdrawals as $withdrawals) {
-                Withdrawal::where('id', $withdrawals->id)->delete();
-            }
-        }
-
-        User::where('id', $id)
-            ->update([
-                'account_bal' => '0',
-                'ref_bonus' => '0',
-            ]);
-        return redirect()->route('manageusers')
-            ->with('message', 'Account cleared to $0.00');
-    }
-
-
     // Reject deposit
     public function rejectdeposit(Request $request, $id)
     {
@@ -282,77 +136,6 @@ class LogicController extends Controller
     }
 
 
-    // top up route
-    public function topup(Request $request)
-    {
-        // switch the mt5 api to use live server
-        $this->setServerConfig('live');
-
-        $msg = 'Action Successful';
-
-        if ($request->t_type == "Credit") {
-            // get mt5 account in question
-            $mt5 = Mt5Details::find($request->account_id);
-            if (!$mt5)
-                return redirect()->back()->with('message', 'MT5 account not found');
-
-            if ($request->type == "Bonus") {
-                $data = $this->performTransaction($mt5->login, $request->amount, Trade::DEAL_CREDIT);
-                $mt5->bonus += $request->amount;
-            } elseif ($request->type == "Balance") {
-                $data = $this->performTransaction($mt5->login, $request->amount, Trade::DEAL_BALANCE);
-                $mt5->balance += $request->amount;
-            }
-
-            if ($data['status']) {
-                // Create deposit record
-                $this->saveRecord($request->user_id, $request->account_id, 'Express Credit', $request->amount, null, 'Deposit', 'Processed');
-
-                // save transaction
-                $this->saveTransaction($request->user_id, $request->amount, 'Express Credit', $request->type);
-
-                $msg = 'The user\'s account has been successfully credited!';
-                $mt5->save();
-            } else {
-                return redirect()->route('manageusers')
-                    ->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
-            }
-        } elseif ($request->t_type == "Debit") {
-            // get mt5 account in question
-            $mt5 = Mt5Details::find($request->account_id);
-            if (!$mt5)
-                return redirect()->back()->with('message', 'MT5 account not found');
-
-            $data = ['status' => false];
-
-            if ($request->type == "Bonus") {
-                $data = $this->performTransaction($mt5->login, -$request->amount, Trade::DEAL_CREDIT);
-                $mt5->bonus -= $request->amount;
-            } elseif ($request->type == "Balance") {
-                $data = $this->performTransaction($mt5->login, -$request->amount, Trade::DEAL_BALANCE);
-                $mt5->balance -= $request->amount;
-            }
-
-            if ($data['status']) {
-                // create withdrawal record
-                $this->saveRecord($request->user_id, $request->account_id, 'Express Debit', $request->amount, null, 'Withdrawal', 'Processed');
-
-                // save transaction
-                $this->saveTransaction($request->user_id, $request->amount, 'Express Debit', $request->type);
-
-                $msg = 'The user\'s account has been successfully debited!';
-                $mt5->save();
-            } else {
-                return redirect()->route('manageusers')
-                    ->with('message', 'Sorry an error occured, report this to admin! ' . $data->msg);
-            }
-        }
-
-        return redirect()->route('manageusers')
-            ->with('message', $msg);
-    }
-
-
     // process deposits
     public function pdeposit(Request $request, $id)
     {
@@ -375,7 +158,6 @@ class LogicController extends Controller
         $deposit->save();
 
         // update the local mt5 account
-        $apiData = $data['data'];
         $mt5->balance += $deposit->amount;
         $mt5->save();
 
@@ -477,66 +259,6 @@ class LogicController extends Controller
 
         return redirect()->back()
             ->with('message', 'Withdrawal Request Canceled!');
-    }
-
-
-    // Delete user
-    public function delsystemuser(Request $request, $id)
-    {
-        //delete the user's withdrawals and deposits
-        $deposits = Deposit::where('user', $id)->get();
-        if (!empty($deposits)) {
-            foreach ($deposits as $deposit) {
-                Deposit::where('id', $deposit->id)->delete();
-            }
-        }
-
-        $withdrawals = Withdrawal::where('user', $id)->get();
-        if (!empty($withdrawals)) {
-            foreach ($withdrawals as $withdrawals) {
-                Withdrawal::where('id', $withdrawals->id)->delete();
-            }
-        }
-
-        User::where('id', $id)->delete();
-        return redirect()->route('manageusers')
-            ->with('message', 'User has been deleted!');
-    }
-
-
-    public function saveuser(Request $request)
-    {
-
-        $this->validate($request, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:8|confirmed',
-            'Answer' => 'same:Captcha_Result',
-        ]);
-
-
-        $thisid = DB::table('users')->insertGetId(
-            [
-                'name' => $request['name'],
-                'email' => $request['email'],
-                'phone' => $request['phone'],
-                'ref_by' => Auth::user()->id,
-                'password' => Hash::make($request->password),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]
-        );
-
-
-        //assign referal link to user
-        $site_address = Setting::getValue('site_address');
-
-        User::where('id', $thisid)
-            ->update([
-                'ref_link' => $site_address . '/ref/' . $thisid,
-            ]);
-        return redirect()->back()
-            ->with('message', 'User Registered Sucessful!');
     }
 
 

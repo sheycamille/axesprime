@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-
-use App\Models\Asset;
 use App\Models\Country;
 use App\Models\Setting;
 use App\Models\Wdmethod;
@@ -21,12 +19,17 @@ class SettingsController extends Controller
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
+    // function __construct()
+    // {
+    //     $this->middleware('auth:admin');
+    // }
+
+
+
     //return settings form
     public function settings()
     {
         $countries = Country::whereStatus('active')->get();
-        $wmethods = Wdmethod::where('type', 'withdrawal')->get();
-        $dmethods = Wdmethod::where('type', 'deposit')->get();
         return view('admin.settings')->with(array(
             //'markets' => markets::all(),
             'countries' => $countries,
@@ -39,7 +42,8 @@ class SettingsController extends Controller
     //return settings form
     public function prefsettings(Request $request)
     {
-        return view('admin.prefsettings');
+        include "currencies.php";
+        return view('admin.prefsettings', compact('currencies'));
     }
 
 
@@ -60,7 +64,6 @@ class SettingsController extends Controller
 
     public function updatewebinfo(Request $request)
     {
-
         $this->validate($request, [
             'logo' => 'mimes:jpg,jpeg,png|max:500|image',
             'favicon' => 'mimes:jpg,jpeg,png|max:500|image',
@@ -311,39 +314,64 @@ class SettingsController extends Controller
     public function addwdmethod(Request $request)
     {
         $countries = implode(',', $request->countries);
+
+        // upload the logo
+        $strtxt = $this->generate_string(6);
+        $logoname = '';
+        if ($request->hasfile('logo')) {
+            $file = $request->file('logo');
+            $logoname = $strtxt . $file->getClientOriginalName();
+            $path = $file->storeAs('public/logos', $logoname);
+        }
+
         $method = new Wdmethod();
-        $method->name = $request['name'];
-        $method->setting_key = $request['setting_key'];
-        $method->exchange_symbol = $request['exchange_symbol'];
-        $method->minimum = $request['minimum'];
-        $method->maximum = $request['maximum'];
-        $method->charges_fixed = $request['charges_fixed'];
-        $method->charges_percentage = $request['charges_percentage'];
-        $method->duration = $request['duration'];
+        $method->name = $request->name;
+        $method->logo = $logoname;
+        $method->setting_key = $request->setting_key;
+        $method->exchange_symbol = $request->exchange_symbol;
+        $method->minimum = $request->minimum;
+        $method->maximum = $request->maximum;
+        $method->charges_fixed = $request->charges_fixed;
+        $method->charges_percentage = $request->charges_percentage;
+        $method->duration = $request->duration;
         $method->country_ids = $countries;
-        $method->type = $request['type'];
-        $method->status = $request['status'];
+        $method->type = $request->type;
+        $method->status = $request->status;
+        $method->details = $request->details;
         $method->save();
         return redirect()->back()->with('message', 'Method added successful!');
     }
+
 
     //Update withdrawal and deposit method
     public function updatewdmethod(Request $request)
     {
         $countries = implode(',', $request->countries);
-        Wdmethod::where('id', $request['id'])
-            ->update([
-                'name' => $request['name'],
-                'setting_key' => $request['setting_key'],
-                'exchange_symbol' => $request['exchange_symbol'],
-                'minimum' => $request['minimum'],
-                'maximum' => $request['maximum'],
-                'charges_fixed' => $request['charges_fixed'],
+        $method = Wdmethod::find($request->id);
+
+        // upload the logo
+        $strtxt = $this->generate_string(6);
+        $logoname = $method->logo;
+        if ($request->hasfile('logo')) {
+            $file = $request->file('logo');
+            $logoname = $strtxt . $file->getClientOriginalName();
+            $path = $file->storeAs('public/logos', $logoname);
+        }
+
+        $method->update([
+                'name' => $request->name,
+                'logo' => $logoname,
+                'setting_key' => $request->setting_key,
+                'exchange_symbol' => $request->exchange_symbol,
+                'minimum' => $request->minimum,
+                'maximum' => $request->maximum,
+                'charges_fixed' => $request->charges_fixed,
                 'country_ids' => $countries,
-                'charges_percentage' => $request['charges_percentage'],
-                'duration' => $request['duration'],
-                'type' => $request['type'],
-                'status' => $request['status'],
+                'charges_percentage' => $request->charges_percentage,
+                'duration' => $request->duration,
+                'type' => $request->type,
+                'status' => $request->status,
+                'details' => $request->details,
             ]);
         return redirect()->back()
             ->with('message', 'Action Successful');

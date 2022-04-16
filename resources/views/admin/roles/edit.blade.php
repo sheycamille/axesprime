@@ -46,22 +46,24 @@
 
                     <div class="row mb-5">
                         <div class="col-lg-8 offset-lg-2 card p-3">
-                            <form method="POST" action="{{ url('admin/dashboard/editrole', $role->id) }}">
+                            <form method="POST" action="{{ route('updaterole', $role->id) }}">
                                 {{ csrf_field() }}
 
                                 <div class="form-group">
                                     <h4 class=""> Name:</h4>
-                                    <input placeholder="Name" class="form-control" name="name" type="text" value="{{ $role->name }}">
+                                    <input placeholder="Name" class="form-control" name="name" type="text"
+                                        value="{{ $role->name }}">
                                 </div>
                                 <div class="form-group">
                                     <h4>Permission:</h4>
-                                    <br/>
+                                    <br />
                                     @foreach($permission as $perm)
                                     <label>
-                                        {{ Form::checkbox('permissions[]', $perm->id, in_array($perm->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
+                                        {{ Form::checkbox('permissions[]', $perm->id, in_array($perm->id,
+                                        $rolePermissions) ? true : false, array('class' => 'name')) }}
                                         {{ $perm->name }}
                                     </label>
-                                    <br/>
+                                    <br />
                                     @endforeach
                                 </div>
 

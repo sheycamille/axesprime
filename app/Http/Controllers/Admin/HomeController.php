@@ -2,20 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Carbon\Carbon;
-use Exception;
-
 use App\Models\Faq;
 use App\Models\User;
-use App\Models\Admin;
-use App\Models\Asset;
 use App\Models\Images;
 use App\Models\Content;
-use App\Models\Country;
 use App\Models\Deposit;
-use App\Models\Wdmethod;
 use App\Models\Testimony;
-use App\Models\Mt5Details;
 use App\Models\Withdrawal;
 use App\Models\AccountType;
 
@@ -23,26 +15,15 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
-use Tarikhagustia\LaravelMt5\LaravelMt5;
-
-use Spatie\Permission\Models\Role;
-
 
 
 class HomeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    function __construct()
-    {
-        $this->middleware('auth:admin');
-    }
+    // function __construct()
+    // {
+    //     $this->middleware('auth:admin');
+    // }
 
 
     /**
@@ -65,26 +46,15 @@ class HomeController extends Controller
 
         return view('admin.dashboard', [
             'title' => 'Admin Dashboard',
-            'total_deposited' => $total_deposited['total'],
-            'pending_deposited' => $pending_deposited['total'],
-            'total_withdrawn' => $total_withdrawn['total'],
-            'pending_withdrawn' => $pending_withdrawn['total'],
+            'total_deposited' => $total_deposited->toArray()[0]->total,
+            'pending_deposited' => $pending_deposited->toArray()[0]->total,
+            'total_withdrawn' => $total_withdrawn->toArray()[0]->total,
+            'pending_withdrawn' => $pending_withdrawn->toArray()[0]->total,
             'user_count' => $userlist,
             'activeusers' => $activeusers,
             'blockeusers' => $blockeusers,
             'unverifiedusers' => $unverifiedusers,
         ]);
-    }
-
-
-    //Return manage users route
-    public function manageusers()
-    {
-        return view('admin.users')
-            ->with(array(
-                'title' => 'All users',
-                'users' => User::orderBy('id', 'desc')->get(),
-            ));
     }
 
 
@@ -127,28 +97,6 @@ class HomeController extends Controller
             ->with(array(
                 'title' => 'Manage users deposits',
                 'deposits' => Deposit::orderBy('id', 'desc')->get(),
-            ));
-    }
-
-
-    public function userwallet($id)
-    {
-        $user = User::where('id', $id)->first();
-
-        // update user accounts
-        $this->updateaccounts($user);
-
-        //sum total deposited
-        $total_deposited = DB::table('deposits')->select(DB::raw("SUM(amount) as total"))->where('user', $id)->where('status', 'Processed')->get();
-
-        return view('admin.user_wallet')
-            ->with(array(
-                'ref_bonus' => $user->ref_bonus,
-                'deposited' => $total_deposited['total'],
-                'bonus' => $user->totalBonus(),
-                'account_bal' => $user->totalBalance(),
-                'user' => $user->name,
-                'title' => 'User Profile',
             ));
     }
 
@@ -228,7 +176,7 @@ class HomeController extends Controller
         $accType = new AccountType($input);
         $accType->save();
 
-        return redirect('accounttypes')->with('message', 'New Account Type Created Sucessfully!');
+        return redirect(route('accounttypes'))->with('message', 'New Account Type Created Sucessfully!');
     }
 
 
@@ -265,36 +213,6 @@ class HomeController extends Controller
         AccountType::where('id', $id)->delete();
         return redirect()->back()
             ->with('message', 'Account type has been deleted!');
-    }
-
-
-    public function dellaccounts(Request $request, $id)
-    {
-        $mt5 = Mt5Details::find($id);
-
-        if (!isset($mt5)) {
-            return redirect()->back()
-                ->with('message', 'Account not found!');
-        }
-
-        // check and update live account balances
-        $this->setServerConfig('live');
-
-        // initialize the mt5 api
-        $api = new LaravelMt5();
-
-        // delete the mt5 account
-        try {
-            $data = $api->deleteUser($mt5->login);
-        } catch (Exception $e) {
-            return redirect()->back()
-                ->with('message', 'Sorry an error occured, please contact admin with this error message: ' . $e->getMessage());
-        }
-
-        $mt5->delete();
-
-        return redirect()->back()
-            ->with('message', 'Account successfully deleted!');
     }
 
 

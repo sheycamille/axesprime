@@ -32,7 +32,8 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form style="padding:3px;" role="form" method="post" action="{{ route('addwdmethod') }}">
+                <form style="padding:3px;" role="form" method="post" action="{{ route('addwdmethod') }}"
+                    enctype="multipart/form-data">
                     <input style="padding:5px;" class="form-control" placeholder="Enter method name" type="text"
                         name="name" required><br />
                     <input style="padding:5px;" class="form-control" placeholder="Enter method exchange symbol"
@@ -50,20 +51,23 @@
                     <input style="padding:5px;" class="form-control" placeholder="Payout duration" type="text"
                         name="duration" required><br />
                     <select style="padding:5px;" class="form-control" placeholder="Permitted Countries" type="text"
-                        name="countries" required style="max-width: 150px" multiple>
+                        name="countries[]" required style="max-width: 150px" multiple>
                         <option disabled>@lang('message.register.chs')</option>
-                        @foreach ($countries as $country)
+                        @foreach (\App\Models\Country::get() as $country)
                         <option @if ($country->id == old('country')) selected @endif value="{{ $country->id }}">
                             {{ $country->name }}</option>
                         @endforeach
                     </select><br />
-                    <textarea class="form-control" name="details" row="3" placeholder="Method details"
-                        required></textarea><br />
+                    <textarea class="form-control" name="details" row="3" placeholder="Method details"></textarea><br />
                     <select name="status" class="form-control">
                         <option value="">Select action</option>
                         <option value="enabled">Enable</option>
                         <option value="disabled">Disable</option>
                     </select><br />
+                    <div class="form-group">
+                        <h5 class="">Logo</h5>
+                        <input name="logo" class="form-control" type="file">
+                    </div><br />
                     <input type="hidden" name="type" value="withdrawal">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="submit" class="btn btn-primary" value="Continue">
@@ -85,7 +89,8 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form style="padding:3px;" role="form" method="post" action="{{ route('addwdmethod') }}">
+                <form style="padding:3px;" role="form" method="post" action="{{ route('addwdmethod') }}"
+                    enctype="multipart/form-data">
                     <input style="padding:5px;" class="form-control" placeholder="Enter method name" type="text"
                         name="name" required><br />
                     <input style="padding:5px;" class="form-control" placeholder="Enter method exchange symbol"
@@ -105,18 +110,22 @@
                     <select style="padding:5px;" class="form-control" placeholder="Permitted Countries" type="text"
                         name="countries[]" required style="max-width: 150px" multiple>
                         <option disabled>@lang('message.register.chs')</option>
-                        @foreach ($countries as $country)
+                        @foreach (\App\Models\Country::get() as $country)
                         <option @if ($country->id == old('country')) selected @endif value="{{ $country->id }}">
                             {{ $country->name }}</option>
                         @endforeach
                     </select><br>
-                    <textarea class="form-control" name="details" rows="10" cols="30" placeholder="Method details"
-                        required></textarea><br />
+                    <textarea class="form-control" name="details" rows="10" cols="20"
+                        placeholder="Method details"></textarea><br />
                     <select name="status" class="form-control">
                         <option value="">Select action</option>
                         <option value="enabled">Enable</option>
                         <option value="disabled">Disable</option>
                     </select><br />
+                    <div class="form-group">
+                        <h5 class="">Logo</h5>
+                        <input name="logo" class="form-control" type="file">
+                    </div><br />
                     <input type="hidden" name="type" value="deposit">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="submit" class="btn btn-primary" value="Continue">

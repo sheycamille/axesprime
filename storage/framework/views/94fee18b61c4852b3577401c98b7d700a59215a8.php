@@ -19,7 +19,7 @@
                 </div>
             </a>
             <div class="dropdown-menu dropdown-menu-right pt-0">
-                <a class="dropdown-item" href="<?php echo e(url('admin/dashboard/adminchangepassword')); ?>">Change
+                <a class="dropdown-item" href="<?php echo e(route('adminchangepass')); ?>">Change
                     Password
                 </a>
                 <div class="dropdown-divider"></div>

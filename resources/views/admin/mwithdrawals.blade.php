@@ -82,23 +82,24 @@
                                                     }}
                                                 </td>
                                                 <td>
-
-                                                    <a href="#" class="m-1 btn btn-info btn-xs" data-toggle="modal"
+                                                    <a href="#" class="m-1 btn btn-info btn-sm" data-toggle="modal"
                                                         data-target="#viewModal{{ $withdrawal->id }}"><i
                                                             class="fa fa-eye"></i>
                                                         View</a>
                                                     @if ($withdrawal->status == 'Processed' || $withdrawal->status ==
                                                     'Rejected')
-                                                    <a class="@if ($withdrawal->status == 'Processed') btn-success @else btn-danger @endif btn-xs"
+                                                    <a class="@if ($withdrawal->status == 'Processed') btn-success @else btn-danger @endif btn-sm"
                                                         href="#">{{ $withdrawal->status }}</a>
                                                     @else
-                                                    @if(auth('admin')->user()->hasPermissionTo('mwithdrawals-preo', 'admin'))
-                                                    <a class="m-1 btn btn-primary btn-xs"
-                                                        href="{{ url('admin/dashboard/pwithdrawal') }}/{{ $withdrawal->id }}">Process</a>
+                                                    @if(auth('admin')->user()->hasPermissionTo('mwithdrawals-process', 'admin'))
+                                                    <a class="m-1 btn btn-primary btn-sm"
+                                                        href="{{ route('pwithdrawal', $withdrawal->id) }}">Process</a>
                                                     @endif
-                                                    <a class="m-1 btn btn-primary btn-xs" data-toggle="modal"
+                                                    @if(auth('admin')->user()->hasPermissionTo('mwithdrawals-process', 'admin'))
+                                                    <a class="m-1 btn btn-primary btn-sm" data-toggle="modal"
                                                         data-target="#rejctModal{{ $withdrawal->id }}"
                                                         href="#">Reject</a>
+                                                    @endif
                                                     @endif
 
                                                 </td>

@@ -63,7 +63,7 @@ Route::get('/switch/lang/{lang}', 'FrontController@switchLang')->name('switchlan
 Route::prefix('adminlogin')->group(function () {
     Route::get('login', 'Admin\Auth\LoginController@showLoginForm')->name('adminloginform');
     Route::post('login', 'Admin\Auth\LoginController@adminlogin')->name('adminlogin');
-    Route::post('logout', 'Admin\Auth\LoginController@adminlogout')->name('adminlogout');
+    Route::post('logout', 'Admin\Auth\LoginController@logout')->name('adminlogout');
     Route::get('dashboard', 'Admin\Auth\LoginController@validate_admin')->name('validate_admin');
     Route::get('verify/resend', 'Admin\Auth\TwoFactorController@resend')->name('admin.verify.resend');
     Route::resource('verify', 'Admin\Auth\TwoFactorController')->only(['index', 'store'])->name('get', 'admin.verify');
@@ -71,91 +71,83 @@ Route::prefix('adminlogin')->group(function () {
 
 Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], function () {
     Route::get('dashboard', 'Admin\HomeController@index')->name('admin.dashboard');
-    Route::get('dashboard/manageusers', ['uses' => 'Admin\HomeController@manageusers'])->name('manageusers');
-
-    Route::get('dashboard/user-wallet/{id}', 'Admin\HomeController@userwallet')->name('user.wallet');
 
     Route::post('dashboard/search', 'Admin\HomeController@search');
     Route::post('dashboard/searchdp', 'Admin\HomeController@searchDp');
     Route::post('dashboard/searchWith', 'Admin\HomeController@searchWt');
 
     // manage admins
-    Route::get('dashboard/madmins', 'Admin\UsersController@madmins')->name('madmins');
-    Route::get('dashboard/addadmin', 'Admin\UsersController@addadmin')->name('addadmin');
-    Route::post('dashboard/saveadmin', 'Admin\UsersController@saveadmin');
-    Route::post('dashboard/editadmin', 'Admin\UsersController@editadmin')->name('editadmin');
-    Route::get('dashboard/adminchangepassword', 'Admin\UsersController@adminchangepassword');
-    Route::post('dashboard/adminupdatepass', 'Admin\UsersController@adminupdatepass')->name('adminupdatepass');
+    Route::get('admins/list', 'Admin\AdminController@list')->name('madmins')->middleware('permission:madmin-list');
+    Route::get('admins/create', 'Admin\AdminController@create')->name('addadmin')->middleware('permission:madmin-create');
+    Route::post('admins/store', 'Admin\AdminController@store')->name('saveadmin')->middleware('permission:madmin-create');
+    Route::post('admins/update', 'Admin\AdminController@update')->name('editadmin')->middleware('permission:madmin-edit');
+    Route::post('admins/delete/{id}', 'Admin\AdminController@destroy')->name('deladmin')->middleware('permission:madmin-delete');
+    Route::get('admin/adminresetadminpass/{id}', 'Admin\AdminController@adminresetadminpass')->name('adminresetadminpass');
+    Route::get('admins/adminchangepassword', 'Admin\AdminController@adminchangepassword')->name('adminchangepass');
+    Route::post('admins/adminupdatepass', 'Admin\AdminController@adminupdatepass')->name('adminupdatepass');
+    Route::get('admins/uublock/{id}', 'Admin\AdminController@ublock')->name('adminublock')->middleware('permission:madmin-block');
+    Route::get('admins/uunblock/{id}', 'Admin\AdminController@unblock')->name('adminunblock')->middleware('permission:madmin-block');
+    Route::post('admins/sendmail', 'Admin\AdminController@sendmail')->name('sendmail')->middleware('permission:madmin-message');
 
     // manage roles
-    Route::get('dashboard/manageroles', 'Admin\RoleController@index')->name('manageroles');
-    Route::get('dashboard/createrole', 'Admin\RoleController@create')->name('createrole');
-    Route::post('dashboard/storerole', 'Admin\RoleController@store')->name('storerole');
-    Route::get('dashboard/editrole/{id}', 'Admin\RoleController@edit')->name('editrole');
-    Route::post('dashboard/editrole/{id}', 'Admin\RoleController@update')->name('saverole');
-    Route::post('dashboard/deleterole/{id}', 'Admin\RoleController@delete')->name('deleterole');
+    Route::get('roles/list', 'Admin\RoleController@index')->name('manageroles')->middleware('permission:mrole-list');
+    Route::get('roles/create', 'Admin\RoleController@create')->name('createrole')->middleware('permission:mrole-create');
+    Route::post('roles/store', 'Admin\RoleController@store')->name('storerole')->middleware('permission:mrole-create');
+    Route::get('roles/edit/{id}', 'Admin\RoleController@edit')->name('editrole')->middleware('permission:mrole-edit');
+    Route::post('roles/update/{id}', 'Admin\RoleController@update')->name('updaterole')->middleware('permission:mrole-edit');
+    Route::post('roles/delete/{id}', 'Admin\RoleController@delete')->name('deleterole')->middleware('permission:mrole-delete');
 
     // manage permissions
-    Route::get('dashboard/manageperms', 'Admin\PermController@index')->name('manageperms');
-    Route::get('dashboard/createperm', 'Admin\PermController@create')->name('createperm');
-    Route::post('dashboard/createperm', 'Admin\PermController@store')->name('storeperm');
-    Route::post('dashboard/deleteperm/{id}', 'Admin\PermController@delete')->name('deleteperm');
-
-    // manage settings
-    Route::get('dashboard/settings', 'Admin\SettingsController@settings')->name('settings');
-    Route::get('dashboard/preferences', 'Admin\SettingsController@prefsettings')->name('preferencesettings');
-    Route::get('dashboard/payments', 'Admin\SettingsController@paysettings')->name('paymentsettings');
-
-    Route::get('dashboard/frontpage', 'Admin\HomeController@frontpage')->name('frontpage');
-    Route::get('dashboard/adduser', 'Admin\HomeController@adduser')->name('adduser');
-    Route::post('dashboard/topup', 'Admin\LogicController@topup')->name('topup');
-    Route::post('dashboard/sendmailsingle', 'Admin\LogicController@sendmailtooneuser')->name('sendmailtooneuser');
-    Route::post('dashboard/sendmail', 'Admin\UsersController@sendmail')->name('sendmail');
-    Route::post('dashboard/AddHistory', 'Admin\LogicController@addHistory')->name('addhistory');
-    Route::post('dashboard/edituser', 'Admin\LogicController@edituser')->name('edituser');
-    Route::post('dashboard/editadmin', 'Admin\UsersController@editadmin')->name('editadmin');
-    Route::get('dashboard/resetpswd/{id}', 'Admin\LogicController@resetpswd')->name('resetpswd');
-    Route::get('dashboard/resetadpwd/{id}', 'Admin\UsersController@resetadpwd')->name('resetadpwd');
-    Route::get('dashboard/switchuser/{id}', 'Admin\LogicController@switchuser');
-    Route::get('dashboard/clearacct/{id}', 'Admin\LogicController@clearacct')->name('clearacct');
-
-    // manage withdrawals and their processing
-    Route::get('dashboard/mwithdrawals', 'Admin\HomeController@mwithdrawals')->name('mwithdrawals');
-    Route::post('dashboard/rejectdeposit/{id}', 'Admin\LogicController@rejectdeposit')->name('rejectdeposit');
-    Route::get('dashboard/pdeposit/{id}', 'Admin\LogicController@pdeposit')->name('pdeposit');
-
-    // manage deposits and their processing
-    Route::get('dashboard/mdeposits', 'Admin\HomeController@mdeposits')->name('mdeposits');
-    Route::get('dashboard/pwithdrawal/{id}', 'Admin\LogicController@pwithdrawal')->name('pwithdrawal');
-    Route::post('dashboard/rejectwithdrawal', 'Admin\LogicController@rejectwithdrawal')->name('rejectwithdrawal');
-
-    // Settings Update Routes
-    Route::post('dashboard/updatesettings', 'Admin\SettingsController@updatesettings')->name('updatesettings');
-    Route::post('dashboard/updatepreference', 'Admin\SettingsController@updatepreference');
-    Route::post('dashboard/updatewebinfo', 'Admin\SettingsController@updatewebinfo');
-    Route::post('dashboard/updatewdmethod', 'Admin\SettingsController@updatewdmethod')->name('updatewdmethod');
-    Route::post('dashboard/addwdmethod', 'Admin\SettingsController@addwdmethod')->name('addwdmethod');
+    Route::get('perms/list', 'Admin\PermController@index')->name('manageperms');//->middleware('permission:mperms-list');
+    Route::get('perms/create', 'Admin\PermController@create')->name('createperm')->middleware('permission:mperms-create');
+    Route::post('perms/store', 'Admin\PermController@store')->name('storeperm');//->middleware('permission:mperms-creat');
+    Route::post('perms/delete/{id}', 'Admin\PermController@delete')->name('deleteperm')->middleware('permission:mperms-delete');
 
     // manage users
-    Route::post('dashboard/saveuser', 'Admin\LogicController@saveuser');
-    Route::get('dashboard/unblock/{id}', 'Admin\UsersController@unblock');
-    Route::get('dashboard/ublock/{id}', 'Admin\UsersController@ublock');
-    Route::get('dashboard/deluser/{id}', 'Admin\UsersController@deluser')->name('deluser');
+    Route::get('users/list', 'Admin\UsersController@list')->name('manageusers')->middleware('permission:musers-list');
+    Route::post('users/store', 'Admin\UsersController@store')->name('createuser')->middleware('permission:musers-add');
+    Route::post('users/update', 'Admin\UsersController@update')->name('updateuser')->middleware('permission:musers-edit');
+    Route::get('users/unblock/{id}', 'Admin\UsersController@unblock')->name('userunblock')->middleware('permission:musers-block');
+    Route::get('users/ublock/{id}', 'Admin\UsersController@ublock')->name('userublock')->middleware('permission:musers-block');
+    Route::get('users/deluser/{id}', 'Admin\UsersController@destroy')->name('deluser')->middleware('permission:musers-delete');
+    Route::post('users/sendmailsingle', 'Admin\UsersController@sendmailtooneuser')->name('sendmailtooneuser')->middleware('permission:musers-messageall');
+    Route::post('users/sendmailtoall', 'Admin\LogicController@sendmailtoall')->name('sendmailtoall')->middleware('permission:musers-messageall');
+    Route::post('users/addhistory', 'Admin\UsersController@addHistory')->name('addhistory');
+    Route::get('users/resetpswd/{id}', 'Admin\UsersController@resetpswd')->name('resetpswd');
+    Route::get('users/switchtouser/{id}', 'Admin\UsersController@switchtouser')->name('switchtouser')->middleware('permission:musers-access-account');
+    Route::get('users/access-wallet/{id}', 'Admin\UsersController@userwallet')->name('userwallet')->middleware('permission:musers-access-wallet');
+    Route::get('users/clearacct/{id}', 'Admin\UsersController@clearacct')->name('clearacct');
+    Route::post('users/topup', 'Admin\UsersController@topup')->name('topup')->middleware('permission:musers-credit-debit');
+    Route::get('users/delliveaccount/{id}', 'Admin\UsersController@dellaccounts')->name('dellaccounts');
+
+    Route::post('users/changestyle', 'Admin\UsersController@changestyle')->name('changestyle');
+
+    // manage withdrawals and their processing
+    Route::get('withdrawals/list', 'Admin\HomeController@mwithdrawals')->name('mwithdrawals')->middleware('permission:mwithdrawals-list');
+    Route::get('withdrawals/pwithdrawal/{id}', 'Admin\LogicController@pwithdrawal')->name('pwithdrawal')->middleware('permission:mwithdrawals-process');
+    Route::post('withdrawals/rejectwithdrawal', 'Admin\LogicController@rejectwithdrawal')->name('rejectwithdrawal')->middleware('permission:mwithdrawals-process');
+
+    // manage deposits and their processing
+    Route::get('deposits/list', 'Admin\HomeController@mdeposits')->name('mdeposits')->middleware('permission:mdeposits-list');
+    Route::get('deposits/pdeposit/{id}', 'Admin\LogicController@pdeposit')->name('pdeposit')->middleware('permission:mdeposits-process');
+    Route::post('deposits/rejectdeposit/{id}', 'Admin\LogicController@rejectdeposit')->name('rejectdeposit')->middleware('permission:mdeposits-process');
+
+    // Settings Routes
+    Route::get('settings/siteinfo', 'Admin\SettingsController@settings')->name('settings');
+    Route::get('settings/preferences', 'Admin\SettingsController@prefsettings')->name('preferencesettings');
+    Route::get('settings/payments', 'Admin\SettingsController@paysettings')->name('paymentsettings');
+    Route::post('settings/updatesettings', 'Admin\SettingsController@updatesettings')->name('updatesettings')->middleware('permission:msettings-update');
+    Route::post('settings/updatepreference', 'Admin\SettingsController@updatepreference')->name('updatepreference')->middleware('permission:msettings-update');
+    Route::post('settings/updatewebinfo', 'Admin\SettingsController@updatewebinfo')->name('updatewebinfo')->middleware('permission:msettings-update');
+    Route::post('settings/updatewdmethod', 'Admin\SettingsController@updatewdmethod')->name('updatewdmethod')->middleware('permission:msettings-update');
+    Route::post('settings/addwdmethod', 'Admin\SettingsController@addwdmethod')->name('addwdmethod')->middleware('permission:msettings-add');
+    Route::get('settings/deletewdmethod/{id}', 'Admin\SettingsController@deletewdmethod')->name('deletewdmethod')->middleware('permission:msettings-delete');
 
     // KYC Routes
-    Route::get('dashboard/kyc', 'Admin\HomeController@kyc')->name('kyc');
-    Route::get('dashboard/acceptkyc/{id}', 'Admin\UsersController@acceptkyc')->name('acceptkyc');
-    Route::get('dashboard/rejectkyc/{id}', 'Admin\UsersController@rejectkyc')->name('rejectkyc');
-    Route::get('dashboard/resetkyc/{id}', 'Admin\UsersController@resetkyc')->name('resetkyc');
-
-    Route::get('dashboard/uublock/{id}', 'Admin\SystemController@ublock');
-    Route::get('dashboard/uunblock/{id}', 'Admin\SystemController@unblock');
-    Route::get('dashboard/delsystemuser/{id}', 'Admin\LogicController@delsystemuser');
-
-    Route::post('dashboard/sendmailtoall', 'Admin\LogicController@sendmailtoall')->name('sendmailtoall');
-
-    Route::post('dashboard/changestyle', 'Admin\UsersController@changestyle')->name('changestyle');
-    Route::get('dashboard/deletewdmethod/{id}', 'Admin\SettingsController@deletewdmethod');
+    Route::get('kyc/list', 'Admin\HomeController@kyc')->name('kyc')->middleware('permission:mkyc-list');
+    Route::get('kyc/accept/{id}', 'Admin\UsersController@acceptkyc')->name('acceptkyc')->middleware('permission:mkyc-validate');
+    Route::get('kyc/reject/{id}', 'Admin\UsersController@rejectkyc')->name('rejectkyc')->middleware('permission:mkyc-validate');
+    Route::get('kyc/reset/{id}', 'Admin\UsersController@resetkyc')->name('resetkyc')->middleware('permission:mkyc-validate');
 
     // This Route is for frontpage editing
     Route::post('dashboard/savefaq', 'Admin\LogicController@savefaq')->name('savefaq');
@@ -173,27 +165,23 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
     Route::get('dashboard/delfaq/{id}', 'Admin\LogicController@delfaq');
     Route::get('dashboard/deltestimony/{id}', 'Admin\LogicController@deltest');
 
-    Route::post('dashboard/updatewebinfo', 'Admin\SettingsController@updatewebinfo')->name('updatewebinfo');
-    Route::post('dashboard/updatepreference', 'Admin\SettingsController@updatepreference')->name('updatepreference');
-
     // managing account types
-    Route::get('dashboard/accounttypes', 'Admin\HomeController@accounttypes')->name('accounttypes');
-    Route::get('dashboard/addaccounttype', 'Admin\HomeController@ashowddaccounttype')->name('showaddaccounttype');
-    Route::post('dashboard/addaccounttype', 'Admin\HomeController@addaccounttype')->name('addaccounttype');
-    Route::post('dashboard/updateaccounttype/{id}', 'Admin\HomeController@updateaccounttype')->name('updateaccounttype');
-    Route::get('dashboard/delaccounttype/{id}', 'Admin\HomeController@delaccounttype')->name('delaccounttype');
+    Route::get('accounttypes/list', 'Admin\HomeController@accounttypes')->name('accounttypes');
+    Route::get('accounttypes/create', 'Admin\HomeController@ashowddaccounttype')->name('showaddaccounttype');
+    Route::post('accounttypes/store', 'Admin\HomeController@addaccounttype')->name('addaccounttype');
+    Route::post('accounttypes/update/{id}', 'Admin\HomeController@updateaccounttype')->name('updateaccounttype');
+    Route::get('accounttypes/delete/{id}', 'Admin\HomeController@delaccounttype')->name('delaccounttype');
 
+    Route::get('ftds/list', 'Admin\HomeController@mftds')->name('mftds')->middleware('permission:ftds-list');
 
-    Route::get('dashboard/ftds', 'Admin\HomeController@mftds')->name('mftds');
-    Route::get('dashboard/delliveaccount/{id}', 'Admin\HomeController@dellaccounts')->name('dellaccounts');
-    //
+    Route::get('settings/frontpage', 'Admin\HomeController@frontpage')->name('frontpage');
 });
 // Everything About Admin Route ends here
 
 
 
 // Everything About Users Route starts here
-Route::get('/verify-email', 'UserController@verifyemail')->middleware('auth')->name('verification.notice');
+Route::get('/verify-email', 'UserController@verifyemail')->middleware('auth');
 
 // saving the ref in session and redirecting to register
 Route::get('ref/{id}', 'Controller@ref')->name('ref');
@@ -210,10 +198,10 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::get('/forgot-password', 'FrontController@forgotpassword')->name('password.request');
-Route::middleware(['auth:sanctum'])->get('/dashboard', 'UserController@dashboard')->name('dashboard');
+Route::middleware(['auth'])->get('/dashboard', 'UserController@dashboard')->name('dashboard');
 
 // Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/manage-account-security', 'UserController@twofa')->name('twofa');
 
     // Two Factor Authentication
@@ -239,8 +227,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Withdrawals & Deposits
     Route::get('dashboard/deposits', 'UserController@deposits')->name('deposits');
     Route::post('dashboard/paypalverify/{amount}', 'UserController@paypalverify')->name('paypalverify');
-    Route::get('dashboard/withdrawals', 'UserController@withdrawals')->name('withdrawalsdeposits')->middleware('2fa');
-    Route::get('dashboard/makewithdrawal', 'UserController@mwithdrawal')->name('mwithdrawal')->middleware('2fa');
+    Route::get('dashboard/withdrawals', 'UserController@withdrawals')->name('withdrawalsdeposits');
+    Route::get('dashboard/makewithdrawal', 'UserController@mwithdrawal')->name('mwithdrawal');
     Route::post('dashboard/withdrawal', 'UserController@savewithdrawal')->name('withdrawal');
 
     Route::get('ref/{id}', 'Controller@ref')->name('ref');

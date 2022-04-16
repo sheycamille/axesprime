@@ -17,7 +17,7 @@
                                 <div class="bs-example widget-shadow table-responsive"
                                     data-example-id="hoverable-table">
 
-                                    <table id="ShipTable" class="table table-hover text-{{ $text }}">
+                                    <table id="ShipTable" class="table table-hover text-primary">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>

@@ -47,8 +47,7 @@
                     @if(auth('admin')->user()->hasPermissionTo('mrole-create', 'admin'))
                     <div class="row">
                         <div class="col">
-                            <a href="{{ url('/admin/dashboard/createrole') }}" 
-                                class="btn btn-primary btn-sm mb-2">Create New Role</a>
+                            <a href="{{ route('createrole') }}" class="btn btn-primary btn-sm mb-2">Create New Role</a>
                         </div>
                     </div>
                     @endif
@@ -58,7 +57,7 @@
                             <div class="table-responsive" data-example-id="hoverable-table">
                                 <table id="ShipTable" class="table table-bordered table-striped table-responsive-sm">
                                     <thead>
-                  
+
                                         <tr>
                                             <th>ID</th>
                                             <th>NAME</th>
@@ -69,23 +68,24 @@
                                     <tbody>
                                         @forelse ($roles as $key => $role)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
+                                            <td>{{ $role->id }}</td>
                                             <td>{{ $role->name }} </td>
-                                           <td>
+                                            <td>
                                                 @foreach($role->permissions as $perm)
-                                                    <label class="text-muted">{{ $perm->name }}</label>,
+                                                <label class="text-muted">{{ $perm->name }}</label>,
                                                 @endforeach
                                             </td>
-                                            
+
                                             <td>
                                                 <div class="d-flex justify-content-start">
                                                     @if(auth('admin')->user()->hasPermissionTo('mrole-edit', 'admin'))
-                                                    <a href="{{ route('editrole', $role->id) }}" class="m-1 btn btn-secondary btn-sm">Edit</a>
+                                                    <a href="{{ route('editrole', $role->id) }}"
+                                                        class="m-1 btn btn-secondary btn-sm">Edit</a>
                                                     @endif
                                                     @if(auth('admin')->user()->hasPermissionTo('mrole-delete', 'admin'))
                                                     <a href="#" data-toggle="modal"
-                                                    data-target="#deleteModal{{$role->id}}"
-                                                    class="m-1 btn btn-danger btn-sm">Delete</a>
+                                                        data-target="#deleteModal{{$role->id}}"
+                                                        class="m-1 btn btn-danger btn-sm">Delete</a>
                                                     @endif
                                                 </div>
                                             </td>
@@ -104,10 +104,11 @@
                                                             data-dismiss="modal">&times;</button>
                                                     </div>
                                                     <div class="modal-body p-3">
-                                                        <form action="{{ route('deleterole', $role->id) }}" method="POST">
+                                                        <form action="{{ route('deleterole', $role->id) }}"
+                                                            method="POST">
                                                             @csrf
                                                             <p class="">Are you sure you want to delete
-                                                                {{$admin->firstName}}</p>
+                                                                {{ $role->name }}?</p>
                                                             <button class="btn btn-danger btn-sm">Yes, I'm sure</button>
                                                         </form>
                                                     </div>
@@ -122,11 +123,8 @@
                                         @endforelse
                                     </tbody>
                                 </table>
-
-                                
                             </div>
                         </div>
-                        
                     </div>
                 </div>
             </div>

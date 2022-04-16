@@ -74,24 +74,24 @@
                                             <td>
                                                 <a href="#" data-toggle="modal"
                                                     data-target="#viewkycIModal{{ $user->id }}"
-                                                    class="btn btn-{{ $text }} btn-sm"><i class="fa fa-eye"></i>
+                                                    class="btn btn-priamry btn-sm"><i class="fa fa-eye"></i>
                                                     ID</a>
                                                 <a href="#" data-toggle="modal"
                                                     data-target="#viewkycIBModal{{ $user->id }}"
-                                                    class="btn btn-{{ $text }} btn-sm"><i class="fa fa-eye"></i> ID
+                                                    class="btn btn-priamry btn-sm"><i class="fa fa-eye"></i> ID
                                                     Back</a>
                                                 <a href="#" data-toggle="modal"
                                                     data-target="#viewkycAModal{{ $user->id }}"
-                                                    class="btn btn-{{ $text }} btn-sm"><i class="fa fa-eye"></i>
+                                                    class="btn btn-priamry btn-sm"><i class="fa fa-eye"></i>
                                                     Address Document</a>
                                                 <a href="#" data-toggle="modal"
                                                     data-target="#viewkycPModal{{ $user->id }}"
-                                                    class="btn btn-{{ $text }} btn-sm"><i class="fa fa-eye"></i>
+                                                    class="btn btn-priamry btn-sm"><i class="fa fa-eye"></i>
                                                     Passport</a>
                                                 @if ($user->account_verify != 'Verified')
-                                                <a href="{{ url('admin/dashboard/acceptkyc') }}/{{ $user->id }}"
+                                                <a href="{{ route('acceptkyc', $user->id) }}"
                                                     class="btn btn-primary btn-sm">Accept</a>
-                                                <a href="{{ url('admin/dashboard/rejectkyc') }}/{{ $user->id }}"
+                                                <a href="{{ route('rejectkyc', $user->id) }}"
                                                     class="btn btn-danger btn-sm">Reject</a>
                                                 @else
                                                 <a href="{{ route('resetkyc', $user->id) }}"

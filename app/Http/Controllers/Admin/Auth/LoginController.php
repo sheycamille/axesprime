@@ -28,7 +28,34 @@ class LoginController extends Controller
      */
     // use ThrottlesLogins;
 
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/admin/dashboard';
 
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest:admin')->except('logout');
+    }
+
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard('admin');
+    }
 
 
     /**
@@ -113,6 +140,21 @@ class LoginController extends Controller
         Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        return redirect()
+            ->route('adminloginform')
+            ->with('status', 'Admin has been logged out!');
+    }
+
+    /**
+     * Log the Admin out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+
         return redirect()
             ->route('adminloginform')
             ->with('status', 'Admin has been logged out!');

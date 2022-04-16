@@ -18,14 +18,14 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    function __construct()
-    {
-        $this->middleware('auth:admin');
-        $this->middleware('permission:mrole-list|mrole-create|mrole-edit|mrole-delete', ['only' => ['index', 'store']]);
-        $this->middleware('permission:mrole-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:mrole-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:mrole-delete', ['only' => ['destroy']]);
-    }
+    // function __construct()
+    // {
+    //     $this->middleware('auth:admin');
+    //     // $this->middleware('permission:mrole-list|mrole-create|mrole-edit|mrole-delete', ['only' => ['index', 'store']]);
+    //     // $this->middleware('permission:mrole-create', ['only' => ['create', 'store']]);
+    //     // $this->middleware('permission:mrole-edit', ['only' => ['edit', 'update']]);
+    //     // $this->middleware('permission:mrole-delete', ['only' => ['destroy']]);
+    // }
 
 
     //Return Roles route--------------------------------------------------------------------------------

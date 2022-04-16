@@ -46,7 +46,7 @@
                     @endif
                     <div class="mb-5 row">
                         <div class="col-lg-8 offset-lg-2 card p-3">
-                            <form method="POST" action="{{ url('admin/dashboard/saveuser') }}">
+                            <form method="POST" action="{{ route('saveuser') }}">
                                 {{ csrf_field() }}
 
                                 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">

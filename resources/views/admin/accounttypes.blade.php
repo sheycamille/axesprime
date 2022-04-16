@@ -95,7 +95,7 @@
                                                 <a href="#" data-toggle="modal"
                                                     data-target="#popModal{{ $accounttype->id }}"
                                                     class="m-1 btn btn-warning btn-sm">Edit</a>
-                                                <a href="{{ url('admin/dashboard/delaccounttype') }}/{{ $accounttype->id }}"
+                                                <a href="{{ route('delaccounttype', $accounttype->id) }}"
                                                     class="m-1 btn btn-danger btn-sm">Delete</a>
                                             </td>
                                         </tr>

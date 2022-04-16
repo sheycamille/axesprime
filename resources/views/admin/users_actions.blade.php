@@ -65,7 +65,7 @@
             </div>
             <div class="modal-body">
                 <p>This message will be sent to {{ $user->name }} {{ $user->l_name }} </p>
-                <form style="padding:3px;" role="form" method="post" action="{{ route('sendmailtooneuser') }}">
+                <form style="padding:3px;" role="form" method="post" action="{{ route('sendmailtooneuser', $user->id) }}">
                     <input type="hidden" name="user_id" value="{{ $user->id }}">
                     <textarea placeholder="Type your message here" class="form-control" name="message" row="3"
                         placeholder="Type your message here" required></textarea><br />
@@ -126,7 +126,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form style="padding:3px;" role="form" method="post" action="{{ route('edituser') }}">
+                <form style="padding:3px;" role="form" method="post" action="{{ route('updateuser', $user->id) }}">
                     <input style="padding:5px;" class="form-control" value="{{ $user->name }}" type="text"
                         disabled><br />
                     <h5 class="">Fullname</h5>
@@ -140,7 +140,7 @@
                         required><br />
                     <h5 class="">Referral link</h5>
                     <input style="padding:5px;" class="form-control" value="{{ $user->ref_link }}" type="text"
-                        name="ref_link" required><br />
+                        name="ref_link"><br />
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="user_id" value="{{ $user->id }}">
                     <input type="submit" class="btn btn-primary" value="Update user">
@@ -164,7 +164,7 @@
             <div class="modal-body">
                 <p class="">Are you sure you want to reset password for {{ $user->name }}
                     {{ $user->l_name }} to <span class="text-primary font-weight-bolder">user01236</span></p>
-                <a class="btn btn-primary" href="{{ url('admin/dashboard/resetpswd') }}/{{ $user->id }}">Reset
+                <a class="btn btn-primary" href="{{ url('admin/dashboard/resetpswd', $user->id) }}">Reset
                     Now</a>
             </div>
         </div>
@@ -185,7 +185,7 @@
             </div>
             <div class="modal-body">
                 <a class="btn btn-primary" target="_bank"
-                    href="{{ url('admin/dashboard/switchuser') }}/{{ $user->id }}">Proceed</a>
+                    href="{{ route('switchtouser', $user->id) }}">Proceed</a>
             </div>
         </div>
     </div>

@@ -45,18 +45,20 @@
                         </div>
                     </div>
                     @endif
-                    @if(auth('admin')->user()->hasPermissionTo('musers-messageall', 'admin'))
                     <div class="row">
                         <div class="col">
+                            @if(auth('admin')->user()->hasPermissionTo('musers-messageall', 'admin'))
                             <a href="#" data-toggle="modal" data-target="#sendmailModal"
                                 class="btn btn-primary btn-md mb-2">Message all</a>
+                            @endif
 
                             @if (\App\Models\Setting::getValue('enable_kyc') == 'yes')
-                            <a href="{{ url('admin/dashboard/kyc') }}" class="btn btn-warning btn-md">KYC</a>
+                            @if(auth('admin')->user()->hasPermissionTo('mkyc-list', 'admin'))
+                            <a href="{{ route('kyc') }}" class="btn btn-warning btn-md mb-2">KYC</a>
+                            @endif
                             @endif
                         </div>
                     </div>
-                    @endif
 
                     <div class="row">
                         <div class="bs-example widget-shadow table-responsive" data-example-id="hoverable-table">
@@ -98,21 +100,24 @@
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink"
                                                     style="z-index: 999;">
-                                                    @if(auth('admin')->user()->hasPermissionTo('musers-access-wallet', 'admin'))
+                                                    @if(auth('admin')->user()->hasPermissionTo('musers-access-wallet',
+                                                    'admin'))
                                                     <a class="m-1 btn btn-info btn-sm"
-                                                        href="{{ url('admin/dashboard/user-wallet') }}/{{ $user->id }}">See
+                                                        href="{{ route('userwallet', $user->id) }}">See
                                                         Wallet</a>
                                                     @endif
-                                                    @if(auth('admin')->user()->hasPermissionTo('musers-messageall', 'admin'))
+                                                    @if(auth('admin')->user()->hasPermissionTo('musers-block',
+                                                    'admin'))
                                                     @if ($user->status == null || $user->status == 'blocked')
                                                     <a class="m-1 btn btn-primary btn-sm"
-                                                        href="{{ url('admin/dashboard/uunblock') }}/{{ $user->id }}">Unblock</a>
+                                                        href="{{ route('userunblock', $user->id) }}">Unblock</a>
                                                     @else
                                                     <a class="m-1 btn btn-danger btn-sm"
-                                                        href="{{ url('admin/dashboard/uublock') }}/{{ $user->id }}">Block</a>
+                                                        href="{{ route('userublock', $user->id) }}">Block</a>
                                                     @endif
                                                     @endif
-                                                    @if(auth('admin')->user()->hasPermissionTo('musers-credit-debit', 'admin'))
+                                                    @if(auth('admin')->user()->hasPermissionTo('musers-credit-debit',
+                                                    'admin'))
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#topupModal{{ $user->id }}"
                                                         class="m-1 btn btn-dark btn-xs">Credit/Debit</a>
@@ -120,11 +125,12 @@
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#resetpswdModal{{ $user->id }}"
                                                         class="m-1 btn btn-warning btn-xs">Reset Password</a>
-                                                    @if(auth('admin')->user()->hasPermissionTo('musers-delete', 'admin'))
+                                                    @if(auth('admin')->user()->hasPermissionTo('musers-delete',
+                                                    'admin'))
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#deleteModal{{ $user->id }}"
                                                         class="m-1 btn btn-danger btn-xs">Delete</a>
-                                                    @endif    
+                                                    @endif
                                                     @if(auth('admin')->user()->hasPermissionTo('musers-edit', 'admin'))
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#edituser{{ $user->id }}"
@@ -138,13 +144,19 @@
                                                         Extra Accounts</a>
                                                     @endif
 
+                                                    @if(auth('admin')->user()->hasPermissionTo('musers-messageall',
+                                                    'admin'))
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#sendmailtooneuserModal{{ $user->id }}"
                                                         class="m-1 btn btn-info btn-xs">Send Message</a>
+                                                    @endif
 
+                                                    @if(auth('admin')->user()->hasPermissionTo('musers-access-account',
+                                                    'admin'))
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#switchuserModal{{ $user->id }}"
                                                         class="m-2 btn btn-success btn-xs">Get access</a>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </td>

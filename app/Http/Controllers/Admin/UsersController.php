@@ -2,23 +2,33 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
-use App\Models\Admin;
-use App\Models\Setting;
-
-use App\Mail\NewNotification;
 use App\Http\Controllers\Controller;
 
+use App\Mail\NewNotification;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
+use App\Models\User;
+use App\Models\Admin;
+use App\Models\Setting;
+use App\Models\Country;
+use App\Models\Deposit;
+use App\Models\Mt5Details;
+use App\Models\Withdrawal;
+use App\Models\TpTransaction;
+
 use Carbon\Carbon;
 
-use Spatie\Permission\Models\Role;
+use Tarikhagustia\LaravelMt5\LaravelMt5;
+
+use Tarikh\PhpMeta\Entities\Trade;
 
 
 class UsersController extends Controller
@@ -26,94 +36,349 @@ class UsersController extends Controller
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
-    // block user
-    public function ublock($id)
+    function __construct()
     {
-        Admin::where('id', $id)
+        $this->middleware('auth:admin');
+    }
+
+
+    //Return manage users route
+    public function list()
+    {
+        $countries = Country::get();
+        return view('admin.users')
+            ->with(array(
+                'title' => 'All users',
+                'countries' => $countries,
+                'users' => User::orderBy('id', 'desc')->get(),
+            ));
+    }
+
+
+    public function store(Request $request)
+    {
+
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:8|confirmed',
+            'Answer' => 'same:Captcha_Result',
+        ]);
+
+
+        $thisid = DB::table('users')->insertGetId(
+            [
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'phone' => $request['phone'],
+                'ref_by' => Auth::user()->id,
+                'password' => Hash::make($request->password),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]
+        );
+
+
+        //assign referal link to user
+        $site_address = Setting::getValue('site_address');
+
+        User::where('id', $thisid)
             ->update([
-                'acnt_type_active' => 'blocked',
+                'ref_link' => $site_address . '/ref/' . $thisid,
             ]);
         return redirect()->back()
-            ->with('message', 'Manager Blocked');
+            ->with('message', 'User Registered Sucessful!');
     }
 
 
-    // unblock user
-    public function unblock($id)
+    // update users info
+    public function update(Request $request)
     {
-        Admin::where('id', $id)
+
+        User::where('id', $request['user_id'])
             ->update([
-                'acnt_type_active' => 'active',
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'phone' => $request['phone'],
+                'ref_link' => $request['ref_link'],
             ]);
         return redirect()->back()
-            ->with('message', 'Manager Unblocked');
+            ->with('message', 'User updated Successful!');
     }
 
 
-    // reset Password
-    public function resetadpwd(Request $request, $id)
+    // Reset Password
+    public function resetpswd(Request $request, $id)
     {
-        Admin::where('id', $id)
+        User::where('id', $id)
             ->update([
-                'password' => Hash::make('admin01236'),
+                'password' => Hash::make('user01236'),
             ]);
-        return redirect()->back()
-            ->with('message', 'Password reset Successful.');
+        return redirect()->route('manageusers')
+            ->with('message', 'Password has been reset to default');
     }
 
 
-    public function deluser(Request $request, $id)
+    // Delete user
+    public function destroy(Request $request, $id)
     {
-        Admin::where('id', $id)->delete();
-        return redirect()->back()
-            ->with('message', 'Manager has been deleted!');
+        //delete the user's withdrawals and deposits
+        $deposits = Deposit::where('user', $id)->get();
+        if (!empty($deposits)) {
+            foreach ($deposits as $deposit) {
+                Deposit::where('id', $deposit->id)->delete();
+            }
+        }
+
+        $withdrawals = Withdrawal::where('user', $id)->get();
+        if (!empty($withdrawals)) {
+            foreach ($withdrawals as $withdrawals) {
+                Withdrawal::where('id', $withdrawals->id)->delete();
+            }
+        }
+
+        User::where('id', $id)->delete();
+        return redirect()->route('manageusers')
+            ->with('message', 'User has been deleted!');
     }
 
 
-    // send mail to one user
-    public function sendmail(Request $request)
+    public function dellaccounts(Request $request, $id)
+    {
+        $mt5 = Mt5Details::find($id);
+
+        if (!isset($mt5)) {
+            return redirect()->back()
+                ->with('message', 'Account not found!');
+        }
+
+        // check and update live account balances
+        $this->setServerConfig('live');
+
+        // initialize the mt5 api
+        $api = new LaravelMt5();
+
+        // delete the mt5 account
+        try {
+            $data = $api->deleteUser($mt5->login);
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->with('message', 'Sorry an error occured, please contact admin with this error message: ' . $e->getMessage());
+        }
+
+        $mt5->delete();
+
+        return redirect()->back()
+            ->with('message', 'Account successfully deleted!');
+    }
+
+
+    public function userwallet($id)
+    {
+        $user = User::where('id', $id)->first();
+
+        // update user accounts
+        $this->updateaccounts($user);
+
+        //sum total deposited
+        $total_deposited = DB::table('deposits')->select(DB::raw("SUM(amount) as total"))->where('user', $id)->where('status', 'Processed')->get();
+
+        return view('admin.user_wallet')
+            ->with(array(
+                'ref_bonus' => $user->ref_bonus,
+                'deposited' => $total_deposited['total'],
+                'bonus' => $user->totalBonus(),
+                'account_bal' => $user->totalBalance(),
+                'user' => $user->name,
+                'title' => 'User Profile',
+            ));
+    }
+
+
+    // Access users account
+    public function switchtouser(Request $request, $id)
+    {
+        $admin = auth('admin')->user();
+        $user = User::where('id', $id)->first();
+
+        //Byeppass 2FA
+        $user->token_2fa_expiry = \Carbon\Carbon::now()->addMinutes(15)->toDateTimeString();
+        $user->save();
+        Auth::guard('admin')->login($admin, true);
+        Auth::guard('web')->login($user, true);
+        $request->session()->invalidate();
+        $request->session()->regenerate();
+
+        return redirect()->route('dashboard')
+            ->with('message', "You are logged in as $user->name !");
+    }
+
+
+    // Send Mail to all users
+    public function sendmailtoall(Request $request)
     {
         $site_name = Setting::getValue('site_name');
 
         //send email notification
-        $mailduser = Admin::where('id', $request->user_id)->first();
         $objDemo = new \stdClass();
-        $objDemo->message = $request['message'];
+        $objDemo->message =  "\r Hello, \r \n"
+            . "\r $request->message \r\n";
         $objDemo->sender = $site_name;
         $objDemo->date = Carbon::Now();
         $objDemo->subject = "$site_name Notification";
-        Mail::bcc($mailduser->email)->send(new NewNotification($objDemo));
-        return redirect()->back()->with('message', 'Your message was sent successfully!');
+
+        Mail::mailer('smtp')->bcc(User::all())->send(new NewNotification($objDemo));
+
+        return redirect()->back()->with('message', 'Your message was sent successful!');
     }
 
 
-    // serves admin update self password
-    public function adminchangepassword(Request $request)
+    // Send mail to one user
+    public function sendmailtooneuser(Request $request)
     {
-        return view('admin.changepassword')->with(array(
-            'title' => 'Change Password',
-        ));
+        $site_name = Setting::getValue('site_name');
+
+        $mailer = 'smtp';
+
+        //send email notification
+        $mailduser = User::where('id', $request->user_id)->first();
+        $objDemo = new \stdClass();
+        $objDemo->message = "\r Hello $mailduser->name, \r \n"
+            . "\r $request->message \r\n";
+        $objDemo->sender = $site_name;
+        $objDemo->date = Carbon::Now();
+        $objDemo->subject = "$site_name Notification";
+
+        Mail::mailer($mailer)->bcc($mailduser->email)->send(new NewNotification($objDemo));
+        return redirect()->back()->with('message', 'Your message was sent successful!');
     }
 
 
-    // update Password
-    public function adminupdatepass(Request $request)
+    // Manually Add Trading History to Users Route
+    public function addHistory(Request $request)
     {
-        if (!password_verify($request['old_password'], $request['current_password'])) {
-            return redirect()->back()
-                ->with('message', 'Incorrect Old Password');
-        }
-        $this->validate($request, [
-            'password_confirmation' => 'same:password',
-            'password' => 'min:8',
+        $history = TpTransaction::create([
+            'user' => $request->user_id,
+            'purpse' => $request->purpose,
+            'amount' => $request->amount,
+            'type' => $request->type,
         ]);
+        $user = User::where('id', $request->user_id)->first();
+        // $user_bal = $user->account_bal;
+        // if (isset($request['amount']) > 0) {
+        //     User::where('id', $request->user_id)
+        //         ->update([
+        //             'account_bal' => $user_bal + $request->amount,
+        //         ]);
+        // }
+        // $user_roi = $user->roi;
+        // if (isset($request['type']) == "ROI") {
+        //     User::where('id', $request->user_id)
+        //         ->update([
+        //             'roi' => $user_roi + $request->amount,
+        //         ]);
+        // }
 
-        Admin::where('id', $request['id'])
-            ->update([
-                'password' => Hash::make($request['password']),
-            ]);
         return redirect()->back()
-            ->with('message', 'Password Changed Sucessfully');
+            ->with('message', 'Action Sucessful!');
+    }
+
+
+    // Clear user Account
+    public function clearacct(Request $request, $id)
+    {
+        $deposits = Deposit::where('user', $id)->get();
+        if (!empty($deposits)) {
+            foreach ($deposits as $deposit) {
+                Deposit::where('id', $deposit->id)->delete();
+            }
+        }
+
+        $withdrawals = Withdrawal::where('user', $id)->get();
+        if (!empty($withdrawals)) {
+            foreach ($withdrawals as $withdrawals) {
+                Withdrawal::where('id', $withdrawals->id)->delete();
+            }
+        }
+
+        User::where('id', $id)
+            ->update([
+                'account_bal' => '0',
+                'ref_bonus' => '0',
+            ]);
+        return redirect()->route('manageusers')
+            ->with('message', 'Account cleared to $0.00');
+    }
+
+
+    // top up route
+    public function topup(Request $request)
+    {
+        // switch the mt5 api to use live server
+        $this->setServerConfig('live');
+
+        $msg = 'Action Successful';
+
+        if ($request->t_type == "Credit") {
+            $data = ['status' => false];
+            // get mt5 account in question
+            $mt5 = Mt5Details::find($request->account_id);
+            if (!$mt5)
+                return redirect()->back()->with('message', 'MT5 account not found');
+
+            if ($request->type == "Bonus") {
+                $data = $this->performTransaction($mt5->login, $request->amount, Trade::DEAL_CREDIT);
+                $mt5->bonus += $request->amount;
+            } elseif ($request->type == "Balance") {
+                $data = $this->performTransaction($mt5->login, $request->amount, Trade::DEAL_BALANCE);
+                $mt5->balance += $request->amount;
+            }
+
+            if ($data['status'] == true) {
+                // Create deposit record
+                $this->saveRecord($request->user_id, $request->account_id, 'Express Credit', $request->amount, null, 'Deposit', 'Processed');
+
+                // save transaction
+                $this->saveTransaction($request->user_id, $request->amount, 'Express Credit', $request->type);
+
+                $msg = 'The user\'s account has been successfully credited!';
+                $mt5->save();
+            } else {
+                return redirect()->route('manageusers')
+                    ->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
+            }
+        } elseif ($request->t_type == "Debit") {
+            $data = ['status' => false];
+            // get mt5 account in question
+            $mt5 = Mt5Details::find($request->account_id);
+            if (!$mt5)
+                return redirect()->back()->with('message', 'MT5 account not found');
+
+            if ($request->type == "Bonus") {
+                $data = $this->performTransaction($mt5->login, -$request->amount, Trade::DEAL_CREDIT);
+                $mt5->bonus -= $request->amount;
+            } elseif ($request->type == "Balance") {
+                $data = $this->performTransaction($mt5->login, -$request->amount, Trade::DEAL_BALANCE);
+                $mt5->balance -= $request->amount;
+            }
+
+            if ($data['status']) {
+                // create withdrawal record
+                $this->saveRecord($request->user_id, $request->account_id, 'Express Debit', $request->amount, null, 'Withdrawal', 'Processed');
+
+                // save transaction
+                $this->saveTransaction($request->user_id, $request->amount, 'Express Debit', $request->type);
+
+                $msg = 'The user\'s account has been successfully debited!';
+                $mt5->save();
+            } else {
+                return redirect()->route('manageusers')
+                    ->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
+            }
+        }
+
+        return redirect()->route('manageusers')
+            ->with('message', $msg);
     }
 
 
@@ -171,6 +436,29 @@ class UsersController extends Controller
             ->with('message', 'Reseted KYC Sucessfully!');
     }
 
+    // block user
+    public function ublock($id)
+    {
+        User::where('id', $id)
+            ->update([
+                'status' => 'blocked',
+            ]);
+        return redirect()->route('manageusers')
+            ->with('message', 'Action Sucessful!');
+    }
+
+
+    // unblock user
+    public function unblock($id)
+    {
+        User::where('id', $id)
+            ->update([
+                'status' => 'active',
+            ]);
+        return redirect()->route('manageusers')
+            ->with('message', 'Action Sucessful!');
+    }
+
 
     // accept KYC route
     public function changestyle(Request $request)
@@ -186,95 +474,5 @@ class UsersController extends Controller
                 'dashboard_style' => $dashboard_style,
             ]);
         return response()->json(['success' => 'Changed']);
-    }
-
-
-    public function madmins()
-    {
-        $roles = Role::get();
-        $admins = Admin::orderby('id', 'desc')->get();
-        return view('admin.madmins')->with(array(
-            'title' => 'Add new manager',
-            'admins' => $admins,
-            'roles' => $roles
-        ));
-    }
-
-
-    public function addadmin()
-    {
-        $roles = Role::get();
-        return view('admin.addadmin')->with(array(
-            'title' => 'Add new manager',
-            'roles' => $roles
-        ));
-    }
-
-
-    public function saveadmin(Request $request)
-    {
-        $this->validate($request, [
-            'fname' => 'required|max:255',
-            'l_name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:admins',
-            'password' => 'required|min:8|confirmed',
-        ]);
-
-        $admin = Admin::create(
-            [
-                'firstName' => $request['fname'],
-                'lastName' => $request['l_name'],
-                'email' => $request['email'],
-                'phone' => $request['phone'],
-                'type' => $request['type'],
-                'acnt_type_active' => "active",
-                'status' => "active",
-                'dashboard_style' => "dark",
-                'password' => Hash::make($request['password']),
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]
-        );
-
-        $admin->syncRoles($request->roles);
-
-        $perms = [];
-        foreach ($request->roles as $role) {
-            $role = Role::find($role);
-            $perms = array_merge($perms, $role->permissions);
-        }
-
-        $admin->syncPermissions($perms);
-
-        return redirect()->route('madmins')
-            ->with('message', 'Manager added Sucessfull!y');
-    }
-
-
-    // update users info
-    public function editadmin(Request $request)
-    {
-
-        $admin = Admin::find($request->user_id);
-        $admin->update([
-            'firstName' => $request->fname,
-            'lastName' => $request->l_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'type' => $request->type,
-            'roles' => 'required' . $request->roles
-        ]);
-
-        $admin->syncRoles($request->roles);
-
-        $perms = [];
-        foreach ($request->roles as $role) {
-            $role = Role::find($role);
-            array_push($perms, $role->permissions);
-        }
-
-        $admin->syncPermissions($perms);
-        return redirect()->back()
-            ->with('message', 'Account updated Successfully!');
     }
 }

@@ -16,7 +16,6 @@
             </a>
         </li>
 
-
         <li class="c-sidebar-nav-dropdown @yield('manage-users')">
             <a class="c-sidebar-nav-dropdown-toggle" href="{{ route('manageusers') }}">
                 <i class="cil-user c-sidebar-nav-icon"></i>
@@ -51,14 +50,14 @@
             <ul class="c-sidebar-nav-dropdown-items">
                 @if(auth('admin')->user()->hasPermissionTo('mdeposits-list', 'admin'))
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('deposits')" href="{{ url('/admin/dashboard/mdeposits') }}">
+                    <a class="c-sidebar-nav-link @yield('deposits')" href="{{ route('mdeposits') }}">
                         Manage Deposits
                     </a>
                 </li>
                 @endif
                 @if(auth('admin')->user()->hasPermissionTo('mwithdrawals-list', 'admin'))
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('withdrawals')" href="{{ url('/admin/dashboard/mwithdrawals') }}">
+                    <a class="c-sidebar-nav-link @yield('withdrawals')" href="{{ route('mwithdrawals') }}">
                         Manage Withdrawals
                     </a>
                 </li>
@@ -72,23 +71,29 @@
                 MT5 Accounts
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
+                @if(auth('admin')->user()->hasPermissionTo('ftds-list', 'admin'))
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('ftds')" href="{{ url('/admin/dashboard/ftds') }}">
+                    <a class="c-sidebar-nav-link @yield('ftds')" href="{{ route('mftds') }}">
                         FTDs
                     </a>
                 </li>
+                @endif
+                @if(auth('admin')->user()->hasPermissionTo('macctypes-list', 'admin'))
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link @yield('accounttypes')"
-                        href="{{ url('/admin/dashboard/accounttypes') }}">
+                        href="{{ route('accounttypes') }}">
                         Account Types
                     </a>
                 </li>
+                @endif
+                @if(auth('admin')->user()->hasPermissionTo('macctypes-add', 'admin'))
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link @yield('addaccounttype')"
-                        href="{{ url('/admin/dashboard/addaccounttype') }}">
+                        href="{{ route('addaccounttype') }}">
                         Add Account Type
                     </a>
                 </li>
+                @endif
             </ul>
         </li>
 
@@ -107,14 +112,14 @@
                 @endif
                 @if(auth('admin')->user()->hasPermissionTo('mrole-list', 'admin'))
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('roles')" href="{{ url('/admin/dashboard/manageroles') }}">
+                    <a class="c-sidebar-nav-link @yield('roles')" href="{{ route('manageroles') }}">
                         Manage Role(s)
                     </a>
                  @endif
                 </li>
                 @if(auth('admin')->user()->hasPermissionTo('mperms-list', 'admin'))
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('perms')" href="{{ url('/admin/dashboard/manageperms') }}">
+                    <a class="c-sidebar-nav-link @yield('perms')" href="{{ route('manageperms') }}">
                         Manage Permission(s)
                     </a>
                 </li>
@@ -123,7 +128,7 @@
         </li>
 
         {{-- <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link @yield('frontend-control')" href="{{ url('/admin/dashboard/frontpage') }}">
+            <a class="c-sidebar-nav-link @yield('frontend-control')" href="{{ route('frontpage') }}">
                 <i class="fa fa-sitemap" aria-hidden="true"></i>
                 <p>Front-end control</p>
             </a>
@@ -137,17 +142,17 @@
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('siteinfo')" href="{{ url('/admin/dashboard/settings') }}">
+                    <a class="c-sidebar-nav-link @yield('siteinfo')" href="{{ route('settings') }}">
                         Site Information
                     </a>
                 </li>
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('sitepref')" href="{{ url('/admin/dashboard/preferences') }}">
+                    <a class="c-sidebar-nav-link @yield('sitepref')" href="{{ route('preferencesettings') }}">
                         Site Preferences
                     </a>
                 </li>
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('sitepay')" href="{{ url('/admin/dashboard/payments') }}">
+                    <a class="c-sidebar-nav-link @yield('sitepay')" href="{{ route('paymentsettings') }}">
                         Payment Settings
                     </a>
                 </li>

@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\City;
 use App\Models\User;
-use App\Models\State;
 use App\Models\Country;
 use App\Models\Setting;
 use App\Models\Deposit;
 use App\Models\Wdmethod;
 use App\Models\Withdrawal;
 use App\Models\Mt5Details;
-use App\Models\PaymentLogs;
 use App\Models\Notification;
 use App\Models\TpTransaction;
 use App\Events\CheckAccounts;
@@ -187,22 +184,22 @@ class UserController extends Controller
     // update account and contact info
     public function updatewithdrawaldetails(Request $request)
     {
-        User::where('id', $request['id'])
+        User::where('id', $request->id)
             ->update([
-                'bank_name' => $request['bank_name'],
-                'account_name' => $request['account_name'],
-                'account_number' => $request['account_no'],
-                'swift_code' => $request['swift_code'],
-                'bank_address' => $request['bank_address'],
-                'btc_address' => $request['btc_address'],
-                'eth_address' => $request['eth_address'],
-                'ltc_address' => $request['ltc_address'],
-                'xrp_address' => $request['xrp_address'],
-                'usdt_address' => $request['usdt_address'],
-                'bch_address' => $request['bch_address'],
-                'bnb_address' => $request['bnb_address'],
-                'interac' => $request['interac'],
-                'paypal_email' => $request['paypal_email'],
+                'bank_name' => $request->bank_name,
+                'account_name' => $request->account_name,
+                'account_number' => $request->account_number,
+                'swift_code' => $request->swift_code,
+                'bank_address' => $request->bank_address,
+                'btc_address' => $request->btc_address,
+                'eth_address' => $request->eth_address,
+                'ltc_address' => $request->ltc_address,
+                'xrp_address' => $request->xrp_address,
+                'usdt_address' => $request->usdt_address,
+                'bch_address' => $request->bch_address,
+                'bnb_address' => $request->bnb_address,
+                'interac' => $request->interac,
+                'paypal_email' => $request->paypal_email,
             ]);
         return redirect()->back()
             ->with('message', 'Withdrawal Info updated Sucessfully');
@@ -830,9 +827,11 @@ class UserController extends Controller
         } elseif (strpos(strtolower($method->setting_key), 'virtualpay') > -1) {
             $view = 'virtualpay';
             $title = 'Make VirtualPay Payment';
+            $requestid = strtoupper('VPGLIVE-' . Auth::user()->id . '-' . strtotime('now'));
             $data = [
                 'countries' => $countries,
                 'dmethod' => $method,
+                'requestid' => $requestid,
             ];
         } elseif (strpos(strtolower($method->setting_key), 'ywallitpay') > -1) {
             $view = 'ywallitpay';
@@ -902,7 +901,7 @@ class UserController extends Controller
             $amt = $resp->data->amount;
             $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
             if ($data['status']) {
-                $mt5->balance = $data['data']->Balance;
+                $mt5->balance = $mt5->balance + $data['data']->getAmount();
                 $mt5->save();
             } else {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
@@ -955,7 +954,7 @@ class UserController extends Controller
             $amt = $dp->amount;
             $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
             if ($data['status']) {
-                $mt5->balance = $data['data']->Balance;
+                $mt5->balance = $mt5->balance + $data['data']->getAmount();
                 $mt5->save();
             } else {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
@@ -1013,7 +1012,7 @@ class UserController extends Controller
             $amt = $resp->data->amount;
             $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
             if ($data['status']) {
-                $mt5->balance = $data['data']->Balance;
+                $mt5->balance = $mt5->balance + $data['data']->getAmount();
                 $mt5->save();
             } else {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
@@ -1066,7 +1065,7 @@ class UserController extends Controller
             $amt = $dp->amount;
             $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
             if ($data['status']) {
-                $mt5->balance = $data['data']->Balance;
+                $mt5->balance = $mt5->balance + $data['data']->getAmount();
                 $mt5->save();
             } else {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
@@ -1124,7 +1123,7 @@ class UserController extends Controller
             $amt = $resp->data->amount;
             $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
             if ($data['status']) {
-                $mt5->balance = $data['data']->Balance;
+                $mt5->balance = $mt5->balance + $data['data']->getAmount();
                 $mt5->save();
             } else {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
@@ -1177,7 +1176,7 @@ class UserController extends Controller
             $amt = $dp->amount;
             $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
             if ($data['status']) {
-                $mt5->balance = $data['data']->Balance;
+                $mt5->balance = $mt5->balance + $data['data']->getAmount();
                 $mt5->save();
             } else {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
@@ -1220,31 +1219,32 @@ class UserController extends Controller
         $mt5 = Mt5Details::find($mt5_id);
 
         $data = $request->all();
-        $data['country'] = Country::find($request->country)->code;
-        $data['state'] = $user->state->name;
-        $data['city'] = $user->town->name;
-        $data['postal'] = $user->zip_code;
-        $data['address'] = $user->address;
-        $data['mid'] = '84864';
-        $data['address'] = $user->address;
-        $data['api_key'] = config('ywallitpay.api_key');
+        $data['mid'] = config('ywallitpay.mid');
         $data['ip'] = $request->ip();
-        $data['orderNumber'] = 'apg-live-' . $user->id . '-' . strtotime('now');
+        $data['orderNumber'] = strtoupper('apglive' . $user->id . '-') . strtotime('now');
+        $data['callback_url'] = route('verifyywallitpaycharge');
+        $data['success_url'] = route('verifyywallitpaycharge');
+        $data['error_url'] = route('verifyywallitpaycharge');
+
+        var_dump($data);
 
         unset($data['_token']);
 
-        $response = Http::withHeaders([
-            'X-First' => 'foo',
-            'X-Second' => 'bar'
+        $response = Http::withToken(config('ywallitpay.api_key'))->withHeaders([
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json'
         ])->post('https://app.ywallitpay.com/api/v1/transactions', $data);
 
-        $resp = json_decode($response->body());
+        $resp = $response;
+
+        var_dump($response->json());
+        dd($resp);
 
         if ($resp->status == 'C') {
             $amt = $resp->amount;
             $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
             if ($data['status']) {
-                $mt5->balance = $data['data']->Balance;
+                $mt5->balance = $mt5->balance + $data['data']->getAmount();
                 $mt5->save();
             } else {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
@@ -1297,7 +1297,7 @@ class UserController extends Controller
             $amt = $dp->amount;
             $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
             if ($data['status']) {
-                $mt5->balance = $data['data']->Balance;
+                $mt5->balance = $mt5->balance + $data['data']->getAmount();
                 $mt5->save();
             } else {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
@@ -1340,28 +1340,20 @@ class UserController extends Controller
         $mt5 = Mt5Details::find($mt5_id);
 
         $data = $request->all();
-        $data['country'] = Country::find($request->country)->code;
-        $data['state'] = $user->state->name;
-        $data['city'] = $user->town->name;
-        $data['postal'] = $user->zip_code;
-        $data['address'] = $user->address;
-        $data['mid'] = '84864';
-        $data['address'] = $user->address;  // MID
+
         $data['MID'] = config('virtualpay.mid', 'Axes');
         $data['API_KEY'] = config('virtualpay.api_key');
         $data['API_SECRET'] = config('virtualpay.api_secret');
         $data['PRIVATE_KEY'] = config('virtualpay.private_key');
-        $data['REDIRECT_URL'] = '';
-        $data['NOTIFICATION_URL'] = '';
-        $data[''] = '';
-        $data[''] = '';
-        $data[''] = '';
-        $data[''] = '';
-        $data[''] = '';
+        $data['REDIRECT_URL'] = route('verifyvirtualpaycharge');
+        $data['NOTIFICATION_URL'] = route('verifyvirtualpaycharge');
+        // $data[''] = '';
+        // $data[''] = '';
+        // $data[''] = '';
+        // $data[''] = '';
+        // $data[''] = '';
         $data['ip'] = $request->ip();
-        $data['orderNumber'] = 'APGLIVE-' . $user->id . '-' . strtotime('now');
-
-        dd($data);
+        $data['REQUESTID'] = 'VPGLIVE-' . $user->id . '-' . strtotime('now');
 
         unset($data['_token']);
 
@@ -1372,8 +1364,8 @@ class UserController extends Controller
         if ($resp->responseCode == '0') {
             $amt = $resp->amount;
             $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
-            if ($data['responseCode'] == 0) {
-                $mt5->balance = $data['data']->Balance;
+            if ($data['status']) {
+                $mt5->balance = $mt5->balance + $data['data']->getAmount();
                 $mt5->save();
             } else {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
@@ -1425,8 +1417,8 @@ class UserController extends Controller
         if ($data['responseCode'] == '0') {
             $amt = $dp->amount;
             $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
-            if ($data['responseCode'] == '0') {
-                $mt5->balance = $data['data']->Balance;
+            if ($data['status']) {
+                $mt5->balance = $mt5->balance + $data['data']->getAmount();
                 $mt5->save();
             } else {
                 return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
@@ -1459,30 +1451,21 @@ class UserController extends Controller
     }
 
 
-    public function startAuthorizeNetPay()
-    {
-        return view('authorizenet');
-    }
-
-
     public function handleAuthorizeNetPay(Request $request)
     {
         $data = $request->all();
-        $user = User::find($data['customer_order_id']);
-        $dp = $user->dp()->latest()->first();
-
+        $user = auth()->user();
         $mt5_id = $request->session()->get('mt5_account_id');
-
         $mt5 = Mt5Details::find($mt5_id);
 
         /* Create a merchantAuthenticationType object with authentication details
           retrieved from the constants file */
         $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
         $merchantAuthentication->setName(config('authorizenet.mid'));
-        $merchantAuthentication->setTransactionKey(env('authorizenet.transaction_key'));
+        $merchantAuthentication->setTransactionKey(config('authorizenet.transaction_key'));
 
         // Set the transaction's refId
-        $refId = 'ref' . time();
+        $refId = 'refuid' . $user ->id . 'ts' . time();
         $cardNumber = preg_replace('/\s+/', '', $request->cardNumber);
 
         // Create the payment data for a credit card
@@ -1509,7 +1492,7 @@ class UserController extends Controller
 
         // Create the controller and get the response
         $controller = new AnetController\CreateTransactionController($requests);
-        $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
+        $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 
         if ($response != null) {
             // Check to see if the API request was successfully received and acted upon
@@ -1525,22 +1508,11 @@ class UserController extends Controller
                     // echo " Auth Code: " . $tresponse->getAuthCode() . "\n";
                     // echo " Description: " . $tresponse->getMessages()[0]->getDescription() . "\n";
                     $message_text = $tresponse->getMessages()[0]->getDescription() . ", Transaction ID: " . $tresponse->getTransId();
-                    $msg_type = "success_msg";
 
-                    PaymentLogs::create([
-                        'amount' => $data['amount'],
-                        'response_code' => $tresponse->getResponseCode(),
-                        'transaction_id' => $tresponse->getTransId(),
-                        'auth_id' => $tresponse->getAuthCode(),
-                        'message_code' => $tresponse->getMessages()[0]->getCode(),
-                        'name_on_card' => trim($data['owner']),
-                        'quantity' => 1
-                    ]);
-
-                    $amt = $dp->amount;
+                    $amt = $data['amount'];
                     $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
-                    if ($data['responseCode'] == '0') {
-                        $mt5->balance = $data['data']->Balance;
+                    if ($data['status']) {
+                        $mt5->balance = $mt5->balance + $data['data']->getAmount();
                         $mt5->save();
                     } else {
                         return redirect()->back()->with('message', 'Sorry an error occured, report this to admin! ' . $data['msg']);
@@ -1549,9 +1521,8 @@ class UserController extends Controller
                     // save transaction
                     $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
 
-                    // update the deposit
-                    $dp->status = "Processed";
-                    $dp->save();
+                    // save the deposit
+                    $this->saveRecord($user->id, $mt5_id, 'Authorize.Net', $amt, 'Authorize.net Order Id: ', 'Deposit', 'Processed');
 
                     // send email notification
                     $currency = Setting::getValue('currency');
@@ -1566,32 +1537,26 @@ class UserController extends Controller
                     Mail::bcc($user->email)->send(new NewNotification($objDemo));
                 } else {
                     $message_text = 'There were some issue with the payment. Please try again later.';
-                    $msg_type = "error_msg";
 
                     if ($tresponse->getErrors() != null) {
                         $message_text = $tresponse->getErrors()[0]->getErrorText();
-                        $msg_type = "error_msg";
                     }
                 }
                 // Or, print errors if the API request wasn't successful
             } else {
                 $message_text = 'There were some issue with the payment. Please try again later.';
-                $msg_type = "error_msg";
 
                 $tresponse = $response->getTransactionResponse();
 
                 if ($tresponse != null && $tresponse->getErrors() != null) {
                     $message_text = $tresponse->getErrors()[0]->getErrorText();
-                    $msg_type = "error_msg";
                 } else {
                     $message_text = $response->getMessages()->getMessage()[0]->getText();
-                    $msg_type = "error_msg";
                 }
             }
         } else {
             $message_text = "No response returned";
-            $msg_type = "error_msg";
         }
-        return back()->with($msg_type, $message_text);
+        return redirect(route('account.liveaccounts'))->with('message', $message_text);
     }
 }
