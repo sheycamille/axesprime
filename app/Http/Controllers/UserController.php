@@ -94,7 +94,7 @@ class UserController extends Controller
             ->with(array(
                 //'earnings'=>$earnings,
                 'title' => 'User Panel',
-                'deposited' => $total_deposited['total'],
+                'deposited' => $total_deposited->toArray()[0]->total - $total_bonus,
                 'total_bonus' => $total_bonus,
                 'total_balance' => $total_balance,
             ));

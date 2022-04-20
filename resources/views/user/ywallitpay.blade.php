@@ -111,14 +111,14 @@
                                                             <div class="col-md-5" style="display: inline-block;">
                                                                 <h5 class="">City*</h5>
                                                                 <input type="text" name="city" class="form-control"
-                                                                    value="{{ Auth::user()->town->name }}" required>
+                                                                    value="{{ Auth::user()->town }}" required>
                                                             </div>
                                                         </div>
                                                         <div class="form-group d-flex justify-content-center col-xs-12">
                                                             <div class="col-md-5" style="display: inline-block;">
                                                                 <h5 class="">State*</h5>
                                                                 <input type="text" name="state" class="form-control"
-                                                                    value="{{ Auth::user()->state->name }}" required>
+                                                                    value="{{ Auth::user()->state }}" required>
                                                             </div>
                                                             <div class="col-md-2" style="display: inline-block;">
                                                                 <h5 class="">Zip Code*</h5>
@@ -136,7 +136,7 @@
                                                                     @foreach ($countries as $country)
                                                                     <option @if (Auth::user()->country->id ==
                                                                         $country->id) selected @endif
-                                                                        value="{{ strtoupper($country->code) }}">
+                                                                        value="{{ $country->code }}">
                                                                         {{ $country->name }}</option>
                                                                     @endforeach
                                                                 </select> <br>
