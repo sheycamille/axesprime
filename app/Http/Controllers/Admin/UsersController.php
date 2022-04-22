@@ -39,11 +39,21 @@ class UsersController extends Controller
     function __construct()
     {
         $this->middleware('auth:admin');
+        $this->middleware('permission:muser-list|muser-create|muser-edit|muser-delete', ['only' => ['index']]);
+        $this->middleware('permission:muser-create', ['only' => ['store']]);
+        $this->middleware('permission:muser-edit', ['only' => ['update' , 'resetpswd', 'dellaccounts']]);
+        $this->middleware('permission:muser-block', ['only' => ['ublock', 'unblock', '']]);
+        $this->middleware('permission:muser-messageall', ['only' => ['sendmailtooneuser', 'sendmailtoall']]);
+        $this->middleware('permission:muser-access-account', ['only' => ['switchtouser']]);
+        $this->middleware('permission:muser-access-wallet', ['only' => ['userwallet']]);
+        $this->middleware('permission:muser-credit-debit', ['only' => ['topup']]);
+        $this->middleware('permission:muser-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:mkyc-validate', ['only' => ['acceptkyc', 'rejectkyc', 'resetkyc']]);
     }
 
 
     //Return manage users route
-    public function list()
+    public function index()
     {
         $countries = Country::get();
         return view('admin.users')
@@ -97,9 +107,17 @@ class UsersController extends Controller
 
         User::where('id', $request['user_id'])
             ->update([
-                'name' => $request['name'],
-                'email' => $request['email'],
-                'phone' => $request['phone'],
+                'name' => $request->first_name . ' ' . $request->last_name,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'dob' => $request->dob,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'phone' => $request->phone,
+                'town' => $request->town,
+                'state' => $request->state,
+                'zip_code' => $request->zip_code,
+                'country_id' => $request->country,
                 'ref_link' => $request['ref_link'],
             ]);
         return redirect()->back()

@@ -22,39 +22,6 @@ return [
         'daily_rev' => 'Daily Avg Revenue',
 
     ],
-    'fx_calc' => 'All-In-One FX Calculator',
-    'worlds_num1' => 'Trade with the world’s #1 FX broker!',
-    'years_of_exl' => 'With 15+ years of excellence and innovation, we provide high-quality access to financial markets, through our advanced execution model. Discover the world of online trading with CFDs on thousands of instruments in 6 asset classes.',
-    'trade_70_major' => 'Trade 70 major, minor & exotic currency pairs with competitive trading conditions.',
-    'metls' => 'Metals',
-    'trade_metal_comodities' => 'Trade metal commodities such as Gold, Silver & Platinum',
-    'trade_major_and_minor' => 'Trade Major and Minor Index CFDs Spot and Futures from around the globe',
-    'shres' => 'Shares',
-    'hundreds_of_companies' => 'Hundreds of public companies from the US, UK, France & Germany available to trade',
-    'Cryptocurrencies' => 'Cryptocurrencies',
-    'trde_bitcn' => 'Trade Bitcoin, Ether, Doge & more crypto & altcoin CFDs',
-    'discover_opportunities' => 'Discover opportunities on UK & US Crude Oil, as well as Natural Gas Spot and Future CFDs',
-    'read_more' => 'Read more',
-    'trade_with' => 'Trade with ',
-    'world_leading' => 'World Leading',
-    'broker' => 'broker',
-    'awards' => '90+ awards',
-    'five_star' => '5 star services',
-    'four_industry' => '4 industry regulations',
-    'trade_like_a_pro' => 'Trade Like A Pro!',
-    'trade_cdfs' => 'Trade CFDs on a wide range of instruments, including popular FX pairs, Futures, Indices, Metals, Energies and Shares and experience the global markets at your fingertips.',
-    'open_acount' => 'Open an Account',
-    'compliment_trading' => 'Compliment your trading with our exclusive tools',
-    'axepro_clients' => 'AxePro clients are provided with exclusive access to trading tools, news and analysis.',
-    'calender' => 'Calender',
-    'econs_earning' => 'Economic & Earnings Calendars',
-    'analysis' => 'Analysis',
-    'trading_central' => 'Trading Central Technical Analysis',
-    'reviews' => 'Reviews',
-    'daily_market_reviews' => 'Daily market reviews from the AxePro Analyst Team',
-    'knowledge' => 'Knowledge',
-    'education' => 'Educational Resources',
-
     'forex' => [
         'forex_trading' => 'Forex Trading',
         'trade_cdf_on' => 'Trade CFDs on 70+ FX pairs and benefit from tight spreads and fast order execution.',
@@ -114,7 +81,6 @@ return [
 
 
     ],
-
     'metatrader' => [
         'metatrader_title1' => 'MetaTrader 5',
         'metatrader_title2' => 'Trading Platform',
@@ -282,91 +248,6 @@ return [
         'open_an_account' => 'Open an Account',
 
     ],
-
-
-
-    'trading_flexibility' => 'Trading Flexibility',
-    'winning_platform' => 'Winning Platform',
-    'competitive_pricing' => 'Competitive Pricing',
-    'markets' => 'markets',
-    'sell' => 'sell',
-    'buy' => 'buy',
-    'change' => 'change',
-    'platform' => 'Check your platform for the most up to date prices.',
-    'why_trade' => 'Why Trade with AxePro',
-    'improve_result' => 'Improve your trading results with our industry-leading technology',
-    'best_cdf' => 'Best CFD Broker',
-    'summit' => 'TradeON Summit 2020',
-    'execution' => 'Best Execution',
-    'expo' => 'Forex EXPO Dubai 2020',
-    'best_platform' => 'Best Trading Platform',
-    'london_summit' => 'London Summit 2020',
-    'speed' => 'executions speed*',
-    'support' => 'support',
-    'spread' => 'spread from 0.0 pips',
-    'instruments' => 'trading instruments',
-    'creat_account' => 'Create account',
-    'discover' => 'Discover platform',
-    'choose_platform' => 'Choose Your Platform',
-    'platforms' => 'We provide our clients with a wide range of desktop, web and mobile trading platforms including AxePro platform, MetaTrader 5 and cTrader.',
-    'axepro_platform' => 'AxePro Platform',
-    'start_trading' => 'Start trading',
-    'six_years' => '6 years',
-    'fifthteen' => '15 years',
-    'regulated' => 'UK Regulated',
-    'cus_support' => 'Customer supports',
-    'five_years' => '5+ Years of Excellence',
-    'global_broker' => 'A Truly Global Broker',
-    'growth' => 'AxePro has grown exponentially over the years and has become renowned for
-     providing elite trading conditions to its clients',
-    'seamless' => 'Seamless Trading Experience',
-    'int_awards' => '90+ UK & International Awards',
-    'our_work' => 'Our work has been repeatedly acknowledged by the industry with over 90 awards received to date for the quality of our platforms and services',
-    'transparency' => 'Dedicated to transparency',
-    'trusted' => 'Trusted and Fully Regulated',
-    'commitment' => 'We maintain an unwavering commitment to fair and ethical trading practices',
-    'best_in_class' => 'Best in Class MetaTrader Broker',
-    'all_in_one' => 'All-In-One FX Calculator',
-    'precautions' => 'Precautions You Should Take',
-    'your_data' => 'How Axepro Protects Your Data',
-    'suspicious' => 'Report Suspicious Inbox Messages',
-    'fraud' => 'Reporting Fraud immediately',
-    'download_now' => 'Download Now',
-
-    'markets' => 'Markets',
-    'frex' => 'Forex',
-    'fts' => 'Futures',
-    'idc' => 'Indices',
-    'shr' => 'Shares',
-    'mtl' => 'Metals',
-    'egy' => 'Energies',
-    'cryptocurrencies' => 'Cryptocurrencies',
-    'tools' => 'Tools',
-    'pfm' => 'Platforms',
-    'wtd' => 'Web Trader',
-    'mtd' => 'MetaTrader 5',
-    'trading_tools' => 'Trading Tools',
-    'ecn_cal' => 'Economic Calender',
-    'calc' => 'Calculator',
-    'nws_pg' => 'Forex News',
-    'company' => 'Company',
-    'abt' => "About Us",
-    'cdt' => 'Credit Score',
-    'sec' => 'Security',
-    'ctc' => 'Contact Us',
-    'crt_acnt' => 'Create Account',
-    'log' => 'Login',
-    'excellence' => "5 years of excellence",
-    'gbl_awd' => 'More than 15 international awards',
-    'cus_sup' => '24/6 customer support',
-    'copyright' => 'Copyright ©2022 AxeProGroup. All rights reserved.',
-    'copyright_2' => 'Trading in derivatives and leveraged products carries a high level of risk, including the risk of losing much more than your initial investment. It is not suitable for everyone. Before making a decision about a financial product, you should obtain and review our Product Disclosure Statement (PDS) and Financial Services Guide (FSG), available on our website, and seek independent advice if necessary.',
-    'industry_regulations' => '4 Regulations',
-    'clients' => "1k+ clients",
-    'econs_earnings' => "Economic & Earnings Calendars",
-    'frx_nws_page' => "Market News",
-
-
     'dashboard' => [
         'dash' => 'Dashboard',
         'my_act' => 'My Account',
@@ -385,7 +266,6 @@ return [
         'down' => 'Downloads',
         'sup' => 'Support',
     ],
-
     'topmenu' => [
         'ky' => 'KYC',
         'refresh' => 'Refresh',
@@ -461,96 +341,48 @@ return [
     'order_execution' => [
         'order' => 'Order Execution Policy',
         'order_pol' => 'The Order of Execution Policy',
-        'b1' => 'The sole purpose of this Order of Execution policy is to establish a well-organized action plan for
-    the procurement process by providing the finest conceivable result for its Clients, while
-    AxePro accomplishing a Clients’ orders.',
-        'b2' => 'Additionally, the aim of this document is to guide the said activities and to verify acquiescence
-    with the necessities of the lawgiving bodies, counting the department and general
-    development, which are established in the Internal Procedures Manual. ',
+        'b1' => 'The sole purpose of this Order of Execution policy is to establish a well-organized action plan for the procurement process by providing the finest conceivable result for its Clients, while AxePro accomplishing a Clients’ orders.',
+        'b2' => 'Additionally, the aim of this document is to guide the said activities and to verify acquiescence with the necessities of the lawgiving bodies, counting the department and general development, which are established in the Internal Procedures Manual. ',
         'scope' => 'Scope and Services',
-        'b3' => 'The policy shall apply automatically upon the completion of trades on behalf of its Clients.
-    AxePro will continually be the principal counterparty as the orders of Clients are
-    accomplished.',
-        'b4' => 'More so, AxePro cannot assure that once an order is given, the Client’s expense will
-    be
-beneficial than original value which could perhaps be obtainable in a different occurrence. ',
+        'b3' => 'The policy shall apply automatically upon the completion of trades on behalf of its Clients. AxePro will continually be the principal counterparty as the orders of Clients are accomplished.',
+        'b4' => 'More so, AxePro cannot assure that once an order is given, the Client’s expense will be beneficial than original value which could perhaps be obtainable in a different occurrence. ',
         'exe' => 'Execution Aspects',
-        'b5' => 'AxePro is required to take several aspects into deliberation; the following are itemized
-    below:',
-        'b6' => 'More so, AxePro cannot assure that once an order is given, the Client’s expense will
-    be
-    beneficial than original value which could perhaps be obtainable in a different occurrence.',
+        'b5' => 'AxePro is required to take several aspects into deliberation; the following are itemized below:',
+        'b6' => 'More so, AxePro cannot assure that once an order is given, the Client’s expense will be beneficial than original value which could perhaps be obtainable in a different occurrence.',
         'quotes' => ' Quotes',
-        'b7' => 'AxePro creates an owned tradable values taken from the figures obtained over the liberated
-    price sources, counting banks that principally offers liquescency through the global market.
-    AxePro is to guarantee that the bid/ask spread controls is completed with the
-    recommendation to an extensive assortment of fundamental price sources, counting statistical
-    bases. With such, AxePro can assure that the Client receives the best execution possible. ',
+        'b7' => 'AxePro creates an owned tradable values taken from the figures obtained over the liberated price sources, counting banks that principally offers liquescency through the global market. AxePro is to guarantee that the bid/ask spread controls is completed with the recommendation to an extensive assortment of fundamental price sources, counting statistical bases. With such, AxePro can assure that the Client receives the best execution possible. ',
         'charges' => ' Charges',
-        'b8' => 'Once a Client secures a position on some of the provided financial instruments, it will certainly
-    contain a commission or a financing payment.
-    ',
+        'b8' => 'Once a Client secures a position on some of the provided financial instruments, it will certainly contain a commission or a financing payment.',
         'all' => ' Orders Of All Sizes',
-        'b9' => 'Orders are positioned in portion scopes. A component which processes the quantity of the deal
-    is termed as “lot”, in which varies from every financial instruments given. If a Client desired to
-    instigate an outsized scope of order, it may not be as much as favorable in several
-    circumstances as liquidity ascends in the marketplace. AxePro holds the right to refuse
-    a Clients’ Order, if the size of the order is considered to be too large and cannot be completed by
-    AxePro . ',
+        'b9' => 'Orders are positioned in portion scopes. A component which processes the quantity of the deal is termed as “lot”, in which varies from every financial instruments given. If a Client desired to instigate an outsized scope of order, it may not be as much as favorable in several circumstances as liquidity ascends in the marketplace. AxePro holds the right to refuse a Clients’ Order, if the size of the order is considered to be too large and cannot be completed by AxePro . ',
         'frequency' => 'Frequency',
-        'b10' => 'Normally, Price values often changes in every coming periods. The regularity with which they do
-    varies with financial instruments along with the current market conditions. As AxePro
-    produces its own tradable price values, the technology therefore used by the Client to make
-    relations with AxePro will play a decisive function. Additionally, tradable prices
-    are distributed through the AxePro ’s trading programs.',
+        'b10' => 'Normally, Price values often changes in every coming periods. The regularity with which they do varies with financial instruments along with the current market conditions. As AxePro produces its own tradable price values, the technology therefore used by the Client to make relations with AxePro will play a decisive function. Additionally, tradable prices are distributed through the AxePro ’s trading programs.',
         'instruments' => 'Instruments',
-        'b11' => 'AxePro fulfills orders in relation to any trading instruments in derivatives on foreign
-    exchange ("FX").',
-        'b12' => 'AxePro provides the following foreign exchange trading
-    products:',
+        'b11' => 'AxePro fulfills orders in relation to any trading instruments in derivatives on foreign exchange ("FX").',
+        'b12' => 'AxePro provides the following foreign exchange trading products:',
         'l1' => 'Foreign Exchange Derivatives',
         'l2' => 'Commodities Derivatives',
         'l3' => 'Indices Derivatives',
         'l4' => 'Spot metals Derivatives ',
         'l5' => 'Best execution ideologies ',
-        'l6' => 'When an order of a Client is being accomplished, AxePro is authorized to layout the following
-    factors into observation:',
+        'l6' => 'When an order of a Client is being accomplished, AxePro is authorized to layout the following factors into observation:',
         'l7' => "The Client's characteristics and to where it is classified.",
         'l8' => 'The characteristics of the order of the Client.',
         'l9' => 'The characteristics of the execution spots to which that order is able to be engaged.',
         'l10' => 'The characteristics of trading instruments that are the order’s focus.',
         'instructions' => 'Client Instructions',
-        'b13' => 'In circumstances where the Client is given with a definite directive by AxePro concerning the
-    order execution and the company decided on this directive, consequently, an execution of
-    order will be executed with the specific instruction given.',
-        'b14' => 'Still, if the Client wanted to perform an order and given a certain instruction, then by executing
-    that order, AxePro will fulfill with Axes Prime ’s responsibility to deliver the best execution
-    for the Client. This may possible result in being unqualified to comply with AxePro ’s
-    order execution policy for that certain order.
-    ',
+        'b13' => 'In circumstances where the Client is given with a definite directive by AxePro concerning the order execution and the company decided on this directive, consequently, an execution of order will be executed with the specific instruction given.',
+        'b14' => 'Still, if the Client wanted to perform an order and given a certain instruction, then by executing that order, AxePro will fulfill with Axes Prime ’s responsibility to deliver the best execution for the Client. This may possible result in being unqualified to comply with AxePro ’s order execution policy for that certain order.',
         'entities' => 'Execution Entities',
-        'b15' => 'Entities holding the execution are principally the setting to which orders are being placed
-    or executed. The Execution Entities in order of the Clients will be consequently accredited
-    by investment corporations. ',
-        'b16' => 'In general, the funds placed in the accounts by Clients with Axes Prime , counting orders that are
-    positioned towards a trading platform is secured by Axes Prime and is the one accountable for
-    the capitals entirely. ',
+        'b15' => 'Entities holding the execution are principally the setting to which orders are being placed or executed. The Execution Entities in order of the Clients will be consequently accredited by investment corporations. ',
+        'b16' => 'In general, the funds placed in the accounts by Clients with Axes Prime , counting orders that are positioned towards a trading platform is secured by Axes Prime and is the one accountable for the capitals entirely. ',
         'review' => 'Review and Monitoring',
-        'b21' => 'AxePro ’s implemented policy will definitely be monitored, including the substantial
-    order execution provisions, predominantly on an constant foundation to regulate and suggest
-    better improvements.',
-        'b17' => 'It is also mandatory for the company to evaluate the Policy and the pertinent order execution
-    preparations on a systematic basis in any case so as to measure if AxePro is competent
-    enough to deliver the best execution for its Clients. ',
+        'b21' => 'AxePro ’s implemented policy will definitely be monitored, including the substantial order execution provisions, predominantly on an constant foundation to regulate and suggest better improvements.',
+        'b17' => 'It is also mandatory for the company to evaluate the Policy and the pertinent order execution preparations on a systematic basis in any case so as to measure if AxePro is competent enough to deliver the best execution for its Clients. ',
         'permissions' => 'Clients Permissions',
-        'b18' => 'AxePro is required to get the Client’s prior approval to this Policy when making a business
-    association regarding the Client. Furthermore, AxePro is mandated to take in the
-    Client’s prior approval before the implementation of Clients’ orders or getting or conducting
-    orders for execution.',
+        'b18' => 'AxePro is required to get the Client’s prior approval to this Policy when making a business association regarding the Client. Furthermore, AxePro is mandated to take in the Client’s prior approval before the implementation of Clients’ orders or getting or conducting orders for execution.',
         'b19' => 'AxePro is capable to acquire the abovementioned agreements under a broad settlement.',
-        'b20' => 'AxePro will accomodate Clients who acquired the Policy or sanctioned to take the Policy by
-    electronic means or any other online transactions including those who have largely settled
-    upon on the Trading Terms and Conditions of AxePro. ',
+        'b20' => 'AxePro will accomodate Clients who acquired the Policy or sanctioned to take the Policy by electronic means or any other online transactions including those who have largely settled upon on the Trading Terms and Conditions of AxePro. ',
         'contact' => 'Contact',
         'cus' => 'Customer Support Department',
         'email' => 'Email:support@AxePro.com ',
@@ -559,146 +391,57 @@ beneficial than original value which could perhaps be obtainable in a different 
     'risk_disclosure' => [
         'risk' => 'Risk Disclosure Policy',
         'declaration' => 'Declaration of Risks',
-        'b1' => 'This risk disclosure is provided by the company as a written instruction of warnings involved in entering
-    into the Agreement, which covers all the risk involved in trading Financial Instrument and other related
-    subsequent risks obtained in the compliance of the Agreement. All clients are advised into getting the
-    assistance of a third-party financial advisor in case he/she does not understand the content and/or the
-    risks involved in this Agreement. The Client understands and accepts the risks listed below but not
-    limited to: ',
+        'b1' => 'This risk disclosure is provided by the company as a written instruction of warnings involved in entering into the Agreement, which covers all the risk involved in trading Financial Instrument and other related subsequent risks obtained in the compliance of the Agreement. All clients are advised into getting the assistance of a third-party financial advisor in case he/she does not understand the content and/or the risks involved in this Agreement. The Client understands and accepts the risks listed below but not limited to: ',
         'sect1' => 'Section 1. Conventional Trading',
-        'b2' => 'The Company suggests that no members should sign into the agreement without being briefed and
-    informed of the substantial risks. The value of securities of the Client is exposed to different market risks
-    such as economic conditions, interest rates, profits, growth rates and other perception in the market
-    involve.',
-        'b3' => 'The Client is responsible in the monitoring of their opened positions at all times. They are also
-    responsible of being able to handle potential losses that may be incurred during their transactions. The
-    Company may choose to create general assessments of the market in other cases.',
+        'b2' => 'The Company suggests that no members should sign into the agreement without being briefed and informed of the substantial risks. The value of securities of the Client is exposed to different market risks such as economic conditions, interest rates, profits, growth rates and other perception in the market involve.',
+        'b3' => 'The Client is responsible in the monitoring of their opened positions at all times. They are also responsible of being able to handle potential losses that may be incurred during their transactions. The Company may choose to create general assessments of the market in other cases.',
         'sect2' => 'Section 2. Default',
-        'b4' => 'The Client’s positions may be closed by the Company without any notification should the client be found
-    with any insolvency. In relation to this, the Client is obliged to transfer the full ownership and title of a
-    specific portion of the money that was deposited to the company.',
-        'b5' => 'The required money of the client will assure their current, or future and actual liabilities to the Company
-    including the margin requirements. The company will then issue the amount needed based on the
-    trader’s daily open positions and trading. The client, then, acknowledges and understands the possibility
-    of the amount being set higher due to the required margin stated.',
-        'b6' => 'The amount will not be subject to recovery should the company be placed under a state of not being
-    able to pay the client money on time. ',
+        'b4' => 'The Client’s positions may be closed by the Company without any notification should the client be found with any insolvency. In relation to this, the Client is obliged to transfer the full ownership and title of a specific portion of the money that was deposited to the company.',
+        'b5' => 'The required money of the client will assure their current, or future and actual liabilities to the Company including the margin requirements. The company will then issue the amount needed based on the trader’s daily open positions and trading. The client, then, acknowledges and understands the possibility of the amount being set higher due to the required margin stated.',
+        'b6' => 'The amount will not be subject to recovery should the company be placed under a state of not being able to pay the client money on time. ',
         'sect3' => 'Section 3. Electronic System',
-        'b7' => 'The client is informed of the following risks incriminated in the use of the electronic system, and any
-    financial losses that may take place throughout the process possible.',
-        'b8' => 'There are cases that there are failure of connection and the software do not work properly. The
-    Company will not be responsible for any damages or loss acquired by the Client in case he/she the fail to
-    access the electronic systems of the Company and if the orders are not executed due to electronic
-    system malfunctions.',
-        'b9' => 'During the time of the trading process, issues such as an internet malfunction may take place. The client,
-    in relation to this, will then be exposed to various network failures that may affect his or her online
-    transactions with the Company and therefore interfere with the completion of orders.',
-        'b10' => 'The Company will not be held liable for the failure of the order execution related to the breakdown of
-    the electronic system. The Client accepts and understands that the Company is not responsible for any
-    claims, expenses, damages or losses and costs as a result of malfunction or failure of any communication
-    system and trading software belonging to the Company.',
-        'b11' => 'The Company’s systems, facilities, and programs are all susceptible to transitory failure or disruption
-    due to limitations of internet connections.',
-        'b12' => 'All forms of danger or loss caused by a third party’s illegal access or laxity of the Client shall not be put
-    against the Company.',
+        'b7' => 'The client is informed of the following risks incriminated in the use of the electronic system, and any financial losses that may take place throughout the process possible.',
+        'b8' => 'There are cases that there are failure of connection and the software do not work properly. The Company will not be responsible for any damages or loss acquired by the Client in case he/she the fail to access the electronic systems of the Company and if the orders are not executed due to electronic system malfunctions.',
+        'b9' => 'During the time of the trading process, issues such as an internet malfunction may take place. The client, in relation to this, will then be exposed to various network failures that may affect his or her online transactions with the Company and therefore interfere with the completion of orders.',
+        'b10' => 'The Company will not be held liable for the failure of the order execution related to the breakdown of the electronic system. The Client accepts and understands that the Company is not responsible for any claims, expenses, damages or losses and costs as a result of malfunction or failure of any communication system and trading software belonging to the Company.',
+        'b11' => 'The Company’s systems, facilities, and programs are all susceptible to transitory failure or disruption due to limitations of internet connections.',
+        'b12' => 'All forms of danger or loss caused by a third party’s illegal access or laxity of the Client shall not be put against the Company.',
         'sect4' => 'Section 4. Trading and Pricing Relationships ',
-        'b13' => 'Once a Client secures a position on some of the provided financial instruments, it will certainly
-    contain a commission or a financing payment.',
+        'b13' => 'Once a Client secures a position on some of the provided financial instruments, it will certainly contain a commission or a financing payment.',
         'sub1' => 'Orders Of All Sizes',
-        'b14' => 'Specific market conditions and/or operations or events of the market players taking place during the
-    trading transactions may strengthen the exposure to loss through unfeasible execution of transaction
-    and/ liquidates the offset position of the Client. The market rules may affect as well the flow of
-    transaction and may lead to unavoidable risks',
-        'b15' => 'The flow of transactions might change due to abnormal market conditions in most cases, transactions
-    under the mentioned circumstances will result into the delay of the process and changes in the prices.',
-        'b16' => 'The Client understands the loss involved in cases of unavoidable circumstances where the Company will
-    not be liable in the damage or loss of the events which occur beyond control.',
+        'b14' => 'Specific market conditions and/or operations or events of the market players taking place during the trading transactions may strengthen the exposure to loss through unfeasible execution of transaction and/ liquidates the offset position of the Client. The market rules may affect as well the flow of transaction and may lead to unavoidable risks',
+        'b15' => 'The flow of transactions might change due to abnormal market conditions in most cases, transactions under the mentioned circumstances will result into the delay of the process and changes in the prices.',
+        'b16' => 'The Client understands the loss involved in cases of unavoidable circumstances where the Company will not be liable in the damage or loss of the events which occur beyond control.',
         'sect5' => 'Section 5. Derivatives in General',
-        'b17' => 'The Client should be aware that the transactions involved in Derivatives carry the same as investing in
-    futures. Aside from this, Derivative transactions may carry unexpected accountability and/or obligation
-    to which the Client must be receptive of.',
-        'b18' => 'The client does not carry the sole right to an underlying instrument, including the reference shares,
-    voting rights, and/or any other information related and included. The Company also will not be
-    obligated to reveal any irrelevant information inducing the risks that are incorporated in the expense
-    Derivatives.',
-        'b19' => 'Derivative is recommended for the traders who have sufficient knowledge of the risks involved in legal
-    and economic dealings. Clients who agrees to buying a Derivative Financial Instrument understands the
-    risk of losing money and in some cases all that he/she has invested.',
-        'b20' => 'Big losses and gains can result from Derivative leverage; the movement change can be beneficial for the
-    Client. However, in some cases, it can be a downside. Derivatives in trading involve placing a trade set by
-    the Company in accordance with the price movements. The prices are changed from time to time
-    depending on the circumstances, such as national and economic scenarios from all over the world.
-    Only the underlying assets offered by the company are permitted to be transacted in Derivative and
-    must be processed only on the company’s trading system.',
+        'b17' => 'The Client should be aware that the transactions involved in Derivatives carry the same as investing in futures. Aside from this, Derivative transactions may carry unexpected accountability and/or obligation to which the Client must be receptive of.',
+        'b18' => 'The client does not carry the sole right to an underlying instrument, including the reference shares, voting rights, and/or any other information related and included. The Company also will not be obligated to reveal any irrelevant information inducing the risks that are incorporated in the expense Derivatives.',
+        'b19' => 'Derivative is recommended for the traders who have sufficient knowledge of the risks involved in legal and economic dealings. Clients who agrees to buying a Derivative Financial Instrument understands the risk of losing money and in some cases all that he/she has invested.',
+        'b20' => 'Big losses and gains can result from Derivative leverage; the movement change can be beneficial for the Client. However, in some cases, it can be a downside. Derivatives in trading involve placing a trade set by the Company in accordance with the price movements. The prices are changed from time to time depending on the circumstances, such as national and economic scenarios from all over the world. Only the underlying assets offered by the company are permitted to be transacted in Derivative and must be processed only on the company’s trading system.',
         'sect6' => 'Section 6. Trading Revocation',
-        'b21' => 'Should prices change suddenly in the market, it would be impossible in some cases to liquidate a
-    position as the price of the underlying asset might suddenly surge or drop. Under some circumstances,
-    the price may rise and fall in one transaction that will result into the suspension or restriction of the
-    underlying assets. The Client understands that under these conditions, he/she must accept the
-    correlated risks and that he/she is responsible for the possible loss',
-        'b22' => 'The Company holds the sole right to cancel or close a position in the said circumstances and as a result
-    of transposing information. In that case, the Company will not be holding any specific responsibility for
-    any damages or losses that may occur.',
+        'b21' => 'Should prices change suddenly in the market, it would be impossible in some cases to liquidate a position as the price of the underlying asset might suddenly surge or drop. Under some circumstances, the price may rise and fall in one transaction that will result into the suspension or restriction of the underlying assets. The Client understands that under these conditions, he/she must accept the correlated risks and that he/she is responsible for the possible loss',
+        'b22' => 'The Company holds the sole right to cancel or close a position in the said circumstances and as a result of transposing information. In that case, the Company will not be holding any specific responsibility for any damages or losses that may occur.',
         'sect7' => 'Section 7. Unauthorized Access',
-        'b23' => 'The Company will not be liable for the loss that may emerge due to the Client’s miscommunication. A
-    third party may act as a channel for delivering the money or funds from the Client to the Company and in some instances may accept it temporarily to carry out a transaction.',
-        'b24' => 'Should the third party is found to be performing any forms of fraudulent activities before, during and
-    after the transaction, the Company will not be held responsible for the damages or loss which may
-    occur. The Client accepts and understands all the risks enclosed in allowing a third party to transact on
-    his/her behalf, such as unauthorized access to the trading platform. Further into this, the Client must
-    keep all his/her login information safe and secure. ',
+        'b23' => 'The Company will not be liable for the loss that may emerge due to the Client’s miscommunication. A third party may act as a channel for delivering the money or funds from the Client to the Company and in some instances may accep it temporarily to carry out a transaction.',
+        'b24' => 'Should the third party is found to be performing any forms of fraudulent activities before, during and after the transaction, the Company will not be held responsible for the damages or loss which may occur. The Client accepts and understands all the risks enclosed in allowing a third party to transact on his/her behalf, such as unauthorized access to the trading platform. Further into this, the Client must keep all his/her login information safe and secure. ',
         'sect8' => 'Section 8. Further Risks',
-        'b25' => 'The Company does not ensure the investment success of one Trader to be the same as the other
-    and the investment strategy of each Trader may differ and or depends on what suits the Client.',
-        'b26' => 'The Company operates with the most advanced security protections. However, the website may
-    be vulnerable to other cyber-security threats which will be beyond its control. The Client then
-    may experience system errors, technical faults, malicious blocking of access and other internet
-    interruptions. In that event, the Company will not be responsible for any alteration or
-    falsification of the Client’s personal information or any losses occur in the personal account of
-    the Client. ',
-        'b27' => 'In any case the Client decides to conduct margin trading, he/she must understand the risks
-    included such as loss of funds greater than the deposited amount and the vulnerability of the
-    market price of the investment in the market movement or changes.',
-        'b28' => 'The Client must understand that trading in over the counter financial transactions may increase
-    and add to the risk of loss compared to other regulated markets. This is due to unavailability of
-    the market to close the open positions, prices and other circumstances which must undergo
-    legal conditions and/or terms. This type of transaction may escalate the liquidity risks and may
-    result in failure to access the value of a position related to an off-market transaction. ',
-        'b29' => 'The Company will notify the Client that the online trading platform of the Company cannot be
-    accessed during weekends, thus, there is a potential risk that the stop-loss orders may be
-    processed at the worst price compared to the specified price before it closed on Friday. The
-    Client understands that there may be sudden or discreet market events which may occur over
-    the weekends, therefore, the specified price is subject to change.',
-        'b30' => 'The Client must be aware and informed of the liabilities and costs of acquiring a position in the
-    Company and must acquire all the necessary details of the fees, charges or commissions he/she
-    might be responsible for.',
-        'b31' => 'All investments denominated in foreign currencies are exposed to fluctuations in currency rates
-    and currency conversion fees, thus, any changes of the rate of the currency will affect the
-    financial state of the Client.',
-        'b32' => 'The Company notifies the Client that the online trading platform of the Company cannot be
-    accessed during weekends, thus, there is a substantial risk that the stop-loss orders may be
-    processed at worst price compared to the specified price before it closed on Friday. The Client
-    understands that there may be discrete market events which may occur over the weekends;
-    therefore, the specified price is subject to change. ',
-        'b33' => 'The Client must be aware of the liabilities and costs of acquiring and placing a position in the
-    Company and must acquire all the necessary details of the fees, charges or commissions he/she
-    might be responsible for',
-        'b34' => 'Our Terms and conditions state that the client can purchase a refund ONLY whether there is an available
-    margin on the client’s balance.',
-        'b35' => 'As the Company receives an instruction from the Client to refund funds from their account, A Formal
-    request shall be then submitted by the client in order to be initiated by the company ',
-        'b36' => 'The Company shall proceed with the refund within two Business Days to the same payment method that
-    the funds were received, if the following Requirements are met:',
+        'b25' => 'The Company does not ensure the investment success of one Trader to be the same as the other and the investment strategy of each Trader may differ and or depends on what suits the Client.',
+        'b26' => 'The Company operates with the most advanced security protections. However, the website may be vulnerable to other cyber-security threats which will be beyond its control. The Client then may experience system errors, technical faults, malicious blocking of access and other internet interruptions. In that event, the Company will not be responsible for any alteration or falsification of the Client’s personal information or any losses occur in the personal account of the Client. ',
+        'b27' => 'In any case the Client decides to conduct margin trading, he/she must understand the risks included such as loss of funds greater than the deposited amount and the vulnerability of the market price of the investment in the market movement or changes.',
+        'b28' => 'The Client must understand that trading in over the counter financial transactions may increase and add to the risk of loss compared to other regulated markets. This is due to unavailability of the market to close the open positions, prices and other circumstances which must undergo legal conditions and/or terms. This type of transaction may escalate the liquidity risks and may result in failure to access the value of a position related to an off-market transaction. ',
+        'b29' => 'The Company will notify the Client that the online trading platform of the Company cannot be accessed during weekends, thus, there is a potential risk that the stop-loss orders may be processed at the worst price compared to the specified price before it closed on Friday. The Client understands that there may be sudden or discreet market events which may occur over the weekends, therefore, the specified price is subject to change.',
+        'b30' => 'The Client must be aware and informed of the liabilities and costs of acquiring a position in the Company and must acquire all the necessary details of the fees, charges or commissions he/she might be responsible for.',
+        'b31' => 'All investments denominated in foreign currencies are exposed to fluctuations in currency rates and currency conversion fees, thus, any changes of the rate of the currency will affect the financial state of the Client.',
+        'b32' => 'The Company notifies the Client that the online trading platform of the Company cannot be accessed during weekends, thus, there is a substantial risk that the stop-loss orders may be processed at worst price compared to the specified price before it closed on Friday. The Client understands that there may be discrete market events which may occur over the weekends; therefore, the specified price is subject to change. ',
+        'b33' => 'The Client must be aware of the liabilities and costs of acquiring and placing a position in the Company and must acquire all the necessary details of the fees, charges or commissions he/she might be responsible for',
+        'b34' => 'Our Terms and conditions state that the client can purchase a refund ONLY whether there is an available margin on the client’s balance.',
+        'b35' => 'As the Company receives an instruction from the Client to refund funds from their account, A Formal request shall be then submitted by the client in order to be initiated by the company ',
+        'b36' => 'The Company shall proceed with the refund within two Business Days to the same payment method that the funds were received, if the following Requirements are met:',
         'b37' => ' the refund instruction includes all necessary information;',
-        'b38' => ' the instruction is to make a bank transfer of funds to the account of the Client, in case
-    required;',
-        'b39' => ' the client has no open trades on his account, or upon risk disclosure the refund is not putting
-    the client’s trading account under risk of losing the free margin;',
-        'b40' => 'at the moment of payment, the Client’s Free Margin exceeds the amount specified in the
-    Withdrawal instruction including all payment charges.',
+        'b38' => ' the instruction is to make a bank transfer of funds to the account of the Client, in case required;',
+        'b39' => ' the client has no open trades on his account, or upon risk disclosure the refund is not putting the client’s trading account under risk of losing the free margin;',
+        'b40' => 'at the moment of payment, the Client’s Free Margin exceeds the amount specified in the Withdrawal instruction including all payment charges.',
 
     ],
-
     'terms_service' => [
 
         'terms' => 'Terms of Services',
@@ -1084,13 +827,6 @@ beneficial than original value which could perhaps be obtainable in a different 
         prior notice. ",
 
     ],
-    'docs' => 'DOCUMENTS',
-    'pri_pol' => 'Privacy Policy',
-    'risk_dis' => 'Risk Disclosure',
-    'trms' => 'Terms of Service',
-    'ordr' => 'Order Execution Policy',
-    'policies' => "Policies",
-
     'body' => [
         'welcome' => 'Welcome',
         'depo' => 'DEPOSITS',
@@ -1155,7 +891,6 @@ beneficial than original value which could perhaps be obtainable in a different 
         'suite' => 'No suitable payment method found, please contact admin',
 
     ],
-
     'withdrawal_details' => [
         'bank' => 'Bank',
         'transfer' => 'Transfer',
@@ -1179,7 +914,6 @@ beneficial than original value which could perhaps be obtainable in a different 
         'xr_addres' => 'XRP Address',
         'bn_addres' => 'BNB Address ',
     ],
-
     'register' => [
         'crt' => 'Create An Account',
         'full' => 'Full Name',
@@ -1314,7 +1048,136 @@ beneficial than original value which could perhaps be obtainable in a different 
         '' => '',
         '' => '',
     ],
-
-
-
+    'fx_calc' => 'All-In-One FX Calculator',
+    'worlds_num1' => 'Trade with the world’s #1 FX broker!',
+    'years_of_exl' => 'With 15+ years of excellence and innovation, we provide high-quality access to financial markets, through our advanced execution model. Discover the world of online trading with CFDs on thousands of instruments in 6 asset classes.',
+    'trade_70_major' => 'Trade 70 major, minor & exotic currency pairs with competitive trading conditions.',
+    'metls' => 'Metals',
+    'trade_metal_comodities' => 'Trade metal commodities such as Gold, Silver & Platinum',
+    'trade_major_and_minor' => 'Trade Major and Minor Index CFDs Spot and Futures from around the globe',
+    'shres' => 'Shares',
+    'hundreds_of_companies' => 'Hundreds of public companies from the US, UK, France & Germany available to trade',
+    'Cryptocurrencies' => 'Cryptocurrencies',
+    'trde_bitcn' => 'Trade Bitcoin, Ether, Doge & more crypto & altcoin CFDs',
+    'discover_opportunities' => 'Discover opportunities on UK & US Crude Oil, as well as Natural Gas Spot and Future CFDs',
+    'read_more' => 'Read more',
+    'trade_with' => 'Trade with ',
+    'world_leading' => 'World Leading',
+    'broker' => 'broker',
+    'awards' => '90+ awards',
+    'five_star' => '5 star services',
+    'four_industry' => '4 industry regulations',
+    'trade_like_a_pro' => 'Trade Like A Pro!',
+    'trade_cdfs' => 'Trade CFDs on a wide range of instruments, including popular FX pairs, Futures, Indices, Metals, Energies and Shares and experience the global markets at your fingertips.',
+    'open_acount' => 'Open an Account',
+    'compliment_trading' => 'Compliment your trading with our exclusive tools',
+    'axepro_clients' => 'AxePro clients are provided with exclusive access to trading tools, news and analysis.',
+    'calender' => 'Calender',
+    'econs_earning' => 'Economic & Earnings Calendars',
+    'analysis' => 'Analysis',
+    'trading_central' => 'Trading Central Technical Analysis',
+    'reviews' => 'Reviews',
+    'daily_market_reviews' => 'Daily market reviews from the AxePro Analyst Team',
+    'knowledge' => 'Knowledge',
+    'education' => 'Educational Resources',
+    'trading_flexibility' => 'Trading Flexibility',
+    'winning_platform' => 'Winning Platform',
+    'competitive_pricing' => 'Competitive Pricing',
+    'markets' => 'markets',
+    'sell' => 'sell',
+    'buy' => 'buy',
+    'change' => 'change',
+    'platform' => 'Check your platform for the most up to date prices.',
+    'why_trade' => 'Why Trade with AxePro',
+    'improve_result' => 'Improve your trading results with our industry-leading technology',
+    'best_cdf' => 'Best CFD Broker',
+    'summit' => 'TradeON Summit 2020',
+    'execution' => 'Best Execution',
+    'expo' => 'Forex EXPO Dubai 2020',
+    'best_platform' => 'Best Trading Platform',
+    'london_summit' => 'London Summit 2020',
+    'speed' => 'executions speed*',
+    'support' => 'support',
+    'spread' => 'spread from 0.0 pips',
+    'instruments' => 'trading instruments',
+    'creat_account' => 'Create account',
+    'discover' => 'Discover platform',
+    'choose_platform' => 'Choose Your Platform',
+    'platforms' => 'We provide our clients with a wide range of desktop, web and mobile trading platforms including AxePro platform MetaTrader 5 and cTrader.',
+    'axepro_platform' => 'AxePro Platform',
+    'start_trading' => 'Start trading',
+    'six_years' => '6 years',
+    'fifthteen' => '15 years',
+    'regulated' => 'UK Regulated',
+    'cus_support' => 'Customer supports',
+    'five_years' => '5+ Years of Excellence',
+    'global_broker' => 'A Truly Global Broker',
+    'growth' => 'AxePro has grown exponentially over the years and has become renowned for providing elite trading conditions to its clients',
+    'seamless' => 'Seamless Trading Experience',
+    'int_awards' => '90+ UK & International Awards',
+    'our_work' => 'Our work has been repeatedly acknowledged by the industry with over 90 awards received to date for the quality of our platforms and services',
+    'transparency' => 'Dedicated to transparency',
+    'trusted' => 'Trusted and Fully Regulated',
+    'commitment' => 'We maintain an unwavering commitment to fair and ethical trading practices',
+    'best_in_class' => 'Best in Class MetaTrader Broker',
+    'all_in_one' => 'All-In-One FX Calculator',
+    'precautions' => 'Precautions You Should Take',
+    'your_data' => 'How Axepro Protects Your Data',
+    'suspicious' => 'Report Suspicious Inbox Messages',
+    'fraud' => 'Reporting Fraud immediately',
+    'download_now' => 'Download Now',
+    'markets' => 'Markets',
+    'frex' => 'Forex',
+    'fts' => 'Futures',
+    'idc' => 'Indices',
+    'shr' => 'Shares',
+    'mtl' => 'Metals',
+    'egy' => 'Energies',
+    'cryptocurrencies' => 'Cryptocurrencies',
+    'tools' => 'Tools',
+    'pfm' => 'Platforms',
+    'wtd' => 'Web Trader',
+    'mtd' => 'MetaTrader 5',
+    'trading_tools' => 'Trading Tools',
+    'ecn_cal' => 'Economic Calender',
+    'calc' => 'Calculator',
+    'nws_pg' => 'Forex News',
+    'company' => 'Company',
+    'abt' => "About Us",
+    'cdt' => 'Credit Score',
+    'sec' => 'Security',
+    'ctc' => 'Contact Us',
+    'crt_acnt' => 'Create Account',
+    'log' => 'Login',
+    'excellence' => "5 years of excellence",
+    'gbl_awd' => 'More than 15 international awards',
+    'cus_sup' => '24/6 customer support',
+    'copyright' => 'Copyright ©2022 AxeProGroup. All rights reserved.',
+    'copyright_2' => 'Trading in derivatives and leveraged products carries a high level of risk, including the risk of losing much more than your initial investment. It is not suitable for everyone. Before making a decision about a financial product, you should obtain and review our Product Disclosure Statement (PDS) and Financial Services Guide (FSG), available on our website, and seek independent advice if necessary.',
+    'industry_regulations' => '4 Regulations',
+    'clients' => "1k+ clients",
+    'econs_earnings' => "Economic & Earnings Calendars",
+    'frx_nws_page' => "Market News",
+    'docs' => 'DOCUMENTS',
+    'pri_pol' => 'Privacy Policy',
+    'risk_dis' => 'Risk Disclosure',
+    'trms' => 'Terms of Service',
+    'ordr' => 'Order Execution Policy',
+    'policies' => "Policies",
+    'address' => 'Address',
+    'postal_code' => 'Postal Code',
+    'first_name' => 'First Name',
+    'last_name' => 'Last Name',
+    'dob' => 'Date of Birth',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
 ];

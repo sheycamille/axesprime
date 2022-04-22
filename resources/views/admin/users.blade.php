@@ -47,15 +47,13 @@
                     @endif
                     <div class="row">
                         <div class="col">
-                            @if(auth('admin')->user()->hasPermissionTo('musers-messageall', 'admin'))
+                            @if(auth('admin')->user()->hasPermissionTo('muser-messageall', 'admin'))
                             <a href="#" data-toggle="modal" data-target="#sendmailModal"
                                 class="btn btn-primary btn-md mb-2">Message all</a>
                             @endif
 
-                            @if (\App\Models\Setting::getValue('enable_kyc') == 'yes')
-                            @if(auth('admin')->user()->hasPermissionTo('mkyc-list', 'admin'))
+                            @if (\App\Models\Setting::getValue('enable_kyc') == 'yes' && auth('admin')->user()->hasPermissionTo('mkyc-list', 'admin'))
                             <a href="{{ route('kyc') }}" class="btn btn-warning btn-md mb-2">KYC</a>
-                            @endif
                             @endif
                         </div>
                     </div>
@@ -100,13 +98,13 @@
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink"
                                                     style="z-index: 999;">
-                                                    @if(auth('admin')->user()->hasPermissionTo('musers-access-wallet',
+                                                    @if(auth('admin')->user()->hasPermissionTo('muser-access-wallet',
                                                     'admin'))
                                                     <a class="m-1 btn btn-info btn-sm"
                                                         href="{{ route('userwallet', $user->id) }}">See
                                                         Wallet</a>
                                                     @endif
-                                                    @if(auth('admin')->user()->hasPermissionTo('musers-block',
+                                                    @if(auth('admin')->user()->hasPermissionTo('muser-block',
                                                     'admin'))
                                                     @if ($user->status == null || $user->status == 'blocked')
                                                     <a class="m-1 btn btn-primary btn-sm"
@@ -116,7 +114,7 @@
                                                         href="{{ route('userublock', $user->id) }}">Block</a>
                                                     @endif
                                                     @endif
-                                                    @if(auth('admin')->user()->hasPermissionTo('musers-credit-debit',
+                                                    @if(auth('admin')->user()->hasPermissionTo('muser-credit-debit',
                                                     'admin'))
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#topupModal{{ $user->id }}"
@@ -125,13 +123,13 @@
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#resetpswdModal{{ $user->id }}"
                                                         class="m-1 btn btn-warning btn-xs">Reset Password</a>
-                                                    @if(auth('admin')->user()->hasPermissionTo('musers-delete',
+                                                    @if(auth('admin')->user()->hasPermissionTo('muser-delete',
                                                     'admin'))
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#deleteModal{{ $user->id }}"
                                                         class="m-1 btn btn-danger btn-xs">Delete</a>
                                                     @endif
-                                                    @if(auth('admin')->user()->hasPermissionTo('musers-edit', 'admin'))
+                                                    @if(auth('admin')->user()->hasPermissionTo('muser-edit', 'admin'))
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#edituser{{ $user->id }}"
                                                         class="m-1 btn btn-secondary btn-xs">Edit</a>
@@ -144,14 +142,14 @@
                                                         Extra Accounts</a>
                                                     @endif
 
-                                                    @if(auth('admin')->user()->hasPermissionTo('musers-messageall',
+                                                    @if(auth('admin')->user()->hasPermissionTo('muser-messageall',
                                                     'admin'))
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#sendmailtooneuserModal{{ $user->id }}"
                                                         class="m-1 btn btn-info btn-xs">Send Message</a>
                                                     @endif
 
-                                                    @if(auth('admin')->user()->hasPermissionTo('musers-access-account',
+                                                    @if(auth('admin')->user()->hasPermissionTo('muser-access-account',
                                                     'admin'))
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#switchuserModal{{ $user->id }}"

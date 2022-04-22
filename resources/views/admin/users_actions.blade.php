@@ -15,9 +15,9 @@
                     <select required class="form-control" name="account_id" id="account_id" required>
                         <option value="" disabled selected>Choose Acount</option>
                         @foreach ($user->accounts() as $account)
-                        <option value="{{ $account->id }}">{{ $account->login }} |
-                            {{ $account->server }}
-                        </option>
+                            <option value="{{ $account->id }}">{{ $account->login }} |
+                                {{ $account->server }}
+                            </option>
                         @endforeach
                     </select>
                     <br>
@@ -64,8 +64,9 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p>This message will be sent to {{ $user->name }} {{ $user->l_name }} </p>
-                <form style="padding:3px;" role="form" method="post" action="{{ route('sendmailtooneuser', $user->id) }}">
+                <p>This message will be sent to {{ $user->name }} </p>
+                <form style="padding:3px;" role="form" method="post"
+                    action="{{ route('sendmailtooneuser', $user->id) }}">
                     <input type="hidden" name="user_id" value="{{ $user->id }}">
                     <textarea placeholder="Type your message here" class="form-control" name="message" row="3"
                         placeholder="Type your message here" required></textarea><br />
@@ -87,8 +88,7 @@
         <div class="modal-content">
             <div class="modal-header">
 
-                <h4 class="modal-title">Add Trading History for {{ $user->name }}
-                    {{ $user->l_name }} </h4>
+                <h4 class="modal-title">Add Trading History for {{ $user->name }}</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -129,15 +129,103 @@
                 <form style="padding:3px;" role="form" method="post" action="{{ route('updateuser', $user->id) }}">
                     <input style="padding:5px;" class="form-control" value="{{ $user->name }}" type="text"
                         disabled><br />
-                    <h5 class="">Fullname</h5>
-                    <input style="padding:5px;" class="form-control" value="{{ $user->name }}" type="text" name="name"
-                        required><br />
-                    <h5 class="">Email</h5>
-                    <input style="padding:5px;" class="form-control" value="{{ $user->email }}" type="text" name="email"
-                        required><br />
-                    <h5 class="">Phone Number</h5>
-                    <input style="padding:5px;" class="form-control" value="{{ $user->phone }}" type="text" name="phone"
-                        required><br />
+
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="first_name">@lang('message.first_name')</label>
+                                <input class="form-control" id="first_name" type="text"
+                                    name="first_name"
+                                    placeholder="@lang('message.first_name')"
+                                    value="{{ $user->first_name }}">
+                            </div>
+
+                            <div class="form-group col-sm-6">
+                                <label for="last_name">@lang('message.last_name')</label>
+                                <input class="form-control" id="last_name" type="text"
+                                    name="last_name"
+                                    placeholder="@lang('message.last_name')"
+                                    value="{{ $user->last_name }}">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="email">@lang('message.body.email') </label>
+                                <input class="form-control" id="email" type="text"
+                                    name="email"
+                                    placeholder="@lang('message.body.enter_email')"
+                                    value="{{ $user->email }}">
+                            </div>
+
+                            <div class="form-group col-sm-6">
+                                <label for="dob">@lang('message.dob')</label>
+                                <input class="form-control" id="dob" type="date"
+                                    name="dob"
+                                    placeholder="@lang('message.dob')"
+                                    value="{{ $user->dob }}">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="phone">@lang('message.body.phone')</label>
+                                <input class="form-control" id="phone" type="text"
+                                    name="phone"
+                                    placeholder="@lang('message.body.enter_phone')"
+                                    value="{{ $user->phone }}">
+                            </div>
+
+                            <div class="form-group col-sm-6">
+                                <label for="postal-code">@lang('message.body.zip') /
+                                    @lang('message.postal_code')</label>
+                                <input class="form-control" id="postal-code" type="text"
+                                    placeholder="Zip Code" name="zip_code"
+                                    value="{{ $user->zip_code }}">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label
+                                    for="country">@lang('message.register.country')</label>
+                                <select class="form-control" name="country" id="country"
+                                    required>
+                                    <option selected disabled>
+                                        @lang('message.body.country')
+                                    </option>
+                                    @foreach ($countries as $country)
+                                        <option
+                                            @if ($user->country_id == $country->id || $user->country_id == $name) selected @endif
+                                            value="{{ $country->id }}">
+                                            {{ ucfirst($country->name) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="address">@lang('message.address')</label>
+                                <input type="text" class="form-control" name="address"
+                                    value="{{ $user->address }}" id="address"
+                                    placeholder="@lang('message.address')">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="state">@lang('message.register.state')</label>
+                                <input type="text" class="form-control" name="state"
+                                    value="{{ $user->state }}" id="state"
+                                    placeholder="@lang('message.register.enter_stt')">
+                            </div>
+
+                            <div class="form-group col-sm-6">
+                                <label for="city">@lang('message.body.city')</label>
+                                <input type="text" class="form-control" name="town"
+                                    value="{{ $user->town }}" id="town"
+                                    placeholder="@lang('message.register.town')">
+                            </div>
+                        </div>
+
                     <h5 class="">Referral link</h5>
                     <input style="padding:5px;" class="form-control" value="{{ $user->ref_link }}" type="text"
                         name="ref_link"><br />
@@ -162,8 +250,8 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p class="">Are you sure you want to reset password for {{ $user->name }}
-                    {{ $user->l_name }} to <span class="text-primary font-weight-bolder">user01236</span></p>
+                <p class="">Are you sure you want to reset password for {{ $user->name }} to <span
+                        class="text-primary font-weight-bolder">user01236</span></p>
                 <a class="btn btn-primary" href="{{ url('admin/dashboard/resetpswd', $user->id) }}">Reset
                     Now</a>
             </div>
@@ -184,8 +272,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <a class="btn btn-primary" target="_bank"
-                    href="{{ route('switchtouser', $user->id) }}">Proceed</a>
+                <a class="btn btn-primary" target="_bank" href="{{ route('switchtouser', $user->id) }}">Proceed</a>
             </div>
         </div>
     </div>
@@ -204,7 +291,8 @@
             </div>
             <div class="modal-body">
                 <p>You are clearing account for {{ $user->name }} {{ $user->l_name }} to $0.00</p>
-                <a class="btn btn-primary" href="{{ url('admin/dashboard/clearacct') }}/{{ $user->id }}">Proceed</a>
+                <a class="btn btn-primary"
+                    href="{{ url('admin/dashboard/clearacct') }}/{{ $user->id }}">Proceed</a>
             </div>
         </div>
     </div>
@@ -225,7 +313,8 @@
             <div class="modal-body p-3">
                 <p class="">Are you sure you want to delete {{ $user->name }}
                     {{ $user->l_name }}</p>
-                <a class="btn btn-danger" href="{{ url('admin/dashboard/delsystemuser') }}/{{ $user->id }}">Yes i'm
+                <a class="btn btn-danger" href="{{ url('admin/dashboard/delsystemuser') }}/{{ $user->id }}">Yes
+                    i'm
                     sure</a>
             </div>
         </div>
@@ -253,15 +342,16 @@
                         <div class="cell">Action</div>
                     </div>
                     @foreach ($user->accounts() as $acc)
-                    <div class="row">
-                        <div class="cell" scope="row">{{ $acc->id }}</div>
-                        <div class="cell">{{ $acc->login }}</div>
-                        <div class="cell">{{ $acc->balance }}</div>
-                        <div class="cell">
-                            <a href="{{ route('dellaccounts', $acc->id) }}" class="m-1 btn btn-danger btn-xs">Delete
-                                Account</a>
+                        <div class="row">
+                            <div class="cell" scope="row">{{ $acc->id }}</div>
+                            <div class="cell">{{ $acc->login }}</div>
+                            <div class="cell">{{ $acc->balance }}</div>
+                            <div class="cell">
+                                <a href="{{ route('dellaccounts', $acc->id) }}"
+                                    class="m-1 btn btn-danger btn-xs">Delete
+                                    Account</a>
+                            </div>
                         </div>
-                    </div>
                     @endforeach
                 </div>
             </div>

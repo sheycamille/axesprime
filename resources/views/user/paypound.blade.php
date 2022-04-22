@@ -74,12 +74,12 @@
                                                                 <h5 class="">First Name*</h5>
                                                                 <input type="text" name="first_name"
                                                                     class="form-control"
-                                                                    value="{{ Auth::user()->name }}" required>
+                                                                    value="{{ Auth::user()->first_name }}" required>
                                                             </div>
                                                             <div class="col-md-5" style="display: inline-block;">
                                                                 <h5 class="">Last Name*</h5>
                                                                 <input type="text" name="last_name" class="form-control"
-                                                                    value="{{ Auth::user()->name }}" required>
+                                                                    value="{{ Auth::user()->last_name }}" required>
                                                             </div>
                                                         </div>
                                                         <div class="form-group d-flex justify-content-center col-xs-12">

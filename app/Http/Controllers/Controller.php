@@ -124,7 +124,7 @@ class Controller extends BaseController
     }
 
 
-    protected function saveRecord($user_id, $mt5_id, $method, $amt, $proof = null, $type, $status)
+    protected function saveRecord($user_id, $mt5_id, $method, $amt, $type, $status, $proof = null)
     {
         if ($type == 'Deposit') {
             $record = new Deposit();

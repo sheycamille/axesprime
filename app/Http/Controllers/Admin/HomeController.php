@@ -20,10 +20,19 @@ use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
-    // function __construct()
-    // {
-    //     $this->middleware('auth:admin');
-    // }
+    function __construct()
+    {
+        $this->middleware('auth:admin');
+        $this->middleware('permission:mdeposit-list', ['only' => ['mdeposits']]);
+        $this->middleware('permission:mdeposit-process', ['only' => ['pdeposit', 'rejectdeposit']]);
+        $this->middleware('permission:mwithdrawal-list', ['only' => ['mwithdrawals']]);
+        $this->middleware('permission:mwithdrawal-process', ['only' => ['pwithdrawal', 'rejectwithdrawal']]);
+        $this->middleware('permission:macctype-list|macctype-create|macctype-edit|macctype-delete', ['only' => ['accounttypes']]);
+        $this->middleware('permission:macctype-create', ['only' => ['showaddaccounttype', 'addaccounttype']]);
+        $this->middleware('permission:macctype-edit', ['only' => ['updateaccounttype']]);
+        $this->middleware('permission:macctype-delete', ['only' => ['delaccounttype']]);
+        $this->middleware('permission:mftd-list', ['only' => ['mftds']]);
+    }
 
 
     /**
@@ -138,7 +147,7 @@ class HomeController extends Controller
 
 
     // Return add account type page
-    public function ashowddaccounttype(Request $request)
+    public function showaddaccounttype(Request $request)
     {
         return view('admin.addaccounttype', [
             'title' => "Add Account Type",

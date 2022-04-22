@@ -12,13 +12,18 @@ use Spatie\Permission\Models\Permission;
 
 class PermController extends Controller
 {
-    // function __construct()
-    // {
-    //     $this->middleware('auth:admin');
-    // }
+    function __construct()
+    {
+        $this->middleware('auth:admin');
+        $this->middleware('permission:mperm-list', ['only' => ['list']]);
+        $this->middleware('permission:mperm-list|mperm-create|mperm-edit|mperm-delete', ['only' => ['index']]);
+        $this->middleware('permission:mperm-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:mperm-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:mperm-delete', ['only' => ['destroy']]);
+    }
 
 
-    /**
+    /**s
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -45,7 +50,7 @@ class PermController extends Controller
     }
 
 
-    public function delete($id)
+    public function destroy($id)
     {
         DB::table("permissions")->where('id', $id)->delete();
         return redirect()->route('manageperms')->with('message', 'Permission deleted successfully');

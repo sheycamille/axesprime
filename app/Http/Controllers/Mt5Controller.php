@@ -99,8 +99,8 @@ class Mt5Controller extends Controller
         $user->setLeverage($request->leverage);
         $user->setPhone($oUser->phone);
         $user->setAddress($oUser->address);
-        $user->setCity($oUser->town->name);
-        $user->setState($oUser->state->name);
+        $user->setCity($oUser->town);
+        $user->setState($oUser->state);
         $user->setCountry($oUser->country->name);
         $user->setZipCode($oUser->zip_code);
         $user->setMainPassword($password);

@@ -120,7 +120,9 @@ class UserController extends Controller
     {
         User::where('id', Auth::user()->id)
             ->update([
-                'name' => $request->name,
+                'name' => $request->first_name . ' ' . $request->last_name,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
                 'dob' => $request->dob,
                 'phone' => $request->phone,
                 'address' => $request->address,
@@ -313,9 +315,10 @@ class UserController extends Controller
             }
         }
 
-        // ensuring withdrawals of at least $100
-        if ($request->amount <= 100)
-            $to_withdraw = 100;
+        // ensuring withdrawals of at least $50
+        $to_withdraw = $request->amount;
+        if ($request->amount <= 50)
+            $to_withdraw = 50;
         else
             $to_withdraw = round($request->amount);
 
@@ -1226,9 +1229,9 @@ class UserController extends Controller
         $data['success_url'] = route('verifyywallitpaycharge');
         $data['error_url'] = route('verifyywallitpaycharge');
 
-        var_dump($data);
-
         unset($data['_token']);
+
+        var_dump($data);
 
         $response = Http::withToken(config('ywallitpay.api_key'))->withHeaders([
             'Content-Type' => 'application/json',
@@ -1332,6 +1335,7 @@ class UserController extends Controller
 
     public function startVirtualPayCharge(Request $request)
     {
+        dd($request);
         $user = User::where('id', Auth::user()->id)->first();
 
         $mt5_id = $request->session()->get('mt5_account_id');
@@ -1465,7 +1469,7 @@ class UserController extends Controller
         $merchantAuthentication->setTransactionKey(config('authorizenet.transaction_key'));
 
         // Set the transaction's refId
-        $refId = 'refuid' . $user ->id . 'ts' . time();
+        $refId = $user ->id . time();
         $cardNumber = preg_replace('/\s+/', '', $request->cardNumber);
 
         // Create the payment data for a credit card

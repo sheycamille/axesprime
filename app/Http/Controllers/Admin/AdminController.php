@@ -20,13 +20,23 @@ use Carbon\Carbon;
 
 class AdminController extends Controller
 {
-    // function __construct()
-    // {
-    //     $this->middleware('auth:admin');
-    // }
+    function __construct()
+    {
+        $this->middleware('auth:admin');
+        $this->middleware('permission:madmin-list|madmin-create|madmin-edit|madmin-delete', ['only' => ['index']]);
+        $this->middleware('permission:madmin-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:madmin-edit', ['only' => ['update', 'adminchangepassword', 'adminresetadminpass', 'adminupdatepass']]);
+        $this->middleware('permission:madmin-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:madmin-message', ['only' => ['sendmail']]);
+        $this->middleware('permission:madmin-block', ['only' => ['ublock', 'unblock']]);
+        $this->middleware('permission:', ['only' => ['']]);
+        $this->middleware('permission:', ['only' => ['']]);
+        $this->middleware('permission:', ['only' => ['']]);
+        $this->middleware('permission:', ['only' => ['']]);
+    }
 
 
-    public function list()
+    public function index()
     {
         $roles = Role::get();
         $admins = Admin::orderby('id', 'desc')->get();

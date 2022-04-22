@@ -19,15 +19,19 @@ class SettingsController extends Controller
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
-    // function __construct()
-    // {
-    //     $this->middleware('auth:admin');
-    // }
+    function __construct()
+    {
+        $this->middleware('auth:admin');
+        $this->middleware('permission:msetting-list|msetting-create|msetting-edit|msetting-delete', ['only' => ['index', 'prefsettings', 'paysettings']]);
+        $this->middleware('permission:msetting-create', ['only' => ['create', 'store', 'addwdmethod']]);
+        $this->middleware('permission:msetting-edit', ['only' => ['updatewebinfo', 'updatepreference', 'updatesettings', 'updatewdmethod']]);
+        $this->middleware('permission:msetting-delete', ['only' => ['destroy', 'deletewdmethod']]);
+    }
 
 
 
     //return settings form
-    public function settings()
+    public function index()
     {
         $countries = Country::whereStatus('active')->get();
         return view('admin.settings')->with(array(

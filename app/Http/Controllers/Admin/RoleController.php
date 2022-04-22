@@ -18,14 +18,14 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // function __construct()
-    // {
-    //     $this->middleware('auth:admin');
-    //     // $this->middleware('permission:mrole-list|mrole-create|mrole-edit|mrole-delete', ['only' => ['index', 'store']]);
-    //     // $this->middleware('permission:mrole-create', ['only' => ['create', 'store']]);
-    //     // $this->middleware('permission:mrole-edit', ['only' => ['edit', 'update']]);
-    //     // $this->middleware('permission:mrole-delete', ['only' => ['destroy']]);
-    // }
+    function __construct()
+    {
+        $this->middleware('auth:admin');
+        $this->middleware('permission:mrole-list|mrole-create|mrole-edit|mrole-delete', ['only' => ['index']]);
+        $this->middleware('permission:mrole-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:mrole-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:mrole-delete', ['only' => ['destroy']]);
+    }
 
 
     //Return Roles route--------------------------------------------------------------------------------
@@ -88,7 +88,7 @@ class RoleController extends Controller
     }
 
 
-    public function delete($id)
+    public function destroy($id)
     {
         DB::table("roles")->where('id', $id)->delete();
         return redirect()->route('manageroles')->with('success', 'Role deleted successfully');
