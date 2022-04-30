@@ -122,6 +122,7 @@ class HomeController extends Controller
         ));
     }
 
+    
     //Return KYC route
     public function kyc()
     {
@@ -130,7 +131,10 @@ class HomeController extends Controller
                 'title' => 'KYC',
                 'users' => User::where('id_card', '!=', NULL)
                     ->where('id_card_back', '!=', NULL)
-                    ->where('passport', '!=', NULL)->where('address_document', '!=', NULL)->get(),
+                    ->where('passport', '!=', NULL)
+                    ->where('address_document', '!=', NULL)
+                    ->orderBy('docs_uploaded_date', 'DESC')
+                    ->get(),
             ));
     }
 

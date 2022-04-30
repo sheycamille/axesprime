@@ -157,7 +157,7 @@
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>
                                 </table>
-                                <?php echo e($users->links('vendor.pagination.default')); ?>
+                                <?php echo e($users->links('vendor.pagination.bootstrap-4')); ?>
 
                             </div>
                         </div>
