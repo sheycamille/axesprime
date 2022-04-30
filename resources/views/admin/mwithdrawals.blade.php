@@ -91,11 +91,11 @@
                                                     <a class="@if ($withdrawal->status == 'Processed') btn-success @else btn-danger @endif btn-sm"
                                                         href="#">{{ $withdrawal->status }}</a>
                                                     @else
-                                                    @if(auth('admin')->user()->hasPermissionTo('mwithdrawals-process', 'admin'))
+                                                    @if(auth('admin')->user()->hasPermissionTo('mwithdrawal-process', 'admin'))
                                                     <a class="m-1 btn btn-primary btn-sm"
                                                         href="{{ route('pwithdrawal', $withdrawal->id) }}">Process</a>
                                                     @endif
-                                                    @if(auth('admin')->user()->hasPermissionTo('mwithdrawals-process', 'admin'))
+                                                    @if(auth('admin')->user()->hasPermissionTo('mwithdrawal-process', 'admin'))
                                                     <a class="m-1 btn btn-primary btn-sm" data-toggle="modal"
                                                         data-target="#rejctModal{{ $withdrawal->id }}"
                                                         href="#">Reject</a>

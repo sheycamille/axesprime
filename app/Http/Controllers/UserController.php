@@ -1231,20 +1231,16 @@ class UserController extends Controller
 
         unset($data['_token']);
 
-        var_dump($data);
-
         $response = Http::withToken(config('ywallitpay.api_key'))->withHeaders([
             'Content-Type' => 'application/json',
             'Accept' => 'application/json'
         ])->post('https://app.ywallitpay.com/api/v1/transactions', $data);
 
-        $resp = $response;
-
-        var_dump($response->json());
+        $resp = $response->json();
         dd($resp);
 
-        if ($resp->status == 'C') {
-            $amt = $resp->amount;
+        if ($resp['status'] == 'C') {
+            $amt = $resp['amount'];
             $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
             if ($data['status']) {
                 $mt5->balance = $mt5->balance + $data['data']->getAmount();
@@ -1273,15 +1269,13 @@ class UserController extends Controller
             Mail::bcc($user->email)->send(new NewNotification($objDemo));
 
             return redirect(route('account.liveaccounts'))->with('message', 'Your deposit was successfully processed!');
-        } elseif ($resp->status == 'fail') {
-            return redirect()->back()->with('message', $resp->message);
-        } elseif ($resp->status == '3d_redirect') {
-            // save and confirm the deposit
-            $this->saveRecord($user->id, $mt5_id, 'YWallitPay', $amt, 'YWallitPay Order Id: ' . $resp->data->order_id, 'Deposit', 'Pending');
+        } elseif ($resp['status'] == 'S') {
+            // save deposit as pending and redirect to 3ds
+            $this->saveRecord($user->id, $mt5_id, 'YWallitPay', $amt, 'YWallitPay Order Id: ', 'Deposit', 'Pending');
 
-            return redirect($resp->redirect_3ds_url)->with('message', 'Redirecting you to complete 3DS security challenge.');
+            return redirect($resp['redirect_url'])->with('message', $resp['message']);
         } else {
-            return redirect()->back()->with('message', $resp->message);
+            return redirect()->back()->with('message', $resp['message']);
         }
     }
 
@@ -1293,10 +1287,11 @@ class UserController extends Controller
         $dp = $user->dp()->latest()->first();
 
         $mt5_id = $request->session()->get('mt5_account_id');
+        dd($data);
 
         $mt5 = Mt5Details::find($mt5_id);
 
-        if ($data['status'] == 'success') {
+        if ($data['status'] == 'C') {
             $amt = $dp->amount;
             $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
             if ($data['status']) {
@@ -1310,6 +1305,7 @@ class UserController extends Controller
             $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
 
             // update the deposit
+            $dp->proof = $dp->proof . '';
             $dp->status = "Processed";
             $dp->save();
 

@@ -56,14 +56,27 @@
 
                             <div class="form-row">
                                 <div class="form-group col-md-12">
-                                    @if ($errors->has('name'))
+                                    @if ($errors->has('first_name'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong>{{ $errors->first('first_name') }}</strong>
                                     </span>
                                     @endif
-                                    <label for="name">@lang('message.register.full'):</label>
-                                    <input type="text" class="mr-2 form-control" name="name" value="{{ old('name') }}"
-                                        id="name" placeholder="@lang('message.register.enter_ful')">
+                                    <label for="first_name">@lang('message.first_name'):</label>
+                                    <input type="text" class="mr-2 form-control" name="first_name" value="{{ old('first_name') }}"
+                                        id="first_name" placeholder="@lang('message.first_name')">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    @if ($errors->has('last_name'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('last_name') }}</strong>
+                                    </span>
+                                    @endif
+                                    <label for="last_name">@lang('message.last_name'):</label>
+                                    <input type="text" class="mr-2 form-control" name="last_name" value="{{ old('last_name') }}"
+                                        id="last_name" placeholder="@lang('message.last_name')">
                                 </div>
                             </div>
 

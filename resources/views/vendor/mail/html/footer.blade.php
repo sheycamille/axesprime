@@ -13,23 +13,12 @@
                 </tbody>
             </table>
             <div style="font-size:0;text-align:center padding-bottom: 50px;">
-
-                <div style="width:100%;max-width:300px;display:inline-block;vertical-align:top;height:100px">
-                    <h2 style="text-align:center;">Metatrader 5</h2>
-                    <a style="text-align:center;" href="{{ asset('downloads/axeprogroupmt5setup.exe') }}">
-                        <img class="col-md-6" src="{{ asset('dash/images/windows.png') }}" alt="MT5" tilte="MT5"
-                            height="80" />
-                        <br>
-                        <span>Download Now</span>
-                    </a>
-                </div>
-
                 <div style="width:100%;max-width:300px;display:inline-block;vertical-align:top;height:100px">
                     <h2 style="text-align:center;">Android App</h2>
                     <a style="text-align:center;"
                         href="https://download.mql5.com/cdn/mobile/mt5/android?server=AxesPrimeLtd-Demo,AxesPrimeLtd-Live">
-                        <img class="" src="{{ asset('dash/images/google_play_badge.png') }}"
-                            alt="Andriod Download" tilte="Andriod Download" height="66" />
+                        <img class="" src="{{ asset('dash/images/google_play_badge.png') }}" alt="Andriod Download"
+                            tilte="Andriod Download" height="66" />
                         <br><br>
                         <span>Download Now</span>
                     </a>
@@ -43,6 +32,16 @@
                         <img src="{{ asset('dash/images/app-store-en.png') }}" alt="iPhone Download"
                             tilte="iPhone Download" height="66" />
                         <br><br>
+                        <span>Download Now</span>
+                    </a>
+                </div>
+
+                <div style="width:100%;max-width:300px;display:inline-block;vertical-align:top;height:100px">
+                    <h2 style="text-align:center;">Metatrader 5</h2>
+                    <a style="text-align:center;" href="{{ asset('downloads/axeprogroupmt5setup.exe') }}">
+                        <img class="col-md-6" src="{{ asset('dash/images/windows.png') }}" alt="MT5" tilte="MT5"
+                            height="80" />
+                        <br>
                         <span>Download Now</span>
                     </a>
                 </div>

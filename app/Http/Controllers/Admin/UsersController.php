@@ -336,6 +336,7 @@ class UsersController extends Controller
         $this->setServerConfig('live');
 
         $msg = 'Action Successful';
+        $amt = $request->amount;
 
         if ($request->t_type == "Credit") {
             $data = ['status' => false];
@@ -345,16 +346,16 @@ class UsersController extends Controller
                 return redirect()->back()->with('message', 'MT5 account not found');
 
             if ($request->type == "Bonus") {
-                $data = $this->performTransaction($mt5->login, $request->amount, Trade::DEAL_CREDIT);
-                $mt5->bonus += $request->amount;
+                $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_CREDIT);
+                $mt5->bonus += $amt;
             } elseif ($request->type == "Balance") {
-                $data = $this->performTransaction($mt5->login, $request->amount, Trade::DEAL_BALANCE);
-                $mt5->balance += $request->amount;
+                $data = $this->performTransaction($mt5->login, $amt, Trade::DEAL_BALANCE);
+                $mt5->balance += $amt;
             }
 
             if ($data['status'] == true) {
                 // Create deposit record
-                $this->saveRecord($request->user_id, $request->account_id, 'Express Credit', $request->amount, null, 'Deposit', 'Processed');
+                $this->saveRecord($request->user_id, $request->account_id, 'Express Credit', $request->amount, 'Deposit', 'Processed');
 
                 // save transaction
                 $this->saveTransaction($request->user_id, $request->amount, 'Express Credit', $request->type);
@@ -373,19 +374,19 @@ class UsersController extends Controller
                 return redirect()->back()->with('message', 'MT5 account not found');
 
             if ($request->type == "Bonus") {
-                $data = $this->performTransaction($mt5->login, -$request->amount, Trade::DEAL_CREDIT);
-                $mt5->bonus -= $request->amount;
+                $data = $this->performTransaction($mt5->login, -$amt, Trade::DEAL_CREDIT);
+                $mt5->bonus -= $amt;
             } elseif ($request->type == "Balance") {
-                $data = $this->performTransaction($mt5->login, -$request->amount, Trade::DEAL_BALANCE);
-                $mt5->balance -= $request->amount;
+                $data = $this->performTransaction($mt5->login, -$amt, Trade::DEAL_BALANCE);
+                $mt5->balance -= $amt;
             }
 
             if ($data['status']) {
                 // create withdrawal record
-                $this->saveRecord($request->user_id, $request->account_id, 'Express Debit', $request->amount, null, 'Withdrawal', 'Processed');
+                $this->saveRecord($request->user_id, $request->account_id, 'Express Debit', $amt, 'Withdrawal', 'Processed');
 
                 // save transaction
-                $this->saveTransaction($request->user_id, $request->amount, 'Express Debit', $request->type);
+                $this->saveTransaction($request->user_id, $amt, 'Express Debit', $request->type);
 
                 $msg = 'The user\'s account has been successfully debited!';
                 $mt5->save();

@@ -45,6 +45,7 @@
                         </div>
                     </div>
                     @endif
+
                     <div class="row">
                         <div class="col">
                             @if(auth('admin')->user()->hasPermissionTo('muser-messageall', 'admin'))
@@ -52,7 +53,8 @@
                                 class="btn btn-primary btn-md mb-2">Message all</a>
                             @endif
 
-                            @if (\App\Models\Setting::getValue('enable_kyc') == 'yes' && auth('admin')->user()->hasPermissionTo('mkyc-list', 'admin'))
+                            @if (\App\Models\Setting::getValue('enable_kyc') == 'yes' &&
+                            auth('admin')->user()->hasPermissionTo('mkyc-list', 'admin'))
                             <a href="{{ route('kyc') }}" class="btn btn-warning btn-md mb-2">KYC</a>
                             @endif
                         </div>

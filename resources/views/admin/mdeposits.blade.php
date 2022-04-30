@@ -93,7 +93,7 @@
                                                 <a class="btn btn-sm @if ($deposit->status == 'Processed') btn-success @else btn-danger @endif btn-xs"
                                                     href="#">{{ $deposit->status }}</a>
                                                 @else
-                                                @if(auth('admin')->user()->hasPermissionTo('mdeposits-process', 'admin'))
+                                                @if(auth('admin')->user()->hasPermissionTo('mdeposit-process', 'admin'))
                                                 <a class="btn btn-primary btn-sm"
                                                     href="{{ route('pdeposit', $deposit->id) }}">Process</a>
                                                 @endif
