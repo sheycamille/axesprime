@@ -158,4 +158,4 @@
             data-class="c-sidebar-minimized"></button>
     </div>
 <?php $__env->stopSection(); ?>
-<?php /**PATH /Users/wadingaleonardngonga/Documents/Projects/axesprime/resources/views/admin/sidebar.blade.php ENDPATH**/ ?>
+<?php /**PATH /Users/wadleo/Documents/Projects/axeprogroup/axepro/resources/views/admin/sidebar.blade.php ENDPATH**/ ?>

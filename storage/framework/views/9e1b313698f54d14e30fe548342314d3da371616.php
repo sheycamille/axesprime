@@ -131,102 +131,85 @@
                     <input style="padding:5px;" class="form-control" value="<?php echo e($user->name); ?>" type="text"
                         disabled><br />
 
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                <label for="first_name"><?php echo app('translator')->get('message.first_name'); ?></label>
-                                <input class="form-control" id="first_name" type="text"
-                                    name="first_name"
-                                    placeholder="<?php echo app('translator')->get('message.first_name'); ?>"
-                                    value="<?php echo e($user->first_name); ?>">
-                            </div>
-
-                            <div class="form-group col-sm-6">
-                                <label for="last_name"><?php echo app('translator')->get('message.last_name'); ?></label>
-                                <input class="form-control" id="last_name" type="text"
-                                    name="last_name"
-                                    placeholder="<?php echo app('translator')->get('message.last_name'); ?>"
-                                    value="<?php echo e($user->last_name); ?>">
-                            </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="first_name"><?php echo app('translator')->get('message.first_name'); ?></label>
+                            <input class="form-control" id="first_name" type="text" name="first_name"
+                                placeholder="<?php echo app('translator')->get('message.first_name'); ?>" value="<?php echo e($user->first_name); ?>">
                         </div>
 
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                <label for="email"><?php echo app('translator')->get('message.body.email'); ?> </label>
-                                <input class="form-control" id="email" type="text"
-                                    name="email"
-                                    placeholder="<?php echo app('translator')->get('message.body.enter_email'); ?>"
-                                    value="<?php echo e($user->email); ?>">
-                            </div>
+                        <div class="form-group col-sm-6">
+                            <label for="last_name"><?php echo app('translator')->get('message.last_name'); ?></label>
+                            <input class="form-control" id="last_name" type="text" name="last_name"
+                                placeholder="<?php echo app('translator')->get('message.last_name'); ?>" value="<?php echo e($user->last_name); ?>">
+                        </div>
+                    </div>
 
-                            <div class="form-group col-sm-6">
-                                <label for="dob"><?php echo app('translator')->get('message.dob'); ?></label>
-                                <input class="form-control" id="dob" type="date"
-                                    name="dob"
-                                    placeholder="<?php echo app('translator')->get('message.dob'); ?>"
-                                    value="<?php echo e($user->dob); ?>">
-                            </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="email"><?php echo app('translator')->get('message.body.email'); ?> </label>
+                            <input class="form-control" id="email" type="text" name="email"
+                                placeholder="<?php echo app('translator')->get('message.body.enter_email'); ?>" value="<?php echo e($user->email); ?>">
                         </div>
 
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                <label for="phone"><?php echo app('translator')->get('message.body.phone'); ?></label>
-                                <input class="form-control" id="phone" type="text"
-                                    name="phone"
-                                    placeholder="<?php echo app('translator')->get('message.body.enter_phone'); ?>"
-                                    value="<?php echo e($user->phone); ?>">
-                            </div>
+                        <div class="form-group col-sm-6">
+                            <label for="dob"><?php echo app('translator')->get('message.dob'); ?></label>
+                            <input class="form-control" id="dob" type="date" name="dob"
+                                placeholder="<?php echo app('translator')->get('message.dob'); ?>" value="<?php echo e($user->dob); ?>">
+                        </div>
+                    </div>
 
-                            <div class="form-group col-sm-6">
-                                <label for="postal-code"><?php echo app('translator')->get('message.body.zip'); ?> /
-                                    <?php echo app('translator')->get('message.postal_code'); ?></label>
-                                <input class="form-control" id="postal-code" type="text"
-                                    placeholder="Zip Code" name="zip_code"
-                                    value="<?php echo e($user->zip_code); ?>">
-                            </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="phone"><?php echo app('translator')->get('message.body.phone'); ?></label>
+                            <input class="form-control" id="phone" type="text" name="phone"
+                                placeholder="<?php echo app('translator')->get('message.body.enter_phone'); ?>" value="<?php echo e($user->phone); ?>">
                         </div>
 
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                <label
-                                    for="country"><?php echo app('translator')->get('message.register.country'); ?></label>
-                                <select class="form-control" name="country" id="country"
-                                    required>
-                                    <option selected disabled>
-                                        <?php echo app('translator')->get('message.body.country'); ?>
+                        <div class="form-group col-sm-6">
+                            <label for="postal-code"><?php echo app('translator')->get('message.body.zip'); ?> /
+                                <?php echo app('translator')->get('message.postal_code'); ?></label>
+                            <input class="form-control" id="postal-code" type="text" placeholder="Zip Code"
+                                name="zip_code" value="<?php echo e($user->zip_code); ?>">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="country"><?php echo app('translator')->get('message.register.country'); ?></label>
+                            <select class="form-control" name="country" id="country" required>
+                                <option selected disabled>
+                                    <?php echo app('translator')->get('message.body.country'); ?>
+                                </option>
+                                <?php $__currentLoopData = $countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $country): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option <?php if($user->country_id == $country->id || $user->country_id == $name): ?> selected <?php endif; ?>
+                                        value="<?php echo e($country->id); ?>">
+                                        <?php echo e(ucfirst($country->name)); ?>
+
                                     </option>
-                                    <?php $__currentLoopData = $countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $country): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <option
-                                            <?php if($user->country_id == $country->id || $user->country_id == $name): ?> selected <?php endif; ?>
-                                            value="<?php echo e($country->id); ?>">
-                                            <?php echo e(ucfirst($country->name)); ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="address"><?php echo app('translator')->get('message.address'); ?></label>
+                            <input type="text" class="form-control" name="address" value="<?php echo e($user->address); ?>"
+                                id="address" placeholder="<?php echo app('translator')->get('message.address'); ?>">
+                        </div>
+                    </div>
 
-                                        </option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </select>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <label for="address"><?php echo app('translator')->get('message.address'); ?></label>
-                                <input type="text" class="form-control" name="address"
-                                    value="<?php echo e($user->address); ?>" id="address"
-                                    placeholder="<?php echo app('translator')->get('message.address'); ?>">
-                            </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="state"><?php echo app('translator')->get('message.register.state'); ?></label>
+                            <input type="text" class="form-control" name="state" value="<?php echo e($user->state); ?>"
+                                id="state" placeholder="<?php echo app('translator')->get('message.register.enter_stt'); ?>">
                         </div>
 
-                        <div class="row">
-                            <div class="form-group col-sm-6">
-                                <label for="state"><?php echo app('translator')->get('message.register.state'); ?></label>
-                                <input type="text" class="form-control" name="state"
-                                    value="<?php echo e($user->state); ?>" id="state"
-                                    placeholder="<?php echo app('translator')->get('message.register.enter_stt'); ?>">
-                            </div>
-
-                            <div class="form-group col-sm-6">
-                                <label for="city"><?php echo app('translator')->get('message.body.city'); ?></label>
-                                <input type="text" class="form-control" name="town"
-                                    value="<?php echo e($user->town); ?>" id="town"
-                                    placeholder="<?php echo app('translator')->get('message.register.town'); ?>">
-                            </div>
+                        <div class="form-group col-sm-6">
+                            <label for="city"><?php echo app('translator')->get('message.body.city'); ?></label>
+                            <input type="text" class="form-control" name="town" value="<?php echo e($user->town); ?>" id="town"
+                                placeholder="<?php echo app('translator')->get('message.register.town'); ?>">
                         </div>
+                    </div>
 
                     <h5 class="">Referral link</h5>
                     <input style="padding:5px;" class="form-control" value="<?php echo e($user->ref_link); ?>" type="text"
@@ -254,7 +237,7 @@
             <div class="modal-body">
                 <p class="">Are you sure you want to reset password for <?php echo e($user->name); ?> to <span
                         class="text-primary font-weight-bolder">user01236</span></p>
-                <a class="btn btn-primary" href="<?php echo e(url('admin/dashboard/resetpswd', $user->id)); ?>">Reset
+                <a class="btn btn-primary" href="<?php echo e(route('resetpswd', $user->id)); ?>">Reset
                     Now</a>
             </div>
         </div>
@@ -292,9 +275,8 @@
                 <button type="button" class="close " data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p>You are clearing account for <?php echo e($user->name); ?> <?php echo e($user->l_name); ?> to $0.00</p>
-                <a class="btn btn-primary"
-                    href="<?php echo e(url('admin/dashboard/clearacct')); ?>/<?php echo e($user->id); ?>">Proceed</a>
+                <p>You are clearing account for <?php echo e($user->name); ?> to $0.00</p>
+                <a class="btn btn-primary" href="<?php echo e(route('clearacct', $user->id)); ?>">Proceed</a>
             </div>
         </div>
     </div>
@@ -313,12 +295,8 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body p-3">
-                <p class="">Are you sure you want to delete <?php echo e($user->name); ?>
-
-                    <?php echo e($user->l_name); ?></p>
-                <a class="btn btn-danger" href="<?php echo e(url('admin/dashboard/delsystemuser')); ?>/<?php echo e($user->id); ?>">Yes
-                    i'm
-                    sure</a>
+                <p class="">Are you sure you want to delete <?php echo e($user->name); ?></p>
+                <a class="btn btn-danger" href="<?php echo e(route('deluser', $user->id)); ?>">Yes, I'm sure</a>
             </div>
         </div>
     </div>
@@ -362,4 +340,4 @@
     </div>
 </div>
 <!-- /Live MT5 Account Mg't  Modal -->
-<?php /**PATH /Users/wadingaleonardngonga/Documents/Projects/axesprime/resources/views/admin/users_actions.blade.php ENDPATH**/ ?>
+<?php /**PATH /Users/wadleo/Documents/Projects/axeprogroup/axepro/resources/views/admin/users_actions.blade.php ENDPATH**/ ?>

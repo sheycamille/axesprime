@@ -223,4 +223,4 @@
     </div>
 </div>
 <!-- /settings update Modal -->
-<?php /**PATH /Users/wadingaleonardngonga/Documents/Projects/axesprime/resources/views/admin/includes/modals.blade.php ENDPATH**/ ?>
+<?php /**PATH /Users/wadleo/Documents/Projects/axeprogroup/axepro/resources/views/admin/includes/modals.blade.php ENDPATH**/ ?>

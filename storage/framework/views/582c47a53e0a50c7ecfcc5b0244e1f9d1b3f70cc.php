@@ -62,4 +62,4 @@
 </body>
 
 </html>
-<?php /**PATH /Users/wadingaleonardngonga/Documents/Projects/axesprime/resources/views/layouts/app.blade.php ENDPATH**/ ?>
+<?php /**PATH /Users/wadleo/Documents/Projects/axeprogroup/axepro/resources/views/layouts/app.blade.php ENDPATH**/ ?>

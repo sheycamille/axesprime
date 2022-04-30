@@ -55,4 +55,4 @@
     </div>
 </header>
 <?php $__env->stopSection(); ?>
-<?php /**PATH /Users/wadingaleonardngonga/Documents/Projects/axesprime/resources/views/admin/topmenu.blade.php ENDPATH**/ ?>
+<?php /**PATH /Users/wadleo/Documents/Projects/axeprogroup/axepro/resources/views/admin/topmenu.blade.php ENDPATH**/ ?>
