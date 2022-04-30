@@ -60,7 +60,7 @@ class UsersController extends Controller
             ->with(array(
                 'title' => 'All users',
                 'countries' => $countries,
-                'users' => User::orderBy('id', 'desc')->get(),
+                'users' => User::orderBy('id', 'desc')->paginate(50),
             ));
     }
 

@@ -15,9 +15,9 @@
                     <select required class="form-control" name="account_id" id="account_id" required>
                         <option value="" disabled selected>Choose Acount</option>
                         @foreach ($user->accounts() as $account)
-                        <option value="{{ $account->id }}">{{ $account->login }} |
-                            {{ $account->server }}
-                        </option>
+                            <option value="{{ $account->id }}">{{ $account->login }} |
+                                {{ $account->server }}
+                            </option>
                         @endforeach
                     </select>
                     <br>
@@ -181,11 +181,10 @@
                                     @lang('message.body.country')
                                 </option>
                                 @foreach ($countries as $country)
-                                <option @if ($user->country_id == $country->id || $user->country_id == $name) selected
-                                    @endif
-                                    value="{{ $country->id }}">
-                                    {{ ucfirst($country->name) }}
-                                </option>
+                                    <option @if ($user->country_id == $country->id || $user->country_id == $name) selected @endif
+                                        value="{{ $country->id }}">
+                                        {{ ucfirst($country->name) }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -199,8 +198,8 @@
                     <div class="row">
                         <div class="form-group col-sm-6">
                             <label for="state">@lang('message.register.state')</label>
-                            <input type="text" class="form-control" name="state" value="{{ $user->state }}" id="state"
-                                placeholder="@lang('message.register.enter_stt')">
+                            <input type="text" class="form-control" name="state" value="{{ $user->state }}"
+                                id="state" placeholder="@lang('message.register.enter_stt')">
                         </div>
 
                         <div class="form-group col-sm-6">
@@ -236,7 +235,7 @@
             <div class="modal-body">
                 <p class="">Are you sure you want to reset password for {{ $user->name }} to <span
                         class="text-primary font-weight-bolder">user01236</span></p>
-                <a class="btn btn-primary" href="{{ url('admin/dashboard/resetpswd', $user->id) }}">Reset
+                <a class="btn btn-primary" href="{{ route('resetpswd', $user->id) }}">Reset
                     Now</a>
             </div>
         </div>
@@ -274,8 +273,8 @@
                 <button type="button" class="close " data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p>You are clearing account for {{ $user->name }} {{ $user->l_name }} to $0.00</p>
-                <a class="btn btn-primary" href="{{ url('admin/dashboard/clearacct') }}/{{ $user->id }}">Proceed</a>
+                <p>You are clearing account for {{ $user->name }} to $0.00</p>
+                <a class="btn btn-primary" href="{{ route('clearacct', $user->id) }}">Proceed</a>
             </div>
         </div>
     </div>
@@ -294,8 +293,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body p-3">
-                <p class="">Are you sure you want to delete {{ $user->name }}
-                    {{ $user->l_name }}</p>
+                <p class="">Are you sure you want to delete {{ $user->name }}</p>
                 <a class="btn btn-danger" href="{{ route('deluser', $user->id) }}">Yes, I'm sure</a>
             </div>
         </div>
@@ -323,15 +321,16 @@
                         <div class="cell">Action</div>
                     </div>
                     @foreach ($user->accounts() as $acc)
-                    <div class="row">
-                        <div class="cell" scope="row">{{ $acc->id }}</div>
-                        <div class="cell">{{ $acc->login }}</div>
-                        <div class="cell">{{ $acc->balance }}</div>
-                        <div class="cell">
-                            <a href="{{ route('dellaccounts', $acc->id) }}" class="m-1 btn btn-danger btn-xs">Delete
-                                Account</a>
+                        <div class="row">
+                            <div class="cell" scope="row">{{ $acc->id }}</div>
+                            <div class="cell">{{ $acc->login }}</div>
+                            <div class="cell">{{ $acc->balance }}</div>
+                            <div class="cell">
+                                <a href="{{ route('dellaccounts', $acc->id) }}"
+                                    class="m-1 btn btn-danger btn-xs">Delete
+                                    Account</a>
+                            </div>
                         </div>
-                    </div>
                     @endforeach
                 </div>
             </div>

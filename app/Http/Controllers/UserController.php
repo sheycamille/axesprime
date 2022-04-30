@@ -389,7 +389,7 @@ class UserController extends Controller
         $this->saveTransaction($user->id, $amount, 'Deposit', 'Credit');
 
         //save and confirm the deposit
-        $this->saveRecord($user->id, $mt5_id, 'PayPal', $amount, 'PayPal', 'Deposit', 'Processed');
+        $this->saveRecord($user->id, $mt5_id, 'PayPal', $amount, 'Deposit', 'Processed', 'PayPal');
 
         //send email notification
         $currency = Setting::getValue('currency');
@@ -914,7 +914,7 @@ class UserController extends Controller
             $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
 
             // save and confirm the deposit
-            $this->saveRecord($user->id, $mt5_id, 'PayPound', $amt, 'PayPound Order Id: ' . $resp->data->order_id, 'Deposit', 'Processed');
+            $this->saveRecord($user->id, $mt5_id, 'PayPound', $amt, 'Deposit', 'Processed', 'PayPound Order Id: ' . $resp->data->order_id);
 
             // send email notification
             $currency = Setting::getValue('currency');
@@ -934,7 +934,7 @@ class UserController extends Controller
             return redirect()->back()->with('message', $resp->message);
         } elseif ($resp->status == '3d_redirect') {
             // save and confirm the deposit
-            $this->saveRecord($user->id, $mt5_id, 'PayPound', $amt, 'PayPound Order Id: ' . $resp->data->order_id, 'Deposit', 'Pending');
+            $this->saveRecord($user->id, $mt5_id, 'PayPound', $amt, 'Deposit', 'Pending', 'PayPound Order Id: ' . $resp->data->order_id);
 
             return redirect($resp->redirect_3ds_url)->with('message', 'Redirecting you to complete 3DS security challenge.');
         } else {
@@ -1025,7 +1025,7 @@ class UserController extends Controller
             $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
 
             // save and confirm the deposit
-            $this->saveRecord($user->id, $mt5_id, 'PayStudio', $amt, 'PayStudio Order Id: ' . $resp->data->order_id, 'Deposit', 'Processed');
+            $this->saveRecord($user->id, $mt5_id, 'PayStudio', $amt, 'Deposit', 'Processed', 'PayStudio Order Id: ' . $resp->data->order_id);
 
             // send email notification
             $currency = Setting::getValue('currency');
@@ -1045,7 +1045,7 @@ class UserController extends Controller
             return redirect()->back()->with('message', $resp->message);
         } elseif ($resp->status == '3d_redirect') {
             // save and confirm the deposit
-            $this->saveRecord($user->id, $mt5_id, 'PayStudio', $amt, 'PayStudio Order Id: ' . $resp->data->order_id, 'Deposit', 'Pending');
+            $this->saveRecord($user->id, $mt5_id, 'PayStudio', $amt, 'Deposit', 'Pending', 'PayStudio Order Id: ' . $resp->data->order_id);
 
             return redirect($resp->redirect_3ds_url)->with('message', 'Redirecting you to complete 3DS security challenge.');
         } else {
@@ -1136,7 +1136,7 @@ class UserController extends Controller
             $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
 
             // save and confirm the deposit
-            $this->saveRecord($user->id, $mt5_id, 'ChargeMoney', $amt, 'ChargeMoney Order Id: ' . $resp->data->order_id, 'Deposit', 'Processed');
+            $this->saveRecord($user->id, $mt5_id, 'ChargeMoney', $amt, 'Deposit', 'Processed', 'ChargeMoney Order Id: ' . $resp->data->order_id);
 
             // send email notification
             $currency = Setting::getValue('currency');
@@ -1156,7 +1156,7 @@ class UserController extends Controller
             return redirect()->back()->with('message', $resp->message);
         } elseif ($resp->status == '3d_redirect') {
             // save and confirm the deposit
-            $this->saveRecord($user->id, $mt5_id, 'ChargeMoney', $amt, 'ChargeMoney Order Id: ' . $resp->data->order_id, 'Deposit', 'Pending');
+            $this->saveRecord($user->id, $mt5_id, 'ChargeMoney', $amt, 'Deposit', 'Pending', 'ChargeMoney Order Id: ' . $resp->data->order_id);
 
             return redirect($resp->redirect_3ds_url)->with('message', 'Redirecting you to complete 3DS security challenge.');
         } else {
@@ -1253,7 +1253,7 @@ class UserController extends Controller
             $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
 
             // save and confirm the deposit
-            $this->saveRecord($user->id, $mt5_id, 'YWallitPay', $amt, 'YWallitPay Order Id: ' . $resp->data->order_id, 'Deposit', 'Processed');
+            $this->saveRecord($user->id, $mt5_id, 'YWallitPay', $amt, 'Deposit', 'Processed', 'YWallitPay Order Id: ' . $resp->data->order_id);
 
             // send email notification
             $currency = Setting::getValue('currency');
@@ -1271,7 +1271,7 @@ class UserController extends Controller
             return redirect(route('account.liveaccounts'))->with('message', 'Your deposit was successfully processed!');
         } elseif ($resp['status'] == 'S') {
             // save deposit as pending and redirect to 3ds
-            $this->saveRecord($user->id, $mt5_id, 'YWallitPay', $amt, 'YWallitPay Order Id: ', 'Deposit', 'Pending');
+            $this->saveRecord($user->id, $mt5_id, 'YWallitPay', $amt, 'Deposit', 'Pending', 'YWallitPay Order Id: ' . $resp->data->order_id);
 
             return redirect($resp['redirect_url'])->with('message', $resp['message']);
         } else {
@@ -1375,7 +1375,7 @@ class UserController extends Controller
             $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
 
             // save and confirm the deposit
-            $this->saveRecord($user->id, $mt5_id, 'VirtualPay', $amt, 'VirtualPay Order Id: ' . $resp->data->order_id, 'Deposit', 'Processed');
+            $this->saveRecord($user->id, $mt5_id, 'VirtualPay', $amt, 'Deposit', 'Processed', 'VirtualPay Order Id: ' . $resp->data->order_id);
 
             // send email notification
             $currency = Setting::getValue('currency');
@@ -1395,7 +1395,7 @@ class UserController extends Controller
             return redirect()->back()->with('message', $resp->message);
         } elseif ($resp->status == '3d_redirect') {
             // save and confirm the deposit
-            $this->saveRecord($user->id, $mt5_id, 'VirtualPay', $amt, 'VirtualPay Order Id: ' . $resp->data->order_id, 'Deposit', 'Pending');
+            $this->saveRecord($user->id, $mt5_id, 'VirtualPay', $amt, 'Deposit', 'Pending', 'VirtualPay Order Id: ' . $resp->data->order_id);
 
             return redirect($resp->redirect_3ds_url)->with('message', 'Redirecting you to complete 3DS security challenge.');
         } else {
@@ -1522,7 +1522,7 @@ class UserController extends Controller
                     $this->saveTransaction($user->id, $amt, 'Deposit', 'Credit');
 
                     // save the deposit
-                    $this->saveRecord($user->id, $mt5_id, 'Authorize.Net', $amt, 'Authorize.net Order Id: ', 'Deposit', 'Processed');
+                    $this->saveRecord($user->id, $mt5_id, 'Authorize.Net', $amt, 'Deposit', 'Processed', 'Authorize.net Order Id: ' . $tresponse->getTransId());
 
                     // send email notification
                     $currency = Setting::getValue('currency');
