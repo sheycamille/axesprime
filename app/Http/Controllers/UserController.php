@@ -515,8 +515,8 @@ class UserController extends Controller
     }
 
 
-    // serves twofactore page
-    public function twofa()
+    // serves account security page
+    public function security()
     {
         $countries = Country::whereStatus('active')->get();
 

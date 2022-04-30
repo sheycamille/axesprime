@@ -10,7 +10,7 @@
     </div>
     <ul class="c-sidebar-nav">
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="{{ url('/dashboard') }}">
+            <a class="c-sidebar-nav-link" href="{{ route('dashboard') }}">
                 <i class="cil-speedometer c-sidebar-nav-icon"></i>
                 @lang('message.dashboard.dash')
             </a>
@@ -23,31 +23,31 @@
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('my-profile')" href="{{ url('dashboard/profile') }}">
+                    <a class="c-sidebar-nav-link @yield('my-profile')" href="{{ route('profile') }}">
                     @lang('message.dashboard.my_pfl')
                     </a>
                 </li>
                 @if (\App\Models\Setting::getValue('enable_kyc') == 'yes')
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('kyc')" href="{{ url('dashboard/verify-account') }}">
+                    <a class="c-sidebar-nav-link @yield('kyc')" href="{{ route('account.verify') }}">
                         <span class="link-collapse">@lang('message.dashboard.kyc')</span>
                     </a>
                 </li>
                 @endif
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link @yield('security')"
-                        href="{{ url('dashboard/manage-account-security') }}">
+                        href="{{ route('account.security') }}">
                         <span class="sub-item">@lang('message.dashboard.sec')</span>
                     </a>
                 </li>
                 <li class="c-sidebar-nav-item">
                     <a class="c-sidebar-nav-link @yield('withdrawal-info')"
-                        href="{{ url('dashboard/withdrawaldetails') }}">
+                        href="{{ route('withdrawaldetails') }}">
                         <span class="sub-item">@lang('message.dashboard.with_info')</span>
                     </a>
                 </li>
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('notifications')" href="{{ url('dashboard/notifications') }}">
+                    <a class="c-sidebar-nav-link @yield('notifications')" href="{{ route('notifications') }}">
                         <span class="sub-item">@lang('message.dashboard.notif')</span>
                     </a>
                 </li>
@@ -62,12 +62,12 @@
 
             <ul class="c-sidebar-nav-dropdown-items">
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('live-accounts')" href="/dashboard/live-accounts">
+                    <a class="c-sidebar-nav-link @yield('live-accounts')" href="{{ route('account.liveaccounts') }}">
                         <span class="sub-item">@lang('message.dashboard.live')</span>
                     </a>
                 </li>
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('demo-accounts')" href="/dashboard/demo-accounts">
+                    <a class="c-sidebar-nav-link @yield('demo-accounts')" href="{{ route('account.demoaccounts') }}">
                         <span class="sub-item">@lang('message.dashboard.demo')</span>
                     </a>
                 </li>
@@ -75,7 +75,7 @@
         </li>
 
         {{-- <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link @yield('transactions')" href="{{ url('dashboard/accounthistory') }}">
+            <a class="c-sidebar-nav-link @yield('transactions')" href="{{ route('account.history') }}">
                 <i class="cil-history c-sidebar-nav-icon"></i>
                 @lang('message.dashboard.trans')
             </a>
@@ -89,12 +89,12 @@
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('deposits')" href="{{ url('dashboard/deposits') }}">
+                    <a class="c-sidebar-nav-link @yield('deposits')" href="{{ route('account.deposits') }}">
                         <span class="sub-item">@lang('message.dashboard.depo')</span>
                     </a>
                 </li>
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('withdrawals')" href="{{ url('dashboard/withdrawals') }}">
+                    <a class="c-sidebar-nav-link @yield('withdrawals')" href="{{ route('account.withdrawals') }}">
                         <span class="sub-item">@lang('message.dashboard.with')</span>
                     </a>
                 </li>
@@ -102,14 +102,14 @@
         </li>
 
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link @yield('downloads')" href="{{ url('dashboard/downloads') }}">
+            <a class="c-sidebar-nav-link @yield('downloads')" href="{{ route('account.downloads') }}">
                 <i class="cil-cloud-download c-sidebar-nav-icon"></i>
                 @lang('message.dashboard.down')
             </a>
         </li>
 
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link @yield('support')" href="{{ url('dashboard/support') }}">
+            <a class="c-sidebar-nav-link @yield('support')" href="{{ route('account.support') }}">
                 <i class="cil-headphones c-sidebar-nav-icon"></i>
                 @lang('message.dashboard.sup')
             </a>

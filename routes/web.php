@@ -52,8 +52,8 @@ Route::get('risk-disclosure', 'FrontController@disclosure')->name('risk-disclosu
 // Route::get('private/ftds', 'FrontController@ftds')->name('ftds');
 
 Route::get('dependent-dropdown', 'FrontController@fetchDependent');
-Route::get('get-state-list', 'FrontController@getStateList');
-Route::get('get-town-list', 'FrontController@getTownList');
+Route::get('get-state-list', 'FrontController@getStateList')->name('fetchstates');
+Route::get('get-town-list', 'FrontController@getTownList')->name('fetchtowns');
 
 // switch lang
 Route::get('/switch/lang/{lang}', 'FrontController@switchLang')->name('switchlang');
@@ -202,8 +202,6 @@ Route::middleware(['auth'])->get('/dashboard', 'UserController@dashboard')->name
 
 // Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard/manage-account-security', 'UserController@twofa')->name('twofa');
-
     // Two Factor Authentication
     Route::post('dashboard/changetheme', 'UserController@changetheme')->name('changetheme');
     Route::get('dashboard/refreshAccounts', 'UserController@refreshAccounts')->name('refreshaccounts');
@@ -213,21 +211,22 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('dashboard/skip_account', 'Controller@skip_account');
     Route::get('dashboard/tradinghistory', 'UserController@tradinghistory')->name('tradinghistory');
-    Route::get('dashboard/accounthistory', 'UserController@accounthistory')->name('accounthistory');
+    Route::get('dashboard/accounthistory', 'UserController@accounthistory')->name('account.history');
 
     // Upadating user profile info
-    Route::get('dashboard/profile', 'UserController@profile')->name('profile');
+    Route::get('dashboard/profile', 'UserController@profile')->name('account.profile');
     Route::post('dashboard/profileinfo', 'UserController@updateprofile')->name('userprofile');
     Route::post('dashboard/updatepass', 'UserController@updatepass')->name('updatepass');
     Route::get('dashboard/changepassword', 'UserController@changepassword')->name('changepassword');
     Route::get('/dashboard/verify-account', 'UserController@verifyaccount')->name('account.verify');
+    Route::get('/dashboard/manage-account-security', 'UserController@security')->name('account.security');
     Route::get('dashboard/withdrawaldetails', 'UserController@withdrawaldetails')->name('withdrawaldetails');
     Route::post('dashboard/updatewithdrawaldetails', 'UserController@updatewithdrawaldetails')->name('updatewithdrawaldetails');
 
     // Withdrawals & Deposits
-    Route::get('dashboard/deposits', 'UserController@deposits')->name('deposits');
+    Route::get('dashboard/deposits', 'UserController@deposits')->name('account.deposits');
     Route::post('dashboard/paypalverify/{amount}', 'UserController@paypalverify')->name('paypalverify');
-    Route::get('dashboard/withdrawals', 'UserController@withdrawals')->name('withdrawalsdeposits');
+    Route::get('dashboard/withdrawals', 'UserController@withdrawals')->name('account.withdrawals');
     Route::get('dashboard/makewithdrawal', 'UserController@mwithdrawal')->name('mwithdrawal');
     Route::post('dashboard/withdrawal', 'UserController@savewithdrawal')->name('withdrawal');
 
@@ -237,12 +236,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('dashboard/savedeposit', 'UserController@savedeposit')->name('savedeposit');
 
 
-    Route::get('dashboard/support', 'UserController@support')->name('support');
+    Route::get('dashboard/support', 'UserController@support')->name('account.support');
     Route::get('dashboard/downloads', 'UserController@downloads')->name('account.downloads');
     Route::get('dashboard/referuser', 'UserController@referuser')->name('referuser');
-    Route::get('dashboard/notifications', 'UserController@notification')->name('notification');
+    Route::get('dashboard/notifications', 'UserController@notification')->name('notifications');
 
-    Route::get('dashboard/delnotif/{id}', 'UserController@delnotif');
+    Route::get('dashboard/delnotif/{id}', 'UserController@delnotif')->name('delnotif');
     Route::get('dashboard/delmarket/{id}', 'UserController@delmarket');
     Route::get('dashboard/delassets/{id}', 'UserController@delassets');
 

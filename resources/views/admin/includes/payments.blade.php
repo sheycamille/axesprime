@@ -19,7 +19,7 @@
                 <br />
                 <a class="btn btn-primary btn-sm" href="#" data-toggle="modal"
                     data-target="#wmethodModal{{ $method->id }}"><i class="fa fa-pencil"></i> Edit</a> &nbsp;
-                <a class="btn btn-danger btn-sm" href="{{ url('admin/dashboard/deletewdmethod') }}/{{ $method->id }}">
+                <a class="btn btn-danger btn-sm" href="{{ route('deletewdmethod',  $method->id) }}">
                     Delete
                 </a>
             </div>
@@ -127,7 +127,7 @@
                 <br />
                 <a class="btn btn-primary btn-sm" href="#" data-toggle="modal"
                     data-target="#dmethodModal{{ $method->id }}"><i class="fa fa-pencil"></i> Edit</a> &nbsp;
-                <a class="btn btn-danger btn-sm" href="{{ url('admin/dashboard/deletewdmethod') }}/{{ $method->id }}">
+                <a class="btn btn-danger btn-sm" href="{{ route('deletewdmethod', $method->id) }}">
                     Delete
                 </a>
             </div>

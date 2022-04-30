@@ -50,16 +50,16 @@
             <a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                 aria-expanded="false">
                 <div class="">
-                @lang('message.topmenu.hi') {{ Auth::user()->name }}
+                    @lang('message.topmenu.hi') {{ Auth::user()->name }}
                     <svg class="c-icon mr-2">
                         <use xlink:href="{{ url('admin/icons/sprites/free.svg#cil-menu') }}"></use>
                     </svg>
                 </div>
             </a>
             <div class="dropdown-menu dropdown-menu-right pt-0">
-                <a class="dropdown-item" href="{{ url('dashboard/changepassword') }}">@lang('message.topmenu.chg_pss')</a>
+                <a class="dropdown-item" href="{{ route('changepassword') }}">@lang('message.topmenu.chg_pss')</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{{ url('dashboard/profile') }}">@lang('message.topmenu.act_set')</a>
+                <a class="dropdown-item" href="{{ route('account.profile') }}">@lang('message.dashboard.my_pfl')</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ route('logout') }}"
                     onclick="event.preventDefault();document.getElementById('logout-form').submit();">
@@ -70,19 +70,19 @@
                 </form>
             </div>
         </li>
-    </ul>
+    </ul>ˇ
 
     <div class="c-subheader px-3">
         <ol class="breadcrumb border-0 m-0">
-            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
             <?php $segments = ''; ?>
             @for($i = 1; $i <= count(Request::segments()); $i++) <?php $segments .='/' . Request::segment($i); ?>
                 @if($i < count(Request::segments())) <li class="breadcrumb-item">{{ ucfirst(Request::segment($i)) }}
                     </li>
                     @else
                     <li class="breadcrumb-item active">{{ ucfirst(Request::segment($i)) }}</li>
-                    @endif
-                    @endfor
+                @endif
+            @endfor
         </ol>
     </div>
 </header>

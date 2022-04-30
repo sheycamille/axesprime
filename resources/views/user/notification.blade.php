@@ -65,7 +65,7 @@
                                                         substr($notification->message,0,85)}} </a> </td>
                                                 <td> {{\Carbon\Carbon::parse($notification->created_at)->toDayDateTimeString()}}
                                                 </td>
-                                                <td> <a href="{{ url('dashboard/delnotif') }}/{{$notification->id}}"
+                                                <td> <a href="{{ route('delnotif') }}/{{$notification->id}}"
                                                         type="button" data-toggle="tooltip" title=""
                                                         class="btn btn-link btn-danger" data-original-title="Remove"><i
                                                             class="fa fa-times"></i></a>
