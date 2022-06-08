@@ -23,7 +23,7 @@
             </a>
             <ul class="c-sidebar-nav-dropdown-items">
                 <li class="c-sidebar-nav-item">
-                    <a class="c-sidebar-nav-link @yield('my-profile')" href="{{ route('profile') }}">
+                    <a class="c-sidebar-nav-link @yield('my-profile')" href="{{ route('account.profile') }}">
                     @lang('message.dashboard.my_pfl')
                     </a>
                 </li>

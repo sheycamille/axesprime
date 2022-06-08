@@ -104,7 +104,8 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
     Route::post('perms/delete/{id}', 'Admin\PermController@delete')->name('deleteperm');
 
     // manage users
-    Route::get('users/list', 'Admin\UsersController@index')->name('manageusers');
+    Route::get('users', 'Admin\UsersController@index')->name('manageusers');
+    Route::get('users/list', 'Admin\UsersController@getusers')->name('fetchusers');
     Route::post('users/store', 'Admin\UsersController@store')->name('createuser');
     Route::post('users/update', 'Admin\UsersController@update')->name('updateuser');
     Route::get('users/unblock/{id}', 'Admin\UsersController@unblock')->name('userunblock');

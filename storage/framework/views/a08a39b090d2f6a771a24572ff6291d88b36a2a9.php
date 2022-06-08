@@ -1,62 +1,61 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Manage Users'); ?>
 
-@section('title', 'Manage Users')
+<?php $__env->startSection('manage-users', 'c-show'); ?>
+<?php $__env->startSection('users', 'c-active'); ?>
 
-@section('manage-users', 'c-show')
-@section('users', 'c-active')
+<?php $__env->startSection('content'); ?>
 
-@section('content')
-
-    @include('admin.topmenu')
-    @include('admin.sidebar')
+    <?php echo $__env->make('admin.topmenu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make('admin.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <div class="container-fluid">
         <div class="fade-in">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header fw-bolder">
-                        {{ \App\Models\Setting::getValue('site_name') }} Users
+                        <?php echo e(\App\Models\Setting::getValue('site_name')); ?> Users
                     </div>
                     <div class="card-body">
 
-                        @if (Session::has('message'))
+                        <?php if(Session::has('message')): ?>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="alert alert-info alert-dismissable">
                                         <button type="button" class="close" data-dismiss="alert"
                                             aria-hidden="true">&times;</button>
                                         <i class="fa fa-info-circle"></i>
-                                        <p class="alert-message">{!! Session::get('message') !!}</p>
+                                        <p class="alert-message"><?php echo Session::get('message'); ?></p>
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
-                        @if (count($errors) > 0)
+                        <?php if(count($errors) > 0): ?>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="alert alert-danger alert-dismissable" role="alert">
                                         <button type="button" class="close" data-dismiss="alert"
                                             aria-hidden="true">&times;</button>
-                                        @foreach ($errors->all() as $error)
-                                            <i class="fa fa-warning"></i> {{ $error }}
-                                        @endforeach
+                                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <i class="fa fa-warning"></i> <?php echo e($error); ?>
+
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
                         <div class="row">
                             <div class="col">
-                                @if (auth('admin')->user()->hasPermissionTo('muser-messageall', 'admin'))
+                                <?php if(auth('admin')->user()->hasPermissionTo('muser-messageall', 'admin')): ?>
                                     <a href="#" data-toggle="modal" data-target="#sendmailModal"
                                         class="btn btn-primary btn-md mb-2">Message all</a>
-                                @endif
+                                <?php endif; ?>
 
-                                @if (\App\Models\Setting::getValue('enable_kyc') == 'yes' &&
-    auth('admin')->user()->hasPermissionTo('mkyc-list', 'admin'))
-                                    <a href="{{ route('kyc') }}" class="btn btn-warning btn-md mb-2">KYC</a>
-                                @endif
+                                <?php if(\App\Models\Setting::getValue('enable_kyc') == 'yes' &&
+    auth('admin')->user()->hasPermissionTo('mkyc-list', 'admin')): ?>
+                                    <a href="<?php echo e(route('kyc')); ?>" class="btn btn-warning btn-md mb-2">KYC</a>
+                                <?php endif; ?>
                             </div>
                         </div>
 
@@ -77,7 +76,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($users as $user)
+                                        <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td>
                                                     <div class="d-flex justify-content-start">
@@ -88,58 +87,63 @@
                                                         </a>
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink"
                                                             style="z-index: 999;">
-                                                            @if (auth('admin')->user()->hasPermissionTo('muser-access-wallet', 'admin'))
+                                                            <?php if(auth('admin')->user()->hasPermissionTo('muser-access-wallet', 'admin')): ?>
                                                                 <a class="m-1 btn btn-info btn-sm"
-                                                                    href="{{ route('userwallet', $user->id) }}">See
+                                                                    href="<?php echo e(route('userwallet', $user->id)); ?>">See
                                                                     Wallet</a>
-                                                            @endif
-                                                            @if (auth('admin')->user()->hasPermissionTo('muser-block', 'admin'))
-                                                                @if ($user->status == null || $user->status == 'blocked')
+                                                            <?php endif; ?>
+                                                            <?php if(auth('admin')->user()->hasPermissionTo('muser-block', 'admin')): ?>
+                                                                <?php if($user->status == null || $user->status == 'blocked'): ?>
                                                                     <a class="m-1 btn btn-primary btn-sm"
-                                                                        href="{{ route('userunblock', $user->id) }}">Unblock</a>
-                                                                @else
+                                                                        href="<?php echo e(route('userunblock', $user->id)); ?>">Unblock</a>
+                                                                <?php else: ?>
                                                                     <a class="m-1 btn btn-danger btn-sm"
-                                                                        href="{{ route('userublock', $user->id) }}">Block</a>
-                                                                @endif
-                                                            @endif
-                                                            @if (auth('admin')->user()->hasPermissionTo('muser-credit-debit', 'admin'))
+                                                                        href="<?php echo e(route('userublock', $user->id)); ?>">Block</a>
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
+                                                            <?php if(auth('admin')->user()->hasPermissionTo('muser-credit-debit', 'admin')): ?>
                                                                 <a href="#" data-toggle="modal"
-                                                                    data-target="#topupModal{{ $user->id }}"
+                                                                    data-target="#topupModal<?php echo e($user->id); ?>"
                                                                     class="m-1 btn btn-dark btn-xs">Credit/Debit</a>
-                                                            @endif
+                                                            <?php endif; ?>
                                                             <a href="#" data-toggle="modal"
-                                                                data-target="#resetpswdModal{{ $user->id }}"
+                                                                data-target="#resetpswdModal<?php echo e($user->id); ?>"
                                                                 class="m-1 btn btn-warning btn-xs">Reset Password</a>
-                                                            @if (auth('admin')->user()->hasPermissionTo('muser-delete', 'admin'))
+                                                            <?php if(auth('admin')->user()->hasPermissionTo('muser-delete', 'admin')): ?>
                                                                 <a href="#" data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $user->id }}"
+                                                                    data-target="#deleteModal<?php echo e($user->id); ?>"
                                                                     class="m-1 btn btn-danger btn-xs">Delete</a>
-                                                            @endif
-                                                            @if (auth('admin')->user()->hasPermissionTo('muser-edit', 'admin'))
+                                                            <?php endif; ?>
+                                                            <?php if(auth('admin')->user()->hasPermissionTo('muser-edit', 'admin')): ?>
                                                                 <a href="#" data-toggle="modal"
-                                                                    data-target="#edituser{{ $user->id }}"
+                                                                    data-target="#edituser<?php echo e($user->id); ?>"
                                                                     class="m-1 btn btn-secondary btn-xs">Edit</a>
-                                                            @endif
+                                                            <?php endif; ?>
 
-                                                            @if ($numAccs > 1)
+                                                            <?php if($numAccs > 1): ?>
                                                                 <a href="#" data-toggle="modal"
-                                                                    data-target="#liveaccounts{{ $user->id }}"
+                                                                    data-target="#liveaccounts<?php echo e($user->id); ?>"
                                                                     class="m-1 btn btn-danger btn-xs">Delete
                                                                     Extra Accounts</a>
-                                                            @endif
+                                                            <?php endif; ?>
 
-                                                            @if (auth('admin')->user()->hasPermissionTo('muser-messageall', 'admin'))
+                                                            <?php if(auth('admin')->user()->hasPermissionTo('muser-messageall', 'admin')): ?>
                                                                 <a href="#" data-toggle="modal"
-                                                                    data-target="#sendmailtooneuserModal{{ $user->id }}"
+                                                                    data-target="#sendmailtooneuserModal<?php echo e($user->id); ?>"
                                                                     class="m-1 btn btn-info btn-xs">Send Message</a>
-                                                            @endif
+                                                            <?php endif; ?>
 
+                                                            <?php if(auth('admin')->user()->hasPermissionTo('muser-access-account', 'admin')): ?>
+                                                                <a href="#" data-toggle="modal"
+                                                                    data-target="#switchuserModal<?php echo e($user->id); ?>"
+                                                                    class="m-2 btn btn-success btn-xs">Get access</a>
+                                                            <?php endif; ?>
                                                         </div>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            @include('admin.users_actions', $user)
-                                        @endforeach
+                                            <?php echo $__env->make('admin.users_actions', $user, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -151,20 +155,20 @@
         </div>
     </div>
 
-    @include('admin.includes.modals')
-@endsection
+    <?php echo $__env->make('admin.includes.modals', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
 
-@section('javascript')
-<script src="{{ asset('admin/js/jquery.validate.js') }}"></script>
-<script src="{{ asset('admin/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('admin/js/dataTables.bootstrap4.min.js') }}"></script>
+<?php $__env->startSection('javascript'); ?>
+<script src="<?php echo e(asset('admin/js/jquery.validate.js')); ?>"></script>
+<script src="<?php echo e(asset('admin/js/jquery.dataTables.min.js')); ?>"></script>
+<script src="<?php echo e(asset('admin/js/dataTables.bootstrap4.min.js')); ?>"></script>
 <script type="text/javascript">
     $(function () {
 
       var table = $('.yajra-datatable').DataTable({
           processing: true,
           serverSide: true,
-          ajax: "{{ route('fetchusers') }}",
+          ajax: "<?php echo e(route('fetchusers')); ?>",
           columns: [
               {data: 'id', name: 'ID'},
               {data: 'name', name: 'Name'},
@@ -185,5 +189,7 @@
 
     });
   </script>
-@endsection
+<?php $__env->stopSection(); ?>
 
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/wadingaleonardngonga/Documents/Projects/axesprime/resources/views/admin/users.blade.php ENDPATH**/ ?>

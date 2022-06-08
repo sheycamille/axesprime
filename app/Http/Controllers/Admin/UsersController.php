@@ -30,6 +30,8 @@ use Tarikhagustia\LaravelMt5\LaravelMt5;
 
 use Tarikh\PhpMeta\Entities\Trade;
 
+use DataTables;
+
 
 class UsersController extends Controller
 {
@@ -52,7 +54,7 @@ class UsersController extends Controller
     }
 
 
-    //Return manage users route
+    // Return manage users route
     public function index()
     {
         $countries = Country::get();
@@ -60,8 +62,65 @@ class UsersController extends Controller
             ->with(array(
                 'title' => 'All users',
                 'countries' => $countries,
-                'users' => User::orderBy('id', 'desc')->paginate(50),
             ));
+    }
+
+    // Return users data
+    public function getusers()
+    {
+        $data = User::latest()->get();
+        $fdata = Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('phone-email', function($user) {
+                return $user->phone . ' | ' . $user->emmail;
+            })
+            ->addColumn('balance', function($user) {
+                return $user->totalBalance();
+            })
+            ->addColumn('bonus', function($user) {
+                return $user->totalBonus();
+            })
+            ->addColumn('num_accounts', function($user) {
+                return count($user->accounts());
+            })
+            ->addColumn('date_registered', function($user) {
+                return \Carbon\Carbon::parse($user->created_at)->toDayDateTimeString();
+            })
+            ->addColumn('action', function($user) {
+                $action = '';
+                if (auth('admin')->user()->hasPermissionTo('muser-access-wallet', 'admin')) {
+                    $action .= '<a class="m-1 btn btn-info btn-sm" href="'. route('userwallet', $user->id) .'">See Wallet</a>';
+                }
+                if (auth('admin')->user()->hasPermissionTo('muser-access-wallet', 'admin')) {
+                    $action .= '<a class="m-1 btn btn-info btn-sm" href="'. route('userwallet', $user->id) .'">See Wallet</a>';
+                }
+                if (auth('admin')->user()->hasPermissionTo('muser-access-wallet', 'admin')) {
+                    $action .= '<a class="m-1 btn btn-info btn-sm" href="'. route('userwallet', $user->id) .'">See Wallet</a>';
+                }
+                if (auth('admin')->user()->hasPermissionTo('muser-access-wallet', 'admin')) {
+                    $action .= '<a class="m-1 btn btn-info btn-sm" href="'. route('userwallet', $user->id) .'">See Wallet</a>';
+                }
+                if(count($user->accounts()) > 1) {
+                    $action .= ' <a href="#" data-toggle="modal" data-target="#liveaccounts'. $user->id . '" class="m-1 btn btn-danger btn-xs">Delete
+                    Extra Accounts</a>';
+                }
+                if (auth('admin')->user()->hasPermissionTo('muser-messageall', 'admin')) {
+                    $action .= '<a href="#" data-toggle="modal"
+                    data-target="#sendmailtooneuserModal'. $user->id .'"
+                    class="m-1 btn btn-info btn-xs">Send Message</a>';
+                }
+                if (auth('admin')->user()->hasPermissionTo('muser-access-account', 'admin')) {
+                    $action .= '<a href="#" data-toggle="modal"
+                    data-target="#switchuserModal'. $user->id .'" class="m-2 btn btn-success btn-xs">Get access</a>';
+                }
+
+                return $action;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+
+            // dd($fdata);
+            return $fdata;
     }
 
 
