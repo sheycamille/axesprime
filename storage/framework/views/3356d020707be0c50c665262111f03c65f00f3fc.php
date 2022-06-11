@@ -1,14 +1,14 @@
-@extends('layouts.app')
 
-@section('title', 'Manage Deposits')
 
-@section('manage-dw', 'c-show')
-@section('deposits', 'c-active')
+<?php $__env->startSection('title', 'Manage Deposits'); ?>
 
-@section('content')
+<?php $__env->startSection('manage-dw', 'c-show'); ?>
+<?php $__env->startSection('deposits', 'c-active'); ?>
 
-@include('admin.topmenu')
-@include('admin.sidebar')
+<?php $__env->startSection('content'); ?>
+
+<?php echo $__env->make('admin.topmenu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('admin.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <div class="container-fluid">
     <div class="fade-in">
@@ -19,32 +19,33 @@
                 </div>
                 <div class="card-body">
 
-                    @if (Session::has('message'))
+                    <?php if(Session::has('message')): ?>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-info alert-dismissable">
                                 <button type="button" class="close" data-dismiss="alert"
                                     aria-hidden="true">&times;</button>
                                 <i class="fa fa-info-circle"></i>
-                                <p class="alert-message">{!! Session::get('message') !!}</p>
+                                <p class="alert-message"><?php echo Session::get('message'); ?></p>
                             </div>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
 
-                    @if (count($errors) > 0)
+                    <?php if(count($errors) > 0): ?>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-danger alert-dismissable" role="alert">
                                 <button type="button" class="close" data-dismiss="alert"
                                     aria-hidden="true">&times;</button>
-                                @foreach ($errors->all() as $error)
-                                <i class="fa fa-warning"></i> {{ $error }}
-                                @endforeach
+                                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <i class="fa fa-warning"></i> <?php echo e($error); ?>
+
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
 
                     <div class="mb-5 row">
                         <div class="col-12 p-4">
@@ -64,47 +65,49 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($deposits as $deposit)
+                                        <?php $__empty_1 = true; $__currentLoopData = $deposits; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $deposit): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                         <tr>
-                                            <th scope="row">{{ $deposit->id }}</th>
-                                            <td>{{ $deposit->duser->name }}</td>
-                                            <td>{{ $deposit->duser->email }}</td>
-                                            <td>{{ $deposit->mt5->login }}</td>
-                                            <td>{{ \App\Models\Setting::getValue('currency') }}{{ $deposit->amount }}
+                                            <th scope="row"><?php echo e($deposit->id); ?></th>
+                                            <td><?php echo e($deposit->duser->name); ?></td>
+                                            <td><?php echo e($deposit->duser->email); ?></td>
+                                            <td><?php echo e($deposit->mt5->login); ?></td>
+                                            <td><?php echo e(\App\Models\Setting::getValue('currency')); ?><?php echo e($deposit->amount); ?>
+
                                             </td>
-                                            <td>{{ $deposit->payment_mode }}</td>
-                                            <td>{{ $deposit->status }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($deposit->created_at)->toDayDateTimeString() }}
+                                            <td><?php echo e($deposit->payment_mode); ?></td>
+                                            <td><?php echo e($deposit->status); ?></td>
+                                            <td><?php echo e(\Carbon\Carbon::parse($deposit->created_at)->toDayDateTimeString()); ?>
+
                                             </td>
                                             <td>
                                                 <a href="#" class="btn btn-primary btn-sm m-1" data-toggle="modal"
-                                                    data-target="#popModal{{ $deposit->id }}"
+                                                    data-target="#popModal<?php echo e($deposit->id); ?>"
                                                     title="View payment proof">
                                                     Proof
                                                 </a>
 
                                                 <a href="#" class="btn btn-primary btn-sm m-1" data-toggle="modal"
-                                                    data-target="#sendMessageModal{{ $deposit->id }}"
+                                                    data-target="#sendMessageModal<?php echo e($deposit->id); ?>"
                                                     title="Send Message">
                                                     Message
                                                 </a>
 
-                                                @if ($deposit->status == 'Processed' || $deposit->status == 'Rejected')
-                                                <a class="btn btn-sm @if ($deposit->status == 'Processed') btn-success @else btn-danger @endif btn-xs"
-                                                    href="#">{{ $deposit->status }}</a>
-                                                @else
-                                                @if(auth('admin')->user()->hasPermissionTo('mdeposit-process', 'admin'))
+                                                <?php if($deposit->status == 'Processed' || $deposit->status == 'Rejected'): ?>
+                                                <a class="btn btn-sm <?php if($deposit->status == 'Processed'): ?> btn-success <?php else: ?> btn-danger <?php endif; ?> btn-xs"
+                                                    href="#"><?php echo e($deposit->status); ?></a>
+                                                <?php else: ?>
+                                                <?php if(auth('admin')->user()->hasPermissionTo('mdeposit-process', 'admin')): ?>
                                                 <a class="btn btn-primary btn-sm"
-                                                    href="{{ route('pdeposit', $deposit->id) }}">Process</a>
-                                                @endif
+                                                    href="<?php echo e(route('pdeposit', $deposit->id)); ?>">Process</a>
+                                                <?php endif; ?>
                                                 <a class="m-1 btn btn-primary btn-sm" data-toggle="modal"
-                                                    data-target="#rejctModal{{ $deposit->id }}" href="#">Reject</a>
-                                                @endif
+                                                    data-target="#rejctModal<?php echo e($deposit->id); ?>" href="#">Reject</a>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
 
                                         <!-- View info modal-->
-                                        <div id="rejctModal{{ $deposit->id }}" class="modal fade" role="dialog">
+                                        <div id="rejctModal<?php echo e($deposit->id); ?>" class="modal fade" role="dialog">
                                             <div class="modal-dialog">
                                                 <!-- Modal content-->
                                                 <div class="modal-content">
@@ -115,14 +118,14 @@
                                                             data-dismiss="modal">&times;</button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="{{ route('rejectdeposit', $deposit->id) }}"
+                                                        <form action="<?php echo e(route('rejectdeposit', $deposit->id)); ?>"
                                                             method="POST">
-                                                            @csrf
+                                                            <?php echo csrf_field(); ?>
                                                             <textarea
-                                                                class="bg-{{ Auth('admin')->User()->dashboard_style }} mb-2 form-control"
+                                                                class="bg-<?php echo e(Auth('admin')->User()->dashboard_style); ?> mb-2 form-control"
                                                                 row="3" placeholder="Type in here"
                                                                 name="reason"></textarea>
-                                                            <input type="hidden" name="id" value="{{ $deposit->id }}">
+                                                            <input type="hidden" name="id" value="<?php echo e($deposit->id); ?>">
                                                             <input type="submit" class="btn btn-warning" value="Done">
                                                         </form>
                                                     </div>
@@ -132,35 +135,35 @@
                                         <!--End View info modal-->
 
                                         <!-- POP Modal -->
-                                        <div id="popModal{{ $deposit->id }}" class="modal fade" role="dialog">
+                                        <div id="popModal<?php echo e($deposit->id); ?>" class="modal fade" role="dialog">
                                             <div class="modal-dialog">
 
                                                 <!-- Modal content-->
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title">
-                                                            {{ $deposit->duser->name }} proof of payment</h4>
+                                                            <?php echo e($deposit->duser->name); ?> proof of payment</h4>
                                                         <button type="button" class="close"
                                                             data-dismiss="modal">&times;</button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        @if ($deposit->payment_mode == 'Credit Card' || $deposit->payment_mode == 'Express Deposit' ||
-                                                        $deposit->payment_mode == 'CoinPayments')
+                                                        <?php if($deposit->payment_mode == 'Credit Card' || $deposit->payment_mode == 'Express Deposit' ||
+                                                        $deposit->payment_mode == 'CoinPayments'): ?>
                                                         <h4 class=">This Payment was either
                                                     made with credit/debit card, admin topup or automatic crypto
                                                     payment hence no proof of payment provided</h4>
-                                                @else
-                                                @if (\App\Models\Setting::getValue('location') == 'Email')
+                                                <?php else: ?>
+                                                <?php if(\App\Models\Setting::getValue('location') == 'Email'): ?>
                                                 <h3 class=">Check your email with
                                                             the deposit that has an attachment name of
-                                                            <span class="text-danger">{{ $deposit->proof }}</span>
+                                                            <span class="text-danger"><?php echo e($deposit->proof); ?></span>
                                                             </h3>
-                                                            @elseif(\App\Models\Setting::getValue('location') ==
-                                                            "Local")
-                                                            <img src="{{ asset('storage/photos/' . $deposit->proof) }}"
+                                                            <?php elseif(\App\Models\Setting::getValue('location') ==
+                                                            "Local"): ?>
+                                                            <img src="<?php echo e(asset('storage/photos/' . $deposit->proof)); ?>"
                                                                 alt="Payment proof" title="" class="img-fluid" />
-                                                            @else
-                                                            @php
+                                                            <?php else: ?>
+                                                            <?php
                                                             $ppath = 'storage/' . $deposit->proof;
                                                             if (Storage::disk('s3')->exists($ppath)) {
                                                             $passurl = 'https://s3.' . env('AWS_DEFAULT_REGION') .
@@ -171,12 +174,12 @@
                                                             } else {
                                                             $psrc = '';
                                                             }
-                                                            @endphp
-                                                            <img src="{{ $psrc }}" alt="Proof of Payment" title=""
+                                                            ?>
+                                                            <img src="<?php echo e($psrc); ?>" alt="Proof of Payment" title=""
                                                                 class="img-fluid" />
 
-                                                            @endif
-                                                            @endif
+                                                            <?php endif; ?>
+                                                            <?php endif; ?>
 
                                                     </div>
                                                 </div>
@@ -185,7 +188,7 @@
                                         <!-- /POP Modal -->
 
                                         <!-- Send Message Modal -->
-                                        <div id="sendMessageModal{{ $deposit->id }}" class="modal fade" role="dialog">
+                                        <div id="sendMessageModal<?php echo e($deposit->id); ?>" class="modal fade" role="dialog">
                                             <div class="modal-dialog">
 
                                                 <!-- Modal content-->
@@ -193,24 +196,26 @@
                                                     <div class="modal-header">
                                                         <h4 class="modal-title"> Send Deposit
                                                             Email
-                                                            {{ $deposit->duser->name }}</h4>
+                                                            <?php echo e($deposit->duser->name); ?></h4>
                                                         <button type="button" class="close"
                                                             data-dismiss="modal">&times;</button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <h4 class="">
-                                                            This message will be sent to {{ $deposit->duser->name }}
-                                                            {{ $deposit->duser->l_name }}
+                                                            This message will be sent to <?php echo e($deposit->duser->name); ?>
+
+                                                            <?php echo e($deposit->duser->l_name); ?>
+
                                                         </h4>
                                                         <form style="padding:3px;" role="form" method="post"
-                                                            action="{{ route('sendmailtooneuser') }}">
+                                                            action="<?php echo e(route('sendmailtooneuser')); ?>">
                                                             <input type="hidden" name="user_id"
-                                                                value="{{ $deposit->duser->id }}">
+                                                                value="<?php echo e($deposit->duser->id); ?>">
                                                             <textarea class="form-control" name="message" row="3"
-                                                                required>This is to inform you that your deposit of {{ \App\Models\Setting::getValue('currency') }}{{ $deposit->amount }} has been received and processed. You can now check your MT5 account.</textarea>
+                                                                required>This is to inform you that your deposit of <?php echo e(\App\Models\Setting::getValue('currency')); ?><?php echo e($deposit->amount); ?> has been received and processed. You can now check your MT5 account.</textarea>
                                                             <br />
                                                             <input type="hidden" name="_token"
-                                                                value="{{ csrf_token() }}">
+                                                                value="<?php echo e(csrf_token()); ?>">
                                                             <input type="hidden" name="type" value="deposit">
                                                             <input type="submit" class="btn btn-primary"
                                                                 value="Send">
@@ -220,11 +225,11 @@
                                             </div>
                                         </div>
                                         <!-- /Send Message Modal -->
-                                        @empty
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                         <tr>
                                             <td colspan="10">No data available</td>
                                         </tr>
-                                        @endforelse
+                                        <?php endif; ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -236,20 +241,20 @@
     </div>
 </div>
 
-@include('admin.includes.modals')
-@endsection
+<?php echo $__env->make('admin.includes.modals', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
 
-@section('javascript')
-<script src="{{ asset('admin/js/jquery.validate.js') }}"></script>
-<script src="{{ asset('admin/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('admin/js/dataTables.bootstrap4.min.js') }}"></script>
+<?php $__env->startSection('javascript'); ?>
+<script src="<?php echo e(asset('admin/js/jquery.validate.js')); ?>"></script>
+<script src="<?php echo e(asset('admin/js/jquery.dataTables.min.js')); ?>"></script>
+<script src="<?php echo e(asset('admin/js/dataTables.bootstrap4.min.js')); ?>"></script>
 <script type="text/javascript">
     $(function () {
 
       var table = $('.yajra-datatable').DataTable({
           processing: true,
           serverSide: true,
-          ajax: "{{ route('fetchdeposits') }}",
+          ajax: "<?php echo e(route('fetchdeposits')); ?>",
           columns: [
               {data: 'id', name: 'ID'},
               {data: 'txn_id', name: 'Txn. ID'},
@@ -271,6 +276,8 @@
 
     });
   </script>
-@endsection
+<?php $__env->stopSection(); ?>
 
 
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\axesprime\resources\views/admin/mdeposits.blade.php ENDPATH**/ ?>

@@ -1,14 +1,14 @@
-@extends('layouts.app')
 
-@section('title', 'Manage admins')
 
-@section("manage-admins", 'c-show')
-@section("admins", 'c-active')
+<?php $__env->startSection('title', 'Manage admins'); ?>
 
-@section('content')
+<?php $__env->startSection("manage-admins", 'c-show'); ?>
+<?php $__env->startSection("admins", 'c-active'); ?>
 
-@include('admin.topmenu')
-@include('admin.sidebar')
+<?php $__env->startSection('content'); ?>
+
+<?php echo $__env->make('admin.topmenu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('admin.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <div class="container-fluid">
     <div class="fade-in">
@@ -19,40 +19,42 @@
                 </div>
                 <div class="card-body">
 
-                    @if(Session::has('message'))
+                    <?php if(Session::has('message')): ?>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-info alert-dismissable">
                                 <button type="button" class="close" data-dismiss="alert"
                                     aria-hidden="true">&times;</button>
-                                <i class="fa fa-info-circle"></i> {{Session::get('message')}}
+                                <i class="fa fa-info-circle"></i> <?php echo e(Session::get('message')); ?>
+
                             </div>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
 
-                    @if(count($errors) > 0)
+                    <?php if(count($errors) > 0): ?>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-danger alert-dismissable" role="alert">
                                 <button type="button" class="close" data-dismiss="alert"
                                     aria-hidden="true">&times;</button>
-                                @foreach ($errors->all() as $error)
-                                <i class="fa fa-warning"></i> {{ $error }}
-                                @endforeach
+                                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <i class="fa fa-warning"></i> <?php echo e($error); ?>
+
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
 
-                    @if(auth('admin')->user()->hasPermissionTo('madmin-create', 'admin'))
+                    <?php if(auth('admin')->user()->hasPermissionTo('madmin-create', 'admin')): ?>
                     <div class="row">
                         <div class="col p-4">
-                            <a href="{{ route('addadmin') }}" class="btn btn-primary btn-md mb-2">Add
+                            <a href="<?php echo e(route('addadmin')); ?>" class="btn btn-primary btn-md mb-2">Add
                                 Admin</a>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
 
                     <div class="mb-5 row">
                         <div class="col p-4">
@@ -72,19 +74,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse($admins as $admin)
+                                        <?php $__empty_1 = true; $__currentLoopData = $admins; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $admin): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                         <tr>
-                                            <td>{{$admin->id}}</td>
-                                            <td>{{$admin->firstName}}</td>
-                                            <td>{{$admin->lastName}}</td>
-                                            <td>{{$admin->email}}</td>
-                                            <td>{{$admin->phone}}</td>
-                                            <td>{{$admin->type}}</td>
-                                            <td>{{$admin->acnt_type_active}}</td>
+                                            <td><?php echo e($admin->id); ?></td>
+                                            <td><?php echo e($admin->firstName); ?></td>
+                                            <td><?php echo e($admin->lastName); ?></td>
+                                            <td><?php echo e($admin->email); ?></td>
+                                            <td><?php echo e($admin->phone); ?></td>
+                                            <td><?php echo e($admin->type); ?></td>
+                                            <td><?php echo e($admin->acnt_type_active); ?></td>
                                             <td>
-                                                @foreach($admin->roles as $role)
-                                                {{$role->name}},
-                                                @endforeach
+                                                <?php $__currentLoopData = $admin->roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php echo e($role->name); ?>,
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </td>
                                             <td>
 
@@ -96,35 +98,35 @@
                                                     </a>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink"
                                                         style="z-index: 999;">
-                                                        @if(auth('admin')->user()->hasPermissionTo('madmin-block',
-                                                        'admin'))
-                                                        @if($admin->acnt_type_active==NULL ||
-                                                        $admin->acnt_type_active=='blocked')
+                                                        <?php if(auth('admin')->user()->hasPermissionTo('madmin-block',
+                                                        'admin')): ?>
+                                                        <?php if($admin->acnt_type_active==NULL ||
+                                                        $admin->acnt_type_active=='blocked'): ?>
                                                         <a class="m-1 btn btn-primary btn-sm"
-                                                            href="{{ route('adminunblock', $admin->id) }}">Unblock</a>
-                                                        @else
+                                                            href="<?php echo e(route('adminunblock', $admin->id)); ?>">Unblock</a>
+                                                        <?php else: ?>
                                                         <a class="m-1 btn btn-danger btn-sm text-nowrap"
-                                                            href="{{ route('adminublock', $admin->id) }}">Block</a>
-                                                        @endif
-                                                        @endif
+                                                            href="<?php echo e(route('adminublock', $admin->id)); ?>">Block</a>
+                                                        <?php endif; ?>
+                                                        <?php endif; ?>
                                                         <a href="#" data-toggle="modal"
-                                                            data-target="#resetpswdModal{{$admin->id}}"
+                                                            data-target="#resetpswdModal<?php echo e($admin->id); ?>"
                                                             class="m-1 btn btn-warning btn-sm text-nowrap">Reset
                                                             Password</a>
-                                                        @if(auth('admin')->user()->hasPermissionTo('madmin-delete',
-                                                        'admin') && auth('admin')->user()->id != $admin->id)
+                                                        <?php if(auth('admin')->user()->hasPermissionTo('madmin-delete',
+                                                        'admin') && auth('admin')->user()->id != $admin->id): ?>
                                                         <a href="#" data-toggle="modal"
-                                                            data-target="#deleteModal{{$admin->id}}"
+                                                            data-target="#deleteModal<?php echo e($admin->id); ?>"
                                                             class="m-1 btn btn-danger btn-sm">Delete</a>
-                                                        @endif
-                                                        @if(auth('admin')->user()->hasPermissionTo('madmin-edit',
-                                                        'admin'))
+                                                        <?php endif; ?>
+                                                        <?php if(auth('admin')->user()->hasPermissionTo('madmin-edit',
+                                                        'admin')): ?>
                                                         <a href="#" data-toggle="modal"
-                                                            data-target="#edituser{{$admin->id}}"
+                                                            data-target="#edituser<?php echo e($admin->id); ?>"
                                                             class="m-1 btn btn-secondary btn-sm">Edit</a>
-                                                        @endif
+                                                        <?php endif; ?>
                                                         <a href="#" data-toggle="modal"
-                                                            data-target="#sendmailModal{{$admin->id}}"
+                                                            data-target="#sendmailModal<?php echo e($admin->id); ?>"
                                                             class="m-1 btn btn-info btn-sm text-nowrap">Send Email</a>
                                                     </div>
                                                 </div>
@@ -134,7 +136,7 @@
 
 
                                         <!-- Reset user password Modal -->
-                                        <div id="resetpswdModal{{$admin->id}}" class="modal fade" role="dialog">
+                                        <div id="resetpswdModal<?php echo e($admin->id); ?>" class="modal fade" role="dialog">
                                             <div class="modal-dialog">
 
                                                 <!-- Modal content-->
@@ -147,11 +149,11 @@
                                                     </div>
                                                     <div class="modal-body p-3">
                                                         <p class="">Are you sure you want to reset password for
-                                                            {{$admin->firstName}} to <span
+                                                            <?php echo e($admin->firstName); ?> to <span
                                                                 class="text-primary font-weight-bolder">admin01236</span>
                                                         </p>
                                                         <a class="btn btn-danger"
-                                                            href="{{ route('adminresetadminpass', $admin->id) }}">Reset
+                                                            href="<?php echo e(route('adminresetadminpass', $admin->id)); ?>">Reset
                                                             Now</a>
                                                     </div>
                                                 </div>
@@ -160,7 +162,7 @@
                                         <!-- /Reset user password Modal -->
 
                                         <!-- Delete user Modal -->
-                                        <div id="deleteModal{{$admin->id}}" class="modal fade" role="dialog">
+                                        <div id="deleteModal<?php echo e($admin->id); ?>" class="modal fade" role="dialog">
                                             <div class="modal-dialog">
 
                                                 <!-- Modal content-->
@@ -173,9 +175,9 @@
                                                     </div>
                                                     <div class="modal-body p-3">
                                                         <p class="">Are you sure you want to delete
-                                                            {{$admin->firstName}}</p>
+                                                            <?php echo e($admin->firstName); ?></p>
                                                         <a class="btn btn-danger"
-                                                            href="{{ route('deladmin', $admin->id) }}">Yes
+                                                            href="<?php echo e(route('deladmin', $admin->id)); ?>">Yes
                                                             i'm sure</a>
                                                     </div>
                                                 </div>
@@ -184,7 +186,7 @@
                                         <!-- /Delete user Modal -->
 
                                         <!-- Edit user Modal -->
-                                        <div id="edituser{{$admin->id}}" class="modal fade" role="dialog">
+                                        <div id="edituser<?php echo e($admin->id); ?>" class="modal fade" role="dialog">
                                             <div class="modal-dialog">
                                                 <!-- Modal content-->
                                                 <div class="modal-content">
@@ -196,42 +198,42 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <form style="padding:3px;" role="form" method="post"
-                                                            action="{{route('editadmin', $admin->id)}}">
+                                                            action="<?php echo e(route('editadmin', $admin->id)); ?>">
                                                             <h5 class=" ">Firstname</h5>
                                                             <input style="padding:5px;" class="form-control "
-                                                                value="{{$admin->firstName}}" type="text" name="fname"
+                                                                value="<?php echo e($admin->firstName); ?>" type="text" name="fname"
                                                                 required><br />
                                                             <h5 class=" ">Lastname</h5>
                                                             <input style="padding:5px;" class="form-control "
-                                                                value="{{$admin->lastName}}" type="text" name="l_name"
+                                                                value="<?php echo e($admin->lastName); ?>" type="text" name="l_name"
                                                                 required><br />
                                                             <h5 class=" ">Email</h5>
                                                             <input style="padding:5px;" class="form-control "
-                                                                value="{{$admin->email}}" type="email" name="email"
+                                                                value="<?php echo e($admin->email); ?>" type="email" name="email"
                                                                 required><br />
                                                             <h5 class=" ">Phone Number</h5>
                                                             <input style="padding:5px;" class="form-control "
-                                                                value="{{$admin->phone}}" type="text" name="phone"
+                                                                value="<?php echo e($admin->phone); ?>" type="text" name="phone"
                                                                 required>
                                                             <br>
                                                             <h5 class=" ">Type</h5>
                                                             <select class="form-control " name="type">
-                                                                <option @if($admin->type == "Super Admin") selected
-                                                                    @endif value="Super Admin">Super Admin</option>
-                                                                <option @if($admin->type == "Admin") selected @endif
+                                                                <option <?php if($admin->type == "Super Admin"): ?> selected
+                                                                    <?php endif; ?> value="Super Admin">Super Admin</option>
+                                                                <option <?php if($admin->type == "Admin"): ?> selected <?php endif; ?>
                                                                     value="Admin">Admin</option>
                                                             </select><br>
                                                             <h5 class=" ">Roles</h5>
                                                             <select class="form-control" name="roles[]" multiple>
-                                                                @foreach($roles as $role)
-                                                                <option @if($admin->hasRole($role)) selected @endif
-                                                                    value="{{ $role->id }}">{{ $role->name }}</option>
-                                                                @endforeach
+                                                                <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <option <?php if($admin->hasRole($role)): ?> selected <?php endif; ?>
+                                                                    value="<?php echo e($role->id); ?>"><?php echo e($role->name); ?></option>
+                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                             </select>
                                                             <br>
                                                             <input type="hidden" name="_token"
-                                                                value="{{ csrf_token() }}">
-                                                            <input type="hidden" name="user_id" value="{{$admin->id}}">
+                                                                value="<?php echo e(csrf_token()); ?>">
+                                                            <input type="hidden" name="user_id" value="<?php echo e($admin->id); ?>">
                                                             <input type="submit" class="btn btn-info"
                                                                 value="Update account">
                                                         </form>
@@ -242,7 +244,7 @@
                                         <!-- /Edit user Modal -->
 
                                         <!-- send a single user email Modal-->
-                                        <div id="sendmailModal{{$admin->id}}" class="modal fade" role="dialog">
+                                        <div id="sendmailModal<?php echo e($admin->id); ?>" class="modal fade" role="dialog">
                                             <div class="modal-dialog">
                                                 <!-- Modal content-->
                                                 <div class="modal-content">
@@ -253,17 +255,18 @@
                                                     </div>
 
                                                     <div class="modal-body">
-                                                        <p class="">This message will be sent to {{$admin->firstName}}
-                                                            {{$admin->lastName}} </p>
-                                                        <form role="form" method="post" action="{{route('sendmail', $admin->id)}}">
+                                                        <p class="">This message will be sent to <?php echo e($admin->firstName); ?>
 
-                                                            <input type="hidden" name="id" value="{{$admin->id}}">
+                                                            <?php echo e($admin->lastName); ?> </p>
+                                                        <form role="form" method="post" action="<?php echo e(route('sendmail', $admin->id)); ?>">
+
+                                                            <input type="hidden" name="id" value="<?php echo e($admin->id); ?>">
                                                             <textarea class="form-control " name="message " row="3"
                                                                 placeholder="Type your message here"
                                                                 required></textarea><br />
 
                                                             <input type="hidden" name="_token"
-                                                                value="{{ csrf_token() }}">
+                                                                value="<?php echo e(csrf_token()); ?>">
                                                             <input type="submit" class="btn btn-primary" value="Send">
                                                         </form>
                                                     </div>
@@ -271,11 +274,11 @@
                                             </div>
                                         </div>
 
-                                        @empty
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                         <tr>
                                             <td colspan="10">No data available</td>
                                         </tr>
-                                        @endforelse
+                                        <?php endif; ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -286,19 +289,19 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('javascript')
-<script src="{{ asset('admin/js/jquery.validate.js') }}"></script>
-<script src="{{ asset('admin/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('admin/js/dataTables.bootstrap4.min.js') }}"></script>
+<?php $__env->startSection('javascript'); ?>
+<script src="<?php echo e(asset('admin/js/jquery.validate.js')); ?>"></script>
+<script src="<?php echo e(asset('admin/js/jquery.dataTables.min.js')); ?>"></script>
+<script src="<?php echo e(asset('admin/js/dataTables.bootstrap4.min.js')); ?>"></script>
 <script type="text/javascript">
     $(function () {
 
       var table = $('.yajra-datatable').DataTable({
           processing: true,
           serverSide: true,
-          ajax: "{{ route('fetchadmin') }}",
+          ajax: "<?php echo e(route('fetchadmin')); ?>",
           columns: [
               {data: 'id', name: 'ID'},
               {data: 'firstName', name: 'Firstname'},
@@ -319,6 +322,8 @@
 
     });
   </script>
-@endsection
+<?php $__env->stopSection(); ?>
 
 
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\axesprime\resources\views/admin/madmins.blade.php ENDPATH**/ ?>

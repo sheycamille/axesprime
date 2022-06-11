@@ -17,6 +17,8 @@ use Spatie\Permission\Models\Role;
 
 use Carbon\Carbon;
 
+use DataTables;
+
 
 class AdminController extends Controller
 {
@@ -45,6 +47,64 @@ class AdminController extends Controller
             'admins' => $admins,
             'roles' => $roles
         ));
+    }
+
+
+    // Return admin data
+    public function getadmins()
+    {
+        $data = Admin::latest()->get();
+        $fdata = DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('id', function($admin) {
+                return $admin->id;
+            })
+            ->addColumn('firstName', function($admin) {
+                return $admin->firstName;
+            })
+            ->addColumn('lasttName', function($admin) {
+                return $admin->lastName;
+            })
+            ->addColumn('email', function($admin) {
+                return $admin->email;
+            })
+            ->addColumn('phone', function($admin) {
+                return $admin->phone;
+            })
+            ->addColumn('type', function($admin) {
+                return $admin->type;
+            })
+            ->addColumn('status', function($admin) {
+                return $admin->acnt_type_active;
+            })
+            ->addColumn('role', function($admin) {
+                return $admin->name;
+            })
+            
+            ->addColumn('action', function($admin) {
+                $action = '';
+                if (auth('admin')->user()->hasPermissionTo('muser-access-wallet', 'admin')) {
+                    $action .= '<a class="m-1 btn btn-info btn-sm" href="'. route('userwallet', $admin->id) .'">See Wallet</a>';
+                }
+                if (auth('admin')->user()->hasPermissionTo('madmin-edit', 'admin')) {
+                    $action .= '<a class="m-1 btn btn-secondary btn-sm" data-toggle="modal" data-target="#edituser{{$admin->id}}" href="'. route('editadmin', $admin->id) .'">Edit</a>';
+                }
+                if (auth('admin')->user()->hasPermissionTo('muser-access-wallet', 'admin')) {
+                    $action .= '<a class="m-1 btn btn-info btn-sm text-nowrap" href="'. route('userwallet', $admin->id) .'">Send Email</a>';
+                }
+                
+                
+                
+
+                return $action;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+
+             //dd($fdata);
+
+             return $fdata;
+            
     }
 
 

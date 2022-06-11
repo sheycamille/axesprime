@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
+use DataTables;
+
 
 class HomeController extends Controller
 {
@@ -108,6 +110,32 @@ class HomeController extends Controller
                 'deposits' => Deposit::orderBy('id', 'desc')->get(),
             ));
     }
+
+
+     // Return deposits data
+     public function getdeposits()
+     {
+         $data = Deposit::latest()->get();
+         $fdata = Datatables::of($data)
+             ->addIndexColumn()
+             ->addColumn('id', function($deposit) {
+                 return $deposit->id ;
+             })
+            
+             ->addColumn('action', function($deposit) {
+                 $action = '';
+                 if (auth('admin')->user()->hasPermissionTo('muser-access-wallet', 'admin')) {
+                     $action .= '<a class="m-1 btn btn-info btn-sm" href="'. route('userwallet', $deposit->id) .'">See Wallet</a>';
+                 }
+                 
+                 return $action;
+             })
+             ->rawColumns(['action'])
+             ->make(true);
+ 
+             // dd($fdata);
+             return $fdata;
+     }
 
 
     //return front end management page
