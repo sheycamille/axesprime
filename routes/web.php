@@ -77,7 +77,8 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
     Route::post('dashboard/searchWith', 'Admin\HomeController@searchWt');
 
     // manage admins
-    Route::get('admins/list', 'Admin\AdminController@index')->name('madmins');
+    Route::get('admins', 'Admin\AdminController@index')->name('madmins');
+    Route::get('admins/list', 'Admin\AdminController@getadmins')->name('fetchadmin');
     Route::get('admins/create', 'Admin\AdminController@create')->name('addadmin');
     Route::post('admins/store', 'Admin\AdminController@store')->name('saveadmin');
     Route::post('admins/update', 'Admin\AdminController@update')->name('editadmin');
@@ -130,6 +131,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
 
     // manage deposits and their processing
     Route::get('deposits/list', 'Admin\HomeController@mdeposits')->name('mdeposits');
+    Route::get('deposit/list', 'Admin\HomeController@getdeposits')->name('fetchdeposits');
     Route::get('deposits/pdeposit/{id}', 'Admin\LogicController@pdeposit')->name('pdeposit');
     Route::post('deposits/rejectdeposit/{id}', 'Admin\LogicController@rejectdeposit')->name('rejectdeposit');
 

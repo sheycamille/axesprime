@@ -11,6 +11,7 @@
         "php": "^7.3|^8.0",
         "anhskohbo/no-captcha": "^3.3",
         "authorizenet/authorizenet": "^2.0",
+        "doctrine/dbal": "^3.3",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -28,7 +29,7 @@
         "stripe/stripe-php": "^7.75",
         "tarikhagustia/laravel-mt5": "^1.4",
         "vinkla/hashids": "^9.1",
-        "yajra/laravel-datatables-oracle": "^9.0"
+        "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
