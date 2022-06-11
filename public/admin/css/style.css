@@ -22242,3 +22242,21 @@ body {
   cursor: pointer;
 }
 
+.dataTables_wrapper {
+    margin-top: 2%;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dataTables_wrapper .dataTables_length label, .dataTables_wrapper .dataTables_filter label {
+    display: inline-flex;
+    align-items: center;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    min-width: 60px;
+    margin: 0 5px;
+}

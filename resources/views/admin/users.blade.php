@@ -77,69 +77,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($users as $user)
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex justify-content-start">
-                                                        <a class="btn btn-secondary btn-sm dropdown-toggle" href="#"
-                                                            role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                                            aria-haspopup="true" aria-expanded="false">
-                                                            Actions
-                                                        </a>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink"
-                                                            style="z-index: 999;">
-                                                            @if (auth('admin')->user()->hasPermissionTo('muser-access-wallet', 'admin'))
-                                                                <a class="m-1 btn btn-info btn-sm"
-                                                                    href="{{ route('userwallet', $user->id) }}">See
-                                                                    Wallet</a>
-                                                            @endif
-                                                            @if (auth('admin')->user()->hasPermissionTo('muser-block', 'admin'))
-                                                                @if ($user->status == null || $user->status == 'blocked')
-                                                                    <a class="m-1 btn btn-primary btn-sm"
-                                                                        href="{{ route('userunblock', $user->id) }}">Unblock</a>
-                                                                @else
-                                                                    <a class="m-1 btn btn-danger btn-sm"
-                                                                        href="{{ route('userublock', $user->id) }}">Block</a>
-                                                                @endif
-                                                            @endif
-                                                            @if (auth('admin')->user()->hasPermissionTo('muser-credit-debit', 'admin'))
-                                                                <a href="#" data-toggle="modal"
-                                                                    data-target="#topupModal{{ $user->id }}"
-                                                                    class="m-1 btn btn-dark btn-xs">Credit/Debit</a>
-                                                            @endif
-                                                            <a href="#" data-toggle="modal"
-                                                                data-target="#resetpswdModal{{ $user->id }}"
-                                                                class="m-1 btn btn-warning btn-xs">Reset Password</a>
-                                                            @if (auth('admin')->user()->hasPermissionTo('muser-delete', 'admin'))
-                                                                <a href="#" data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $user->id }}"
-                                                                    class="m-1 btn btn-danger btn-xs">Delete</a>
-                                                            @endif
-                                                            @if (auth('admin')->user()->hasPermissionTo('muser-edit', 'admin'))
-                                                                <a href="#" data-toggle="modal"
-                                                                    data-target="#edituser{{ $user->id }}"
-                                                                    class="m-1 btn btn-secondary btn-xs">Edit</a>
-                                                            @endif
-
-                                                            @if ($numAccs > 1)
-                                                                <a href="#" data-toggle="modal"
-                                                                    data-target="#liveaccounts{{ $user->id }}"
-                                                                    class="m-1 btn btn-danger btn-xs">Delete
-                                                                    Extra Accounts</a>
-                                                            @endif
-
-                                                            @if (auth('admin')->user()->hasPermissionTo('muser-messageall', 'admin'))
-                                                                <a href="#" data-toggle="modal"
-                                                                    data-target="#sendmailtooneuserModal{{ $user->id }}"
-                                                                    class="m-1 btn btn-info btn-xs">Send Message</a>
-                                                            @endif
-
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            @include('admin.users_actions', $user)
-                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
