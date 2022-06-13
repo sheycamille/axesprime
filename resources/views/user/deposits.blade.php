@@ -57,7 +57,7 @@
                             </div>
                         </div>
 
-                        <table class="table table-bordered table-striped table-responsive-sm">
+                        <table class="table table-bordered table-striped table-responsive-sm yajra-datatable">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -96,3 +96,32 @@
 
 @include('user.modals')
 @endsection
+
+@section('javascript')
+<script src="{{ asset('admin/js/jquery.validate.js') }}"></script>
+<script src="{{ asset('admin/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('admin/js/dataTables.bootstrap4.min.js') }}"></script>
+<script type="text/javascript">
+    $(function () {
+
+      var table = $('.yajra-datatable').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: "{{ route('fetchdepo') }}",
+          columns: [
+              {data: 'id', name: 'Id'},
+              {data: 'mt5', name: 'mt5'},
+              {data: 'amount', name: 'amount'},
+              {data: 'payment_mode', name: 'payment_mode'},
+              {data: 'status', name: 'status'},
+              {data: 'created_at', name: 'created_at'},
+              
+          ]
+      });
+
+    });
+  </script>
+@endsection
+
+
+

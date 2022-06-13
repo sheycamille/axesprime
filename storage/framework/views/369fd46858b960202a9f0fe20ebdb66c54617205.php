@@ -1,18 +1,18 @@
-@extends('layouts.app')
 
-@section('title', 'My Live Accounts')
 
-@section('accounts', 'c-show')
-@section('live-accounts', 'c-active')
+<?php $__env->startSection('title', 'My Live Accounts'); ?>
 
-@section('css')
-<link href="{{ asset('admin/css/loader.css') }}" rel="stylesheet">
-@endsection
+<?php $__env->startSection('accounts', 'c-show'); ?>
+<?php $__env->startSection('live-accounts', 'c-active'); ?>
 
-@section('content')
+<?php $__env->startSection('css'); ?>
+<link href="<?php echo e(asset('admin/css/loader.css')); ?>" rel="stylesheet">
+<?php $__env->stopSection(); ?>
 
-@include('user.topmenu')
-@include('user.sidebar')
+<?php $__env->startSection('content'); ?>
+
+<?php echo $__env->make('user.topmenu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('user.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <div class="container-fluid">
     <div class="fade-in">
@@ -20,81 +20,80 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header fw-bolder">
-                        @lang('message.body.live_acnt')
+                        <?php echo app('translator')->get('message.body.live_acnt'); ?>
                     </div>
                     <div class="card-body">
-                        @if (Session::has('message'))
+                        <?php if(Session::has('message')): ?>
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="alert alert-info alert-dismissable">
                                     <button type="button" class="close" data-dismiss="alert"
                                         aria-hidden="true">&times;</button>
                                     <i class="fa fa-info-circle"></i>
-                                    <p class="alert-message">{!! Session::get('message') !!}</p>
+                                    <p class="alert-message"><?php echo Session::get('message'); ?></p>
                                 </div>
                             </div>
                         </div>
-                        @endif
+                        <?php endif; ?>
 
-                        @if (count($errors) > 0)
+                        <?php if(count($errors) > 0): ?>
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="alert alert-danger alert-dismissable" role="alert">
                                     <button type="button" class="close" data-dismiss="alert"
                                         aria-hidden="true">&times;</button>
-                                    @foreach ($errors->all() as $error)
-                                    <i class="fa fa-warning"></i> <span class="alert-message">{{ $error }}</span>
-                                    @endforeach
+                                    <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <i class="fa fa-warning"></i> <span class="alert-message"><?php echo e($error); ?></span>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </div>
                             </div>
                         </div>
-                        @endif
+                        <?php endif; ?>
 
                         <div class="row py-3 mb-4">
                             <div class="col">
                                 <a class="btn btn-primary" href="#" data-toggle="modal"
                                     data-target="#newLiveAccountModal"><i class="fa fa-plus"></i>
-                                    @lang('message.body.new_live')</a>
+                                    <?php echo app('translator')->get('message.body.new_live'); ?></a>
                             </div>
                         </div>
 
                         <div class="row mb-5">
-                            <div class="col text-center card p-4 bg-{{ $bg }}">
+                            <div class="col text-center card p-4 bg-<?php echo e($bg); ?>">
                                 <div class="bs-example widget-shadow table-responsive"
                                     data-example-id="hoverable-table">
                                     <table class="table table-bordered table-striped table-responsive-sm yajra-datatable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>@lang('message.body.server')</th>
-                                                <th>@lang('message.body.balnce')</th>
-                                                <th>@lang('message.body.bonus')</th>
-                                                <th>@lang('message.body.leverage') </th>
-                                                <th>@lang('message.body.status')</th>
-                                                <th>@lang('message.body.date_created')</th>
-                                                <th>@lang('message.body.act')</th>
+                                                <th><?php echo app('translator')->get('message.body.server'); ?></th>
+                                                <th><?php echo app('translator')->get('message.body.balnce'); ?></th>
+                                                <th><?php echo app('translator')->get('message.body.bonus'); ?></th>
+                                                <th><?php echo app('translator')->get('message.body.leverage'); ?> </th>
+                                                <th><?php echo app('translator')->get('message.body.status'); ?></th>
+                                                <th><?php echo app('translator')->get('message.body.date_created'); ?></th>
+                                                <th><?php echo app('translator')->get('message.body.act'); ?></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($accounts as $account)
+                                            <?php $__empty_1 = true; $__currentLoopData = $accounts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $account): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                             <tr>
-                                                <th scope="row">{{ $account->login }}</th>
-                                                <th scope="row">{{ $account->server }}</th>
-                                                <td>{{ $account->balance }}{{ $account->currency }}</td>
-                                                <td>{{ $account->bonus }}{{ $account->currency }}</td>
-                                                <td>1:{{ $account->leverage }}</td>
+                                                <th scope="row"><?php echo e($account->login); ?></th>
+                                                <th scope="row"><?php echo e($account->server); ?></th>
+                                                <td><?php echo e($account->balance); ?><?php echo e($account->currency); ?></td>
+                                                <td><?php echo e($account->bonus); ?><?php echo e($account->currency); ?></td>
+                                                <td>1:<?php echo e($account->leverage); ?></td>
                                                 <td>
-                                                    @if ($account->status) Active @else
-                                                    Deactivated @endif
+                                                    <?php if($account->status): ?> Active <?php else: ?>
+                                                    Deactivated <?php endif; ?>
                                                 </td>
-                                                <td>{{
-                                                    \Carbon\Carbon::parse($account->created_at)->toDayDateTimeString()
-                                                    }}
+                                                <td><?php echo e(\Carbon\Carbon::parse($account->created_at)->toDayDateTimeString()); ?>
+
                                                 </td>
                                                 <td>
                                                     <a class="btn btn-primary btn-xs" href="#" data-toggle="modal"
-                                                        data-target="#accountDepositModal{{ $account->id }}">Deposit</a>
-                                                    <div id="accountDepositModal{{ $account->id }}" class="modal fade"
+                                                        data-target="#accountDepositModal<?php echo e($account->id); ?>">Deposit</a>
+                                                    <div id="accountDepositModal<?php echo e($account->id); ?>" class="modal fade"
                                                         role="dialog">
                                                         <div class="modal-dialog">
                                                             <!-- Modal content-->
@@ -107,31 +106,29 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <form style="padding:3px;" role="form" method="get"
-                                                                        action="{{ route('selectpaymentmethod') }}">
+                                                                        action="<?php echo e(route('selectpaymentmethod')); ?>">
                                                                         <input style="padding:5px;" class="form-control"
                                                                             placeholder="Enter amount here"
                                                                             type="number" name="amount"
-                                                                            min="{{ \App\Models\Setting::getValue('min_dw') }}"
+                                                                            min="<?php echo e(\App\Models\Setting::getValue('min_dw')); ?>"
                                                                             required>
                                                                         <br />
                                                                         <input type="hidden" name="account_id"
-                                                                            value="{{ $account->id }}">
+                                                                            value="<?php echo e($account->id); ?>">
                                                                         <input type="hidden" name="_token"
-                                                                            value="{{ csrf_token() }}">
+                                                                            value="<?php echo e(csrf_token()); ?>">
                                                                         <input type="submit" class="btn btn-primary"
                                                                             value="Continue">
                                                                     </form>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        {{-- <a href="#" data-toggle="modal"
-                                                            data-target="#newResetMT5PasswordModal{{ $account->id }}"
-                                                            class="m-2 btn btn-danger btn-xs">Reset Password</a> --}}
+                                                        
                                                 </td>
                                             </tr>
 
                                             <!-- Reset MT5 Account Password modal -->
-                                            <div id="newResetMT5PasswordModal{{ $account->id }}" class="modal fade"
+                                            <div id="newResetMT5PasswordModal<?php echo e($account->id); ?>" class="modal fade"
                                                 role="dialog">
                                                 <div class="modal-dialog">
                                                     <!-- Modal content-->
@@ -144,8 +141,8 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <form role="form" method="post"
-                                                                action="{{ route('account.resetmt5password', $account->id) }}">
-                                                                @csrf
+                                                                action="<?php echo e(route('account.resetmt5password', $account->id)); ?>">
+                                                                <?php echo csrf_field(); ?>
                                                                 <h5 class="text-left text-white ">MT5 Password*:</h5>
                                                                 <input style="padding:5px;"
                                                                     class="form-control text-left text-white"
@@ -170,11 +167,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            @empty
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                             <tr>
                                                 <td colspan="8">No data available</td>
                                             </tr>
-                                            @endforelse
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -191,13 +188,13 @@
     </div>
 </div>
 
-@include('user.modals')
-@endsection
+<?php echo $__env->make('user.modals', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
 
-@section('javascript')
-<script src="{{ asset('admin/js/jquery.validate.js') }}"></script>
-<script src="{{ asset('admin/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('admin/js/dataTables.bootstrap4.min.js') }}"></script>
+<?php $__env->startSection('javascript'); ?>
+<script src="<?php echo e(asset('admin/js/jquery.validate.js')); ?>"></script>
+<script src="<?php echo e(asset('admin/js/jquery.dataTables.min.js')); ?>"></script>
+<script src="<?php echo e(asset('admin/js/dataTables.bootstrap4.min.js')); ?>"></script>
 <script scr type="text/javascript">
     var loader = $('#loader');
     $("#liveAccform").submit(function(event) {
@@ -227,7 +224,7 @@
         var table = $('.yajra-datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('fetchliveacc') }}",
+            ajax: "<?php echo e(route('fetchliveacc')); ?>",
             columns: [
                 {data: 'login', name: 'login'},
                 {data: 'server', name: 'server'},
@@ -242,4 +239,6 @@
 
 });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\axesprime\resources\views/user/liveaccounts.blade.php ENDPATH**/ ?>

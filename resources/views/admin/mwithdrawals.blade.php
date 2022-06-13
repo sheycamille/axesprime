@@ -51,7 +51,7 @@
                             <div class="bs-example table-responsive" data-example-id="hoverable-table">
                                 <div style="margin:3px;">
                                     <table id="ShipTable"
-                                        class="table table-bordered table-striped table-responsive-sm">
+                                        class="table table-bordered table-striped table-responsive-sm yajra-datatable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -218,3 +218,39 @@
 
 @include('admin.includes.modals')
 @endsection
+
+
+@section('javascript')
+<script src="{{ asset('admin/js/jquery.validate.js') }}"></script>
+<script src="{{ asset('admin/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('admin/js/dataTables.bootstrap4.min.js') }}"></script>
+<script type="text/javascript">
+    $(function () {
+
+      var table = $('.yajra-datatable').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: "{{ route('fetchwithdrawals') }}",
+          columns: [
+              {data: 'id', name: 'ID'},
+              {data: 'name', name: 'name'},
+              {data: 'amount', name: 'amount'},
+              {data: 'to_deduct', name: 'to_deduct'},
+              {data: 'mt5', name: 'mt5'},
+              {data: 'payment_mode', name: 'Payment Mode'},
+              {data: 'email', name: 'email'},
+              {data: 'status', name: 'status'},
+              {data: 'created_at', name: 'created_at'},
+              {
+                  data: 'action',
+                  name: 'action',
+                  orderable: true,
+                  searchable: true
+              },
+          ]
+      });
+
+    });
+  </script>
+@endsection
+

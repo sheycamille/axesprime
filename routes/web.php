@@ -125,7 +125,8 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
     Route::post('users/changestyle', 'Admin\UsersController@changestyle')->name('changestyle');
 
     // manage withdrawals and their processing
-    Route::get('withdrawals/list', 'Admin\HomeController@mwithdrawals')->name('mwithdrawals');
+    Route::get('withdrawals', 'Admin\HomeController@mwithdrawals')->name('mwithdrawals');
+    Route::get('withdrawals/list', 'Admin\HomeController@getwithdrawals')->name('fetchwithdrawals');
     Route::get('withdrawals/pwithdrawal/{id}', 'Admin\LogicController@pwithdrawal')->name('pwithdrawal');
     Route::post('withdrawals/rejectwithdrawal', 'Admin\LogicController@rejectwithdrawal')->name('rejectwithdrawal');
 
@@ -228,8 +229,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Withdrawals & Deposits
     Route::get('dashboard/deposits', 'UserController@deposits')->name('account.deposits');
+    Route::get('deposits/list', 'UserController@getdeposits')->name('fetchdepo');
     Route::post('dashboard/paypalverify/{amount}', 'UserController@paypalverify')->name('paypalverify');
     Route::get('dashboard/withdrawals', 'UserController@withdrawals')->name('account.withdrawals');
+    Route::get('withdrawals/list', 'UserController@getwithdrawal')->name('fetchwith');
     Route::get('dashboard/makewithdrawal', 'UserController@mwithdrawal')->name('mwithdrawal');
     Route::post('dashboard/withdrawal', 'UserController@savewithdrawal')->name('withdrawal');
 
@@ -250,7 +253,9 @@ Route::middleware(['auth'])->group(function () {
 
     // mt5 account mg't
     Route::get('/dashboard/demo-accounts', 'Mt5Controller@demoaccounts')->name('account.demoaccounts');
+    Route::get('/dashboard/demo-account', 'Mt5Controller@getdemoaccounts')->name('fetchdemoacc');
     Route::get('/dashboard/live-accounts', 'Mt5Controller@liveaccounts')->name('account.liveaccounts');
+    Route::get('/dashboard/live-account', 'Mt5Controller@getliveaccounts')->name('fetchliveacc');
     Route::post('/dashboard/add-account', 'Mt5Controller@addmt5account')->name('account.addmt5account'); //->middleware(['throttle:1,30']);
     Route::get('/dashboard/mt5-demo-deposit/{id}', 'Mt5Controller@demotopup')->name('account.demotopup');
     Route::post('/dashboard/reset-account-password/{id}', 'Mt5Controller@resetmt5password')->name('account.resetmt5password');

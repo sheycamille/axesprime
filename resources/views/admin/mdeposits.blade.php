@@ -49,7 +49,7 @@
                     <div class="mb-5 row">
                         <div class="col-12 p-4">
                             <div class="table-responsive" data-example-id="hoverable-table">
-                                <table id="ShipTable" class="table table-bordered table-striped table-responsive-sm">
+                                <table id="ShipTable" class="table table-bordered table-striped table-responsive-sm yajra-datatable">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -252,14 +252,13 @@
           ajax: "{{ route('fetchdeposits') }}",
           columns: [
               {data: 'id', name: 'ID'},
-              {data: 'txn_id', name: 'Txn. ID'},
-              {data: 'user', name: 'User'},
-              {data: 'uname', name: 'Uname'},
-              {data: 'amount', name: 'Amount'},
+              {data: 'name', name: 'name'},
+              {data: 'email', name: 'email'},
+              {data: 'mt5', name: 'mt5'},
+              {data: 'amount', name: 'amount'},
               {data: 'payment_mode', name: 'Payment Mode'},
-              {data: 'purpose', name: 'Purpose'},
-              {data: 'status', name: 'Status'},
-              {data: 'proof', name: 'Proof'},
+              {data: 'status', name: 'status'},
+              {data: 'created_at', name: 'created'},
               {
                   data: 'action',
                   name: 'action',

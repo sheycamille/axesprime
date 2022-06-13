@@ -289,6 +289,8 @@
         </div>
     </div>
 </div>
+
+
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('javascript'); ?>

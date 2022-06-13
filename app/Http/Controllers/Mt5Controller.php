@@ -18,6 +18,8 @@ use Tarikh\PhpMeta\Entities\Trade;
 
 use Carbon\Carbon;
 
+use DataTables;
+
 
 
 class Mt5Controller extends Controller
@@ -46,6 +48,44 @@ class Mt5Controller extends Controller
     }
 
 
+      // Return demoacc data
+      public function getdemoaccounts()
+      {
+          $data = Mt5Details::latest()->get();
+          $fdata = DataTables::of($data)
+              ->addColumn('login', function($account) {
+                  return $account->login;
+              })
+              ->addColumn('server', function($account) {
+                  return $account->server;
+              })
+              ->addColumn('balance', function($account) {
+                  return $account->balance . $account->currency ;
+              })
+              ->addColumn('leverage', function($account) {
+                  return $account->leverage;
+              })
+              ->addColumn('status', function($account) {
+                  return $account->status;
+              })
+              ->addColumn('created_at', function($account) {
+                 return $account->created_at;
+             })
+             ->addColumn('action', function($account) {
+                 $action = '';
+                 $action .= '<a href="#" class="m-2 btn btn-primary btn-xs" '. route('account.demotopup', $account->id) . '>Deposit</a>';
+ 
+                 return $action;
+             })
+             
+             ->rawColumns(['action'])
+              ->make(true);
+ 
+              return $fdata;
+        }  
+ 
+
+
     // serves users live accounts
     public function liveaccounts()
     {
@@ -56,6 +96,46 @@ class Mt5Controller extends Controller
             'accounts' => $accounts
         ]);
     }
+
+
+     // Return liveacc data
+     public function getliveaccounts()
+     {
+         $data = Mt5Details::latest()->get();
+         $fdata = DataTables::of($data)
+             ->addColumn('login', function($account) {
+                 return $account->login;
+             })
+             ->addColumn('server', function($account) {
+                 return $account->server;
+             })
+             ->addColumn('balance', function($account) {
+                 return $account->balance . $account->currency;
+             })
+             ->addColumn('bonus', function($account) {
+                 return $account->bonus . $account->currency ;
+             })
+             ->addColumn('leverage', function($account) {
+                 return $account->leverage;
+             })
+             ->addColumn('status', function($account) {
+                 return $account->status;
+             })
+             ->addColumn('created_at', function($account) {
+                return $account->created_at;
+            })
+            ->addColumn('action', function($account) {
+                $action = '';
+                $action .= '<a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#accountDepositModal'. $account->id .'">Deposit</a>';
+
+                return $action;
+            })
+            
+            ->rawColumns(['action'])
+             ->make(true);
+
+             return $fdata;
+       }  
 
 
     public function addmt5account(Request $request)

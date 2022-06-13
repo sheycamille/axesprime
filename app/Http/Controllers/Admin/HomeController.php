@@ -17,7 +17,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
+
 use DataTables;
+
+
 
 
 class HomeController extends Controller
@@ -101,6 +104,71 @@ class HomeController extends Controller
     }
 
 
+    
+     // Return withdrawals data
+     public function getwithdrawals()
+     {
+         $data = Withdrawal::latest()->get();
+         $fdata = Datatables::of($data)
+             ->addColumn('id', function($withdrawal) {
+                 return $withdrawal->id ;
+             })
+             ->addColumn('name', function($withdrawal) {
+                return $$withdrawal->duser->name;
+            })
+            ->addColumn('amount', function($withdrawal) {
+                return $$withdrawal->amount ;
+            })
+            ->addColumn('to_deduct', function($withdrawal) {
+                return $withdrawal->to_deduct;
+            })
+            ->addColumn('mt5', function($withdrawal) {
+                return $withdrawal->mt5->login ;
+            })
+            ->addColumn('payment_mode', function($withdrawal) {
+                return $withdrawal->payment_mode ;
+            })
+            ->addColumn('email', function($withdrawal) {
+                return $withdrawal->duser->email ;
+            })
+            ->addColumn('status', function($withdrawal) {
+                return $withdrawal->status  ;
+            })
+            ->addColumn('created_at', function($withdrawal) {
+                return $withdrawal->created_at ;
+            })
+            
+             ->addColumn('action', function($withdrawal) {
+                 $action = '';
+
+                 $action .= '<a class="m-1 btn btn-info btn-sm" data-toggle="modal" data-target="#viewModal'.  $withdrawal->id .'"><i
+                 class="fa fa-eye"></i>View</a>';
+
+                 if($withdrawal->status == 'Processed'){
+                    $action .= '<a href="#" class="btn btn-sm btn-success">' . $withdrawal->status . '</a>';
+                
+                 }elseif($withdrawal->status == 'Rejected'){
+                    $action .= '<a href="#" class="btn btn-sm btn-danger">' . $withdrawal->status . '</a>';
+                 }
+                 
+                 if (auth('admin')->user()->hasPermissionTo('mwithdrawal-process', 'admin')){
+                    $action .= '<a href="#" class="m-1 btn btn-primary btn-sm"' . route('pwithdrawal', $withdrawal->id) .'> Process</a>';
+
+                    $action .= '<a href="#" class="m-1 btn btn-primary btn-sm" data-toggle="modal" data-target="#rejctModal' . $withdrawal->id . ' > Reject</a>';
+                 }
+ 
+                 return $action;
+             })
+             ->rawColumns(['action'])
+             ->make(true);
+ 
+             // dd($fdata);
+             return $fdata;
+     }
+
+
+    
+
     //Return manage deposits route
     public function mdeposits()
     {
@@ -117,18 +185,53 @@ class HomeController extends Controller
      {
          $data = Deposit::latest()->get();
          $fdata = Datatables::of($data)
-             ->addIndexColumn()
              ->addColumn('id', function($deposit) {
                  return $deposit->id ;
              })
+             ->addColumn('name', function($deposit) {
+                return $deposit->duser->name;
+            })
+            ->addColumn('email', function($deposit) {
+                return $deposit->duser->email ;
+            })
+            ->addColumn('mt5', function($deposit) {
+                return $deposit->mt5->login;
+            })
+            ->addColumn('amount', function($deposit) {
+                return $deposit->amount ;
+            })
+            ->addColumn('payment_mode', function($deposit) {
+                return $deposit->payment_mode ;
+            })
+            ->addColumn('status', function($deposit) {
+                return $deposit->status ;
+            })
+            ->addColumn('create_at', function($deposit) {
+                return $deposit->created_at ;
+            })
             
              ->addColumn('action', function($deposit) {
                  $action = '';
-                 if (auth('admin')->user()->hasPermissionTo('muser-access-wallet', 'admin')) {
-                     $action .= '<a class="m-1 btn btn-info btn-sm" href="'. route('userwallet', $deposit->id) .'">See Wallet</a>';
-                 }
+
+                 $action .= '<a class="btn btn-primary btn-sm m-1" data-toggle="modal" data-target="#popModal'.  $deposit->id .'" title="View payment proof">Proof</a>';
                  
-                 return $action;
+                 $action .= '<a href="#" class="btn btn-primary btn-sm m-1" data-toggle="modal" data-target="#sendMessageModal'. $deposit->id .'" title="Send Message" >Message</a>';
+                
+                 if($deposit->status == 'Processed'){
+                    $action .= '<a href="#" class="btn btn-sm btn-success">' . $deposit->status . '</a>';
+                
+                 }elseif($deposit->status == 'Rejected'){
+                    $action .= '<a href="#" class="btn btn-sm btn-danger">' . $deposit->status . '</a>';
+                 }
+
+                 if (auth('admin')->user()->hasPermissionTo('mdeposit-process', 'admin')){
+                    $action .= '<a href="#" class="btn btn-primary btn-sm"' . route('pdeposit', $deposit->id) . '>  Process</a>';
+
+                    $action .= '<a href="#" class="m-1 btn btn-primary btn-sm data-toggle="modal" data-target="#rejctModal">' . $deposit->id . 'Reject</a>';
+
+                 }
+                 return $action; 
+                 
              })
              ->rawColumns(['action'])
              ->make(true);

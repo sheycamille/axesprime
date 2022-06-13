@@ -34,6 +34,9 @@ use net\authorize\api\controller as AnetController;
 use Carbon\Carbon;
 
 
+use DataTables;
+
+
 class UserController extends Controller
 {
 
@@ -150,6 +153,37 @@ class UserController extends Controller
     }
 
 
+      // Return deposits data
+      public function getdeposits()
+      {
+          $data = Deposit::latest()->get();
+          $fdata = DataTables::of($data)
+              ->addColumn('id', function($deposit) {
+                  return $deposit->id;
+              })
+              ->addColumn('mt5', function($deposit) {
+                  return $deposit->mt5->login;
+              })
+              ->addColumn('amount', function($deposit) {
+                  return $deposit->amount;
+              })
+              ->addColumn('payment_mode', function($deposit) {
+                  return $deposit->payment_mode;
+              })
+              ->addColumn('status', function($deposit) {
+                  return $deposit->status;
+              })
+              ->addColumn('created_at', function($deposit) {
+                  return $deposit->created_at;
+              })
+
+              ->make(true);
+
+              return $fdata;
+        }  
+              
+
+
     // return withdrawals route
     public function withdrawals()
     {
@@ -161,6 +195,36 @@ class UserController extends Controller
                     ->get(),
             ));
     }
+
+
+     // Return withdrawal data
+     public function getwithdrawal()
+     {
+         $data = Withdrawal::latest()->get();
+         $fdata = DataTables::of($data)
+             ->addColumn('id', function($withdrawal) {
+                 return $withdrawal->id;
+             })
+             ->addColumn('mt5', function($withdrawal) {
+                 return $withdrawal->mt5->login;
+             })
+             ->addColumn('amount', function($withdrawal) {
+                 return $withdrawal->amount;
+             })
+             ->addColumn('payment_mode', function($withdrawal) {
+                 return $withdrawal->payment_mode;
+             })
+             ->addColumn('status', function($withdrawal) {
+                 return $withdrawal->status;
+             })
+             ->addColumn('created_at', function($withdrawal) {
+                 return $withdrawal->created_at;
+             })
+
+             ->make(true);
+
+             return $fdata;
+       }  
 
 
     // serves withdrawal page
