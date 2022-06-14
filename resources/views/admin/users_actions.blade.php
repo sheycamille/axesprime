@@ -317,7 +317,6 @@
                         <div class="cell">ID</div>
                         <div class="cell">Number</div>
                         <div class="cell">Balance</div>
-                        <div class="cell">First Deposit</div>
                         <div class="cell">Action</div>
                     </div>
                     @foreach ($user->accounts() as $acc)
@@ -337,4 +336,9 @@
         </div>
     </div>
 </div>
+<style>
+    .cell {
+        margin-right: 2%;
+    }
+</style>
 <!-- /Live MT5 Account Mg't  Modal -->
