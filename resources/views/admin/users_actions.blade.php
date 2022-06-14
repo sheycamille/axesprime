@@ -322,9 +322,9 @@
                     </div>
                     @foreach ($user->accounts() as $acc)
                         <div class="row">
-                            <div class="cell" scope="row">{{ $acc->id }}</div>
-                            <div class="cell">{{ $acc->login }}</div>
-                            <div class="cell">{{ $acc->balance }}</div>
+                            <div class="cell" scope="row">{{ $acc->id }} </div>
+                            <div class="cell">{{ $acc->login }} </div>
+                            <div class="cell">{{ $acc->balance }} </div>
                             <div class="cell">
                                 <a href="{{ route('dellaccounts', $acc->id) }}"
                                     class="m-1 btn btn-danger btn-xs">Delete
