@@ -242,4 +242,40 @@
 <?php echo $__env->make('admin.includes.modals', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 
+<?php $__env->startSection('javascript'); ?>
+<script src="<?php echo e(asset('admin/js/jquery.validate.js')); ?>"></script>
+<script src="<?php echo e(asset('admin/js/jquery.dataTables.min.js')); ?>"></script>
+<script src="<?php echo e(asset('admin/js/dataTables.bootstrap4.min.js')); ?>"></script>
+<script type="text/javascript">
+    $(function () {
+
+      var table = $('.yajra-datatable').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: "<?php echo e(route('fetchdeposits')); ?>",
+          columns: [
+              {data: 'id', name: 'ID'},
+              {data: 'txn_id', name: 'Txn. ID'},
+              {data: 'user', name: 'User'},
+              {data: 'uname', name: 'Uname'},
+              {data: 'amount', name: 'Amount'},
+              {data: 'payment_mode', name: 'Payment Mode'},
+              {data: 'purpose', name: 'Purpose'},
+              {data: 'status', name: 'Status'},
+              {data: 'proof', name: 'Proof'},
+              {
+                  data: 'action',
+                  name: 'action',
+                  orderable: true,
+                  searchable: true
+              },
+          ]
+      });
+
+    });
+  </script>
+<?php $__env->stopSection(); ?>
+
+
+
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/wadingaleonardngonga/Documents/Projects/axesprime/resources/views/admin/mdeposits.blade.php ENDPATH**/ ?>

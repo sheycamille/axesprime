@@ -132,17 +132,15 @@ class UsersController extends Controller
             return $fdata;
     }
 
-
+    
     public function store(Request $request)
     {
-
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:8|confirmed',
             'Answer' => 'same:Captcha_Result',
         ]);
-
 
         $thisid = DB::table('users')->insertGetId(
             [
@@ -155,7 +153,6 @@ class UsersController extends Controller
                 'updated_at' => Carbon::now(),
             ]
         );
-
 
         //assign referal link to user
         $site_address = Setting::getValue('site_address');
@@ -172,7 +169,6 @@ class UsersController extends Controller
     // update users info
     public function update(Request $request)
     {
-
         User::where('id', $request['user_id'])
             ->update([
                 'name' => $request->first_name . ' ' . $request->last_name,
@@ -180,8 +176,8 @@ class UsersController extends Controller
                 'last_name' => $request->last_name,
                 'dob' => $request->dob,
                 'phone' => $request->phone,
+                'email' => $request->email,
                 'address' => $request->address,
-                'phone' => $request->phone,
                 'town' => $request->town,
                 'state' => $request->state,
                 'zip_code' => $request->zip_code,

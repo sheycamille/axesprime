@@ -19,10 +19,23 @@
                         <p class="text-center">@lang('message.body.metatrader')</p>
                     </div>
                     <div class="card-body">
-                        <a href="{{ asset('downloads/axeprogroupmt5setup.exe') }}" class="btn btn-primary">@lang('message.body.windows')</a>
+                        <a href="{{ asset('downloads/axeprogroupmt5setup.exe.zip') }}" class="btn btn-primary">@lang('message.body.windows')</a>
                         <a href="https://download.mql5.com/cdn/mobile/mt5/android?server=AxesPrimeLtd-Demo,AxesPrimeLtd-Live"
                             class="btn btn-primary" target="_blank">@lang('message.body.android') </a>
                         <a href="https://download.mql5.com/cdn/mobile/mt5/ios?server=AxesPrimeLtd-Demo,AxesPrimeLtd-Live"
+                            class="btn btn-primary" target="_blank">@lang('message.body.iphone')</a>
+                    </div>
+                </div>
+                <div class="card text-center">
+                    <div class="card-header">
+                        <h1>METATRADER 4</h1>
+                        <p class="text-center">@lang('message.body.metatrader')</p>
+                    </div>
+                    <div class="card-body">
+                        <a href="{{ asset('downloads/axepromt4setup.exe.zip') }}" class="btn btn-primary">@lang('message.body.windows')</a>
+                        <a href="https://download.mql5.com/cdn/mobile/mt4/android?server=AxesPrimeLtd-Demo,AxesPrimeLtd-Live"
+                            class="btn btn-primary" target="_blank">@lang('message.body.android') </a>
+                        <a href="https://download.mql5.com/cdn/mobile/mt4/ios?server=AxesPrimeLtd-Demo,AxesPrimeLtd-Live"
                             class="btn btn-primary" target="_blank">@lang('message.body.iphone')</a>
                     </div>
                 </div>
