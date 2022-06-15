@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 use Spatie\Permission\Models\Permission;
 
+use DataTables;
+
 
 class PermController extends Controller
 {
@@ -36,6 +38,35 @@ class PermController extends Controller
             'permissions' => $permissions
         ));
     }
+
+
+      // Return permission data
+      public function getperms()
+      {
+          $data = Permission::latest()->get();
+          $fdata = DataTables::of($data)
+              ->addColumn('id', function($perm) {
+                  return $perm->id;
+              })
+              ->addColumn('permission', function($perm) {
+                  return $perm->name;
+              })
+              ->addColumn('action', function($perm) {
+                  $action = '<a href="#" data-toggle="modal"data-target="#deleteModal' . $perm->id . '"class="m-1 btn btn-danger btn-sm">Delete</a>';
+  
+                  //$action .= view('admin.users_actions', compact('admin'))->render();
+                  
+               
+                  return $action;
+              })
+              ->rawColumns(['action'])
+              ->make(true);
+  
+               //dd($fdata);
+  
+               return $fdata;
+              
+      }
 
 
     public function store(Request $request)

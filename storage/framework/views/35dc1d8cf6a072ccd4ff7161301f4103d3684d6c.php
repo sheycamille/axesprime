@@ -1,14 +1,14 @@
-@extends('layouts.app')
 
-@section('title', 'Manage KYC')
 
-@section('manage-users', 'c-show')
-@section('kyc', 'c-active')
+<?php $__env->startSection('title', 'Manage KYC'); ?>
 
-@section('content')
+<?php $__env->startSection('manage-users', 'c-show'); ?>
+<?php $__env->startSection('kyc', 'c-active'); ?>
 
-    @include('admin.topmenu')
-    @include('admin.sidebar')
+<?php $__env->startSection('content'); ?>
+
+    <?php echo $__env->make('admin.topmenu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make('admin.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <div class="container-fluid">
         <div class="fade-in">
@@ -16,36 +16,38 @@
                 <div class="card">
                     <div class="card-header fw-bolder">
                         <h1 class="title1 text-center">
-                            {{ \App\Models\Setting::getValue('site_name') }}
+                            <?php echo e(\App\Models\Setting::getValue('site_name')); ?>
+
                             KYC Verifications</h1>
                     </div>
                     <div class="card-body">
-                        @if (Session::has('message'))
+                        <?php if(Session::has('message')): ?>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="alert alert-info alert-dismissable">
                                         <button type="button" class="close" data-dismiss="alert"
                                             aria-hidden="true">&times;</button>
                                         <i class="fa fa-info-circle"></i>
-                                        <p class="alert-message">{{ Session::get('message') }}</p>
+                                        <p class="alert-message"><?php echo e(Session::get('message')); ?></p>
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
-                        @if (count($errors) > 0)
+                        <?php if(count($errors) > 0): ?>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="alert alert-danger alert-dismissable" role="alert">
                                         <button type="button" class="close" data-dismiss="alert"
                                             aria-hidden="true">&times;</button>
-                                        @foreach ($errors->all() as $error)
-                                            <i class="fa fa-warning"></i> {{ $error }}
-                                        @endforeach
+                                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <i class="fa fa-warning"></i> <?php echo e($error); ?>
+
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
                         <div class="mb-5 row">
                             <div class="col-12 p-4">
@@ -63,48 +65,48 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @forelse ($users as $user)
+                                            <?php $__empty_1 = true; $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                                 <tr>
-                                                    <th scope="row">{{ $user->id }}</th>
-                                                    <td>{{ $user->first_name }} {{ $user->last_name }} </td>
-                                                    <td>{{ $user->email }}</td>
-                                                    <td>{{ $user->account_verify }}</td>
-                                                    <td>{{ $user->docs_uploaded_date }}</td>
-                                                    <td>{{ $user->docs_verified_date }}</td>
+                                                    <th scope="row"><?php echo e($user->id); ?></th>
+                                                    <td><?php echo e($user->first_name); ?> <?php echo e($user->last_name); ?> </td>
+                                                    <td><?php echo e($user->email); ?></td>
+                                                    <td><?php echo e($user->account_verify); ?></td>
+                                                    <td><?php echo e($user->docs_uploaded_date); ?></td>
+                                                    <td><?php echo e($user->docs_verified_date); ?></td>
                                                     <td>
                                                         <a href="#" data-toggle="modal"
-                                                            data-target="#viewkycIModal{{ $user->id }}"
+                                                            data-target="#viewkycIModal<?php echo e($user->id); ?>"
                                                             class="btn btn-priamry btn-sm mx-1"><i class="fa fa-eye"></i>
                                                             ID</a>
                                                         <a href="#" data-toggle="modal"
-                                                            data-target="#viewkycIBModal{{ $user->id }}"
+                                                            data-target="#viewkycIBModal<?php echo e($user->id); ?>"
                                                             class="btn btn-priamry btn-sm mx-1"><i class="fa fa-eye"></i> ID
                                                             Back</a>
                                                         <a href="#" data-toggle="modal"
-                                                            data-target="#viewkycAModal{{ $user->id }}"
+                                                            data-target="#viewkycAModal<?php echo e($user->id); ?>"
                                                             class="btn btn-priamry btn-sm mx-1"><i class="fa fa-eye"></i>
                                                             Address Document</a>
                                                         <a href="#" data-toggle="modal"
-                                                            data-target="#viewkycPModal{{ $user->id }}"
+                                                            data-target="#viewkycPModal<?php echo e($user->id); ?>"
                                                             class="btn btn-priamry btn-sm mx-1"><i class="fa fa-eye"></i>
                                                             Passport</a>
 
-                                                        @if(auth('admin')->user()->hasPermissionTo('mkyc-validate', 'admin'))
-                                                            @if ($user->account_verify != 'Verified')
-                                                                <a href="{{ route('acceptkyc', $user->id) }}"
+                                                        <?php if(auth('admin')->user()->hasPermissionTo('mkyc-validate', 'admin')): ?>
+                                                            <?php if($user->account_verify != 'Verified'): ?>
+                                                                <a href="<?php echo e(route('acceptkyc', $user->id)); ?>"
                                                                     class="btn btn-primary btn-sm my-2">Accept</a>
-                                                                <a href="{{ route('rejectkyc', $user->id) }}"
+                                                                <a href="<?php echo e(route('rejectkyc', $user->id)); ?>"
                                                                     class="btn btn-danger btn-sm my-2">Reject</a>
-                                                            @else
-                                                                <a href="{{ route('resetkyc', $user->id) }}"
+                                                            <?php else: ?>
+                                                                <a href="<?php echo e(route('resetkyc', $user->id)); ?>"
                                                                     class="btn btn-danger btn-sm my-2">Reset Verification</a>
-                                                            @endif
-                                                        @endif
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
 
                                                 <!-- View KYC ID Modal -->
-                                                <div id="viewkycIModal{{ $user->id }}" class="modal fade"
+                                                <div id="viewkycIModal<?php echo e($user->id); ?>" class="modal fade"
                                                     role="dialog">
                                                     <div class="modal-dialog">
 
@@ -117,17 +119,17 @@
                                                                     data-dismiss="modal">&times;</button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                @if (\App\Models\Setting::getValue('location') == 'Email')
+                                                                <?php if(\App\Models\Setting::getValue('location') == 'Email'): ?>
                                                                     <h3 class="">Check your email with the
                                                                         KYC upload that has an attachment name of
                                                                         <span
-                                                                            class="text-danger">{{ $user->id_card }}</span>
+                                                                            class="text-danger"><?php echo e($user->id_card); ?></span>
                                                                     </h3>
-                                                                @elseif(\App\Models\Setting::getValue('location') == 'Local')
-                                                                    <img src="{{ asset('storage/photos/' . $user->id_card) }}"
+                                                                <?php elseif(\App\Models\Setting::getValue('location') == 'Local'): ?>
+                                                                    <img src="<?php echo e(asset('storage/photos/' . $user->id_card)); ?>"
                                                                         alt="ID Card" title="" class="img-fluid" />
-                                                                @elseif(\App\Models\Setting::getValue('location') == 'S3')
-                                                                    @php
+                                                                <?php elseif(\App\Models\Setting::getValue('location') == 'S3'): ?>
+                                                                    <?php
                                                                         $path = 'storage/' . $user->id_card;
                                                                         if (Storage::disk('s3')->exists($path)) {
                                                                             $logourl = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
@@ -136,13 +138,13 @@
                                                                         } else {
                                                                             $src = '';
                                                                         }
-                                                                    @endphp
+                                                                    ?>
                                                                     <img src="$src" alt="ID Card" title=""
                                                                         class="img-fluid" />
-                                                                @else
-                                                                    <img src="{{ asset('storage/photos/' . $user->passport) }}"
+                                                                <?php else: ?>
+                                                                    <img src="<?php echo e(asset('storage/photos/' . $user->passport)); ?>"
                                                                         alt="Passport" title="" class="img-fluid" />
-                                                                @endif
+                                                                <?php endif; ?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -150,7 +152,7 @@
                                                 <!-- /view KYC ID Modal -->
 
                                                 <!-- View KYC ID Back Modal -->
-                                                <div id="viewkycIBModal{{ $user->id }}" class="modal fade"
+                                                <div id="viewkycIBModal<?php echo e($user->id); ?>" class="modal fade"
                                                     role="dialog">
                                                     <div class="modal-dialog">
 
@@ -163,18 +165,18 @@
                                                                     data-dismiss="modal">&times;</button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                @if (\App\Models\Setting::getValue('location') == 'Email')
+                                                                <?php if(\App\Models\Setting::getValue('location') == 'Email'): ?>
                                                                     <h3 class="">Check your email with the
                                                                         KYC upload that has an attachment name of
                                                                         <span
-                                                                            class="text-danger">{{ $user->id_card_back }}</span>
+                                                                            class="text-danger"><?php echo e($user->id_card_back); ?></span>
                                                                     </h3>
-                                                                @elseif(\App\Models\Setting::getValue('location') == 'Local')
-                                                                    <img src="{{ asset('storage/photos/' . $user->id_card_back) }}"
+                                                                <?php elseif(\App\Models\Setting::getValue('location') == 'Local'): ?>
+                                                                    <img src="<?php echo e(asset('storage/photos/' . $user->id_card_back)); ?>"
                                                                         alt="ID Back Card" title=""
                                                                         class="img-fluid" />
-                                                                @elseif(\App\Models\Setting::getValue('location') == 'S3')
-                                                                    @php
+                                                                <?php elseif(\App\Models\Setting::getValue('location') == 'S3'): ?>
+                                                                    <?php
                                                                         $path = 'storage/' . $user->id_card_back;
                                                                         if (Storage::disk('s3')->exists($path)) {
                                                                             $logourl = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
@@ -183,13 +185,13 @@
                                                                         } else {
                                                                             $src = '';
                                                                         }
-                                                                    @endphp
+                                                                    ?>
                                                                     <img src="$src" alt="ID Card Back" title=""
                                                                         class="img-fluid" />
-                                                                @else
-                                                                    <img src="{{ asset('storage/photos/' . $user->passport) }}"
+                                                                <?php else: ?>
+                                                                    <img src="<?php echo e(asset('storage/photos/' . $user->passport)); ?>"
                                                                         alt="Passport" title="" class="img-fluid" />
-                                                                @endif
+                                                                <?php endif; ?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -197,7 +199,7 @@
                                                 <!-- /view KYC ID Back Modal -->
 
                                                 <!-- View KYC Passport Modal -->
-                                                <div id="viewkycPModal{{ $user->id }}" class="modal fade"
+                                                <div id="viewkycPModal<?php echo e($user->id); ?>" class="modal fade"
                                                     role="dialog">
                                                     <div class="modal-dialog">
 
@@ -211,14 +213,14 @@
                                                             </div>
                                                             <div class="modal-body">
 
-                                                                @if (\App\Models\Setting::getValue('location') == 'Email')
+                                                                <?php if(\App\Models\Setting::getValue('location') == 'Email'): ?>
                                                                     <h3 class="">Check your email with the
                                                                         KYC upload that has an attachment name of
                                                                         <span
-                                                                            class="text-danger">{{ $user->passport }}</span>
+                                                                            class="text-danger"><?php echo e($user->passport); ?></span>
                                                                     </h3>
-                                                                @elseif(\App\Models\Setting::getValue('location') == 'S3')
-                                                                    @php
+                                                                <?php elseif(\App\Models\Setting::getValue('location') == 'S3'): ?>
+                                                                    <?php
                                                                         $ppath = 'storage/' . $user->passport;
                                                                         if (Storage::disk('s3')->exists($ppath)) {
                                                                             $passurl = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
@@ -227,13 +229,13 @@
                                                                         } else {
                                                                             $psrc = '';
                                                                         }
-                                                                    @endphp
+                                                                    ?>
                                                                     <img src="$psrc" alt="Passport" title=""
                                                                         class="img-fluid" />
-                                                                @else
-                                                                    <img src="{{ asset('storage/photos/' . $user->passport) }}"
+                                                                <?php else: ?>
+                                                                    <img src="<?php echo e(asset('storage/photos/' . $user->passport)); ?>"
                                                                         alt="Passport" title="" class="img-fluid" />
-                                                                @endif
+                                                                <?php endif; ?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -242,7 +244,7 @@
 
 
                                                 <!-- View KYC Address Modal -->
-                                                <div id="viewkycAModal{{ $user->id }}" class="modal fade"
+                                                <div id="viewkycAModal<?php echo e($user->id); ?>" class="modal fade"
                                                     role="dialog">
                                                     <div class="modal-dialog">
 
@@ -256,14 +258,14 @@
                                                             </div>
                                                             <div class="modal-body">
 
-                                                                @if (\App\Models\Setting::getValue('location') == 'Email')
+                                                                <?php if(\App\Models\Setting::getValue('location') == 'Email'): ?>
                                                                     <h3 class="">Check your email with the
                                                                         KYC upload that has an attachment name of
                                                                         <span
-                                                                            class="text-danger">{{ $user->address_document }}</span>
+                                                                            class="text-danger"><?php echo e($user->address_document); ?></span>
                                                                     </h3>
-                                                                @elseif(\App\Models\Setting::getValue('location') == 'S3')
-                                                                    @php
+                                                                <?php elseif(\App\Models\Setting::getValue('location') == 'S3'): ?>
+                                                                    <?php
                                                                         $ppath = 'storage/' . $user->address_document;
                                                                         if (Storage::disk('s3')->exists($ppath)) {
                                                                             $passurl = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
@@ -272,25 +274,25 @@
                                                                         } else {
                                                                             $psrc = '';
                                                                         }
-                                                                    @endphp
+                                                                    ?>
                                                                     <img src="$psrc" alt="Address" title=""
                                                                         class="img-fluid" />
-                                                                @else
-                                                                    <img src="{{ asset('storage/photos/' . $user->address_document) }}"
+                                                                <?php else: ?>
+                                                                    <img src="<?php echo e(asset('storage/photos/' . $user->address_document)); ?>"
                                                                         alt="Address Document" title=""
                                                                         class="img-fluid" />
-                                                                @endif
+                                                                <?php endif; ?>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <!-- /view KYC Address Modal -->
 
-                                            @empty
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                                 <tr>
                                                     <td colspan="7">No data available</td>
                                                 </tr>
-                                            @endforelse
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -301,19 +303,19 @@
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('javascript')
-<script src="{{ asset('admin/js/jquery.validate.js') }}"></script>
-<script src="{{ asset('admin/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('admin/js/dataTables.bootstrap4.min.js') }}"></script>
+<?php $__env->startSection('javascript'); ?>
+<script src="<?php echo e(asset('admin/js/jquery.validate.js')); ?>"></script>
+<script src="<?php echo e(asset('admin/js/jquery.dataTables.min.js')); ?>"></script>
+<script src="<?php echo e(asset('admin/js/dataTables.bootstrap4.min.js')); ?>"></script>
 <script type="text/javascript">
     $(function () {
 
       var table = $('.yajra-datatable').DataTable({
           processing: true,
           serverSide: true,
-          ajax: "{{ route('fetchkyc') }}",
+          ajax: "<?php echo e(route('fetchkyc')); ?>",
           columns: [
               {data: 'id', name: 'id'},
               {data: 'full_name', name: 'full_name'},
@@ -333,4 +335,6 @@
 
     });
   </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\axesprime\resources\views/admin/kyc.blade.php ENDPATH**/ ?>

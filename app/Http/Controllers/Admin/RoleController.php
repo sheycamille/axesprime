@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
+use DataTables;
+
 
 class RoleController extends Controller
 {
@@ -39,6 +41,48 @@ class RoleController extends Controller
             'permission' => $permission
         ));
     }
+
+    // Return roles data
+    public function getroles()
+    {
+        $data = Role::latest()->get();
+        $fdata = DataTables::of($data)
+            ->addColumn('id', function($role) {
+                return $role->id;
+            })
+            ->addColumn('name', function($role) {
+                return $role->name;
+            })
+            ->addColumn('permission', function($role) {
+                foreach($role->permissions as $perm){
+                    return $perm->name;
+                    //'<p class="text-muted">' . $perm->id . '</p>';
+                }
+            })
+            ->addColumn('action', function($role) {
+                $action = '';
+                if (auth('admin')->user()->hasPermissionTo('mrole-edit', 'admin')) {
+                    $action .= '<a  class="m-1 btn btn-secondary btn-sm" href="'. route('editrole', $role->id) .'">Edit</a>';
+                }
+
+                if (auth('admin')->user()->hasPermissionTo('mrole-delete', 'admin')){
+                    $action .= '<a href="#" class="m-1 btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal'. $role->id .'">Delete</a>';
+                }
+
+                //$action .= view('admin.users_actions', compact('admin'))->render();
+                
+             
+                return $action;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+
+             //dd($fdata);
+
+             return $fdata;
+            
+    }
+
 
 
     public function create()

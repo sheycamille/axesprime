@@ -92,6 +92,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
 
     // manage roles
     Route::get('roles/list', 'Admin\RoleController@index')->name('manageroles');
+    Route::get('role/list', 'Admin\RoleController@getroles')->name('fetchroles');
     Route::get('roles/create', 'Admin\RoleController@create')->name('createrole');
     Route::post('roles/store', 'Admin\RoleController@store')->name('storerole');
     Route::get('roles/edit/{id}', 'Admin\RoleController@edit')->name('editrole');
@@ -100,6 +101,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
 
     // manage permissions
     Route::get('perms/list', 'Admin\PermController@index')->name('manageperms');
+    Route::get('perm/list', 'Admin\PermController@getperms')->name('fetchperms');
     Route::get('perms/create', 'Admin\PermController@create')->name('createperm');
     Route::post('perms/store', 'Admin\PermController@store')->name('storeperm');
     Route::post('perms/delete/{id}', 'Admin\PermController@delete')->name('deleteperm');
@@ -149,6 +151,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
 
     // KYC Routes
     Route::get('kyc/list', 'Admin\HomeController@kyc')->name('kyc');
+    Route::get('kyc', 'Admin\HomeController@getkyc')->name('fetchkyc');
     Route::get('kyc/accept/{id}', 'Admin\UsersController@acceptkyc')->name('acceptkyc');
     Route::get('kyc/reject/{id}', 'Admin\UsersController@rejectkyc')->name('rejectkyc');
     Route::get('kyc/reset/{id}', 'Admin\UsersController@resetkyc')->name('resetkyc');
@@ -171,12 +174,14 @@ Route::group(['prefix' => 'admin',  'middleware' => ['isadmin', 'twofactor']], f
 
     // managing account types
     Route::get('accounttypes/list', 'Admin\HomeController@accounttypes')->name('accounttypes');
+    Route::get('accounttype/list', 'Admin\HomeController@getaccounttypes')->name('fetchacctypes');
     Route::get('accounttypes/create', 'Admin\HomeController@showaddaccounttype')->name('showaddaccounttype');
     Route::post('accounttypes/store', 'Admin\HomeController@addaccounttype')->name('addaccounttype');
     Route::post('accounttypes/update/{id}', 'Admin\HomeController@updateaccounttype')->name('updateaccounttype');
     Route::get('accounttypes/delete/{id}', 'Admin\HomeController@delaccounttype')->name('delaccounttype');
 
     Route::get('ftds/list', 'Admin\HomeController@mftds')->name('mftds');
+    Route::get('ftd/list', 'Admin\HomeController@getftd')->name('fetchftd');
 
     Route::get('settings/frontpage', 'Admin\HomeController@frontpage')->name('frontpage');
 });

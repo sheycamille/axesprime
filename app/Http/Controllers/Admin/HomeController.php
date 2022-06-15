@@ -227,7 +227,7 @@ class HomeController extends Controller
                  if (auth('admin')->user()->hasPermissionTo('mdeposit-process', 'admin')){
                     $action .= '<a href="#" class="btn btn-primary btn-sm"' . route('pdeposit', $deposit->id) . '>  Process</a>';
 
-                    $action .= '<a href="#" class="m-1 btn btn-primary btn-sm data-toggle="modal" data-target="#rejctModal">' . $deposit->id . 'Reject</a>';
+                    $action .= '<a href="#" class="m-1 btn btn-primary btn-sm data-toggle="modal" data-target="#rejctModal'. $deposit->id . '">Reject</a>';
 
                  }
                  return $action; 
@@ -270,6 +270,66 @@ class HomeController extends Controller
     }
 
 
+     // Return data data
+     public function getkyc()
+     {
+         $data = User::latest()->get();
+         $fdata = DataTables::of($data)
+             ->addColumn('id', function($user) {
+                 return $user->id;
+             })
+             ->addColumn('full_name', function($user) {
+                 return $user->first_name . ' ' . $user->last_name;
+             })
+             ->addColumn('email', function($user) {
+                return $user->email;
+            })
+            ->addColumn('kyc_status', function($user) {
+                return $user->account_verify ;
+            })
+            ->addColumn('uploaded_date', function($user) {
+                return $$user->docs_uploaded_date;
+            })
+            ->addColumn('verified_date', function($user) {
+                 return $user->docs_verified_date;
+            })
+             ->addColumn('action', function($user) {
+                 $action = '';
+
+                 $action .= '<a href="#" class="btn btn-primary btn-sm mx-1" data-toggle="modal" data-target="#viewkycIModal' . $user->id . '"><i class="fa fa-eye"></i>ID</a>';
+
+                 $action .= '<a href="#" class="btn btn-primary btn-sm mx-1" data-toggle="modal" data-target="#viewkycIModal' . $user->id . '"><i class="fa fa-eye"></i>ID Back</a>';
+
+                 $action .= '<a href="#" class="btn btn-primary btn-sm mx-1" data-toggle="modal" data-target="#viewkycAModal' . $user->id . '"><i class="fa fa-eye"></i>Address Document</a>';
+
+                 $action .= '<a href="#" class="btn btn-primary btn-sm mx-1" data-toggle="modal" data-target="#viewkycPModal' . $user->id . '"><i class="fa fa-eye"></i>Passport</a>';
+
+     
+                 if (auth('admin')->user()->hasPermissionTo('mkyc-validate', 'admin')){
+                    if($user->account_verify != 'Verified'){
+                        $action .='<a href="' . route('acceptkyc', $user->id) . '"
+                        class="btn btn-primary btn-sm my-2">Accept</a>';
+
+                        $action .='<a href="' . route('rejectkyc', $user->id) . '"
+                        class="btn btn-danger btn-sm my-2">Reject</a>';
+                    }else{
+                        $action .= '<a href="' . route('resetkyc', $user->id) . '"class="btn btn-danger btn-sm my-2">Reset Verification</a>';
+                    }
+                 }
+                 
+                 return $action;
+             })
+             ->rawColumns(['action'])
+             ->make(true);
+ 
+              //dd($action);
+ 
+              return $fdata;
+             
+     }
+
+
+
     // Return account types
     public function accounttypes(Request $request)
     {
@@ -279,6 +339,62 @@ class HomeController extends Controller
             'accounttypes' => $accounttypes,
         ]);
     }
+
+
+     // Return accounttype data
+     public function getaccounttypes()
+     {
+         $data = AccountType::latest()->get();
+         $fdata = DataTables::of($data)
+             ->addColumn('id', function($accounttype) {
+                 return $accounttype->id;
+             })
+             ->addColumn('name', function($accounttype) {
+                 return $accounttype->name;
+             })
+             ->addColumn('forex_pairs', function($accounttype) {
+                return $accounttype->num_fx_pairs;
+            })
+            ->addColumn('comodities', function($accounttype) {
+                return $accounttype->num_commodities_pairs ;
+            })
+            ->addColumn('indices', function($accounttype) {
+                return $accounttype->num_indices_pairs;
+            })
+            ->addColumn('cost', function($accounttype) {
+                //return $accounttype->amount;
+                return \App\Models\Setting::getValue('currency') . $accounttype->amount;
+            })
+            ->addColumn('status', function($accounttype) {
+                $y = 'Yes';
+                $n = 'No';
+                if($accounttype->active == true){
+                    return $y;
+                }else{
+                    return $n;
+                }
+                //return $accounttype->active;
+            })
+             ->addColumn('date_created', function($accounttype) {
+                return \Carbon\Carbon::parse($accounttype->created_at)->toDayDateTimeString();
+            })
+             ->addColumn('action', function($accounttype) {
+                 $action = '';
+
+                 $action .= '<a href="#" data-toggle="modal"data-target="#popModal' . $accounttype->id . '"class="m-1 btn btn-warning btn-sm">Edit</a>';
+                
+                 $action .= '<a href="' . route('delaccounttype', $accounttype->id) . '" class="m-1 btn btn-danger btn-sm">Delete</a>';
+                 
+                 return $action;
+             })
+             ->rawColumns(['action'])
+             ->make(true);
+ 
+              //dd($fdata);
+ 
+              return $fdata;
+             
+     }
 
 
     // Return add account type page
@@ -369,4 +485,35 @@ class HomeController extends Controller
             'users' => $users,
         ]);
     }
+
+
+     // Return ftd data
+     public function getftd()
+     {
+         $data = User::latest()->get();
+         $fdata = DataTables::of($data)
+             ->addColumn('id', function($user) {
+                 return $user->id;
+             })
+             ->addColumn('client name', function($user) {
+                 return $user->name;
+             })
+             ->addColumn('first deposit', function($user) {
+                  $dp = $user
+                ->dp()
+                ->where('status', 'Processed')
+                ->first();
+                return $dp->amount;
+            })
+             ->addColumn('date_created', function($user) {
+                 return \Carbon\Carbon::parse($dp->date_created)->toDayDateTimeString();
+                //return $deposit->date_created;
+             })
+             ->make(true);
+ 
+              //dd($fdata);
+ 
+              return $fdata;
+             
+     }
 }

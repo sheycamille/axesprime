@@ -55,7 +55,7 @@
                     <div class="mb-5 row">
                         <div class="col p-4">
                             <div class="table-responsive" data-example-id="hoverable-table">
-                                <table id="ShipTable" class="table table-bordered table-striped table-responsive-sm">
+                                <table id="ShipTable" class="table table-bordered table-striped table-responsive-sm yajra-datatable ">
                                     <thead>
 
                                         <tr>
@@ -133,3 +133,37 @@
 </div>
 
 @endsection
+
+@section('javascript')
+<script src="{{ asset('admin/js/jquery.validate.js') }}"></script>
+<script src="{{ asset('admin/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('admin/js/dataTables.bootstrap4.min.js') }}"></script>
+<script type="text/javascript">
+    $(function () {
+
+      var table = $('.yajra-datatable').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: "{{ route('fetchroles') }}",
+          columns: [
+              {data: 'id', name: 'id',searchable: true},
+              {data: 'name', name: 'name'},
+              {data: 'permission',
+               name: 'permission',
+               
+             },
+              {
+                  data: 'action',
+                  name: 'Action',
+                  orderable: true,
+                  searchable: true
+              },
+          ]
+      });
+
+    });
+  </script>
+@endsection
+
+
+
